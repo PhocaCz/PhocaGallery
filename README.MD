@@ -1,0 +1,1 @@
+Phoca Gallery is Joomla! CMS extension. Component which displays image gallery on website.
