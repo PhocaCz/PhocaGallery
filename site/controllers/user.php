@@ -639,7 +639,10 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		if ($enableAvatarApprove == 0) {
 			$post['approved']	= 1;
 		}
-
+		if ($fileAvatar != '') {
+			$new = 1;
+		}
+		
 		$model = $this->getModel( 'user' );
 		
 		$userAvatar = $model->getUserAvatar($post['userid']);
@@ -647,18 +650,27 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			$post['id']				= $userAvatar->id;
 			if (isset($userAvatar->avatar) && $userAvatar->avatar != '' && $fileAvatar == '') {
 				// No new avatar - set the old one
-				$post['avatar']		= $userAvatar->avatar;
+				$post['avatar']		= $userAvatar->avatar;		
+				$new = 0;			
 			} else if (isset($userAvatar->avatar) && $userAvatar->avatar != '' && $fileAvatar != '') {
 				// New avatar loaded - try to delete the old one from harddisc (server)
-				$model->removeAvatarFromDisc($userAvatar->avatar);
-			}
+				$model->removeAvatarFromDisc($userAvatar->avatar);	
+				$new = 1;			
+			} 
 			$post['published']		= $userAvatar->published;
 			$post['approved']		= $userAvatar->approved;
 		}
 		
 		if ($model->storeuser($post)) {
 			$succeeded = true;
-			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_AVATAR' );
+			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_AVATAR' );			
+			// Features added by Bernard Gilly - alphaplug.com
+			// load external plugins
+			if ( $new ){
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin('phocagallery');
+				$results = $dispatcher->trigger( 'onUploadAvatar', array() ); 
+			}			
 		} else {
 			$succeeded = false;
 			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_AVATAR' );

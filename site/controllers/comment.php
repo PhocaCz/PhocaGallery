@@ -92,6 +92,11 @@ class PhocaGalleryControllerComment extends PhocaGalleryController
 					$msg = JText::_('COM_PHOCAGALLERY_ERROR_COMMENT_SUBMITTING');
 					} else {
 					$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
+					// Features by Bernard Gilly - alphaplug.com
+					// load external plugins
+					$dispatcher = JDispatcher::getInstance();
+					JPluginHelper::importPlugin('phocagallery');
+					$results = $dispatcher->trigger( 'onCommentImage', array($id, $catid, $post['title'], $post['comment'], $user->id ) );					
 					} 
 				} else {
 					$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));

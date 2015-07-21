@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
+setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryCpModelPhocaGalleryF extends JModelLegacy
 {

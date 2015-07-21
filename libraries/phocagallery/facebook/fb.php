@@ -105,7 +105,9 @@ class PhocaGalleryFb
 		} else {
 			
 		
-			$loginUrl = $facebook->getLoginUrl(array('req_perms' => 'user_photos,user_groups,offline_access,publish_stream,photo_upload,manage_pages', 'scope' => 'user_photos,user_groups,offline_access,publish_stream,photo_upload,manage_pages', 'cancel_url' => $uri->toString(), 'next' => $uri->toString()));
+			/*$loginUrl = $facebook->getLoginUrl(array('req_perms' => 'user_photos,user_groups,offline_access,publish_stream,photo_upload,manage_pages', 'scope' => 'user_photos,user_groups,offline_access,publish_stream,photo_upload,manage_pages', 'cancel_url' => $uri->toString(), 'next' => $uri->toString()));
+			*/
+			$loginUrl = $facebook->getLoginUrl(array('req_perms' => 'user_photos,user_groups,manage_pages', 'scope' => 'user_photos,user_groups,manage_pages', 'cancel_url' => $uri->toString(), 'next' => $uri->toString()));
 			
 			$output['log']	= 0;
 			$output['html'] = '<div><a href="'. $loginUrl .'"><span class="btn btn-primary">'.JText::_('COM_PHOCAGALLERY_FB_LOGIN').'</span></a></div><p>&nbsp;</p>';

@@ -951,6 +951,9 @@ class PhocagalleryModelUser extends JModelLegacy
 			$returnFrontMessage = PhocaGalleryFileThumbnail::getOrCreateThumbnail($row->filename, $return, 1, 1, 1, 1);
 			
 			if ($returnFrontMessage == 'Success') {
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin('phocagallery');
+				$results = $dispatcher->trigger( 'onStoreNewImage', array($row->id, $data['title']) );		
 				return true;
 			} else {
 				return false;

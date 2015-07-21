@@ -33,15 +33,10 @@ if ($saveOrder) {
 }
 $sortFields = $this->getSortFields();
 
-
 echo $r->jsJorderTable($listOrder);
 
 echo '<div class="phoca-thumb-status">' . $this->tmpl['enablethumbcreationstatus'] .'</div>';
-echo '<div class="clearfix"></div>';
-if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_IMAGE_IN_GALLERY').': '
-	.(int)$this->tmpl['notapproved']->count.'</div>';
-}
+//echo '<div class="clearfix"></div>';
 
 echo $r->startForm($option, $tasks, 'adminForm');
 echo $r->startFilter($OPT.'_FILTER');
@@ -51,6 +46,11 @@ echo $r->selectFilterCategory(PhocaGalleryCategory::options($option, 1), 'JOPTIO
 echo $r->endFilter();
 
 echo $r->startMainContainer();
+if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
+	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_IMAGE_IN_GALLERY').': '
+	.(int)$this->tmpl['notapproved']->count.'</div>';
+}
+
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($OPT.'_FILTER_SEARCH_LABEL', $OPT.'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -113,7 +113,8 @@ $canEditCat	= $user->authorise('core.edit', $option);
 
 $iD = $i % 2;
 echo "\n\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
+//echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
+echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" >'. "\n";
 
 echo $r->tdOrder($canChange, $saveOrder, $orderkey);
 echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
@@ -188,7 +189,7 @@ echo $r->endTable();
 
 echo $this->loadTemplate('batch');
 
-echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

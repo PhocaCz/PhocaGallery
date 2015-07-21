@@ -27,10 +27,11 @@ Joomla.submitbutton = function(task){
 	if (task != 'phocagalleryimg.cancel' && document.id('jform_catid').value == '') {
 		alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED'));?>');
 	} else if (task == 'phocagalleryimg.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		<?php echo $this->form->getField('description')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {
-		alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
 	}
 }
 </script><?php
@@ -125,7 +126,7 @@ if (isset($this->item->extid) && $this->item->extid !='') {
 	$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($this->item->filename, 'large');
 	// TODO check the image
 
-	echo '<img class="img-polaroid" src="'.JURI::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
+	echo '<img class="img-polaroid" style="max-width:100px;" src="'.JURI::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
 	.'</a>';
 } else {
 	

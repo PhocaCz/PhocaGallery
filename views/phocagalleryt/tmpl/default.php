@@ -9,7 +9,7 @@ JHTML::_('behavior.tooltip'); ?>
 			Joomla.submitform(task, document.getElementById('phocagalleryt-form'));
 		}
 		else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
 		}
 	}
 </script>

@@ -504,5 +504,26 @@ class PhocaGalleryViewDetail extends JViewLegacy
 		if (!empty($this->category[0]->title)) {
 			$pathway->addItem($this->category[0]->title);
 		}*/
+				
+		
+		// Features added by Bernard Gilly - alphaplug.com
+		// load external plugins		
+		/*$user       = JFactory::getUser();	
+		$imgid      = $item->id;
+		$catid		= $item->catid;
+		$db	   		= JFactory::getDBO();
+		$query 		= "SELECT owner_id FROM #__phocagallery_categories WHERE `id`='$catid'";
+		$db->setQuery( $query );
+		$ownerid 	= $db->loadResult();				
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('phocagallery');
+		$results 	= $dispatcher->trigger( 'onViewImage', array($imgid, $catid, $ownerid, $user->id ) );*/
+
+		$user       = JFactory::getUser();		
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('phocagallery');
+		$results 	= $dispatcher->trigger( 'onViewImage', array((int)$item->id, (int)$item->catid, (int)$item->owner_id, (int)$user->id ) );		
+		
+
 	}
 }

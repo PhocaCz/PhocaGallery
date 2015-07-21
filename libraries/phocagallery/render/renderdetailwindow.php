@@ -266,7 +266,7 @@ class PhocaGalleryRenderDetailWindow
 				$library->setLibrary('pg-group-jak-mod', 1);
 			} else if ( isset($libraries['pg-group-jak-pl']) && $libraries['pg-group-jak-pl']->value == 0 ) {		
 				$document->addCustomTag( self::renderJakJs($this->jakSlideshowDelay, $this->jakOrientation, $this->jakRandName));
-				$library->setLibrary('pg-group-jak-pl', 1);
+				//$library->setLibrary('pg-group-jak-pl', 1);
 			}
 			
 			break;
@@ -361,6 +361,105 @@ class PhocaGalleryRenderDetailWindow
 			$document->addScriptDeclaration('new boxplus($$("a.phocagallerycboxpluso'.$this->extension.'"),{"theme":"'.$this->bpTheme.'","autocenter":'.(int)$this->bpBautocenter.',"autofit": false,"slideshow": false,"loop":false,"captions":"none","thumbs":"hide","width":'.(int)$this->popupWidth.',"height":'.(int)$this->popupHeight.',"duration":0,"transition":"linear","contextmenu":false, phocamethod:2});');
 			
 			$document->addScriptDeclaration('});');
+			
+			
+			
+			case 11:
+			case 12:
+			
+			
+			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+		
+			$this->b1->set('methodname', 'magnific');
+			$this->b2->set('methodname', 'magnific2');
+			$this->b3->set('methodname', 'magnific3');
+		
+			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/magnific/jquery.magnific-popup.min.js');
+			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/magnific/magnific-popup.css');
+			
+			$mT = array();
+			$mT[] = 'tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\';';
+			$mT[] = 'tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\';';
+			
+			$mT2 = array();
+			$mT2[] = 'tPrev: \''.JText::_('COM_PHOCAGALLERY_PREVIOUS').'\';';
+			$mT2[] = 'tNext: \''.JText::_('COM_PHOCAGALLERY_NEXT').'\';';
+			$mT2[] = 'tCounter: \''.JText::_('COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL').'\';';
+			
+			$mT[] = 'tError: \''.JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED').'\';';
+			$mT[] = 'tError: \''.JText::_('COM_PHOCAGALLERY_CONTENT_NOT_LOADED').'\';';
+	
+			
+			if ($method == 11) {
+				
+				$js = array();
+				$js[] = '<script type="text/javascript">';
+				$js[] = 'jQuery(document).ready(function() {';
+				$js[] = '	jQuery(\'a.magnific\').magnificPopup({';
+				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
+				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
+				$js[] = '		tError: \''.JText::_('COM_PHOCAGALLERY_CONTENT_NOT_LOADED').'\',';
+				$js[] = '		type: \'iframe\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		preloader: false,';
+				$js[] = '		fixedContentPos: false,';
+				$js[] = '	});';
+				
+				$js[] = '	jQuery(\'a.magnific2\').magnificPopup({';
+				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
+				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
+				$js[] = '		tError: \''.JText::_('COM_PHOCAGALLERY_CONTENT_NOT_LOADED').'\',';
+				$js[] = '		type: \'iframe\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		preloader: false,';
+				$js[] = '		fixedContentPos: false,';
+				$js[] = '	});';
+
+				$js[] = '});';
+				$js[] = '</script>';
+
+				
+			} else {
+				$js = array();
+				$js[] = '<script type="text/javascript">';
+				$js[] = 'jQuery(document).ready(function() {';
+				$js[] = '	jQuery(\'#pg-msnr-container\').magnificPopup({';
+				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
+				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
+				$js[] = '		delegate: \'a.magnific\',';
+				$js[] = '		type: \'image\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		gallery: {';
+				$js[] = '			enabled: true,';
+				$js[] = '			navigateByImgClick: true,';
+				$js[] = '			tPrev: \''.JText::_('COM_PHOCAGALLERY_PREVIOUS').'\',';
+				$js[] = '			tNext: \''.JText::_('COM_PHOCAGALLERY_NEXT').'\',';
+				$js[] = '			tCounter: \''.JText::_('COM_PHOCAGALLERY_MAGNIFIC_CURR_OF_TOTAL').'\'';
+				$js[] = '		},';
+				$js[] = '		image: {';
+				$js[] = '			titleSrc: function(item) {';
+				$js[] = '				return item.el.attr(\'title\');';
+				$js[] = '			},';
+				$js[] = '			tError: \''.JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED').'\'';
+				$js[] = '		}';
+				$js[] = '	});';
+				
+				$js[] = '	jQuery(\'a.magnific2\').magnificPopup({';
+				$js[] = '		type: \'image\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		image: {';
+				$js[] = '			tError: \''.JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED').'\'';
+				$js[] = '		}';
+				$js[] = '	});';
+
+				$js[] = '});';
+				$js[] = '</script>';
+			}
+			
+			$document->addCustomTag(implode("\n", $js));
+			
+			break;
+			
 			
 			default:
 			break;

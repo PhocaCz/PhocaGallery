@@ -16,6 +16,7 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 		if ( ! JFactory::getApplication()->input->get('view') ) {
 			JRequest::setVar('view', 'detail' );
 		}
+		
 		parent::display($cachable, $urlparams);
     }
 
@@ -70,6 +71,11 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 				$msg = JText::_('COM_PHOCAGALLERY_ERROR_RATING_IMAGE');
 				} else {
 				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_RATING_IMAGE');
+				// Features added by Bernard Gilly - alphaplug.com
+				// load external plugins
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin('phocagallery');
+				$results = $dispatcher->trigger( 'onVoteImage', array($imgid, $rating, $user->id ) );				
 				} 
 			} else {
 				$app->redirect(JRoute::_('index.php?option=com_users&view=login', false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));

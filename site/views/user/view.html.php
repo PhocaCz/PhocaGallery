@@ -92,7 +92,6 @@ class PhocaGalleryViewUser extends JViewLegacy
 		$this->tmpl['maxuploadchar']		= $this->params->get( 'max_upload_char', 1000 );
 		$this->tmpl['maxcreatecatchar']		= $this->params->get( 'max_create_cat_char', 1000 );
 		$this->tmpl['showpageheading'] 		= $this->params->get( 'show_page_heading', 1 );
-
 		$this->tmpl['javaboxwidth'] 		= $this->params->get( 'java_box_width', 480 );
 		$this->tmpl['javaboxheight'] 		= $this->params->get( 'java_box_height', 480 );
 		$this->tmpl['enableuploadavatar'] 	= $this->params->get( 'enable_upload_avatar', 1 );

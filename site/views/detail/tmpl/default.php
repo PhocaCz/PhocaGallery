@@ -85,6 +85,8 @@ if ($this->tmpl['detailwindow'] == 7) {
 			include_once(JPATH_BASE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
 			echo JComments::showComments($this->item->id, 'com_phocagallery_images', JText::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
 		}
+	} else if ($this->tmpl['externalcommentsystem'] == 2) {
+		echo $this->loadTemplate('comments-fb');	
 	}
 	echo '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="http://www.phoca.cz/phocagallery">Phoca Gallery</a></div>';
 }

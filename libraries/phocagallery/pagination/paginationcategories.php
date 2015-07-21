@@ -36,6 +36,7 @@ class PhocaGalleryPaginationCategories extends JPagination
 		} else {
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
+	
 		return $html;
 	}
 }

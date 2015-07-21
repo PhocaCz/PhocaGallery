@@ -45,11 +45,16 @@ class PhocaGalleryYoutube
 	public static function getCode($url) {
 	
 		$o = '';
+		
 		if ($url != '' && PhocaGalleryUtils::isURLAddress($url) ) {
-			$shortvideoCode	= 'http://youtu.be/';
+			$shortvideoCode		= 'http://youtu.be/';
+			$shortvideoCode2	= 'https://youtu.be/';
 			$pos 		= strpos($url, $shortvideoCode);
+			$pos2 		= strpos($url, $shortvideoCode2);
 			if ($pos !== false) {
 				$code 		= str_replace($shortvideoCode, '', $url);
+			} else if ($pos2 !== false) {
+				$code 		= str_replace($shortvideoCode2, '', $url);
 			} else {
 				$codeArray 	= explode('=', $url);
 				$code 		= str_replace($codeArray[0].'=', '', $url);
@@ -60,8 +65,7 @@ class PhocaGalleryYoutube
 	}
 	
 	public static function importYtb($ytbLink, $folder, &$errorMsg = '') {
-		
-		
+
 		$ytbCode 	= str_replace("&feature=related","",PhocaGalleryYoutube::getCode(strip_tags($ytbLink)));
 		
 		$ytb				= array();
@@ -79,13 +83,79 @@ class PhocaGalleryYoutube
 			return false;
 		} else {
 		
+			$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+			$key 		= $paramsC->get( 'youtube_api_key', '' );
+			$ssl 		= $paramsC->get( 'youtube_api_ssl', 0 );
+		
 			// Data
-			$cUrl		= curl_init("http://gdata.youtube.com/feeds/api/videos/".strip_tags($ytbCode));
-            curl_setopt($cUrl,CURLOPT_RETURNTRANSFER,1);
-            $xml		= curl_exec($cUrl);
+			//$cUrl		= curl_init("http://gdata.youtube.com/feeds/api/videos/".strip_tags($ytbCode));
+			$cUrl 		= curl_init('https://www.googleapis.com/youtube/v3/videos?id='.strip_tags($ytbCode).'&part=snippet&key='.strip_tags($key));
+			
+			if ($ssl == 0) {
+				curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
+			} else {
+				curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, true);
+			}
+			curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, 1);  
+            $json		= curl_exec($cUrl);
             curl_close($cUrl);
 			
-			$xml 	= str_replace('<media:', '<phcmedia', $xml);
+			$o 	= json_decode($json);
+			
+			if (!empty($o) && isset($o->items[0]->snippet)) {
+				$oS = $o->items[0]->snippet;
+				
+				
+				if (isset($oS->title)) {
+					$ytb['title'] = (string)$oS->title;
+				}
+				
+				if ($ytb['title'] == '' && isset($oS->localized->title)) {
+					$ytb['title'] = (string)$oS->localized->title;
+				}
+				
+				if (isset($oS->description)) {
+					$ytb['desc'] = (string)$oS->description;
+				}
+				
+				if ($ytb['desc'] == '' && isset($oS->localized->description)) {
+					$ytb['desc'] = (string)$oS->localized->description;
+				}
+				
+			
+				if (isset($oS->thumbnails->standard->url)) {
+					$cUrl		= curl_init(strip_tags((string)$oS->thumbnails->standard->url));
+					
+					if ($ssl == 0) {
+						curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
+					} else {
+						curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, true);
+					}
+					curl_setopt($cUrl,CURLOPT_RETURNTRANSFER,1);
+					$img		= curl_exec($cUrl);
+					curl_close($cUrl);
+				}
+				
+				$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
+				
+				if ($img != '') {
+					if (JFile::exists(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
+						$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
+						return false;
+						
+					}
+					
+					if (!JFile::write(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
+						$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
+						return false;
+					}
+				}
+				
+			}
+			
+			
+			// API 2
+			/*$xml 	= str_replace('<media:', '<phcmedia', $xml);
 			$xml 	= str_replace('</media:', '</phcmedia', $xml);
 			
 			$data 	= JFactory::getXML($xml, false);
@@ -128,7 +198,7 @@ class PhocaGalleryYoutube
             if (!JFile::write(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
 				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 				return false;
-			}
+			}*/
 		}
 		
 		return $ytb;

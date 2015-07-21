@@ -95,6 +95,7 @@ class PhocaGalleryRenderAdmin
 		
 		$banners	= array();
 		$banners[]	= array('Phoca Restaurant Menu','phocamenu', 'prm');
+		$banners[]	= array('Phoca Cart','phocacart', 'pc');
 		
 		$o = '';
 		$o .= '<p>&nbsp;</p>';

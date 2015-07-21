@@ -172,6 +172,6 @@ if ($this->tmpl['detail_window'] == 6) {
 
 
 
-echo $this->tmpl['efg'];
+echo $this->tmpl['def'];
 echo '</div>';
 ?>

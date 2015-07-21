@@ -53,7 +53,7 @@ function insertLink() {
 <div id="phocagallery-links">
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_PHOCAGALLERY_IMAGE'); ?></legend>
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm"  id="adminForm">
 
 <table class="admintable" width="100%">
 		<tr>

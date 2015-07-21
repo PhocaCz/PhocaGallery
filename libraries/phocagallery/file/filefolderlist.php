@@ -14,6 +14,7 @@ jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.image.image');
 phocagalleryimport('phocagallery.path.path');
 phocagalleryimport('phocagallery.file.filefolder');
+setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryFileFolderList
 {
@@ -99,6 +100,7 @@ class PhocaGalleryFileFolderList
 		// - - - - - - - - - - - -
 		
 		// Iterate over the folders if they exist
+		
 		if ($folderList !== false) {
 			foreach ($folderList as $folder) {
 				$tmp 							= new JObject();

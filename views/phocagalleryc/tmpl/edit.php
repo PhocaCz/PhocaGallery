@@ -33,10 +33,11 @@ Joomla.submitbutton = function(task) {
 		if (task == 'phocagalleryc.uploadextimgf') {
 			document.getElementById('uploading-ext-imgf').style.display='block';
 		}
+		<?php echo $this->form->getField('description')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {
-		alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
 	}
 }
 </script><?php

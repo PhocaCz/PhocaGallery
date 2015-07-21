@@ -452,6 +452,12 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		if ($app->getCfg('MetaTitle') == '1' && $this->params->get('menupage_title', '')) {
 			$this->document->setMetaData('title', $this->params->get('page_title', ''));
 		}		
+		
+		// Features added by Bernard Gilly - alphaplug.com
+		// load external plugins
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('phocagallery');
+		$results = $dispatcher->trigger( 'onViewCategories', array() );				
 	}
 }
 ?>

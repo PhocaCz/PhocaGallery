@@ -592,24 +592,55 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 						}
 						*/
 
-						
+					
 						if(isset($value['images'])) {
                             
                             $imagesArray = $value['images'];
                         
                             $dataImg[$i]['extl']			= $imagesArray[0]['source'];
-                            $dataImg[$i]['extm']			= $imagesArray[1]['source'];
-                            $dataImg[$i]['exts']			= $imagesArray[2]['source'];
+							
+							// Sometimes Facebook does not return all sizes
+							if (isset($imagesArray[1]['source'])) {
+								$dataImg[$i]['extm']			= $imagesArray[1]['source'];
+                            } else {
+								$dataImg[$i]['extm']			= $imagesArray[0]['source'];
+							}
+							
+							if (isset($imagesArray[1]['source'])) {
+								$dataImg[$i]['exts']			= $imagesArray[2]['source'];
+                            } else {
+								$dataImg[$i]['exts']			= $imagesArray[0]['source'];
+							}
+							
                             
                             // Large
                             $dataImg[$i]['extw'][0]				= $imagesArray[0]['width'];
                             $dataImg[$i]['exth'][0]				= $imagesArray[0]['height'];
                             //Medium
-                            $dataImg[$i]['extw'][1]				= $imagesArray[1]['width'];
-                            $dataImg[$i]['exth'][1]				= $imagesArray[1]['height'];
-                            // Small
-                            $dataImg[$i]['extw'][2]				= $imagesArray[2]['width'];
-                            $dataImg[$i]['exth'][2]				= $imagesArray[2]['height'];
+							if (isset($imagesArray[1]['width'])) {
+								$dataImg[$i]['extw'][1]				= $imagesArray[1]['width'];
+                            } else {
+								$dataImg[$i]['extw'][1]				= $imagesArray[0]['width'];
+							}
+							
+							if (isset($imagesArray[1]['height'])) {
+								$dataImg[$i]['exth'][1]				= $imagesArray[1]['height'];
+                            } else {
+								$dataImg[$i]['exth'][1]				= $imagesArray[0]['height'];
+							}
+							
+							if (isset($imagesArray[2]['width'])) {
+								$dataImg[$i]['extw'][2]				= $imagesArray[2]['width'];
+                            } else {
+								$dataImg[$i]['extw'][2]				= $imagesArray[0]['width'];
+							}
+							
+							if (isset($imagesArray[2]['height'])) {
+								$dataImg[$i]['exth'][2]				= $imagesArray[2]['height'];
+                            } else {
+								$dataImg[$i]['exth'][2]				= $imagesArray[0]['height'];
+							}
+	
                         
 							/*
                             $f = 0;
@@ -666,6 +697,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 						$dataImg[$i]['language']	= $data['language'];
 						$i++;
 					}
+					
+					
 					
 					// THIRD
 					if ($fbAfter != '') {

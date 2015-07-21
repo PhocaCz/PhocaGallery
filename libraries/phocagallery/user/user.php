@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class PhocaGalleryUser
 {
 	public static function getUserLang( $formName = 'language') {
-		$user 		= &JFactory::getUser();
+		$user 		= JFactory::getUser();
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
 		$userLang	= $paramsC->get( 'user_ucp_lang', 1 );
 		
@@ -44,7 +44,7 @@ class PhocaGalleryUser
 	
 	public static function getUserAvatar($userId) {
 	
-		$db =JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		$query = 'SELECT a.*'
 		. ' FROM #__phocagallery_user AS a'

@@ -22,7 +22,8 @@ if (! class_exists('JHtmlGrid')) {
 
 class PhocaGalleryGrid extends JHtmlGrid
 {	
-	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid')
+
+	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $stub = 'cb')
 	{
 		if ($checkedOut)
 		{

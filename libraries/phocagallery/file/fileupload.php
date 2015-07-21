@@ -367,9 +367,25 @@ class PhocaGalleryFileUpload
 				}
 			
 			
-				if ($return) {
+				/*if ($return) {
 					$app->enqueueMessage( $errUploadMsg, 'error');
 					$app->redirect(base64_decode($return).'&folder='.$folderUrl);
+					exit;
+				} else {
+					$app->enqueueMessage( $errUploadMsg, 'error');
+					$app->redirect($componentUrl, $errUploadMsg, 'error');
+					exit;
+				}*/
+				
+				
+				if ($return) {
+					$app->enqueueMessage( $errUploadMsg, 'error');
+					if ($frontEnd > 0) {
+					
+						$app->redirect(base64_decode($return));
+					} else {
+						$app->redirect(base64_decode($return).'&folder='.$folderUrl);
+					}
 					exit;
 				} else {
 					$app->enqueueMessage( $errUploadMsg, 'error');

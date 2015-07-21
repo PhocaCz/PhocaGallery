@@ -109,15 +109,17 @@ class PhocaGalleryRenderAdminViews
 	public function inputFilterSearchClear($txtFs, $txtFc) {
 		return '<div class="btn-group pull-left hidden-phone">'. "\n"
 		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
-		.'<button class="btn tip hasTooltip" type="button" onclick="document.id(\'filter_search\').value=\'\';this.form.submit();"'
+		.'<button class="btn tip hasTooltip" type="button" onclick="document.getElementById(\'filter_search\').value=\'\';this.form.submit();"'
 		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
 		.'</div>'. "\n";
 	}
 	
 	public function inputFilterSearchLimit($txtSl, $paginationLimitBox) {			
+		
 		return '<div class="btn-group pull-right hidden-phone">'. "\n"
 		.'<label for="limit" class="element-invisible">'.JText::_($txtSl).'</label>'. "\n"
 		.$paginationLimitBox ."\n" . '</div>'. "\n";
+		
 	}
 	
 	public function selectFilterDirection($txtOd, $txtOasc, $txtOdesc, $listDirn) {
@@ -227,12 +229,12 @@ class PhocaGalleryRenderAdminViews
 		return $o;
 	}
 	
-	public function formInputs($listOrder, $originalOrders) {
+	public function formInputs($listOrder, $listDirn, $originalOrders) {
 	
 		return '<input type="hidden" name="task" value="" />'. "\n"
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
-		.'<input type="hidden" name="filter_order_Dir" value="" />'. "\n"
+		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
 		. JHtml::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
 	}

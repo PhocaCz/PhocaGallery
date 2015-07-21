@@ -86,7 +86,8 @@ $canCreate		= $user->authorise('core.create',		'com_phocagallery');
 
 $iD = $i % 2;
 echo "\n\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="'.$item->id.'" parents="0" level="0">'. "\n";
+//echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="'.$item->id.'" parents="0" level="0">'. "\n";
+echo '<tr class="row'.$iD.'" sortable-group-id="0" >'. "\n";
 
 echo $r->tdOrder($canChange, $saveOrder, $orderkey);
 echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
@@ -144,7 +145,7 @@ echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
 
-echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

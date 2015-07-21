@@ -40,7 +40,7 @@ if (!empty($this->items)) {
 					//echo ' title="'.$cv->odesctitletag.'"';
 					echo ' title="'.htmlentities ($cv->odesctitletag, ENT_QUOTES, 'UTF-8').'"';
 				}
-			}
+			} 
 			echo ' href="'. $cv->link.'"';	
 			// Correct size for external Image (Picasa) - subcategory
 			$extImage = false;

@@ -1138,6 +1138,24 @@ class PhocaGalleryViewCategory extends JViewLegacy
 				
 			}
 			
+			else if ( $this->tmpl['detail_window'] == 11 ) {
+				
+				$this->items[$iS]->link 		= $siteLink;
+				$this->items[$iS]->link2 		= $siteLink;
+				$this->items[$iS]->linkother	= $siteLink;
+				$this->items[$iS]->linkorig	= $imgLinkOrig;
+				
+			}
+
+			else if ( $this->tmpl['detail_window'] == 12 ) {
+				
+				$this->items[$iS]->link 		= $imgLink;
+				$this->items[$iS]->link2 		= $imgLink;
+				$this->items[$iS]->linkother	= $siteLink;
+				$this->items[$iS]->linkorig	= $imgLinkOrig;
+				
+			}
+			
 			else {
 			
 				$this->items[$iS]->link 		= $siteLink;
@@ -1426,7 +1444,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			$imgAlt = $imgTitle = '';
 		
 			// Some methods cannot use Alt because of conflicting with Title and popup methods
-			if ($this->tmpl['detail_window'] == 3 || $this->tmpl['detail_window'] == 9 || $this->tmpl['detail_window'] == 10) {
+			if ($this->tmpl['detail_window'] == 3 || $this->tmpl['detail_window'] == 9 || $this->tmpl['detail_window'] == 10 || $this->tmpl['detail_window'] == 12) {
 				$imgAlt 	= $this->items[$iS]->altvalue;
 				$imgTitle	= $this->items[$iS]->title;
 				if ($imgAlt == $imgTitle) {
@@ -1914,7 +1932,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			</script>');
 		}
 		
-		$this->tmpl['efg'] = '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="http://www.phoca.cz/phocagallery">Phoca Gallery</a></div>';
+		
 		
 		// CSS Specific
 		$s = "\n" . '#phocagallery {'."\n";
@@ -1953,6 +1971,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$document->addCustomTag('<style type="text/css">'.$s.'</style>');
 		
 	
+		$this->tmpl['def'] = '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="http://www.phoca.cz/phocagallery">Phoca Gallery</a></div>';
 		
 		$this->_prepareDocument();
 		
@@ -2028,6 +2047,22 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		if ($app->getCfg('MetaTitle') == '1' && $this->params->get('menupage_title', '')) {
 			$this->document->setMetaData('title', $this->params->get('page_title', ''));
 		}
+		// Features added by Bernard Gilly - alphaplug.com
+		// load external plugins
+		/*$user       = JFactory::getUser();	
+		$catid      = $this->category->id;	
+		$db	   = JFactory::getDBO();
+		$query = "SELECT owner_id FROM #__phocagallery_categories WHERE `id`='$catid'";
+		$db->setQuery( $query );
+		$ownerid = $db->loadResult();		
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('phocagallery');
+		$results = $dispatcher->trigger( 'onViewCategory', array($catid, $ownerid, $user->id) );
+		*/
+		$user       = JFactory::getUser();
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('phocagallery');
+		$results = $dispatcher->trigger( 'onViewCategory', array((int)$this->category->id, (int)$this->category->owner_id, (int)$user->id) );
 
 		/*if ($app->getCfg('MetaAuthor') == '1') {
 			$this->document->setMetaData('author', $this->item->author);

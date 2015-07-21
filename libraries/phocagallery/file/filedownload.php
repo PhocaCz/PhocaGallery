@@ -46,29 +46,67 @@ class PhocaGalleryFileDownload
 			$fileSize 		= @filesize($fileOriginal);
 			$mimeType 		= PhocaGalleryFile::getMimeType($fileToDownload);
 			$fileName		= $fileNameToDownload;
-			// Clean the output buffer
-			ob_end_clean();
 			
-			header("Cache-Control: public, must-revalidate");
-			header('Cache-Control: pre-check=0, post-check=0, max-age=0');
-			header("Pragma: no-cache");
-			header("Expires: 0"); 
-			header("Content-Description: File Transfer");
-			header("Expires: Sat, 30 Dec 1990 07:07:07 GMT");
-			header("Content-Type: " . (string)$mimeType);
-			
-			// Problem with IE
-			if ($extLink == 0) {
-				header("Content-Length: ". (string)$fileSize);
-			}
-			
-			header('Content-Disposition: attachment; filename="'.$fileName.'"');
-			header("Content-Transfer-Encoding: binary\n");
-			
-			@readfile($fileOriginal);
-			exit;
-		}
+			if ($extLink > 0) {
+				$content = '';
+				if (function_exists('curl_init')) {
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $fileOriginal);
+					curl_setopt($ch, CURLOPT_HEADER, 0);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+					$downloadedFile = fopen($fileName, 'w+');
+					curl_setopt($ch, CURLOPT_FILE, $downloadedFile);
+					$content = curl_exec ($ch);
+					$fileSize= strlen($content);
+					curl_close ($ch);
+					fclose($downloadedFile);
+				}
+				if ($content != '') {
+					// Clean the output buffer
+					ob_end_clean();
+
+					header("Cache-Control: public, must-revalidate");
+					header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+					header("Pragma: no-cache");
+					header("Expires: 0"); 
+					header("Content-Description: File Transfer");
+					header("Expires: Sat, 30 Dec 1990 07:07:07 GMT");
+					header("Content-Type: " . (string)$mimeType);
+					
+					header("Content-Length: ". (string)$fileSize);
+					
+					header('Content-Disposition: attachment; filename="'.$fileName.'"');
+					header("Content-Transfer-Encoding: binary\n");
+					
+					echo $content;
+					exit;
 				
+				}
+			} else {
+			
+				// Clean the output buffer
+				ob_end_clean();
+
+				header("Cache-Control: public, must-revalidate");
+				header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+				header("Pragma: no-cache");
+				header("Expires: 0"); 
+				header("Content-Description: File Transfer");
+				header("Expires: Sat, 30 Dec 1990 07:07:07 GMT");
+				header("Content-Type: " . (string)$mimeType);
+				
+				// Problem with IE
+				if ($extLink == 0) {
+					header("Content-Length: ". (string)$fileSize);
+				}
+				
+				header('Content-Disposition: attachment; filename="'.$fileName.'"');
+				header("Content-Transfer-Encoding: binary\n");
+				
+				@readfile($fileOriginal);
+				exit;
+			}
+		}	
 		return false;
 	
 	}

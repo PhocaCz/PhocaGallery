@@ -57,7 +57,7 @@ class PhocaGalleryModelDetail extends JModelLegacy
 			$leftUser 	= ' LEFT JOIN #__users AS ua ON ua.id = a.userid';
 			
 
-			$query = 'SELECT a.*, c.accessuserid as cataccessuserid, c.access as cataccess,'
+			$query = 'SELECT a.*, c.accessuserid as cataccessuserid, c.access as cataccess, c.owner_id as owner_id, '
 					. $selectUser
 					.' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as catslug,'
 					.' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug'

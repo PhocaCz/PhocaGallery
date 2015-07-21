@@ -151,8 +151,8 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 		JRequest::setVar('ytb_filename', $ytb['filename']);
 		JRequest::setVar('ytb_link', $ytb['link']);
 		
-		if ($errorMsg != '') {
-			$msg 	= $errorMsg;
+		if ($errorYtbMsg != '') {
+			$msg 	= $errorYtbMsg;
 			$import	= '';
 		} else {
 			$msg 		= JText::_('COM_PHOCAGALLERY_YTB_SUCCESS_IMPORT');

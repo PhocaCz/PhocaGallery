@@ -208,6 +208,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 				$tree[$iCT]->exts				= $key->exts;
 				$tree[$iCT]->extw				= $key->extw;
 				$tree[$iCT]->exth				= $key->exth;
+				$tree[$iCT]->date 				= $key->date;
 				
 				$tree[$iCT]->linkthumbnailpath	= '';
 				$iCT++;

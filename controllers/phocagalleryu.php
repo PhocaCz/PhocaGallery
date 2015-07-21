@@ -33,8 +33,10 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 		//$folder_permissions = octdec((int)$folder_permissions);
 
 		$path			= PhocaGalleryPath::getPath();
-		$folderNew		= JRequest::getCmd( 'foldername', '');
-		$folderCheck	= JRequest::getVar( 'foldername', null, '', 'string', JREQUEST_ALLOWRAW);
+		//$folderNew		= JRequest::getCmd( 'foldername', '');
+		//$folderCheck	= JRequest::getVar( 'foldername', null, '', 'string', JREQUEST_ALLOWRAW);
+		$folderNew      = $app->input->getstring('foldername', '');
+		$folderCheck    = $app->input->getstring('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
 		$parent			= JRequest::getVar( 'folderbase', '', '', 'path' );
 		$tab			= JRequest::getVar( 'tab', '', '', 'string' );
 		$field			= JRequest::getVar( 'field');

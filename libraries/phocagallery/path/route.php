@@ -14,6 +14,28 @@ jimport('joomla.application.component.helper');
 class PhocaGalleryRoute
 {
 	public static function getCategoriesRoute() {
+		
+		// TEST SOLUTION
+		$app 		= JFactory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$activeId 	= $active->id;
+		
+		$itemId 	= 0;
+		// 1) get standard item id if exists
+		if (isset($item->id)) {
+			$itemId = (int)$item->id;
+		}
+		
+		$option			= $app->input->get( 'option', '', 'string' );
+		$view			= $app->input->get( 'view', '', 'string' );
+		if ($option == 'com_phocagallery' && $view == 'category') {
+			if ((int)$activeId > 0) {
+				// 2) if there are two menu links, try to select the one active
+				$itemId = $activeId;
+			}
+		}
+		
 		$needles = array(
 			'categories' => ''
 		);
@@ -24,9 +46,15 @@ class PhocaGalleryRoute
 			if(isset($item->query['layout'])) {
 				$link .= '&layout='.$item->query['layout'];
 			}
-			if (isset($item->id)) {
-				$link .= '&Itemid='.$item->id;
+			
+			// TEST SOLUTION
+			if ((int)$itemId > 0) {
+				$link .= '&Itemid='.(int)$itemId;
 			}
+			
+			/*if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}*/
 		};
 
 		return $link;
@@ -79,11 +107,24 @@ class PhocaGalleryRoute
 	}
 	
 	public static function getCategoryRoute($catid, $catidAlias = '') {
-		$needles = array(
-			'category' => (int) $catid,
-			'categories' => ''
-		);
 		
+		// TEST SOLUTION
+		$app 		= JFactory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$activeId 	= $active->id;
+		if ((int)$activeId > 0) {
+			$needles 	= array(
+				'category' => (int)$catid,
+				'categories' => (int)$activeId
+			);
+		} else {
+			$needles = array(
+				'category' => (int)$catid,
+				'categories' => ''
+			);
+		}
+
 		if ($catidAlias != '') {
 			$catid = $catid . ':' . $catidAlias;
 		}
@@ -102,6 +143,10 @@ class PhocaGalleryRoute
 
 		return $link;
 	}
+	
+
+	
+	
 	
 	public static function getCategoryRouteByTag($tagId) {
 		$needles = array(

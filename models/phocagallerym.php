@@ -14,6 +14,7 @@ jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 phocagalleryimport('phocagallery.file.filefolderlist');
+setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryCpModelPhocaGalleryM extends JModelAdmin
 {

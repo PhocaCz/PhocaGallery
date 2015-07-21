@@ -232,6 +232,7 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
+<!--
 <field name="phocahead12" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_COOLIRIS_SETTINGS_LABEL" label="" description=""/>
 
 <field name="enable_cooliris" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_ENABLE_COOLIRIS_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_COOLIRIS_DESC">
@@ -245,7 +246,7 @@
 <field name="piclens_image" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_DESC">
 	<option value="0">COM_PHOCAGALLERY_ORIGINAL_IMAGE</option>
 	<option value="1">COM_PHOCAGALLERY_THUMBNAIL_IMAGE</option>
-</field>
+</field> -->
 
 <field name="phocahead13" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_SWITCH_SETTINGS_LABEL" label="" description=""/>
 
@@ -335,6 +336,8 @@
 	<option value="8">COM_PHOCAGALLERY_SLIMBOX</option>
 	<option value="9">COM_PHOCAGALLERY_BOXPLUS</option>
 	<option value="10">COM_PHOCAGALLERY_BOXPLUS_IMAGE_ONLY</option>
+	<option value="11">COM_PHOCAGALLERY_MAGNIFIC</option>
+	<option value="12">COM_PHOCAGALLERY_MAGNIFIC_IMAGE_ONLY</option>
 </field>
 
 
@@ -594,6 +597,12 @@
 	</fieldset>
 	<fieldset name="general" label="COM_PHOCAGALLERY_CONFIG_GENERAL_SETTINGS_LABEL">
 
+	<field name="youtube_api_key" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_DESC"/>
+	<field name="youtube_api_ssl" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_DESC">
+	<option value="1">COM_PHOCAGALLERY_YES</option>
+	<option value="0">COM_PHOCAGALLERY_NO</option>
+</field>
+	
 <field name="phocagallery_width" default=""  type="phocatext" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_DESC_DESC"/>
 <field name="phocagallery_center" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES_CATEGORY_VIEW</option>
@@ -853,7 +862,7 @@
 
 <field name="external_comment_system" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_EXTERNAL_COMMENT_SYSTEM_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_COMMENT_SYSTEM_DESC">
 	<option value="0">COM_PHOCAGALLERY_NONE</option>
-	<option value="1">COM_PHOCAGALLERY_JCOMMENTS</option>
+	<!--<option value="1">COM_PHOCAGALLERY_JCOMMENTS</option>-->
 	<option value="2">COM_PHOCAGALLERY_FACEBOOK</option>
 </field>
 

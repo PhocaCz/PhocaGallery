@@ -516,9 +516,9 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				$thumbNameS	= PhocaGalleryFileThumbnail::getThumbnailName ($file->filename, 'small');
 				
 				$errorMsg = $errorMsgS = $errorMsgM = $errorMsgL ='';				
-				PhocaGalleryImageRotate::rotateImage($thumbNameL, 'large', $angle, $errorMsgS);
-				if ($errorMsgS != '') {
-					$errorMsg = $errorMsgS;
+				PhocaGalleryImageRotate::rotateImage($thumbNameL, 'large', $angle, $errorMsgL);
+				if ($errorMsgL != '') {
+					$errorMsg = $errorMsgL;
 					return false;
 				}
 				PhocaGalleryImageRotate::rotateImage($thumbNameM, 'medium', $angle, $errorMsgM);
@@ -526,9 +526,9 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 					$errorMsg = $errorMsgM;
 					return false;
 				} 
-				PhocaGalleryImageRotate::rotateImage($thumbNameS, 'small', $angle, $errorMsgL);
-				if ($errorMsgL != '') {
-					$errorMsg = $errorMsgL;
+				PhocaGalleryImageRotate::rotateImage($thumbNameS, 'small', $angle, $errorMsgS);
+				if ($errorMsgS != '') {
+					$errorMsg = $errorMsgS;
 					return false;
 				} 
 

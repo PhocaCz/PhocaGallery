@@ -807,6 +807,11 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$msg = JText::_('COM_PHOCAGALLERY_ERROR_RATING_CATEGORY');
 				} else {
 				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_RATING_CATEGORY');
+				// Features added by Bernard Gilly - alphaplug.com
+				// load external plugins
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin('phocagallery');
+				$results = $dispatcher->trigger( 'onVoteCategory', array($catid, $rating, $user->id ) );				
 				} 
 			} else {
 				$app->enqueueMessage( JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
@@ -905,6 +910,11 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 					$msg = JText::_('COM_PHOCAGALLERY_ERROR_COMMENT_SUBMITTING');
 					} else {
 					$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
+					// Features by Bernard Gilly - alphaplug.com
+					// load external plugins
+					$dispatcher = JDispatcher::getInstance();
+					JPluginHelper::importPlugin('phocagallery');
+					$results = $dispatcher->trigger( 'onCommentCategory', array($catid, $post['title'], $post['comment'], $user->id ) );					
 					} 
 				} else {
 					$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));

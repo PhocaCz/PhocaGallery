@@ -74,7 +74,7 @@ $j 				= 0;
 
 if (is_array($this->items)) {
 	foreach ($this->items as $i => $item) {
-		if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
+		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			$j++;
 
 $linkCat	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int) $item->category_id );
@@ -110,7 +110,7 @@ echo $r->td($item->id, "small hidden-phone");
 
 echo '</tr>'. "\n";
 						
-		}
+		//}
 	}
 }
 echo '</tbody>'. "\n";
@@ -119,7 +119,7 @@ echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
 
-echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

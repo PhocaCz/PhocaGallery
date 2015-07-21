@@ -71,7 +71,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function getTotal($rightDisplayDelete = 0, $tagId) {
 		if (empty($this->_total)) {
-			$query = $this->_buildQuery($rightDisplayDelete, $tagId);
+			$query = $this->_buildQuery($rightDisplayDelete, $tagId, 1);
 			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -92,7 +92,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		return $this->_ordering;
 	}
 	
-	function _buildQuery($rightDisplayDelete = 0, $tagId = 0) {
+	function _buildQuery($rightDisplayDelete = 0, $tagId = 0, $count = 0) {
 		
 		$app		= JFactory::getApplication();
 		$user 		= JFactory::getUser();
@@ -142,7 +142,20 @@ class PhocagalleryModelCategory extends JModelLegacy
 		
 		$leftCat = ' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = a.catid';
 		
-		$query = 'SELECT a.*, cc.alias AS catalias, cc.accessuserid AS cataccessuserid, cc.access AS cataccess,'
+		
+		if ($count == 1) {
+			$query = 'SELECT a.id'
+			//. $selectUser
+			.' FROM #__phocagallery AS a'
+			//.' LEFT JOIN #__phocagallery_img_votes_statistics AS r ON r.imgid = a.id'
+			. $leftCat
+			//. $leftUser
+			. $leftTag
+			. ' WHERE ' . implode( ' AND ', $wheres )
+			. $published
+			. $imageOrdering['output'];
+		} else {
+			$query = 'SELECT a.*, cc.alias AS catalias, cc.accessuserid AS cataccessuserid, cc.access AS cataccess,'
 			. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as catslug'
 			. $selectUser
 			.' FROM #__phocagallery AS a'
@@ -153,7 +166,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 			. ' WHERE ' . implode( ' AND ', $wheres )
 			. $published
 			. $imageOrdering['output'];
-		
+		}
+
 		return $query;
 	}
 
@@ -203,7 +217,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 			
 			//$query = 'SELECT c.*,' .
 			
-			$query = 'SELECT c.id, c.title, c.alias, c.description, c.published, c.approved, c.parent_id, c.deleteuserid, c.accessuserid, c.uploaduserid, c.access, c.metakey, c.metadesc, c.latitude, c.longitude, c.zoom, c.geotitle, c.userfolder,' .
+			$query = 'SELECT c.id, c.title, c.alias, c.description, c.published, c.approved, c.parent_id, c.deleteuserid, c.accessuserid, c.uploaduserid, c.owner_id, c.access, c.metakey, c.metadesc, c.latitude, c.longitude, c.zoom, c.geotitle, c.userfolder,' .
 				' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '.
 				' FROM #__phocagallery_categories AS c' .
 				' WHERE c.id = '. (int) $this->_id;

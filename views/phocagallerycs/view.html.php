@@ -25,6 +25,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+
 		
 		// Preprocess the list of items to find ordering divisions.
 		foreach ($this->items as &$item) {
