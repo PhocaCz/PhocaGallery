@@ -57,11 +57,23 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 	
 	protected function loadFormData()
 	{
+		
+		
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagallery.data', array());
+		$app = JFactory::getApplication('administrator');
+		$data = $app->getUserState('com_phocagallery.edit.phocagallery.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
+		}
+
+		// Try to preselect category when we add new image
+		// Take the value from filter select box in image list
+		if (empty($data) || (!empty($data) && (int)$data->id < 1)) {
+			$filter = (array) $app->getUserState('com_phocagallery.phocagalleryimgs.filter.category_id');
+			if (isset($filter[0]) && (int)$filter[0] > 0) {
+				$data->set('catid', (int)$filter[0]);
+			}
 		}
 
 		return $data;
@@ -87,6 +99,10 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
 		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->hits 		= PhocaGalleryUtils::getIntFromString($table->hits);
+		$table->zoom 		= PhocaGalleryUtils::getIntFromString($table->zoom);
+		$table->pcproductid = PhocaGalleryUtils::getIntFromString($table->pcproductid);
+		$table->vmproductid = PhocaGalleryUtils::getIntFromString($table->vmproductid);
 
 		if (empty($table->alias)) {
 			$table->alias = JApplication::stringURLSafe($table->title);
@@ -138,7 +154,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'));
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
 				}
 			}
 		}
@@ -313,7 +329,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		// = = = = = = 
 		
 		
-		$task = JRequest::getVar('task');
+		$task = JFactory::getApplication()->input->get('task');
 		if (isset($table->$pkName)) {
 			$id = $table->$pkName;
 		}
@@ -327,7 +343,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 			//Get folder variables from Helper
 			//Create thumbnails small, medium, large
 			$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.thumbs';
-			$task = JRequest::getVar('task');
+			$task = JFactory::getApplication()->input->get('task');
 			if (isset($table->$pkName) && $task == 'apply') {
 				$id = $table->$pkName;
 				$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='.(int)$id;
@@ -481,19 +497,19 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		$table->load($idCom);
 
 		if (!$table->bind($data)) {
-			JError::raiseWarning( 500, 'Not a valid component' );
+			throw new Exception($db->getErrorMsg());
 			return false;
 		}
 			
 		// pre-save checks
 		if (!$table->check()) {
-			JError::raiseWarning( 500, $table->getError('Check Problem') );
+			throw new Exception($table->getError());
 			return false;
 		}
 
 		// save the changes
 		if (!$table->store()) {
-			JError::raiseWarning( 500, $table->getError('Store Problem') );
+			throw new Exception($table->getError());
 			return false;
 		}
 		return true;
@@ -597,7 +613,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= JFactory::getApplication()->input->getCmd('option');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -605,7 +621,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		}
 		
 		//NEW
-		$i		= 0;
+		//$i		= 0;
 		//ENDNEW
 
 		// Parent exists so we let's proceed
@@ -663,8 +679,13 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 			$newId = $table->get('id');
 
 			// Add the new ID to the array
-			$newIds[$i]	= $newId;
-			$i++;
+			$newIds[$pk]	= $newId;
+			
+			if ($newId > 0) {
+				$tags = PhocaGalleryTag::getTags($pk, 1);
+				PhocaGalleryTag::storeTags($tags, $newId);
+			}
+			//$i++;
 			//ENDNEW
 		}
 
@@ -715,7 +736,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= JFactory::getApplication()->input->getCmd('option');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -775,5 +796,60 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		$ordering = $max + 1;
 		return $ordering;
 	}
+	/*
+	public function publish(&$pks, $value = 1)
+	{
+		$dispatcher = JEventDispatcher::getInstance();
+		$user = JFactory::getUser();
+		$table = $this->getTable();
+		$pks = (array) $pks;
+
+		//PHOCAEDIT
+		// Include the plugins for the change of state event.
+		//JPluginHelper::importPlugin($this->events_map['change_state']);
+
+		// Access checks.
+		foreach ($pks as $i => $pk)
+		{
+			$table->reset();
+
+			if ($table->load($pk))
+			{
+				if (!$this->canEditState($table))
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, ' ');
+
+					return false;
+				}
+			}
+		}
+
+		// Attempt to change the state of the records.
+		if (!$table->publish($pks, $value, $user->get('id')))
+		{
+			$this->setError($table->getError());
+
+			return false;
+		}
+
+		$context = $this->option . '.' . $this->name;
+
+		// Trigger the change state event.
+		$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($table->getError());
+
+			return false;
+		}
+
+		// Clear the component's cache
+		$this->cleanCache();
+
+		return true;
+	}*/
 }
 ?>

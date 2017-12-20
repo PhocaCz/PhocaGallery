@@ -14,7 +14,7 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 	
 	function display($cachable = false, $urlparams = false) {
 		if ( ! JFactory::getApplication()->input->get('view') ) {
-			JRequest::setVar('view', 'detail' );
+			JFactory::getApplication()->input->set('view', 'detail' );
 		}
 		
 		parent::display($cachable, $urlparams);

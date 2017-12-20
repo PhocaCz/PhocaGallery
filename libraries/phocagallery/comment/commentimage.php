@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -17,7 +17,8 @@ class PhocaGalleryCommentImage
 		$query = 'SELECT co.id AS id'
 			    .' FROM #__phocagallery_img_comments AS co'
 			    .' WHERE co.imgid = '. (int)$imgid 
-				.' AND co.userid = '. (int)$userid;
+				.' AND co.userid = '. (int)$userid
+				.' ORDER BY co.id';
 		$db->setQuery($query, 0, 1);
 		$checkUserComment = $db->loadObject();
 			
@@ -53,7 +54,7 @@ class PhocaGalleryCommentImage
 				.' ORDER by co.ordering';
 		$db->setQuery($query);
 		$commentItem = $db->loadObjectList();
-			
+		
 		return $commentItem;
 	}
 	

@@ -33,7 +33,7 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 
 
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 
@@ -43,9 +43,9 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 
 	protected function addToolbar() {
 		
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'phocagalleryfbs.php';
-		JRequest::setVar('hidemainmenu', true);
-		$bar 		= JToolBar::getInstance('toolbar');
+		require_once JPATH_COMPONENT.'/helpers/phocagalleryfbs.php';
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= JToolbar::getInstance('toolbar');
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -53,17 +53,17 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 
 		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolBarHelper::title(   JText::_( 'COM_PHOCAGALLERY_FB_USER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'user');
+		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_FB_USER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'user');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolBarHelper::apply('phocagalleryfb.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('phocagalleryfb.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper ::apply('phocagalleryfb.apply', 'JToolbar_APPLY');
+			JToolbarHelper ::save('phocagalleryfb.save', 'JToolbar_SAVE');
 		}
 
-		JToolBarHelper::cancel('phocagalleryfb.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.phocagallery', true );
+		JToolbarHelper ::cancel('phocagalleryfb.cancel', 'JToolbar_CLOSE');
+		JToolbarHelper ::divider();
+		JToolbarHelper ::help( 'screen.phocagallery', true );
 	}
 
 }

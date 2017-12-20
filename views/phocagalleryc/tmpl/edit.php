@@ -55,7 +55,7 @@ echo $r->navigation($tabs);
 echo '<div class="tab-content">'. "\n";
 
 echo '<div class="tab-pane active" id="general">'."\n"; 
-$formArray = array ('title', 'alias', 'parent_id', 'ordering', 'access', 'accessuserid', 'uploaduserid', 'deleteuserid', 'owner_id', 'userfolder', 'latitude', 'longitude', 'zoom', 'geotitle');
+$formArray = array ('title', 'alias', 'parent_id', 'image_id', 'ordering', 'access', 'accessuserid', 'uploaduserid', 'deleteuserid', 'owner_id', 'userfolder', 'latitude', 'longitude', 'zoom', 'geotitle');
 echo $r->group($this->form, $formArray);
 $formArray = array('description');
 echo $r->group($this->form, $formArray, 1);

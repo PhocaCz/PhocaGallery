@@ -31,7 +31,20 @@ Joomla.submitbutton = function(task){
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
+		<?php /* Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
+		 alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
+		
+		// special case for modal popups validation response
+		jQuery('#adminForm .modal-value.invalid').each(function(){
+			
+			var field = jQuery(this),
+				idReversed = field.attr('id').split('').reverse().join(''),
+				separatorLocation = idReversed.indexOf('_'),
+				nameId = '#' + idReversed.substr(separatorLocation).split('').reverse().join('') + 'name';
+			alert(nameId);
+			jQuery(nameId).addClass('invalid');
+		});
+		
 	}
 }
 </script><?php
@@ -49,7 +62,7 @@ echo $r->navigation($tabs);
 echo '<div class="tab-content">'. "\n";
 
 echo '<div class="tab-pane active" id="general">'."\n"; 
-$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'vmproductid');
+$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'pcproductid', 'vmproductid');
 echo $r->group($this->form, $formArray);
 
 echo $this->form->getInput('extid');
@@ -124,7 +137,7 @@ if (isset($this->item->extid) && $this->item->extid !='') {
 	$imageRes			= PhocaGalleryImage::getRealImageSize($this->item->filename, 'medium');
 	//$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 100, 100);
 	$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($this->item->filename, 'large');
-	// TODO check the image
+	// TO DO check the image
 
 	echo '<img class="img-polaroid" style="max-width:100px;" src="'.JURI::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
 	.'</a>';

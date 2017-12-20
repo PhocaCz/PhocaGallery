@@ -1,22 +1,30 @@
 <?php
-/* @package Joomla
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @extension Phoca Extension
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die;
 jimport( 'joomla.filesystem.file' );
 
 class PhocaGalleryYoutube
 {
-	public static function displayVideo($videoCode) {
+	public static function displayVideo($videoCode, $view = 0, $ywidth = 0, $yheight = 0) {
 	
 		$o = '';
 		if ($videoCode != '' && PhocaGalleryUtils::isURLAddress($videoCode) ) {
 			
-			$shortvideoCode	= 'http://youtu.be/';
+			$pos1 		= strpos($videoCode, 'https');
+			if ($pos1 !== false) {
+				$shortvideoCode	= 'https://youtu.be/';
+			} else {
+				$shortvideoCode	= 'http://youtu.be/';
+			}
+			
 			$pos 		= strpos($videoCode, $shortvideoCode);
 			if ($pos !== false) {
 				$code 		= str_replace($shortvideoCode, '', $videoCode);
@@ -25,14 +33,26 @@ class PhocaGalleryYoutube
 				$code 		= str_replace($codeArray[0].'=', '', $videoCode);
 			}
 			
+			
+			
 			$youtubeheight	= PhocaGallerySettings::getAdvancedSettings('youtubeheight');
 			$youtubewidth	= PhocaGallerySettings::getAdvancedSettings('youtubewidth');
-
-			$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'">'
+			
+			if ((int)$ywidth > 0) {
+				$youtubewidth	= (int)$ywidth;
+			}
+			if ((int)$yheight > 0) {
+				$youtubeheight	= (int)$yheight;
+			}																									 
+			
+	
+			/*$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'">'
 			.'<param name="movie" value="http://www.youtube.com/v/'.$code.'"></param>'
 			.'<param name="allowFullScreen" value="true"></param>'
 			.'<param name="allowscriptaccess" value="always"></param>'
-			.'<embed src="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"></embed></object>';
+			.'<embed src="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"></embed></object>';*/
+			
+			$o .= '<iframe height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'" src="//www.youtube.com/embed/'.$code.'" frameborder="0" allowfullscreen></iframe>';
 		}
 		
 		if ($o != '') {
@@ -85,26 +105,33 @@ class PhocaGalleryYoutube
 		
 			$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 			$key 		= $paramsC->get( 'youtube_api_key', '' );
-			$ssl 		= $paramsC->get( 'youtube_api_ssl', 0 );
+			$ssl 		= $paramsC->get( 'youtube_api_ssl', 1 );
 		
 			// Data
 			//$cUrl		= curl_init("http://gdata.youtube.com/feeds/api/videos/".strip_tags($ytbCode));
 			$cUrl 		= curl_init('https://www.googleapis.com/youtube/v3/videos?id='.strip_tags($ytbCode).'&part=snippet&key='.strip_tags($key));
+			$ssl = 0;
 			
 			if ($ssl == 0) {
 				curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
 			} else {
 				curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, true);
 			}
+			  
 			curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, 1);  
             $json		= curl_exec($cUrl);
+			
             curl_close($cUrl);
 			
-			$o 	= json_decode($json);
 			
-			if (!empty($o) && isset($o->items[0]->snippet)) {
+			
+			$o 	= json_decode($json);
+		
+			if (!empty($o) && isset($o->error->message)) {
+				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA') . '('.strip_tags($o->error->message).')';
+				return false;
+			} else if (!empty($o) && isset($o->items[0]->snippet)) {
 				$oS = $o->items[0]->snippet;
-				
 				
 				if (isset($oS->title)) {
 					$ytb['title'] = (string)$oS->title;
@@ -122,10 +149,15 @@ class PhocaGalleryYoutube
 					$ytb['desc'] = (string)$oS->localized->description;
 				}
 				
-			
+				$img = '';
+
 				if (isset($oS->thumbnails->standard->url)) {
 					$cUrl		= curl_init(strip_tags((string)$oS->thumbnails->standard->url));
-					
+				} else if (isset($oS->thumbnails->default->url)) {
+					$cUrl		= curl_init(strip_tags((string)$oS->thumbnails->default->url));
+				}
+				if (isset($cUrl) && $cUrl != '') {
+
 					if ($ssl == 0) {
 						curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
 					} else {
@@ -134,23 +166,30 @@ class PhocaGalleryYoutube
 					curl_setopt($cUrl,CURLOPT_RETURNTRANSFER,1);
 					$img		= curl_exec($cUrl);
 					curl_close($cUrl);
-				}
+				} 
+				
+
 				
 				$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
+	
 				
 				if ($img != '') {
-					if (JFile::exists(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
-						$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
-						return false;
+					if (JFile::exists(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
+						//$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
+						//return false;
+						//Overwrite the images
 						
 					}
 					
-					if (!JFile::write(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
+					if (!JFile::write(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
 						$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 						return false;
 					}
 				}
 				
+			} else {
+				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA');
+				return false;	
 			}
 			
 			
@@ -158,7 +197,7 @@ class PhocaGalleryYoutube
 			/*$xml 	= str_replace('<media:', '<phcmedia', $xml);
 			$xml 	= str_replace('</media:', '</phcmedia', $xml);
 			
-			$data 	= JFactory::getXML($xml, false);
+			$data 	= simplexml_load_file($file);
 
 			//Title			
 			if (isset($data->title)) {
@@ -190,12 +229,12 @@ class PhocaGalleryYoutube
 	
 			$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
 			
-			if (JFile::exists(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
+			if (JFile::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
 				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
 				return false;
 			}
 			
-            if (!JFile::write(JPATH_ROOT . DS . 'images' . DS . 'phocagallery' . DS . $ytb['filename'], $img)) {
+            if (!JFile::write(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
 				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 				return false;
 			}*/

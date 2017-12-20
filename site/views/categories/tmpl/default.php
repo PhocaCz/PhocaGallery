@@ -1,4 +1,13 @@
 <?php
+/*
+ * @package Joomla
+ * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *
+ * @component Phoca Gallery
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access');
 echo '<div id="phocagallery" class="pg-categories-view'.$this->params->get( 'pageclass_sfx' ).' pg-csv">';
 if ( $this->params->get( 'show_page_heading' ) ) { 
@@ -48,5 +57,5 @@ switch($this->tmpl['display_image_categories']) {
 
 
 echo $this->loadTemplate('pagination');
-echo $this->tmpl['ems'];
+echo $this->tmpl['set'];
 echo '</div>';

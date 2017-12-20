@@ -43,7 +43,7 @@ class PhocaGalleryCpViewPhocaGalleryCoImg extends JViewLegacy
 
 	
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class PhocaGalleryCpViewPhocaGalleryCoImg extends JViewLegacy
 			$itemInfo = $db->loadObject();
 			
 			if ($db->getErrorNum()) {
-				JError::raiseWarning(500, $db->getErrorMsg());
+				throw new Exception($db->getErrorMsg(), 500);
 			}
 			
 			return $itemInfo;
@@ -86,9 +86,9 @@ class PhocaGalleryCpViewPhocaGalleryCoImg extends JViewLegacy
 
 	protected function addToolbar() {
 		
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'phocagallerycoimgs.php';
-		JRequest::setVar('hidemainmenu', true);
-		$bar 		= JToolBar::getInstance('toolbar');
+		require_once JPATH_COMPONENT.'/helpers/phocagallerycoimgs.php';
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= JToolbar::getInstance('toolbar');
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -96,17 +96,17 @@ class PhocaGalleryCpViewPhocaGalleryCoImg extends JViewLegacy
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 
 		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolBarHelper::title(   JText::_( 'COM_PHOCAGALLERY_IMAGE_COMMENT' ).': <small><small>[ ' . $text.' ]</small></small>' , 'comment');
+		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_IMAGE_COMMENT' ).': <small><small>[ ' . $text.' ]</small></small>' , 'comment');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolBarHelper::apply('phocagallerycoimg.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('phocagallerycoimg.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper ::apply('phocagallerycoimg.apply', 'JToolbar_APPLY');
+			JToolbarHelper ::save('phocagallerycoimg.save', 'JToolbar_SAVE');
 		}
 
-		JToolBarHelper::cancel('phocagallerycoimg.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.phocagallery', true );
+		JToolbarHelper ::cancel('phocagallerycoimg.cancel', 'JToolbar_CLOSE');
+		JToolbarHelper ::divider();
+		JToolbarHelper ::help( 'screen.phocagallery', true );
 	}
 
 }

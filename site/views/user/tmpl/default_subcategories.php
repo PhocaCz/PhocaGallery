@@ -1,4 +1,14 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+/*
+ * @package Joomla
+ * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *
+ * @component Phoca Gallery
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
+defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phocagallery-subcategory-creating">'.$this->tmpl['iepx'];
 
@@ -64,8 +74,8 @@ if ($this->tmpl['displaysubcategory'] == 1) {
 		<input type="text" name="phocagallerysubcatsearch" id="phocagallerysubcatsearch" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listssubcat['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
 		
 		<div class="btn-group pull-left hidden-phone">
-		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><i class="icon-search"></i></button>
-		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagallerysubcatsearch').value='';document.phocagallerysubcatform.submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><i class="icon-remove"></i></button></div>
+		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><i class="icon-search glyphicon glyphicon-search"></i></button>
+		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagallerysubcatsearch').value='';document.phocagallerysubcatform.submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><i class="icon-remove glyphicon glyphicon-remove"></i></button></div>
 	
 		
 		
@@ -85,7 +95,8 @@ if ($this->tmpl['displaysubcategory'] == 1) {
 	<th width="50" nowrap="nowrap" align="center">
 	
 	<?php echo PhocaGalleryGrid::sort('COM_PHOCAGALLERY_ORDER', 'a.ordering', $this->listssubcat['order_Dir'], $this->listssubcat['order'], 'subcategory', 'asc', '', 'phocagallerysubcatform', '_subcat' );
-	$image = '<img src="'.JURI::base(true).'/'. $this->tmpl['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
+	//$image = '<img src="'.JURI::base(true).'/'. $this->tmpl['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
+	$image = PhocaGalleryRenderFront::renderIcon('save', $this->tmpl['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
 	$task = 'saveordersubcat';
 	$href = '<a href="javascript:saveordersubcat()" title="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'">'.$image.'</a>';
 	echo $href;
@@ -117,26 +128,34 @@ if (is_array($rows)) {
 	echo '<td align="center">';
 	if ($row->published == 1) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=unpublishsubcat'. $this->tmpl['ps']).'">';
-		echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH')).'</a>';
+		//echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		echo PhocaGalleryRenderFront::renderIcon('publish', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		.'</a>';
 	}
 	if ($row->published == 0) {
 		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_PUBLISH').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=publishsubcat'.$this->tmpl['ps']).'">';
-		echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH')).'</a>';		
+		//echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		.'</a>';		
 	}
 	echo '</td>';
 	
 	// Remove
 	echo '<td align="center">';
 	echo ' <a onclick="return confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS').'\')" title="'.JText::_('COM_PHOCAGALLERY_DELETE').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=removesubcat'.$this->tmpl['ps'] ).'">';
-	echo JHtml::_('image',  $this->tmpl['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH')).'</a>';
+	//echo JHtml::_('image',  $this->tmpl['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH')).'</a>';
+	echo PhocaGalleryRenderFront::renderIcon('trash', $this->tmpl['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
+		.'</a>';	
 	echo '</td>';
 	
 	// Approved
 	echo '<td align="center">';
 	if ($row->approved == 1) {
-		echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		//echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		echo PhocaGalleryRenderFront::renderIcon('publish', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
 	} else {	
-		echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));	
+		//echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));	
 	}
 	echo '</td>';
 	

@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.folder' ); 
@@ -52,6 +52,7 @@ class PhocaGalleryImageMagic
 		$params 		= JComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	=	$params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
+		$exif_rotate	= $params->get( 'exif_rotate', 0 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 
 		$fileWatermark = '';
@@ -76,6 +77,32 @@ class PhocaGalleryImageMagic
 			// array of width, height, IMAGETYPE, "height=x width=x" (string)
 	        list($w, $h, $type) = GetImageSize($fileIn);
 			
+			
+			// Read EXIF data from image file to get the Orientation flag
+			$exif = null;
+			
+			if ($exif_rotate == 1) {
+				if (function_exists('exif_read_data') && $type == IMAGETYPE_JPEG ) {
+					$exif = @exif_read_data($fileIn);
+				}
+				// GetImageSize returns an array of width, height, IMAGETYPE, "height=x width=x" (string)
+				// The EXIF Orientation flag is examined to determine if width and height need to be swapped, i.e. if the image will be rotated in a subsequent step
+				if(isset($exif['Orientation']) && !empty($exif['Orientation'])) {
+					
+					switch($exif['Orientation']) {
+					   case 8: // will need to be rotated 90 degrees left, so swap order of width and height
+						  list($h, $w, $type) = GetImageSize($fileIn);
+						  break;
+					   case 3: // will need to be rotated 180 degrees so don't swap order of width and height
+						  list($w, $h, $type) = GetImageSize($fileIn);
+						  break;
+					   case 6:   // will need to be rotated 90 degrees right, so swap order of width and height
+						  list($h, $w, $type) = GetImageSize($fileIn);
+						  break;
+					}
+				}
+			}
+			
 			if ($w > 0 && $h > 0) {// we got the info from GetImageSize
 
 		        // size of the image
@@ -91,7 +118,10 @@ class PhocaGalleryImageMagic
 				
 		        // miniaturizing
 		        if (!$crop) { // new size - nw, nh (new width/height)
-		            $scale = (($width / $w) < ($height / $h)) ? ($width / $w) : ($height / $h); // smaller rate
+		           
+					$scale = (($width / $w) < ($height / $h)) ? ($width / $w) : ($height / $h); // smaller rate 
+					//$scale = $height / $h;
+			   
 		            $src = array(0,0, $w, $h);
 		            $dst = array(0,0, floor($w*$scale), floor($h*$scale));
 		        }
@@ -293,6 +323,24 @@ class PhocaGalleryImageMagic
 						//imagesavealpha($image1, true);
 						@imagesavealpha($image2, true);
 					break;
+				}
+				
+				if ($exif_rotate == 1) {
+					// Examine the EXIF Orientation flag (read earlier) to determine if the image needs to be rotated prior to the ImageCopyResampled call
+					// Use the imagerotate() function to perform the rotation, if required
+					if(isset($exif['Orientation']) && !empty($exif['Orientation'])) {
+						switch($exif['Orientation']) {
+						   case 8:
+								 $image1 = imagerotate($image1,90,0);
+								 break;
+						   case 3:
+								 $image1 = imagerotate($image1,180,0);
+								 break;
+						   case 6:
+								 $image1 = imagerotate($image1,-90,0);
+								 break;
+						}
+					}   
 				}
 				
 				ImageCopyResampled($image2, $image1, $dst[0],$dst[1], $src[0],$src[1], $dst[2],$dst[3], $src[2],$src[3]);

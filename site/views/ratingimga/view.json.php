@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -17,7 +17,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 
 	function display($tpl = null){
 		
-		if (!JRequest::checkToken('request')) {
+		if (!JSession::checkToken('request')) {
 			$response = array(
 				'status' => '0',
 				'error' => JText::_('JINVALID_TOKEN')
@@ -57,8 +57,8 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 		} else if ($task == 'rate') {
 		
 			$user 		= JFactory::getUser();
-			//$view 		= JRequest::getVar( 'view', '', 'get', '', JREQUEST_NOTRIM  );
-			//$Itemid		= JRequest::getVar( 'Itemid', 0, '', 'int');
+			//$view 		= J Request::get Var( 'view', '', 'get', '', J REQUEST_NOTRIM  );
+			//$Itemid		= J Request::get Var( 'Itemid', 0, '', 'int');
 		
 			$neededAccessLevels		= PhocaGalleryAccess::getNeededAccessLevels();
 			$access					= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);

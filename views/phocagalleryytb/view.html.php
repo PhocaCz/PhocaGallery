@@ -22,15 +22,15 @@ class PhocaGalleryCpViewPhocagalleryYtb extends JViewLegacy
 
 		$params = JComponentHelper::getParams( 'com_phocagallery' );
 		$app 	= JFactory::getApplication();
-		JResponse::allowCache(false);
+		$app->allowCache(false);
 		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
 		
 		$document	= JFactory::getDocument();
 		//$document->addCustomTag(PhocaGalleryRenderAdmin::renderIeCssLink(1));
 		
-		$this->tmpl['catid']		= JRequest::getVar( 'catid', 0, '', 'int' );
-		$this->tmpl['field']		= JRequest::getVar( 'field', '', '', 'string', JREQUEST_NOTRIM);
-		$this->tmpl['import']		= JRequest::getVar( 'import', 0, '', 'int' );
+		$this->tmpl['catid']		= JFactory::getApplication()->input->get( 'catid', 0, '', 'int' );
+		$this->tmpl['field']		= JFactory::getApplication()->input->get( 'field', '', '', 'string');
+		$this->tmpl['import']		= JFactory::getApplication()->input->get( 'import', 0, '', 'int' );
 		
 		
 		

@@ -1,27 +1,28 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\String\StringHelper;
 
 class PhocaGalleryText
 {
 	public static function wordDelete($string,$length,$end = '...') {
-		if (JString::strlen($string) < $length || JString::strlen($string) == $length) {
+		if (StringHelper::strlen($string) < $length || StringHelper::strlen($string) == $length) {
 			return $string;
 		} else {
-			return JString::substr($string, 0, $length) . $end;
+			return StringHelper::substr($string, 0, $length) . $end;
 		}
 	}
 	
 	public static function wordDeleteWhole($string,$length,$end = '...') {
-		if (JString::strlen($string) < $length || JString::strlen($string) == $length) {
+		if (StringHelper::strlen($string) < $length || StringHelper::strlen($string) == $length) {
 			return $string;
 		} else {
 			preg_match('/(.{' . $length . '}.*?)\b/', $string, $matches);

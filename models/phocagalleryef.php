@@ -177,10 +177,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		$return = JFile::write($filePath, $data['source']);
 
 		// Try to make the template file unwriteable.
-		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {
+		/*if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {
 			$this->setError(JText::_('COM_PHOCAGALLERY_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
 			return false;
-		} elseif (!$return) {
+		} else*/
+			
+		if (!$return) {
 			$this->setError(JText::sprintf('COM_PHOCAGALLERY_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
 			return false;
 		}
@@ -249,12 +251,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 					$error = $this->getError();
 					if ($error)
 					{
-						JLog::add($error, JLog::WARNING, 'jerror');
+						JLog::add($error, JLog::WARNING, ' ');
 						return false;
 					}
 					else
 					{
-						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, ' ');
 						return false;
 					}
 				}

@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -469,6 +469,11 @@ class PhocaGalleryRenderFront
 			$output['detailwindowreload']	= '';
 			// Should not happen as it should be reloaded to login page
 			$closeLink = '<div><a href="'.JURI::base(true).'" >'.JText::_('COM_PHOCAGALLERY_MAIN_SITE').'</a></div>';
+		// Magnific iframe
+		} else if ($detailWindow == 11) {
+			$output['detailwindowclose']	= '';
+			$output['detailwindowreload']	= '';
+			$closeLink = '<div><a href="javascript:void(0);" class="mfp-close" >'.JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW').'</a></div>';
 		// Modal Box
 		} else {
 			//$this->tmpl['detailwindowclose']	= 'window.parent.document.getElementById(\'sbox-window\').close();';
@@ -495,7 +500,7 @@ class PhocaGalleryRenderFront
 		return '<div style="text-align: center; color: rgb(211, 211, 211);">Powe'
 				. 'red by <a href="http://www.ph'
 				. 'oca.cz" style="text-decoration: none;" target="_blank" title="Phoc'
-				. 'a.cz">Phoca</a> <a href="http://www.phoca.cz/phocaga'
+				. 'a.cz">Phoca</a> <a href="https://www.phoca.cz/phocaga'
 				. 'llery" style="text-decoration: none;" target="_blank" title="Phoca Gal'
 				. 'lery">Gall'
 				. 'ery</a></div>';
@@ -596,6 +601,8 @@ class PhocaGalleryRenderFront
 			return '';
 		} else if ($detailWindow == 8) {
 			return ' rel="lightbox-'.$catAlias.'" ';
+		} else if ($detailWindow == 14) {
+			return $buttonOptions;
 		} else {
 			return ' rel="'.$buttonOptions.'"';
 		}
@@ -619,6 +626,8 @@ class PhocaGalleryRenderFront
 			return '';
 		} else if ($detailWindow == 8) {
 			return ' rel="lightbox-'.$catAlias.'2" ';
+		} else if ($detailWindow == 14) {
+			return ' rel="'.$buttonOptions.'"';
 		} else {
 			return ' rel="'.$buttonOptions.'"';
 		}
@@ -638,8 +647,10 @@ class PhocaGalleryRenderFront
 			return ' onclick="'. $hSOnClick2.'"';
 		} else if ($detailWindow == 8) {
 			return ' rel="lightbox-'.$catAlias.'-'.$suffix.'" ';
+		} else if ($detailWindow == 14) {
+			return ' '.$buttonOptions;
 		} else {
-			return ' rel="'. $buttonOptions.'"';
+			return ' rel="'.$buttonOptions.'"';
 		}
 		
 		return '';
@@ -655,13 +666,15 @@ class PhocaGalleryRenderFront
 			return ' onclick="'. $hSOnClick2.'"';
 		} else if ($detailWindow == 7 ) {
 			return '';
+		} else if ($detailWindow == 14) {
+			return ' rel="'.$buttonOptionsOther.'"';
 		} else {
 			return ' rel="'.$buttonOptionsOther.'"';
 		}
 		return '';
 	}
 	
-	public function renderASwitch($switchW, $switchH, $switchFixedSize, $extWSwitch, $extHSwitch, $extL, $linkThumbPath) {
+	public static function renderASwitch($switchW, $switchH, $switchFixedSize, $extWSwitch, $extHSwitch, $extL, $linkThumbPath) {
 	
 		if ($extL != '') {
 			// Picasa
@@ -731,7 +744,7 @@ class PhocaGalleryRenderFront
 				}
 				$path = PhocaGalleryFile::getCSSPath($fv->type, 1);
 			
-				if ($fv->menulink != '') {
+				if ($fv->menulink != '' && (int)$fv->menulink > 1) {
 					$menuLinks 	= explode(',', $fv->menulink);
 					$isIncluded	= in_array((int)$itemid, $menuLinks);
 					if ($isIncluded) {
@@ -743,5 +756,78 @@ class PhocaGalleryRenderFront
 			}
 		}
 	}
+	public static function renderIcon($type, $img, $alt, $class = '', $attributes = '') {
+		
+		//return JHtml::_('image', $img, $alt);
+		
+		$paramsC = JComponentHelper::getParams('com_phocagallery');
+		$bootstrap_icons = $paramsC->get( 'bootstrap_icons', 0 );
+		
+		if ($bootstrap_icons == 0) {
+			return JHtml::_('image', $img, $alt, $attributes);
+		}
+		
+		$i = '';
+		switch($type) {
+			
+			case 'view':			$i = 'zoom-in';break;
+			case 'download':		$i = 'download-alt';break;
+			case 'geo':				$i = 'globe';break;
+			case 'bold':			$i = 'bold';break;
+			case 'italic':			$i = 'italic';break;
+			case 'underline':		$i = 'text-color';break;
+			case 'camera':			$i = 'camera';break;
+			case 'comment':			$i = 'comment';break;
+			case 'comment-a':		$i = 'comment';break; //ph-icon-animated
+			case 'comment-fb':		$i = 'comment';break; //ph-icon-fb
+			case 'cart':			$i = 'shopping-cart';break;
+			case 'extlink1':		$i = 'share';break;
+			case 'extlinkk2':		$i = 'share';break;
+			case 'trash':			$i = 'trash';break;
+			case 'publish':			$i = 'ok';break;
+			case 'unpublish':		$i = 'remove';break;
+			case 'viewed':			$i = 'modal-window';break;
+			case 'calendar':		$i = 'calendar';break;
+			case 'vote':			$i = 'star';break;
+			case 'statistics':		$i = 'stats';break;
+			case 'category':		$i = 'folder-close';break;
+			case 'subcategory':		$i = 'folder-open';break;
+			case 'upload':			$i = 'upload';break;
+			case 'upload-ytb':		$i = 'upload';break;
+			case 'upload-multiple':	$i = 'upload';break;
+			case 'upload-java':		$i = 'upload';break;
+			case 'user':			$i = 'user';break;
+			case 'icon-up-images':	$i = 'arrow-left';break;
+			case 'icon-up':			$i = 'arrow-up';break;
+			case 'minus-sign':		$i = 'minus-sign';break;
+			case 'next':			$i = 'forward';break;
+			case 'prev':			$i = 'backward';break;
+			case 'reload':			$i = 'repeat';break;
+			case 'play':			$i = 'play';break;
+			case 'stop':			$i = 'stop';break;
+			case 'pause':			$i = 'pause';break;
+			case 'off':				$i = 'off';break;
+			case 'image':			$i = 'picture';break;
+			case 'save':			$i = 'floppy-disk';break;
+		
+		
+			
+			
+			// NOT glyphicon
+			// smile, sad, lol, confused, wink, cooliris
+			
+			// Classes
+			// ph-icon-animated, ph-icon-fb, icon-up-images, ph-icon-disabled
+			
+			default:
+				if ($img != '') {
+					return JHtml::_('image', $img, $alt, $attributes);
+				}
+			break;
+		}
+		
+		return '<span class="glyphicon glyphicon-'.$i.' '.$class.'"></span>';
+	}
+	
 }
 ?>

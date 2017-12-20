@@ -20,7 +20,7 @@ class PhocaGalleryViewMap extends JViewLegacy
 		$document		= JFactory::getDocument();		
 		$this->params	= $app->getParams();
 		// PLUGIN WINDOW - we get information from plugin
-		$get		= '';
+		$get		= array();
 		$get['map']		= $app->input->get( 'map', '', 'string' );
 		$this->itemId	= $app->input->get('Itemid', 0, 'int');
 		
@@ -154,7 +154,7 @@ class PhocaGalleryViewMap extends JViewLegacy
 			phocagalleryimport('phocagallery.image.image');
 			$this->tmpl['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
 				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
-				. JHtml::_('image', 'media/com_phocagallery/images/icon-up-images.png', JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' )).'</a></div>';
+				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}
 	
 		// ASIGN
@@ -185,21 +185,21 @@ class PhocaGalleryViewMap extends JViewLegacy
 
 		$title = $this->params->get('page_title', '');		
 		if (empty($title)) {
-			$title = htmlspecialchars_decode($app->getCfg('sitename'));
-		} else if ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->getCfg('sitename')), $title);
+			$title = htmlspecialchars_decode($app->get('sitename'));
+		} else if ($app->get('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 			
 			if (isset($item->title) && $item->title != '') {
 				$title = $title .' - ' .  $item->title;
 			}
 			
-		} else if ($app->getCfg('sitename_pagetitles', 0) == 2) {
+		} else if ($app->get('sitename_pagetitles', 0) == 2) {
 			
 			if (isset($item->title) && $item->title != '') {
 				$title = $title .' - ' .  $item->title;
 			}
 		
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->getCfg('sitename')));
+			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 		$this->document->setTitle($title);
 	/*	
@@ -219,11 +219,11 @@ class PhocaGalleryViewMap extends JViewLegacy
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords', ''));
 		}
 
-		if ($app->getCfg('MetaTitle') == '1' && $this->params->get('menupage_title', '')) {
+		if ($app->get('MetaTitle') == '1' && $this->params->get('menupage_title', '')) {
 			$this->document->setMetaData('title', $this->params->get('page_title', ''));
 		}
 
-		/*if ($app->getCfg('MetaAuthor') == '1') {
+		/*if ($app->get('MetaAuthor') == '1') {
 			$this->document->setMetaData('author', $this->item->author);
 		}
 
@@ -234,7 +234,7 @@ class PhocaGalleryViewMap extends JViewLegacy
 			}
 		}*/
 		
-		// Breadcrumbs TODO (Add the whole tree)
+		// Breadcrumbs TO DO (Add the whole tree)
 		/*if (isset($this->category[0]->parentid)) {
 			if ($this->category[0]->parentid == 1) {
 			} else if ($this->category[0]->parentid > 0) {

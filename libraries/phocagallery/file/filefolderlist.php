@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.filesystem.folder' ); 
@@ -30,7 +30,7 @@ class PhocaGalleryFileFolderList
 		}
 
 		// Get current path from request
-		$current = JRequest::getVar('folder');
+		$current = JFactory::getApplication()->input->get('folder', '', 'path');
 
 		// If undefined, set to empty
 		if ($current == 'undefined') {
@@ -59,7 +59,7 @@ class PhocaGalleryFileFolderList
 			natcasesort($fileList);
 		}
 		
-		$field			= JRequest::getVar('field');;
+		$field			= JFactory::getApplication()->input->get('field');;
 		$refreshUrl 	= $refreshUrl . '&folder='.$current.'&field='.$field;
 		
 	
@@ -76,7 +76,7 @@ class PhocaGalleryFileFolderList
 				}
 				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg') {
 
-					if (JFile::exists($origPath.DS.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
+					if (JFile::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 						
 						//Create thumbnails small, medium, large
 						$fileNo			= $current . "/" . $file;
@@ -105,7 +105,7 @@ class PhocaGalleryFileFolderList
 			foreach ($folderList as $folder) {
 				$tmp 							= new JObject();
 				$tmp->name 						= basename($folder);
-				$tmp->path_with_name 			= str_replace(DS, '/', JPath::clean($origPath . DS . $folder));
+				$tmp->path_with_name 			= str_replace(DS, '/', JPath::clean($origPath . '/'. $folder));
 				$tmp->path_without_name_relative= $path->image_abs . str_replace($origPathServer, '', $tmp->path_with_name);
 				$tmp->path_with_name_relative_no= str_replace($origPathServer, '', $tmp->path_with_name);	
 

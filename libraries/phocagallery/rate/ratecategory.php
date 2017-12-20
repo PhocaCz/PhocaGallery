@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -33,7 +33,8 @@ class PhocaGalleryRateCategory
 			// Insert or update
 			$query = 'SELECT vs.id AS id'
 					.' FROM #__phocagallery_votes_statistics AS vs'
-				    .' WHERE vs.catid = '.(int) $catid;
+				    .' WHERE vs.catid = '.(int) $catid
+					.' ORDER BY vs.id';
 			$db->setQuery($query, 0, 1);
 			$votesStatisticsId = $db->loadObject();
 		
@@ -87,7 +88,8 @@ class PhocaGalleryRateCategory
 		$query = 'SELECT v.id AS id'
 			    .' FROM #__phocagallery_votes AS v'
 			    .' WHERE v.catid = '. (int)$catid 
-				.' AND v.userid = '. (int)$userid;
+				.' AND v.userid = '. (int)$userid
+				.' ORDER BY v.id';
 		$db->setQuery($query, 0, 1);
 		$checkUserVote = $db->loadObject();
 			

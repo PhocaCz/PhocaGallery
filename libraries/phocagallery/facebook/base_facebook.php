@@ -1,7 +1,8 @@
 <?php
 /**
  * Copyright 2011 Facebook, Inc.
- *
+ * @copyright	Copyright 2011 Facebook, Inc.
+ * @license		
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
  * a copy of the License at
@@ -83,7 +84,7 @@ class FacebookApiException extends Exception
 		$msg .= '<br /><br />' . JText::_('COM_PHOCAGALLERY_ERROR_FB_ACCESS_TOKEN');
 	}
 	
-	$tmpl = JRequest::getVar('tmpl', '', '', 'string');
+	$tmpl = JFactory::getApplication()->input->get('tmpl', '', '', 'string');
 	if ($tmpl == 'component') {
 		echo JText::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
 		exit;
@@ -679,6 +680,7 @@ abstract class BaseFacebook
    */
   public function api(/* polymorphic */) {
     $args = func_get_args();
+	
     if (is_array($args[0])) {
       return $this->_restserver($args[0]);
     } else {

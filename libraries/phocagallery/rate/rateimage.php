@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -33,7 +33,8 @@ class PhocaGalleryRateImage
 			// Insert or update
 			$query = 'SELECT vs.id AS id'
 					.' FROM #__phocagallery_img_votes_statistics AS vs'
-				    .' WHERE vs.imgid = '.(int) $imgid;
+				    .' WHERE vs.imgid = '.(int) $imgid
+					.' ORDER BY vs.id';
 			$db->setQuery($query, 0, 1);
 			$votesStatisticsId = $db->loadObject();
 		
@@ -143,7 +144,7 @@ class PhocaGalleryRateImage
 			}
 		
 			// Leave message for already voted images
-			//$vote = JRequest::getVar('vote', 0, '', 'int');
+			//$vote = JFactory::getApplication()->input->get('vote', 0, '', 'int');
 			$voteMsg = JText::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
 			//if ($vote == 1) {
 			//	$voteMsg = JText::_('COM_PHOCADOWNLOAD_ALREADY_RATED_FILE_THANKS');
@@ -231,7 +232,7 @@ class PhocaGalleryRateImage
 			onRequest: function(){
 				$(result).set("html", "'.addslashes($imgLoadingHTML).'");
 				if (m == 2) {
-					var wall = new Masonry(document.getElementById(container));
+					//var wall = new Masonry(document.getElementById(container));
 				}
 			 },
 			
@@ -265,14 +266,14 @@ class PhocaGalleryRateImage
 								}
 								
 								if (m == 2) {
-									var wall = new Masonry(document.getElementById(container));
+									//var wall = new Masonry(document.getElementById(container));
 								}
 							},
 						
 							onFailure: function() {
 								$(resultvoting).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 								if (m == 2) {
-									var wall = new Masonry(document.getElementById(container));
+									//var wall = new Masonry(document.getElementById(container));
 								}
 							}
 						})
@@ -290,7 +291,7 @@ class PhocaGalleryRateImage
 				}
 				
 				if (m == 2) {
-					var wall = new Masonry(document.getElementById(container));
+					//var wall = new Masonry(document.getElementById(container));
 				}
 			},
 			
@@ -298,7 +299,7 @@ class PhocaGalleryRateImage
 				$(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				
 				if (m == 2) {
-					var wall = new Masonry(document.getElementById(container));
+					//var wall = new Masonry(document.getElementById(container));
 				}
 			}
 		

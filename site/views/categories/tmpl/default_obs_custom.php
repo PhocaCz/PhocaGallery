@@ -1,11 +1,25 @@
 <?php
+/*
+ * @package Joomla
+ * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *
+ * @component Phoca Gallery
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access');
 echo "\n\n";
 echo '<div id="phocagallery-categories-detail">'."\n";
 	
+	
+echo '<div class="row">';	
 for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
 	
-	echo '<div style="width:'.$this->tmpl['categoriesboxwidth'].';" class="pg-cats-box-float">'."\n";
+	//echo '<div style="width:'.$this->tmpl['categoriesboxwidth'].';" class="pg-cats-box-float">'."\n";
+	
+	
+	echo '<div class="span4 col-xs-6 col-sm-4 col-md-4">';
 	
 	echo '<div class="pg-cats-box '.$this->tmpl['class_suffix'].'">'."\n"
 		.'<div class="pg-cats-box-img"><a href="'.$this->categories[$i]->link.'">';
@@ -27,8 +41,11 @@ for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
 		 //.'<div style="clear:both;"></div>'
 		.'</div></div>'."\n";
 	
+	
+	
 }
-echo '<div style="clear:both"></div>'."\n";
+echo '</div>';
+//echo '<div style="clear:both"></div>'."\n";
 echo '</div>'."\n";
 echo "\n";
 ?>

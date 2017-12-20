@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -22,6 +22,26 @@ class PhocaGalleryRenderMap
 	
 	public function __construct() {
 	}
+	
+	public function loadApi() {
+	  
+		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$key 		= $paramsC->get( 'maps_api_key', '' );
+		$ssl 		= $paramsC->get( 'maps_api_ssl', 1 );
+		
+		if ($ssl) {
+			$h = 'https://';
+		} else {
+			$h = 'http://';
+		}
+		if ($key) {
+			$k = '&key='.strip_tags($key);
+		} else {
+			$k = '';
+		}
+
+		return '<script async defer src="'.$h.'maps.googleapis.com/maps/api/js?callback=initMap'.$k.'" type="text/javascript"></script>';
+   }
 	
 
 	public function createMap($id, $map, $latlng, $options, $tst, $tstint) {
@@ -237,12 +257,13 @@ class PhocaGalleryRenderMap
 	
 	public function setInitializeF() {
 	
-		$js = 'function initialize() {'."\n"
+		/* google.load("maps", "3.x", {"other_params":"sensor=false"}); */
+		$js = 'function initMap() {'."\n"
 			 .'   '.$this->_tst.'.setAttribute("oldValue",0);'."\n"
 		     .'   '.$this->_tst.'.setAttribute("refreshMap",0);'."\n"
 		     .'   '.$this->_tstint.' = setInterval("CheckPhocaMap()",500);'."\n"
-			.'}'."\n"
-			.'google.setOnLoadCallback(initialize);'."\n";
+			.'}'."\n";
+			//.'google.setOnLoadCallback(initMap);'."\n";
 		return $js;
 	}
 	

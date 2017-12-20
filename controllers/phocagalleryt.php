@@ -36,19 +36,24 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	
 	function themeinstall() {
 
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$post	= JRequest::get('post');
+		JSession::checkToken() or die( 'Invalid Token' );
+		//$post	= JFactory::getApplication()->input->get('post');
+		
+		$post = array();
+		$post['theme_component']	= JFactory::getApplication()->input->get('theme_component', array(), 'raw');
+		$post['theme_categories']	= JFactory::getApplication()->input->get('theme_categories', array(), 'raw');
+		$post['theme_category']		= JFactory::getApplication()->input->get('theme_category', array(), 'raw');
 		$theme = array();
 		
 		if (isset($post['theme_component'])) {
 			//$theme['component'] = 1;
 		}
 		if (isset($post['theme_categories'])) {
-			// TODO - change to 1 in case the parameters component will be added to Joomla! CMS back
+			// TO DO - change to 1 in case the parameters component will be added to Joomla! CMS back
 			$theme['categories'] = 0;
 		}
 		if (isset($post['theme_category'])) {
-			// TODO - change to 1 in case the parameters component will be added to Joomla! CMS back
+			// TO DO - change to 1 in case the parameters component will be added to Joomla! CMS back
 			$theme['category'] 	= 0;
 		}
 		$theme['component'] = 1;
@@ -57,10 +62,10 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 		
 			$ftp = JClientHelper::setCredentialsFromRequest('ftp');
 		
-			$model	= &$this->getModel( 'phocagalleryt' );
+			$model	= $this->getModel( 'phocagalleryt' );
 
 			if ($model->install($theme)) {
-				$cache = &JFactory::getCache('mod_menu');
+				$cache = JFactory::getCache('mod_menu');
 				$cache->clean();
 				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_THEME_INSTALLED');
 			}
@@ -76,8 +81,18 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	}
 	
 	function bgimagesmall() {
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$post				= JRequest::get('post');
+		JSession::checkToken() or die( 'Invalid Token' );
+		
+		//$post				= JFactory::getApplication()->input->get('post');
+		$post = array();
+		$post['siw'] = JFactory::getApplication()->input->files->get( 'siw');
+		$post['sih'] = JFactory::getApplication()->input->files->get( 'sih');
+		$post['ssbgc'] = JFactory::getApplication()->input->files->get( 'ssbgc');
+		$post['sibgc'] = JFactory::getApplication()->input->files->get( 'sibgc');
+		$post['sibrdc'] = JFactory::getApplication()->input->files->get( 'sibrdc');
+		$post['siec'] = JFactory::getApplication()->input->files->get( 'siec');
+		$post['sie'] = JFactory::getApplication()->input->files->get( 'sie');
+		
 		$data['image']	= 'shadow3';
 		$data['iw']		= $post['siw'];
 		$data['ih']		= $post['sih'];
@@ -106,8 +121,17 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	}
 	
 	function bgimagemedium() {
-		JRequest::checkToken() or die( 'Invalid Token' );
-		$post				= JRequest::get('post');
+		JSession::checkToken() or die( 'Invalid Token' );
+		//$post				= JFactory::getApplication()->input->get('post');
+		$post = array();
+		$post['miw'] = JFactory::getApplication()->input->files->get( 'miw');
+		$post['mih'] = JFactory::getApplication()->input->files->get( 'mih');
+		$post['msbgc'] = JFactory::getApplication()->input->files->get( 'msbgc');
+		$post['mibgc'] = JFactory::getApplication()->input->files->get( 'mibgc');
+		$post['mibrdc'] = JFactory::getApplication()->input->files->get( 'mibrdc');
+		$post['miec'] = JFactory::getApplication()->input->files->get( 'miec');
+		$post['mie'] = JFactory::getApplication()->input->files->get( 'mie');
+		
 		$data['image']	= 'shadow1';
 		$data['iw']		= $post['miw'];
 		$data['ih']		= $post['mih'];

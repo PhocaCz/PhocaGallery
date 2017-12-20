@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -47,6 +47,7 @@ class PhocaGalleryCpControllerPhocaGalleryinstall extends PhocaGalleryCpControll
 		$query.=' '.$db->quoteName('userid').' int(11) NOT NULL default \'0\','."\n";
 		$query.=' '.$db->quoteName('videocode').' text,'."\n";
 		$query.=' '.$db->quoteName('vmproductid').' int(11) NOT NULL default \'0\','."\n";
+		$query.=' '.$db->quoteName('pcproductid').' int(11) NOT NULL default \'0\','."\n";
 		$query.=' '.$db->quoteName('imgorigsize').' int(11) NOT NULL default \'0\','."\n";
 		$query.=' '.$db->quoteName('published').' tinyint(1) NOT NULL default \'0\','."\n";
 		$query.=' '.$db->quoteName('approved').' tinyint(1) NOT NULL default \'0\','."\n";

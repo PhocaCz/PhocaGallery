@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.pagination.paginationusersubcat');
 phocagalleryimport('phocagallery.pagination.paginationuserimage');
+use Joomla\String\StringHelper;
 
 class PhocagalleryModelUser extends JModelLegacy
 {
@@ -176,7 +177,7 @@ class PhocagalleryModelUser extends JModelLegacy
 		if (strpos($search, '"') !== false) {
 			$search = str_replace(array('=', '<'), '', $search);
 		}
-		$search				= JString::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		$where = array();
 		
@@ -208,7 +209,7 @@ class PhocagalleryModelUser extends JModelLegacy
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_image.'.filter_order','filter_order_image','a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_image.'.filter_order_Dir','filter_order_Dir_image','', 'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context_image.'.search', 'phocagalleryimagesearch', '', 'string' );
-		$search				= JString::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		$where = array();
 		
@@ -580,7 +581,7 @@ class PhocagalleryModelUser extends JModelLegacy
 			$this->_db->setQuery( $query );
 				
 			if (!($rows2 = $this->_db->loadObjectList())) {
-				JError::raiseError( 500, $this->_db->stderr('Load Data Problem') );
+				throw new Exception($this->_db->stderr('Load Data Problem') , 500);
 				return false;
 			}
 
@@ -611,8 +612,9 @@ class PhocagalleryModelUser extends JModelLegacy
 				$this->_db->setQuery( $query );
 
 				if (!($rows = $this->_db->loadObjectList())) {
-					JError::raiseError( 500, $this->_db->stderr('Load Data Problem') );
-					return false;
+				
+					throw new Exception($this->_db->stderr('Load Data Problem') , 500);
+				return false;
 				}
 				
 				$err_img = array();
@@ -631,8 +633,9 @@ class PhocagalleryModelUser extends JModelLegacy
 					. ' WHERE id IN ( '.$cids.' )';
 					$this->_db->setQuery( $query );
 					if (!$this->_db->query()) {
-						JError::raiseError( 500, $this->_db->stderr('Delete Data Problem') );
-						return false;
+				
+						throw new Exception($this->_db->stderr('Delete Data Problem') , 500);
+				return false;
 					}
 
 				}
@@ -818,7 +821,7 @@ class PhocagalleryModelUser extends JModelLegacy
 			$data['alias'] = $data['title'];
 		}
 		//$data['alias'] 	= PhocaGalleryText::getAliasName($data['alias']);
-		$data['access']	= 1;
+		//$data['access']	= 1;
 		$row = $this->getTable('phocagalleryc', 'Table');
 		
 		if(isset($data['id']) && $data['id'] > 0) {
@@ -871,6 +874,7 @@ class PhocagalleryModelUser extends JModelLegacy
 			}
 			
 			$data['imgorigsize'] 	= PhocaGalleryFile::getFileSize($data['filename'], 0);
+			$data['format'] 		= PhocaGalleryFile::getFileFormat($data['filename']);
 			
 			//If there is no title and no alias, use filename as title and alias
 			if (!isset($data['title']) || (isset($data['title']) && $data['title'] == '')) {
@@ -1023,9 +1027,9 @@ class PhocagalleryModelUser extends JModelLegacy
 		phocagalleryimport('phocagallery.file.file');
 		$path				= PhocaGalleryPath::getPath();
 		$pathAvatarAbs[]	= $path->avatar_abs  . $avatar;
-		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs'.DS.'phoca_thumb_l_'. $avatar;
-		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs'.DS.'phoca_thumb_m_'. $avatar;
-		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs'.DS.'phoca_thumb_s_'. $avatar;
+		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs/phoca_thumb_l_'. $avatar;
+		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs/phoca_thumb_m_'. $avatar;
+		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar;
 		
 		foreach ($pathAvatarAbs as $value) {
 			if (JFile::exists($value)){

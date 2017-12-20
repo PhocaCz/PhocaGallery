@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -22,7 +22,7 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 		
 		//Frontend Changes
 		$tUri = '';
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
 			phocagalleryimport('phocagallery.render.renderadmin');
 		}
@@ -32,7 +32,7 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 		$uri		= JFactory::getURI();
 		JHTML::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 		
-		$eName				= JRequest::getVar('e_name');
+		$eName				= JFactory::getApplication()->input->get('e_name');
 		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$tmpl['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
 		

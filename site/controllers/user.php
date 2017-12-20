@@ -88,7 +88,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 	function display($cachable = false, $urlparams = Array()) {
 		if ( ! JFactory::getApplication()->input->get('view') ) {
-			JRequest::setVar('view', 'user' );
+			JFactory::getApplication()->input->set('view', 'user' );
 		}
 		parent::display($cachable, $urlparams);
     }
@@ -144,13 +144,18 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	function createcategory() {
 	
 		$app	= JFactory::getApplication();
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'categoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatecatdescription', '', 'string'  );
 		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserCatApprove 		= (int)$paramsC->get( 'enable_usercat_approve', 0 );
+		$default_access 			= $paramsC->get( 'default_access', 1 );
+		$default_accessuserid 		= $paramsC->get( 'default_accessuserid', '' );
+		if (is_array($default_accessuserid )) {
+			$default_accessuserid 		= implode(',', $default_accessuserid);
+		}
 		$post['description']		= substr($post['description'], 0, (int)$maxCreateCatChar);
 		$post['alias'] 				= $post['title'];//PhocaGalleryText::getAliasName($post['title']);
 		$post['aliasfolder'] 		= PhocaGalleryText::getAliasName($post['title']);
@@ -211,19 +216,24 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 					}
 					// -----------------------------------
 					
+					
+					
+					
 					// Folder Created, all right
 					if ($msg == '') {
 						// Set default values
-						$post['access'] 		= 0;
+						$post['access'] 		= (int)$default_access;
+						$post['accessuserid']	= $default_accessuserid;
 						//$post['access'] 		= 1;
 						$post['parent_id'] 		= 0;
 						$post['image_position']	= 'left';
 						$post['published']		= 1;
-						$post['accessuserid']	= '-1';
 						$post['uploaduserid']	= $this->_user->id;
 						$post['deleteuserid']	= $this->_user->id;
 						$post['userfolder']		= $this->_userFolder;
 						$post['owner_id']		= $this->_user->id;
+						
+						
 
 						// Create new category
 						$id	= $model->store($post);
@@ -388,7 +398,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function createsubcategory() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string'  );
@@ -396,6 +406,11 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserSubCatApprove	= $paramsC->get( 'enable_usersubcat_approve', 0 );
+		$default_access 			= $paramsC->get( 'default_access', 1 );
+		$default_accessuserid 		= $paramsC->get( 'default_accessuserid', '' );
+		if (is_array($default_accessuserid )) {
+			$default_accessuserid 		= implode(',', $default_accessuserid);
+		}
 		$post['description']		= substr($post['description'], 0, (int)$maxCreateCatChar);
 		$post['alias'] 				= $post['title'];//PhocaGalleryText::getAliasName($post['title']);
 		$model 						= $this->getModel('user');
@@ -455,10 +470,11 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		}
 
 		if ($post['title'] != '') {
-			$post['access'] 		= 0;
+			
+			$post['access'] 		= (int)$default_access;
+			$post['accessuserid']	= $default_accessuserid;
 			$post['image_position']	= 'left';
 			$post['published']		= 1;
-			$post['accessuserid']	= '-1';
 			$post['uploaduserid']	= $this->_user->id;
 			$post['deleteuserid']	= $this->_user->id;
 			$post['userfolder']		= $ownerMainCategory->userfolder;
@@ -478,7 +494,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function editsubcategory() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string'  );
@@ -553,7 +569,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$app	= JFactory::getApplication();		
 		$errUploadMsg	= '';	
 	    $redirectUrl 	= '';
-		$fileArray 		= JRequest::getVar('Filedata', '', 'files', 'array');
+		$fileArray 		= $app->input->files->get('Filedata', null);
 		$this->_singleFileUploadAvatar($errUploadMsg, $fileArray, $redirectUrl);
 		$app->redirect($redirectUrl, $errUploadMsg);
 		exit;	
@@ -561,9 +577,9 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function _singleFileUploadAvatar(&$errUploadMsg, $file, &$redirectUrl) {
 		$app	= JFactory::getApplication();
-		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		jimport('joomla.client.helper');
-		$ftp 		= &JClientHelper::setCredentialsFromRequest('ftp');
+		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
 		$path		= PhocaGalleryPath::getPath();
 		$format		= $this->input->get( 'format', 'html', 'cmd');
 		$return		= $this->input->get( 'return-url', null, 'base64' );
@@ -584,7 +600,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		
 		if (isset($file['name'])) {
 			$fileAvatar = md5(uniqid(time())) . '.' . JFile::getExt($file['name']);
-			$filepath 	= JPath::clean($path->avatar_abs . DS . $fileAvatar);
+			$filepath 	= JPath::clean($path->avatar_abs . '/'. $fileAvatar);
 
 			if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg )) {
 				if ($errUploadMsg == 'COM_PHOCAGALLERY_WARNING_FILE_TOOLARGE') {
@@ -599,7 +615,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 					return false;
 			}
 
-			if (!JFile::upload($file['tmp_name'], $filepath)) {
+			if (!JFile::upload($file['tmp_name'], $filepath, false, true)) {
 				$errUploadMsg = JText::_('COM_PHOCAGALLERY_FILE_UNABLE_UPLOAD');
 				$redirectUrl = $return;
 				return false;
@@ -666,7 +682,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			$errSaveMsg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVING_AVATAR' );			
 			// Features added by Bernard Gilly - alphaplug.com
 			// load external plugins
-			if ( $new ){
+			if ( isset($new) && $new ){
 				$dispatcher = JDispatcher::getInstance();
 				JPluginHelper::importPlugin('phocagallery');
 				$results = $dispatcher->trigger( 'onUploadAvatar', array() ); 
@@ -683,7 +699,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function javaupload() {
 	
-		JRequest::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
+		JSession::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
 		
 		jimport('joomla.client.helper');
 		$app		= JFactory::getApplication();
@@ -743,8 +759,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			}
 
 			// Sending and setting data for common realsingleupload function
-			JRequest::setVar('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			JRequest::setVar('return-url', base64_encode($return));// set return url
+			JFactory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			JFactory::getApplication()->input->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realJavaUpload(2);
 			
 			if ($fileName != '') {
@@ -831,8 +847,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		
 	
 			// Sending and setting data for common realsingleupload function
-			JRequest::setVar('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			JRequest::setVar('return-url', base64_encode($return));// set return url
+			JFactory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			JFactory::getApplication()->input->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realSingleUpload(2);
 			
 			if ($fileName != '') {
@@ -924,12 +940,12 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		
 	
 			// Sending and setting data for common realsingleupload function
-			JRequest::setVar('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			JRequest::setVar('return-url', base64_encode($return));// set return url
+			JFactory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			JFactory::getApplication()->input->set('return-url', base64_encode($return));// set return url
 			//$fileName = PhocaGalleryFileUpload::realSingleUpload(2);
 			
 			
-			$ytbLink	= $this->input->get( 'phocagalleryytbuploadlink', '', 'post', 'string', JREQUEST_NOTRIM);
+			$ytbLink	= $this->input->get( 'phocagalleryytbuploadlink', '', 'post', 'string');
 			$errorYtbMsg	= '';
 			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . DS, $errorYtbMsg);
 			
@@ -973,7 +989,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function multipleupload() {
 	
-		JResponse::allowCache(false);
+		$app 	= JFactory::getApplication();
+		$app->allowCache(false);
 		
 		// Chunk Files
 		header('Content-type: text/plain; charset=UTF-8');
@@ -984,7 +1001,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		header("Pragma: no-cache");
 		
 		// Invalid Token
-		JRequest::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
+		JSession::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
 		'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
 		'details' => JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'))));
 		
@@ -1056,8 +1073,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			}
 
 			// Sending and setting data for common realsingleupload function
-			JRequest::setVar('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			JRequest::setVar('return-url', base64_encode($return));// set return url
+			JFactory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			JFactory::getApplication()->input->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realMultipleUpload(2);
 			
 			if ($fileName != '') {
@@ -1252,15 +1269,19 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			$rightDisplayDelete = 0;
 			
 			$catAccess	= PhocaGalleryAccess::getCategoryAccess((int)$isOwnerCategory);
+			
 			if (!empty($catAccess)) {
 				$rightDisplayDelete = PhocaGalleryAccess::getUserRight('deleteuserid', $catAccess->deleteuserid, 2, $this->_user->getAuthorisedViewLevels(), $this->_user->get('id', 0), 0);
 			}
 			// - - - - - - - - - - - - - - - - - - - 	
-			
-			if(!$model->deleteimage((int)$id, $errorMsg)) {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
+			if($rightDisplayDelete) {
+				if(!$model->deleteimage((int)$id, $errorMsg)) {
+					$msg = JText::_('COM_PHOCAGALLERY_ERROR_DELETING_ITEM');
+				} else {
+					$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
+				}
 			} else {
-				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_DELETING_ITEM');
+				$msg = JText::_('COM_PHOCAGALLERY_ERROR_NO_RIGHTS_TO_DO_THIS_ACTION');
 			}
 		} else {
 			
@@ -1278,7 +1299,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	
 	function editimage() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string' );
 		$post['title']				= $this->input->get( 'imagename', '', 'string'  );
 		$post['description']		= $this->input->get( 'phocagalleryuploaddescription', '', 'string'  );

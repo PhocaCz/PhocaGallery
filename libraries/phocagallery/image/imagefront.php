@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Component
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -442,7 +442,7 @@ class PhocaGalleryImageFront
 		} else {
 			// This is special case where we change category to image
 			$ordering = ' ORDER BY a.'.$categoryImageOrdering['column'] . ' ' .$categoryImageOrdering['sort'];
-			$orderingRandomCat = ' ORDER BY c.ordering'; //TODO - can be changed to category_ordering parameter
+			$orderingRandomCat = ' ORDER BY c.ordering'; //TO DO - can be changed to category_ordering parameter
 		}
 		
 		
@@ -479,7 +479,7 @@ class PhocaGalleryImageFront
             $image->filename 	= '';
 			
 			
-			// TODO, if we find no image in subcategory we look at its subcategory (subcategory of subcategory)
+			// TO DO, if we find no image in subcategory we look at its subcategory (subcategory of subcategory)
 			// no to look if there is some subcategory on the same level
             $subCategories = PhocaGalleryImageFront::getRandomCategory($categoryid, $ordering);
 			
@@ -967,6 +967,23 @@ class PhocaGalleryImageFront
 		}
 		
 	
+	}
+	
+	public static function setFileNameByImageId($id = 0) {
+		
+		$f = '';
+		if ((int)$id > 0) {
+			$db 	= JFactory::getDBO();
+			$query = ' SELECT a.filename, a.extid, a.exts, a.extm, a.extw, a.exth'
+					.' FROM #__phocagallery AS a'
+					.' WHERE a.id = '.(int)$id
+					.' ORDER BY a.id'
+					.' LIMIT 1';
+			$db->setQuery($query);
+			$f = $db->loadObject();
+		}
+		
+		return $f;
 	}
 
 }

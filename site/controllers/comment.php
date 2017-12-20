@@ -16,14 +16,14 @@ class PhocaGalleryControllerComment extends PhocaGalleryController
 	function display($cachable = false, $urlparams = false) {
 	
 		if ( ! JFactory::getApplication()->input->get('view') )  {
-			JRequest::setVar('view', 'comment' );
+			JFactory::getApplication()->input->set('view', 'comment' );
 		}
 		parent::display($cachable, $urlparams);
     }
 	
 	function comment() {
 	
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		phocagalleryimport('phocagallery.comment.comment');
 		phocagalleryimport('phocagallery.comment.commentimage');
 		$app				= JFactory::getApplication();

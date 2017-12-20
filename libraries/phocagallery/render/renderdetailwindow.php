@@ -1,10 +1,12 @@
 <?php
-/* @package Joomla
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @extension Phoca Extension
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -40,13 +42,21 @@ class PhocaGalleryRenderDetailWindow
 	public $bpContextmenu;
 	public $extension;
 	public $jakRandName;
+	public $articleId;
+	public $backend;
 
 	
 	public function __construct() {}
 	
 	public function setButtons($method = 0, $libraries = array(), $library = array()) {
 	
-		$document	= JFactory::getDocument();
+	
+		$document					= JFactory::getDocument();
+		$paramsC 					= JComponentHelper::getParams('com_phocagallery') ;
+		$sb_slideshow_autostart		= $paramsC->get( 'sb_slideshow_autostart', 0 );
+		$disable_mootools_modal		= $paramsC->get( 'disable_mootools_modal', 0 );
+		
+		
 		
 		// BUTTON (IMAGE - standard, modal, shadowbox)
 		$this->b1 = new JObject();
@@ -63,6 +73,11 @@ class PhocaGalleryRenderDetailWindow
 		$this->b3->set('name', 'other');
 		$this->b3->set('options', '');//initialize
 		$this->b3->set('optionsrating', '');//initialize
+		
+		$path = JURI::base(true);
+		if ($this->backend == 1) {
+			$path = JURI::root(true);
+		}
 		
 	
 	
@@ -147,7 +162,7 @@ class PhocaGalleryRenderDetailWindow
 				}
 			}
 			
-			if ( $libraries['pg-group-shadowbox']->value == 0 ) {
+			/*if ( $libraries['pg-group-shadowbox']->value == 0 ) {
 				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.css');
 				$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.js');
 				$document->addCustomTag('<script type="text/javascript">
@@ -155,7 +170,27 @@ class PhocaGalleryRenderDetailWindow
 					'.$sbSettingsO.'
 					});
 				</script>');
-			}
+			}*/
+			
+			if ( $libraries['pg-group-shadowbox']->value == 0 ) {
+				
+				$sbPause = 'var SBpauseOnStart = "true";';
+				if ($sb_slideshow_autostart == 1) {
+					$sbPause = 'var SBpauseOnStart = "false";';
+				}
+				
+                $document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.css');
+                $document->addScript(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.js');
+                $document->addCustomTag('<script type="text/javascript">
+                    '.$sbPause.'
+                    Shadowbox.init({
+                    '.$sbSettingsO.',
+                    continuous: true,
+          onFinish: function(){setTimeout(\'if(SBpauseOnStart == "true"){SBpauseOnStart = "done";Shadowbox.pause();}\', 375)},
+          onClose: function(){SBpauseOnStart = "true";}
+                    });
+                </script>');
+            }
 
 			break;
 			
@@ -195,6 +230,7 @@ class PhocaGalleryRenderDetailWindow
 			$this->b3->methodname 	= &$this->b1->methodname;
 			
 			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/highslide/highslide-full.js');
+			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/highslide/mobile.js');
 			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/highslide/highslide.css');
 			
 			if ( $libraries['pg-group-highslide']->value == 0 ) {
@@ -203,13 +239,21 @@ class PhocaGalleryRenderDetailWindow
 				$library->setLibrary('pg-group-highslide', 1);
 			}
 			
-			$document->addCustomTag( self::renderHighslideJS($this->extension, $this->popupWidth, $this->popupHeight, $this->hsSlideshow, $this->hsClass, $this->hsOutlineType, $this->hsOpacity, $this->hsCloseButton));
+
+			if (!isset($this->articleId)) {
+				$this->articleId = '';
+			}
+			$document->addCustomTag( self::renderHighslideJS($this->extension, $this->popupWidth, $this->popupHeight, $this->hsSlideshow, $this->hsClass, $this->hsOutlineType, $this->hsOpacity, $this->hsCloseButton, $this->articleId));
+			
+			
 			
 			if ($method == 4) {
-				$this->b1->set('highslideonclick', 'return hs.htmlExpand(this, phocaZoom )');
+				$this->b1->set('highslideonclick', 'return hs.htmlExpand(this, phocaZoom'.$this->extension.$this->articleId.' )');
 			} else {
-				$this->b1->set('highslideonclick2', 'return hs.htmlExpand(this, phocaZoom )');
-				$this->b1->set('highslideonclick', self::renderHighslideJSImage($this->extension, $this->hsClass, $this->hsOutlineType, $this->hsOpacity, $this->hsFullImg));
+				$this->b1->set('highslideonclick2', 'return hs.htmlExpand(this, phocaZoom'.$this->extension.$this->articleId.' )');
+		
+				$this->b1->set('highslideonclick', self::renderHighslideJSImage($this->extension, $this->hsClass, $this->hsOutlineType, $this->hsOpacity, $this->hsFullImg, $this->articleId));
+			
 			}
 			break;
 			
@@ -336,7 +380,7 @@ class PhocaGalleryRenderDetailWindow
 			$document->addCustomTag('<!--[if lt IE 8]><link rel="stylesheet" href="'.JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.ie7.css" type="text/css" /><![endif]-->');
 			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.'.$this->bpTheme.'.css', 'text/css', null, array('title'=>'boxplus-'.$this->bpTheme));
 			
-			if (file_exists(JPATH_BASE.DS.'components'.DS.'com_phocagallery'.DS.'assets'.DS.'js'.DS.'boxplus'.DS.'css'.DS.'boxplus.'.$this->bpTheme)) {  // use IE-specific stylesheet only if it exists
+			if (file_exists(JPATH_BASE.'/components/com_phocagallery/assets/js/boxplus/css/boxplus.'.$this->bpTheme)) {  // use IE-specific stylesheet only if it exists
 				$this->addCustomTag('<!--[if lt IE 9]><link rel="stylesheet" href="'.JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.'.$this->bpTheme.'.ie8.css" type="text/css" title="boxplus-'.$this->bpTheme.'" /><![endif]-->');
 			}
 			
@@ -363,6 +407,7 @@ class PhocaGalleryRenderDetailWindow
 			$document->addScriptDeclaration('});');
 			
 			
+			break;
 			
 			case 11:
 			case 12:
@@ -374,8 +419,8 @@ class PhocaGalleryRenderDetailWindow
 			$this->b2->set('methodname', 'magnific2');
 			$this->b3->set('methodname', 'magnific3');
 		
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/magnific/jquery.magnific-popup.min.js');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/magnific/magnific-popup.css');
+			$document->addScript($path.'/components/com_phocagallery/assets/magnific/jquery.magnific-popup.min.js');
+			$document->addStyleSheet($path.'/components/com_phocagallery/assets/magnific/magnific-popup.css');
 			
 			$mT = array();
 			$mT[] = 'tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\';';
@@ -396,6 +441,7 @@ class PhocaGalleryRenderDetailWindow
 				$js[] = '<script type="text/javascript">';
 				$js[] = 'jQuery(document).ready(function() {';
 				$js[] = '	jQuery(\'a.magnific\').magnificPopup({';
+				//$js[] = '	jQuery(\'phocagallery\').magnificPopup({';
 				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
 				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
 				$js[] = '		tError: \''.JText::_('COM_PHOCAGALLERY_CONTENT_NOT_LOADED').'\',';
@@ -414,6 +460,16 @@ class PhocaGalleryRenderDetailWindow
 				$js[] = '		preloader: false,';
 				$js[] = '		fixedContentPos: false,';
 				$js[] = '	});';
+				
+				$js[] = '	jQuery(\'a.magnific3\').magnificPopup({';
+				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
+				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
+				$js[] = '		tError: \''.JText::_('COM_PHOCAGALLERY_CONTENT_NOT_LOADED').'\',';
+				$js[] = '		type: \'iframe\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		preloader: false,';
+				$js[] = '		fixedContentPos: false,';
+				$js[] = '	});';
 
 				$js[] = '});';
 				$js[] = '</script>';
@@ -423,7 +479,8 @@ class PhocaGalleryRenderDetailWindow
 				$js = array();
 				$js[] = '<script type="text/javascript">';
 				$js[] = 'jQuery(document).ready(function() {';
-				$js[] = '	jQuery(\'#pg-msnr-container\').magnificPopup({';
+				$js[] = '	jQuery(\'.pg-msnr-container\').magnificPopup({';
+				//$js[] = '	jQuery(\'#pg-msnr-container\').magnificPopup({';
 				$js[] = '		tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\',';
 				$js[] = '		tClose: \''.JText::_('COM_PHOCAGALLERY_CLOSE').'\',';
 				$js[] = '		delegate: \'a.magnific\',';
@@ -447,9 +504,21 @@ class PhocaGalleryRenderDetailWindow
 				$js[] = '	jQuery(\'a.magnific2\').magnificPopup({';
 				$js[] = '		type: \'image\',';
 				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				//$js[] = '		preloader: false,';
+				//$js[] = '		fixedContentPos: false,';
 				$js[] = '		image: {';
 				$js[] = '			tError: \''.JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED').'\'';
 				$js[] = '		}';
+				$js[] = '	});';
+				
+				$js[] = '	jQuery(\'a.magnific3\').magnificPopup({';
+				$js[] = '		type: \'iframe\',';
+				$js[] = '		mainClass: \'mfp-img-mobile\',';
+				$js[] = '		preloader: false,';
+				$js[] = '		fixedContentPos: false,';
+				//$js[] = '		image: {';
+				//$js[] = '			tError: \''.JText::_('COM_PHOCAGALLERY_IMAGE_NOT_LOADED').'\'';
+				//$js[] = '		}';
 				$js[] = '	});';
 
 				$js[] = '});';
@@ -458,6 +527,54 @@ class PhocaGalleryRenderDetailWindow
 			
 			$document->addCustomTag(implode("\n", $js));
 			
+			break;
+			
+			
+			case 14:
+			// PHOTOSWIPE
+			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+	
+			$this->b1->set('methodname', 'photoswipe-button');
+			$this->b1->set('options', ' itemprop="contentUrl"');
+			/*$this->b2->methodname 		= &$this->b1->methodname;
+			$this->b2->set('options', ' itemprop="contentUrl"');
+			$this->b3->methodname 		= &$this->b1->methodname;
+			$this->b3->set('options', ' itemprop="contentUrl"');
+			$this->b3->set('optionsrating', ' itemprop="contentUrl"');*/
+			
+			$this->b2->set('modal', true);
+			$this->b2->set('methodname', 'pg-modal-button');
+			$this->b2->set('options', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
+			
+			$this->b3->set('modal', true);
+			$this->b3->set('methodname', 'pg-modal-button');
+			$this->b3->set('options', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
+			$this->b3->set('optionsrating', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
+			
+			
+			
+			// If standard window, change:
+			// FROM: return ' rel="'.$buttonOptions.'"'; TO: return ' onclick="'.$buttonOptions.'"';
+			// in administrator\components\com_phocagallery\libraries\phocagallery\render\renderfront.php 
+			// method: renderAAttributeTitle detailwindow = 14
+			/*
+			$this->b2->set('methodname', 'js-button');
+			$this->b2->set('options', "window.open(this.href,'win2','width=".$this->popupWidth.",height=".$this->popupHeight.",scrollbars=yes,menubar=no,resizable=yes'); return false;");
+			$this->b2->set('optionsrating', "window.open(this.href,'win2','width=".$this->popupWidth.",height=".$this->popupHeight.",scrollbars=yes,menubar=no,resizable=yes'); return false;");
+			
+		
+			$this->b3->methodname  		= &$this->b2->methodname;
+			$this->b3->options 			= &$this->b2->options;
+			$this->b3->optionsrating 	= &$this->b2->optionsrating;
+*/
+				
+			if ( $libraries['pg-group-photoswipe']->value == 0 ) {
+				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe.css');
+				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/default-skin/default-skin.css');
+				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe-style.css');
+			}
+			
+			// LoadPhotoSwipeBottom must be loaded at the end of document
 			break;
 			
 			
@@ -498,11 +615,11 @@ class PhocaGalleryRenderDetailWindow
 	
 		if ($type == 'li')  {
 			$typeOutput = 'groupLI';
-		} else if ($type == 'pm')  {
+		} else if (strtolower($type) == 'pm' ) {
 			$typeOutput = 'groupPM';
-		} else if ($type == 'ri' ){
+		} else if (strtolower($type) == 'ri' ){
 			$typeOutput = 'groupRI';
-		} else if ($type == 'pl' ){
+		} else if (strtolower($type) == 'pl' ){
 			$typeOutput = 'groupPl';
 		} else {
 			$typeOutput = 'groupC';
@@ -534,19 +651,19 @@ class PhocaGalleryRenderDetailWindow
 	*/
 	public function renderHighslideJS($type, $front_modal_box_width, $front_modal_box_height, $slideshow = 0, $highslide_class = '',$highslide_outline_type = 'rounded-white', $highslide_opacity = 0, $highslide_close_button = 0, $slideShowGroup = 0) {	
 		
-		if ($type == 'li')  {
+		if (strtolower($type) == 'li')  {
 			$typeOutput = 'groupLI';
 			$varImage	= 'phocaImageLI';
 			$varZoom	= 'phocaZoomLI';
-		} else if ($type == 'pm')  {
+		} else if (strtolower($type) == 'pm')  {
 			$typeOutput = 'groupPM';
 			$varImage	= 'phocaImagePM';
 			$varZoom	= 'phocaZoomPM';
-		} else if ($type == 'ri' ){
+		} else if (strtolower($type) == 'ri' ){
 			$typeOutput = 'groupRI';
 			$varImage	= 'phocaImageRI';
 			$varZoom	= 'phocaZoomRI';
-		} else if ($type == 'pl' ){
+		} else if (strtolower($type) == 'pl' ){
 			$typeOutput = 'groupPl';
 			$varImage	= 'phocaImagePl';
 			$varZoom	= 'phocaZoomPl';
@@ -555,10 +672,10 @@ class PhocaGalleryRenderDetailWindow
 			$varImage	= 'phocaImage';
 			$varZoom	= 'phocaZoom';
 		}
-		
+	
 		$tag = '<script type="text/javascript">'
 		.'//<![CDATA[' ."\n"
-		.' var '.$varZoom.' = { '."\n"
+		.' var '.$varZoom.$slideShowGroup.' = { '."\n"
 		.' objectLoadTime : \'after\',';
 		if ($highslide_outline_type != 'none') {
 			$tag .= ' outlineType : \''.$highslide_outline_type.'\',';
@@ -680,5 +797,97 @@ class PhocaGalleryRenderDetailWindow
 		. '</script>' . "\n";
 		return $js;
 	}
+	
+	public static function loadPhotoswipeBottom() {
+		
+		$paramsC 				= JComponentHelper::getParams('com_phocagallery') ;
+		$photoswipe_slideshow	= $paramsC->get( 'photoswipe_slideshow', 1 );
+		$photoswipe_slide_effect= $paramsC->get( 'photoswipe_slide_effect', 0 );
+		
+		$o = '<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It\'s a separate element, as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+        <!-- don\'t modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+			
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="'.JText::_('COM_PHOCAGALLERY_CLOSE').'"></button>
+
+                <button class="pswp__button pswp__button--share" title="'.JText::_('COM_PHOCAGALLERY_SHARE').'"></button>
+
+                <button class="pswp__button pswp__button--fs" title="'.JText::_('COM_PHOCAGALERY_TOGGLE_FULLSCREEN').'"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="'.JText::_('COM_PHOCAGALLERY_ZOOM_IN_OUT').'"></button>';
+				
+				if ($photoswipe_slideshow == 1) {
+					$o .= '<!-- custom slideshow button: -->
+					<button class="pswp__button pswp__button--playpause" title="'.JText::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'"></button>
+					<span id="phTxtPlaySlideshow" style="display:none">'.JText::_('COM_PHOCAGALLERY_PLAY_SLIDESHOW').'</span>
+					<span id="phTxtPauseSlideshow" style="display:none">'.JText::_('COM_PHOCAGALLERY_PAUSE_SLIDESHOW').'</span>';
+				}
+				
+                $o .= '<!-- Preloader -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="'.JText::_('COM_PHOCAGALLERY_PREVIOUS').'">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="'.JText::_('COM_PHOCAGALLERY_NEXT').'">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+</div>';
+
+$o .=   '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe.min.js"></script>'. "\n"
+		.'<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
+		
+if ($photoswipe_slide_effect == 1) {
+	$o .= '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
+} else {
+	$o .= '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+}
+
+		return $o;
+	}
+	
 }
 ?>

@@ -1,12 +1,12 @@
 <?php
-/*
- * @package Joomla 1.5
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *
- * @component Phoca Gallery
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -47,7 +47,7 @@ class PhocaGalleryImage
 			$thumbName			= PhocaGalleryFileThumbnail::getThumbnailName ($filename, $size);
 			list($w, $h, $type) = @getimagesize($thumbName->abs);
 		}
-		$size = '';
+		$size = array();
 		if (isset($w) && isset($h)) {
 			$size['w'] 	= $w;
 			$size['h']	= $h;
@@ -128,7 +128,7 @@ class PhocaGalleryImage
 		if (isset($p['imagewidth'])) {
 			$boxSize['width'] = $boxSize['width'] + (int)$p['imagewidth'];
 		}
-		
+	
 		if (isset($p['imageheight'])) {
 			$boxSize['height'] = $boxSize['height'] + (int)$p['imageheight'];
 		}
@@ -279,6 +279,22 @@ class PhocaGalleryImage
 		
 		
 		return false;
+	}
+	
+	public static function getImageByImageId($id = 0) {
+		
+		$db 	= JFactory::getDBO();
+		$query = ' SELECT a.id, a.title, c.title as category_title'
+				.' FROM #__phocagallery AS a'
+				.' LEFT JOIN #__phocagallery_categories AS c ON c.id = a.catid'
+				.' WHERE a.id = '.(int)$id
+				.' GROUP BY a.id, a.title, c.title'
+				.' ORDER BY a.id'
+				.' LIMIT 1';
+		$db->setQuery($query);
+		$image = $db->loadObject();
+		
+		return $image;
 	}
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -10,6 +10,7 @@
  */ 
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
+use Joomla\String\StringHelper;
  
 class phocaGalleryCpViewphocaGalleryLinkImg extends JViewLegacy
 {
@@ -25,7 +26,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends JViewLegacy
 		//Frontend Changes
 		$tUri = '';
 		$jsLink = JURI::base(true);
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
 			phocagalleryimport('phocagallery.render.renderadmin');
 			phocagalleryimport('phocagallery.file.filethumbnail');
@@ -38,9 +39,9 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends JViewLegacy
 		JHTML::stylesheet( 'components/com_phocagallery/assets/jcp/picker.css' );
 		$document->addScript(JURI::root(true) .'/components/com_phocagallery/assets/jcp/picker.js');
 		
-		$eName				= JRequest::getVar('e_name');
+		$eName				= JFactory::getApplication()->input->get('e_name');
 		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$tmpl['type']		= JRequest::getVar( 'type', 1, '', 'int' );
+		$tmpl['type']		= JFactory::getApplication()->input->get( 'type', 1, '', 'int' );
 		$tmpl['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
 		
 		
@@ -55,7 +56,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends JViewLegacy
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context.'.search', 'search', '',	'string' );
-		$search				= JString::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		// Get data from the model
 		$items					=  $this->get( 'Data');
@@ -127,7 +128,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends JViewLegacy
 					$itemsCount[$i]->value 	= (int)$key + 1;
 					$itemsCount[$i]->text	= (int)$key + 1;
 				}
-				$categoryId		= JRequest::getVar( 'filter_catid', 0, '', 'int' );
+				$categoryId		= JFactory::getApplication()->input->get( 'filter_catid', 0, '', 'int' );
 				$categoryIdList	= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0, 'int' );
 				
 				if ((int)$categoryId == 0 && $categoryIdList == 0) {

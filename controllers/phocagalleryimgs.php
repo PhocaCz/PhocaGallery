@@ -33,16 +33,16 @@ class PhocaGalleryCpControllerPhocaGalleryImgs extends JControllerAdmin
 	function approve()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid	= JFactory::getApplication()->input->get('cid', array(), '', 'array');
 		$data	= array('approve' => 1, 'disapprove' => 0);
 		$task 	= $this->getTask();
 		$value	= JArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid)) {
-			JError::raiseWarning(500, JText::_($this->text_prefix.'_NO_ITEM_SELECTED'));
+			throw new Exception(JText::_($this->text_prefix.'_NO_ITEM_SELECTED'), 500);
 		} else {
 			// Get the model.
 			$model = $this->getModel();
@@ -53,7 +53,7 @@ class PhocaGalleryCpControllerPhocaGalleryImgs extends JControllerAdmin
 			// Publish the items.
 			
 			if (!$model->approve($cid, $value)) {
-				JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			} else {
 				if ($value == 1) {
 					$ntext = $this->text_prefix.'_N_ITEMS_APPROVED';
@@ -71,6 +71,7 @@ class PhocaGalleryCpControllerPhocaGalleryImgs extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 		$pks = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
+		
 		JArrayHelper::toInteger($pks);
 		JArrayHelper::toInteger($order);
 		$model = $this->getModel();

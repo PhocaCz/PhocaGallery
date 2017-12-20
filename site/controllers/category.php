@@ -1,6 +1,6 @@
 <?php
 /*
- * @package Joomla 1.5
+ * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
@@ -27,7 +27,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 {
 	
 	function display($cachable = false, $urlparams = false) {
-		if ( ! JRequest::get( 'view' ) ) {
+		if ( ! JFactory::getApplication()->input->get( 'view' ) ) {
 			$this->input->set('view', 'category' );
 		}
 		parent::display($cachable, $urlparams);
@@ -38,10 +38,11 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$user 		= JFactory::getUser();
 		$view 		= $this->input->get('view', '');
 		$id 		= $this->input->get( 'id', '', 'string');
-		$catid 		= $this->input->get('catid', '');
+		$catid 		= $this->input->get( 'catid', '', 'string');
 		$Itemid		= $this->input->get('Itemid', '');
 		$limitStart	= $this->input->get('limitstart', 0);
 		
+		$catid		= (int)$catid;
 		$id 		= (int)$id;
 		
 		
@@ -174,11 +175,11 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$user 		= JFactory::getUser();
 		$view 		= $this->input->get('view', '', 'string');
 		$id 		= $this->input->get( 'id', '', 'string');
-		$catid 		= $this->input->get('catid', '');
+		$catid 		= $this->input->get('catid', '', 'string');
 		$Itemid		= $this->input->get('Itemid', '', 'int');
 		$limitStart	= $this->input->get('limitstart', 0, 'int');
 		$id 		= (int)$id;
-		
+		$catid		= (int)$catid;
 		$model = $this->getModel('category');
 		
 		// Get catid of an id in case catid will be not send (SEF)
@@ -237,7 +238,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	 /*
 	function javaupload() {			    
 		$app	= JFactory::getApplication();
-		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		$errUploadMsg	= '';
 		$redirectUrl 	= '';		
 
@@ -250,8 +251,8 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function _realJavaUpload(&$errUploadMsg, &$redirectUrl) {		
 		$app	= JFactory::getApplication();
-		JRequest::checkToken( 'request' ) or jexit( 'Invalid Token' );		
-		foreach ($_FILES as $file => $fileArray) {
+		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );		
+		foreach ($ FILES as $file => $fileArray) {
 			echo('File key: '. $file . "\n");
 			foreach ($fileArray as $item=>$val) {
 				echo(' Data received: ' . $item.'=>'.$val . "\n");
@@ -267,7 +268,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function javaupload() {
 	
-		JRequest::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
+		JSession::checkToken( 'request' ) or exit( 'ERROR: '. JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
 		
 		jimport('joomla.client.helper');
 		$app		= JFactory::getApplication();
@@ -354,7 +355,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function upload() {
 	
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		
 		jimport('joomla.client.helper');
 		$app		= JFactory::getApplication();
@@ -375,7 +376,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		
 		$catidAlias	= $catid;// for return
 		$catid 		= (int)$catid;
-		// Set the limistart (TODO)
+		// Set the limistart (TO DO)
 		if ($limitStart > 0) {
 			$limitStartUrl	= '&limitstart='.$limitStart;	
 		} else {
@@ -453,7 +454,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function ytbupload() {
 		
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		
 		jimport('joomla.client.helper');
 		$app		= JFactory::getApplication();
@@ -479,7 +480,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		}
 		
 		$catidAlias	= $catid;// for return
-		// Set the limistart (TODO)
+		// Set the limistart (TO DO)
 		if ($limitStart > 0) {
 			$limitStartUrl	= '&limitstart='.$limitStart;	
 		} else {
@@ -540,7 +541,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$ytbLink	= $this->input->get( 'phocagalleryytbuploadlink', '', 'string');
 			
 			$errorYtbMsg	= '';
-			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . DS, $errorYtbMsg);
+			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . '/', $errorYtbMsg);
 			
 			
 			if ($ytbData && isset($ytbData['filename'])) {
@@ -576,7 +577,9 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function multipleupload() {
 	
-		JResponse::allowCache(false);
+		
+		$app 	= JFactory::getApplication();
+		$app->allowCache(false);
 		
 		// Chunk Files
 		header('Content-type: text/plain; charset=UTF-8');
@@ -590,7 +593,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		
 		
 		// Invalid Token
-		JRequest::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
+		JSession::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
 		'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
 		'details' => JTEXT::_('COM_PHOCAGALLERY_INVALID_TOKEN'))));
 		
@@ -842,7 +845,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 	
 	function comment() {
 	
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		phocagalleryimport('phocagallery.comment.comment');
 		phocagalleryimport('phocagallery.comment.commentcategory');
 		$app	= JFactory::getApplication();
@@ -946,7 +949,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 	function createsubcategory() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$task 						= $this->input->get( 'task', '', 'string');
 		$post['title']				= $this->input->get( 'subcategoryname', '', 'string' );
 		$post['description']		= $this->input->get( 'phocagallerycreatesubcatdescription', '', 'string' );
@@ -969,6 +972,9 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$maxCreateCatChar			= $paramsC->get( 'max_create_cat_char', 1000 );
 		$enableUserSubCatApprove	= $paramsC->get( 'enable_usersubcat_approve', 0 );
 		$enableDirectSubCat     	= $paramsC->get( 'enable_direct_subcat', 0 );
+		$default_access 			= $paramsC->get( 'default_access', 1 );
+		$default_accessuserid 		= $paramsC->get( 'default_accessuserid', '' );
+		$default_accessuserid 		= implode(',', $default_accessuserid);
 		$post['description']		= substr($post['description'], 0, (int)$maxCreateCatChar);
 		$post['alias'] 				= $post['title'];//PhocaGalleryText::getAliasName($post['title']);
 		$post['aliasfolder'] 		= PhocaGalleryText::getAliasName($post['title']);
@@ -1060,10 +1066,13 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		}
 
 		if ($post['title'] != '') {
-			$post['access'] 		= 0;
+			
+			$post['access'] 		= (int)$default_access;
+			$post['accessuserid']	= $default_accessuserid;
+			//$post['access'] 		= 0;
 			$post['image_position']	= 'left';
 			$post['published']		= 1;
-			$post['accessuserid']	= '-1';
+			//$post['accessuserid']	= '-1';
 			$post['uploaduserid']	= $user->id;
 			$post['deleteuserid']	= $user->id;
 			$post['userfolder']		= $userFolder;

@@ -45,8 +45,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 		
 		$this->setState('imgordering', $app->getUserStateFromRequest($context .'imgordering', 'imgordering', $image_ordering, 'int'));
 		
-		//$this->setState('filter_order', JRequest::get Cmd('filter_order', 'ordering'));
-		//$this->setState('filter_order_dir', JRequest::get Cmd('filter_order_Dir', 'ASC'));
+		//$this->setState('filter_order', J Request::get Cmd('filter_order', 'ordering'));
+		//$this->setState('filter_order_dir', J Request::get Cmd('filter_order_Dir', 'ASC'));
 		
 		$id = $app->input->get('id', 0, 'int');
 		$this->setId((int)$id);
@@ -153,7 +153,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 			. $leftTag
 			. ' WHERE ' . implode( ' AND ', $wheres )
 			. $published
-			. $imageOrdering['output'];
+			//. $imageOrdering['output'];
+			. ' ORDER BY a.id';
 		} else {
 			$query = 'SELECT a.*, cc.alias AS catalias, cc.accessuserid AS cataccessuserid, cc.access AS cataccess,'
 			. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as catslug'
@@ -185,12 +186,14 @@ class PhocagalleryModelCategory extends JModelLegacy
 			$user = JFactory::getUser();
 			if (!$this->_category->published) {
 				//$mainframe->redirect(JRoute::_('index.php', false), JText::_("COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED"));
-				JError::raiseError( 404, JText::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ) );
+				
+				throw new Exception(JText::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ), 404);
 				exit;
 			}
 			if (!$this->_category->approved) {
 				//$mainframe->redirect(JRoute::_('index.php', false), JText::_("COM_PHOCAGALLERY_CATEGORY_IS_UNAUTHORIZED"));// don't loop
-				JError::raiseError( 404, JText::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNAUTHORIZED" ) );
+				
+				throw new Exception(JText::_( "COM_PHOCAGALLERY_ERROR_CATEGORY_IS_UNAUTHORIZED" ), 404);
 				exit;
 			}
 			
@@ -217,7 +220,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 			
 			//$query = 'SELECT c.*,' .
 			
-			$query = 'SELECT c.id, c.title, c.alias, c.description, c.published, c.approved, c.parent_id, c.deleteuserid, c.accessuserid, c.uploaduserid, c.owner_id, c.access, c.metakey, c.metadesc, c.latitude, c.longitude, c.zoom, c.geotitle, c.userfolder,' .
+			$query = 'SELECT c.id, c.title, c.alias, c.description, c.published, c.approved, c.parent_id, c.deleteuserid, c.accessuserid, c.uploaduserid, c.owner_id, c.access, c.metakey, c.metadesc, c.latitude, c.longitude, c.zoom, c.geotitle, c.userfolder, c.image_id,' .
 				' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '.
 				' FROM #__phocagallery_categories AS c' .
 				' WHERE c.id = '. (int) $this->_id;
@@ -275,8 +278,13 @@ class PhocagalleryModelCategory extends JModelLegacy
 		
 		//$query = 'SELECT c.*, COUNT(a.id) countimage' ... Cannot be used because get error if there is no image
 		//$query = 'SELECT cc.*, a.filename, a.extm, a.exts, a.extw, a.exth'
-		$query = 'SELECT cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, a.filename, a.extm, a.exts, a.extw, a.exth, a.extid'
-			.' FROM #__phocagallery_categories AS cc'
+		//$query = 'SELECT cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, cc.image_id';
+		
+		//$query = 'SELECT DISTINCT cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, cc.image_id, a.filename, a.extm, a.exts, a.extw, a.exth, a.extid';
+		
+		$query = 'SELECT DISTINCT cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, cc.image_id, min(a.filename) as filename, min(a.extm) as extm, min(a.exts) as exts, min(a.extw) as extw, min(a.exth) as exth, min(a.extid) as extid';
+		
+		$query .= ' FROM #__phocagallery_categories AS cc'
 			.' LEFT JOIN #__phocagallery AS a ON cc.id = a.catid'
 			.' WHERE cc.parent_id = '.(int) $this->_id
 			.' AND cc.published = 1'
@@ -289,8 +297,11 @@ class PhocagalleryModelCategory extends JModelLegacy
         //	.' WHERE a.catid = c.id' 
         //	.' AND a.published = 1) > 0'
 			. $whereLang
-			.' GROUP BY cc.id'
+			//.' GROUP BY cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, cc.image_id, a.filename, a.extm, a.exts, a.extw, a.exth, a.extid'
+			.' GROUP BY cc.id, cc.title, cc.alias, cc.published, cc.approved, cc.parent_id, cc.deleteuserid, cc.accessuserid, cc.uploaduserid, cc.access, cc.image_id'
 			.$categoryOrdering['output'];
+			
+			
 			
 		$this->_db->setQuery($query);
 		$subCategory = $this->_db->loadObjectList();
@@ -408,6 +419,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		}
 		
 		$data['imgorigsize'] 	= PhocaGalleryFile::getFileSize($data['filename'], 0);
+		$data['format'] 		= PhocaGalleryFile::getFileFormat($data['filename']);
 		
 		//If there is no title and no alias, use filename as title and alias
 		if (!isset($data['title']) || (isset($data['title']) && $data['title'] == '')) {

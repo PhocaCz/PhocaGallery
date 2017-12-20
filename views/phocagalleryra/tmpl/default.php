@@ -37,8 +37,7 @@ $sortFields = $this->getSortFields();
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($option, $task, 'adminForm');
-echo $r->startFilter($OPT.'_FILTER');
-echo $r->selectFilterCategory(PhocaGalleryCategory::options($option), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
+echo $r->startFilter();
 echo $r->endFilter();
 
 echo $r->startMainContainer();
@@ -49,6 +48,11 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR')
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
+
+echo $r->startFilterBar(2);
+echo $r->selectFilterCategory(PhocaGalleryCategory::options($option), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
+echo $r->endFilterBar();
+
 echo $r->endFilterBar();
 
 echo $r->startTable('categoryList');
@@ -85,12 +89,12 @@ echo "\n\n";
 echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
 
 echo $r->tdOrder(0, 0, 0);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
+echo $r->td(JHtml::_('grid.id', $i, $item->id), "small");
 
 
 $usrU = $item->ratingname;
 if ($item->ratingusername) {$usrU = $usrU . ' ('.$item->ratingusername.')';}
-echo $r->td($usrU, "small hidden-phone");
+echo $r->td($usrU, "small");
 
 
 if ($canEditCat) {
@@ -98,9 +102,9 @@ if ($canEditCat) {
 } else {
 	$catO = $this->escape($item->category_title);
 }
-echo $r->td($catO, "small hidden-phone");
-echo $r->td($item->rating, "small hidden-phone");
-echo $r->td($item->id, "small hidden-phone");
+echo $r->td($catO, "small");
+echo $r->td($item->rating, "small");
+echo $r->td($item->id, "small");
 
 echo '</tr>'. "\n";
 						

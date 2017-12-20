@@ -1,12 +1,12 @@
 <?php
-/*
- * @package		Joomla.Framework
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- *
- * @component Phoca Component
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
+/**
+ * @package   Phoca Gallery
+ * @author    Jan Pavelka - https://www.phoca.cz
+ * @copyright Copyright (C) Jan Pavelka https://www.phoca.cz
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 and later
+ * @cms       Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -23,8 +23,8 @@ class PhocaGalleryRenderProcess
 
 	public static function getProcessPage ($filename, $thumbInfo, $refresh_url, $errorMsg = '' ) {
 		
-		$countImg 		= (int)JRequest::getVar( 'countimg', 0, 'get', 'INT' );
-		$currentImg 	= (int)JRequest::getVar( 'currentimg',0, 'get','INT' );
+		$countImg 		= (int)JFactory::getApplication()->input->get( 'countimg', 0, 'get', 'INT' );
+		$currentImg 	= (int)JFactory::getApplication()->input->get( 'currentimg',0, 'get','INT' );
 		$paths			= PhocaGalleryPath::getPath();
 		
 		if ($currentImg == 0) {
@@ -32,7 +32,7 @@ class PhocaGalleryRenderProcess
 		}
 		$nextImg = $currentImg + 1;
 		
-		$view 		= JRequest::getVar( 'view', '', 'get', 'string' );
+		$view 		= JFactory::getApplication()->input->get( 'view', '', 'get', 'string' );
 
 		//we are in whole window - not in modal box
 		
@@ -136,7 +136,7 @@ class PhocaGalleryRenderProcess
 				break;	
 			}
 			
-			//$view 		= JRequest::getVar( 'view' );
+			//$view 		= JFactory::getApplication()->input->get( 'view' );
 
 			//we are in whole window - not in modal box
 			if ($view != 'phocagalleryi' && $view != 'phocagalleryd') {
@@ -152,7 +152,7 @@ class PhocaGalleryRenderProcess
 				
 				echo '<tr><td>- ' .JText::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_SOLUTION' ).' <br /> <a href="index.php?option=com_media">' .JText::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_LINK' ).'</a><div class="hr"></div></td></tr>';
 				
-				echo '<tr><td>- <a href="http://www.phoca.cz/documentation/" target="_blank">' .JText::_( 'COM_PHOCAGALLERY_GO_TO_PHOCA_GALLERY_USER_MANUAL' ).'</a></td></tr>';
+				echo '<tr><td>- <a href="https://www.phoca.cz/documentation/" target="_blank">' .JText::_( 'COM_PHOCAGALLERY_GO_TO_PHOCA_GALLERY_USER_MANUAL' ).'</a></td></tr>';
 				
 				echo '</table>';
 				echo '</div>';
@@ -199,13 +199,13 @@ class PhocaGalleryRenderProcess
 	public static function displayStopThumbnailsCreating($element = null) {
 		
 		if( is_null( $element ) ) {
-			JError::raiseWarning(500, 'Function Error: No element added');// No JText - for developers only
+			throw new Exception('Function Error: No element added', 500);
 			return false;
 		}
 		
 		// 1 ... link was displayed
 		// 0 ... display the link "Stop ThumbnailsCreation
-		$view 		= JRequest::getVar( 'view' );
+		$view 		= JFactory::getApplication()->input->get( 'view' );
 
 		//we are in whole window - not in modal box
 		if ($view == 'phocagalleryi' || $view == 'phocagalleryd') {
@@ -238,7 +238,7 @@ class PhocaGalleryRenderProcess
 	protected static function getHeader( $element = null) {
 	
 		if( is_null( $element ) ) {
-			JError::raiseWarning(500, 'Function Error: No element added');// No JText - for developers only
+			throw new Exception('Function Error: No element added', 500);
 			return false;
 		}
 		

@@ -41,10 +41,7 @@ echo '<div class="phoca-thumb-status">' . $this->tmpl['enablethumbcreationstatus
 
 
 echo $r->startForm($option, $tasks, 'adminForm');
-echo $r->startFilter($OPT.'_FILTER');
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
-echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
-
+echo $r->startFilter();
 echo $r->endFilter();
 
 echo $r->startMainContainer();
@@ -52,6 +49,10 @@ if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']-
 	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_CATEGORY_IN_GALLERY').': '
 	.(int)$this->tmpl['notapproved']->count.'</div>';
 }
+if ($this->t['search']) {
+	echo '<div class="alert alert-message">' . JText::_('COM_PHOCAGALLERY_SEARCH_FILTER_IS_ACTIVE') .'</div>';
+}
+
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($OPT.'_FILTER_SEARCH_LABEL', $OPT.'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -59,6 +60,13 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR',
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
+
+echo $r->startFilterBar(2);
+echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
+echo $r->selectFilterLevels('COM_PHOCAGALLERY_SELECT_MAX_LEVELS', $this->state->get('filter.level'));
+echo $r->endFilterBar();
+
 echo $r->endFilterBar();		
 
 echo $r->startTable('categoryList');
@@ -103,7 +111,13 @@ $linkEdit 		= JRoute::_( $urlEdit.(int) $item->id );
 $linkParent		= JRoute::_( $urlEdit.(int) $item->parent_id );
 $canEditParent	= $user->authorise('core.edit', $option);
 
-$parentsStr = ' '.$item->parentstree;
+$parentsStr = '';
+if (isset($item->parentstree)) {
+	$parentsStr = ' '.$item->parentstree;
+}
+if (!isset($item->level)) {
+	$item->level = 0;
+}
 
 $iD = $i % 2;
 echo "\n\n";
@@ -111,8 +125,8 @@ echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->parent_id.'" item-id="'
 //echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->parent_id.'" >'. "\n";
 
 
-echo $r->tdOrder($canChange, $saveOrder, $orderkey);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");						
+echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
+echo $r->td(JHtml::_('grid.id', $i, $item->id), "small");						
 $checkO = '';
 if ($item->checked_out) {
 	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
@@ -123,25 +137,25 @@ if ($canCreate || $canEdit) {
 	$checkO .= $this->escape($item->title);
 }
 $checkO .= ' <span class="smallsub">(<span>'.JText::_($OPT.'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small hidden-phone");
-echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small hidden-phone");
-echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small hidden-phone");
+echo $r->td($checkO, "small");
+echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
+echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small");
 
 if ($canEditParent) {
 	$parentO = '<a href="'. JRoute::_($linkParent).'">'. $this->escape($item->parentcat_title).'</a>';
 } else {
 	$parentO = $this->escape($item->parentcat_title);
 }
-echo $r->td($parentO, "small hidden-phone");	
-echo $r->td($this->escape($item->access_level), "small hidden-phone");	
+echo $r->td($parentO, "small");	
+echo $r->td($this->escape($item->access_level), "small");	
 
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}
-echo $r->td($usrO, "small hidden-phone");							
+echo $r->td($usrO, "small");							
 echo $r->tdRating($item->ratingavg);
-echo $r->td($item->hits, "small hidden-phone");
+echo $r->td($item->hits, "small");
 echo $r->tdLanguage($item->language, $item->language_title, $this->escape($item->language_title));
-echo $r->td($item->id, "small hidden-phone");
+echo $r->td($item->id, "small");
 
 echo '</tr>'. "\n";
 						
