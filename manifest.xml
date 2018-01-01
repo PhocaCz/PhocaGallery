@@ -4,10 +4,10 @@
 		<description><![CDATA[ Phoca Gallery is Joomla! CMS image gallery. It includes component, modules and plugins and allows users to display images or YouTube videos on website in many different variations. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
-		<version>4.3.8</version>
-		<infourl title="Phoca Gallery 4.3.8">http://www.phoca.cz/version/index.php?phocagallery=4.3.8</infourl>
+		<version>4.3.9</version>
+		<infourl title="Phoca Gallery 4.3.9">http://www.phoca.cz/version/index.php?phocagallery=4.3.9</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.3.8/com_phocagallery_v4.3.8.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.3.9/com_phocagallery_v4.3.9.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
