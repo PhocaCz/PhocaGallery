@@ -244,9 +244,9 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 		/* YouTube */
 		gallery.listen('beforeChange', function() {
 			var currItem = jQuery(gallery.currItem.container);
-			jQuery('.video-wrapper iframe').removeClass('active');
-			var currItemIframe = currItem.find('.video-wrapper iframe').addClass('active');
-			jQuery('.video-wrapper iframe').each(function() {
+			jQuery('.ph-pswp-video-wrapper iframe').removeClass('active');
+			var currItemIframe = currItem.find('.ph-pswp-video-wrapper iframe').addClass('active');
+			jQuery('.ph-pswp-video-wrapper iframe').each(function() {
 				if (!jQuery(this).hasClass('active')) {
 					jQuery(this).attr('src', jQuery(this).attr('src'));
 				}
@@ -254,7 +254,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 		});
 		
 		gallery.listen('close', function() {
-			jQuery('.video-wrapper iframe').each(function() {
+			jQuery('.ph-pswp-video-wrapper iframe').each(function() {
 				jQuery(this).attr('src', jQuery(this).attr('src'));
 			});
 		});

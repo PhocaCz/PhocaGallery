@@ -95,7 +95,7 @@ if (!empty($this->items)) {
 				
 				if (isset($cv->videocode) && $cv->videocode != '' && $cv->videocode != '0')
                 {
-                    echo 'data-type="video" data-video="<div class=\'wrapper\'><div class=\'video-wrapper\'>' . str_replace('"', "'", PhocaGalleryYoutube::displayVideo($cv->videocode)) . '</div></div>"';
+                    echo 'data-type="video" data-video="<div class=\'ph-pswp-wrapper\'><div class=\'ph-pswp-video-wrapper\'>' . str_replace('"', "'", PhocaGalleryYoutube::displayVideo($cv->videocode)) . '</div></div>"';
                 }
 				echo ' >';// A End
 

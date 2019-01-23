@@ -1,0 +1,110 @@
+{
+	"author": "Jan Pavelka (www.phoca.cz)",
+	"authorUrl": "https://www.phoca.cz",
+	"copyright": "Jan Pavelka",
+	"license": "GNU/GPL",
+	"projectName": "PhocaGallery",
+	"extensionName": "Phoca Gallery",
+	"projectInitials" : "PG",				  
+	"description": "Phoca Gallery is an image gallery for Joomla! CMS.",
+	"projectUrl": "https://www.phoca.cz/phocagallery",
+	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/2-phoca-gallery-component",
+	"projectDemo" : {
+		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
+		"Phoca Gallery And Masonry.js Demo": "https://www.phoca.cz/phocacartdemo/phoca-gallery",
+		"Joomla! 2.5 Demo": "https://www.phoca.cz/joomlademo/",
+		"Joomla! 1.5 Demo": "https://www.phoca.cz/demo/"
+
+	},
+	"projectColor": "#95313e",												
+	"menu": {
+		"main":{
+			"0" : {
+				"image": "icon-16-pg-menu.png",
+				"view": "",
+				"link": "option=com_phocagallery",
+				"title": "COM_PHOCAGALLERY"
+			}
+		},
+		"submenu": {
+			"0" : {
+				"image": "icon-16-pg-control-panel.png",
+				"view": "phocagallerycp",
+				"link": "option=com_phocagallery",
+				"title": "COM_PHOCAGALLERY_CONTROLPANEL"
+			},
+			"1" : {
+				"image": "icon-16-pg-menu-gal.png",
+				"view": "phocagalleryimgs",
+				"link": "option=com_phocagallery&amp;view=phocagalleryimgs",
+				"title": "COM_PHOCAGALLERY_IMAGES"
+			},
+			"2" : {
+				"image": "icon-16-pg-menu-cat.png",
+				"view": "phocagallerycs",
+				"link": "option=com_phocagallery&amp;view=phocagallerycs",
+				"title": "COM_PHOCAGALLERY_CATEGORIES"
+			},
+			"3" : {
+				"image": "icon-16-pg-menu-theme.png",
+				"view": "phocagalleryt",
+				"link": "option=com_phocagallery&amp;view=phocagalleryt",
+				"title": "COM_PHOCAGALLERY_THEMES"
+			},
+			"4" : {
+				"image": "icon-16-pg-menu-vote.png",
+				"view": "phocagalleryra",
+				"link": "option=com_phocagallery&amp;view=phocagalleryra",
+				"title": "COM_PHOCAGALLERY_CATEGORYRATING"
+			},
+			"5" : {
+				"image": "icon-16-pg-menu-vote-img.png",
+				"view": "phocagalleryraimg",
+				"link": "option=com_phocagallery&amp;view=phocagalleryraimg",
+				"title": "COM_PHOCAGALLERY_IMAGERATING"
+			},
+			"6" : {
+				"image": "icon-16-pg-menu-comment.png",
+				"view": "phocagallerycos",
+				"link": "option=com_phocagallery&amp;view=phocagallerycos",
+				"title": "COM_PHOCAGALLERY_CATEGORYCOMMENTS"
+			},
+			"7": {
+				"image": "icon-16-pg-menu-comment-img.png",
+				"view": "phocagallerycoimgs",
+				"link": "option=com_phocagallery&amp;view=phocagallerycoimgs",
+				"title": "COM_PHOCAGALLERY_IMAGECOMMENTS"
+			},
+			"8": {
+				"image": "icon-16-pg-menu-users.png",
+				"view": "phocagalleryusers",
+				"link": "option=com_phocagallery&amp;view=phocagalleryusers",
+				"title": "COM_PHOCAGALLERY_USERS"
+			},
+			"9": {
+				"image": "icon-16-pg-menu-fb.png",
+				"view": "phocagalleryfbs",
+				"link": "option=com_phocagallery&amp;view=phocagalleryfbs",
+				"title": "COM_PHOCAGALLERY_FB"
+			},
+			"10": {
+				"image": "icon-16-pg-menu-tags.png",
+				"view": "phocagallerytags",
+				"link": "option=com_phocagallery&amp;view=phocagallerytags",
+				"title": "COM_PHOCAGALLERY_TAGS"
+			},
+			"11": {
+				"image": "icon-16-pg-menu-styles.png",
+				"view": "phocagalleryefs",
+				"link": "option=com_phocagallery&amp;view=phocagalleryefs",
+				"title": "COM_PHOCAGALLERY_STYLES"
+			},
+			"12": {
+				"image": "icon-16-pg-menu-info.png",
+				"view": "phocagalleryin",
+				"link": "option=com_phocagallery&amp;view=phocagalleryin",
+				"title": "COM_PHOCAGALLERY_INFO"
+			}
+		}
+	}
+}

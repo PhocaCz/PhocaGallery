@@ -470,7 +470,7 @@ div.current dd {
 
 #phoca-exif h2.phocaexif {
   font-size:130%;
-  background: url(../../images/icon-info.gif) left center no-repeat;
+  background: url(../../images/icon-info.png) left center no-repeat;
   padding-left: 20px;
 }
 
@@ -1058,7 +1058,7 @@ img.youtube:hover {
   vertical-align: middle;
 }
 
-.wrapper {
+.ph-pswp-wrapper {
   line-height: 0;
   width: 100%;
   max-width: 900px;
@@ -1070,7 +1070,7 @@ img.youtube:hover {
   z-index: 1045;
 }
 
-.video-wrapper {
+.ph-pswp-video-wrapper {
   position: relative;
   padding-bottom: 56.25%;
   /* 16:9 */
@@ -1079,7 +1079,7 @@ img.youtube:hover {
   width: 100%;
 }
 
-.video-wrapper iframe {
+.ph-pswp-video-wrapper iframe {
   position: absolute;
   top: 0;
   left: 0;

@@ -129,7 +129,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 		phocagalleryimport('phocagallery.ordering.ordering');
 		//$categoryOrdering = PhocaGalleryOrdering::getOrderingString($category_ordering, 2);
 		
-		$query = 'SELECT cc.*, a.catid, COUNT(a.id) AS numlinks, u.username AS username, r.count AS ratingcount, r.average AS ratingaverage, uc.avatar AS avatar, uc.approved AS avatarapproved, uc.published AS avatarpublished,'
+		$query = 'SELECT cc.*, a.catid, COUNT(a.id) AS numlinks, u.username AS username, r.count AS ratingcount, r.average AS ratingaverage, uc.avatar AS avatar, uc.approved AS avatarapproved, uc.published AS avatarpublished, min(a.filename) as filename, min(a.extm) as extm, min(a.exts) as exts, min(a.exth) as exth, min(a.extw) as extw,'
 		. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as slug'
 		. ' FROM #__phocagallery_categories AS cc'
 		//. ' LEFT JOIN #__phocagallery AS a ON a.catid = cc.id'
@@ -205,11 +205,11 @@ class PhocagalleryModelCategories extends JModelLegacy
 				$tree[$iCT]->extid				= $key->extid;// Picasa Album or Facebook Album
 				$tree[$iCT]->extfbcatid			= $key->extfbcatid;
 				// info about one image (not using recursive function)
-				/*$tree[$iCT]->filename			= $key->filename;
+				$tree[$iCT]->filename			= $key->filename;
 				$tree[$iCT]->extm				= $key->extm;
 				$tree[$iCT]->exts				= $key->exts;
 				$tree[$iCT]->extw				= $key->extw;
-				$tree[$iCT]->exth				= $key->exth;*/
+				$tree[$iCT]->exth				= $key->exth;
 				$tree[$iCT]->date 				= $key->date;
 				
 				$tree[$iCT]->linkthumbnailpath	= '';

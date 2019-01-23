@@ -742,3 +742,8 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 .ph-select-status {
 	padding-left: 5px;
 }
+
+.ph-cpanel-logo img {
+	transform: scale(0.6);
+	transform-origin: 0 50%;
+}
