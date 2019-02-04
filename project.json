@@ -6,9 +6,11 @@
 	"projectName": "PhocaGallery",
 	"extensionName": "Phoca Gallery",
 	"projectInitials" : "PG",				  
-	"description": "Phoca Gallery is an image gallery for Joomla! CMS.",
+	"description": "Phoca Gallery is an efficient image gallery extension for Joomla! CMS.",
 	"projectUrl": "https://www.phoca.cz/phocagallery",
 	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/2-phoca-gallery-component",
+	"projectMainComponent": "Phoca Gallery",
+	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocagallery-joomla-gallery",
 	"projectDemo" : {
 		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
 		"Phoca Gallery And Masonry.js Demo": "https://www.phoca.cz/phocacartdemo/phoca-gallery",

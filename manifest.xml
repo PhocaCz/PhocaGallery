@@ -1,7 +1,7 @@
 <updates>
 	<update>
 		<name><![CDATA[ Phoca Gallery ]]></name>
-		<description><![CDATA[ Phoca Gallery is an image gallery for Joomla! CMS. ]]></description>
+		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
 		<version>4.3.11</version>

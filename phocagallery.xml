@@ -2,7 +2,7 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>23/01/2019</creationDate>
+	<creationDate>04/02/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
@@ -96,8 +96,9 @@
 		</languages>
 	</administration>
 	
+	
 
 	<updateservers>
-		<server type="extension" name="COM_PHOCAGALLERY"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaGallery/master/manifest.xml]]></server>
+		<server type="extension" name="COM_PHOCAGALLERY" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaGallery/master/manifest.xml]]></server>
 	</updateservers>
 </extension>
