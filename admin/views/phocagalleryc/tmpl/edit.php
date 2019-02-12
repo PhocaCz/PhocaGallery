@@ -48,8 +48,8 @@ $tabs = array (
 'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
 'metadata'		=> JText::_($OPT.'_METADATA_OPTIONS'),
-'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS'),
-'facebook'		=> JText::_($OPT.'_FB_SETTINGS'));
+'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS')/*,
+'facebook'		=> JText::_($OPT.'_FB_SETTINGS')*/);
 echo $r->navigation($tabs);
 
 echo '<div class="tab-content">'. "\n";
@@ -83,13 +83,14 @@ if ($this->tmpl['enablepicasaloading'] == 1) {
 	echo $r->group($this->form, $formArray);
 	echo '</div>';
 }
-
+///
+/*
 echo '<div class="tab-pane" id="facebook">'. "\n";
 // Extid is hidden - only for info if this is an external image (the filename field will be not required)
 $formArray = array ('extfbuid', 'extfbcatid');
 echo $r->group($this->form, $formArray);
 echo '</div>';
-
+*/
 echo '</div>';//end tab content
 echo '</div>';//end span10
 // Second Column

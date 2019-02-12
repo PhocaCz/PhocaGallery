@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>04/02/2019</creationDate>
+	<creationDate>12/02/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.3.11</version>
+	<version>4.3.12</version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>
@@ -67,7 +67,6 @@
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-comment.png" alt="COM_PHOCAGALLERY_CATEGORYCOMMENTS" view="phocagallerycos" link="option=com_phocagallery&amp;view=phocagallerycos">COM_PHOCAGALLERY_CATEGORYCOMMENTS</menu>
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-comment-img.png" alt="COM_PHOCAGALLERY_IMAGECOMMENTS" view="phocagallerycoimgs" link="option=com_phocagallery&amp;view=phocagallerycoimgs">COM_PHOCAGALLERY_IMAGECOMMENTS</menu>
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-users.png" alt="COM_PHOCAGALLERY_USERS" view="phocagalleryusers" link="option=com_phocagallery&amp;view=phocagalleryusers">COM_PHOCAGALLERY_USERS</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-fb.png" alt="COM_PHOCAGALLERY_FB" view="phocagalleryfbs" link="option=com_phocagallery&amp;view=phocagalleryfbs">COM_PHOCAGALLERY_FB</menu>
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-tags.png" alt="COM_PHOCAGALLERY_TAGS" view="phocagallerytags" link="option=com_phocagallery&amp;view=phocagallerytags">COM_PHOCAGALLERY_TAGS</menu>
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-styles.png" alt="COM_PHOCAGALLERY_STYLES" view="phocagalleryefs" link="option=com_phocagallery&amp;view=phocagalleryefs">COM_PHOCAGALLERY_STYLES</menu>
 				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-info.png" alt="COM_PHOCAGALLERY_INFO" view="phocagalleryin" link="option=com_phocagallery&amp;view=phocagalleryin">COM_PHOCAGALLERY_INFO</menu>
@@ -88,6 +87,7 @@
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>phocagallery.php</filename>
+			<filename>script.php</filename>
 		</files>
 
 		<languages folder="admin/language">

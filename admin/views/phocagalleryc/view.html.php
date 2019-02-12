@@ -102,14 +102,14 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 			JToolbarHelper ::save('phocagalleryc.save', 'JToolbar_SAVE');
 			JToolbarHelper ::addNew('phocagalleryc.save2new', 'JToolbar_SAVE_AND_NEW');
 			$this->tmpl['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
-			$this->tmpl['enablefacebookloading'] = $paramsC->get( 'enable_facebook_loading', 1 );
+			///$this->tmpl['enablefacebookloading'] = $paramsC->get( 'enable_facebook_loading', 1 );
 			if($this->tmpl['enablepicasaloading'] == 1){
 				JToolbarHelper ::custom('phocagalleryc.loadextimgp', 'loadextp.png', '', 'COM_PHOCAGALLERY_P_IMPORT' , false);
 			}
-			if($this->tmpl['enablefacebookloading'] == 1){
-				JToolbarHelper ::custom('phocagalleryc.loadextimgf', 'loadextf.png', '', 'COM_PHOCAGALLERY_FB_IMPORT' , false);
-				JToolbarHelper ::custom('phocagalleryc.uploadextimgf', 'uploadextf.png', '', 'COM_PHOCAGALLERY_FB_EXPORT' , false);
-			}
+///			if($this->tmpl['enablefacebookloading'] == 1){
+				///JToolbarHelper ::custom('phocagalleryc.loadextimgf', 'loadextf.png', '', 'COM_PHOCAGALLERY_FB_IMPORT' , false);
+				///JToolbarHelper ::custom('phocagalleryc.uploadextimgf', 'uploadextf.png', '', 'COM_PHOCAGALLERY_FB_EXPORT' , false);
+///			}
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {

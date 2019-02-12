@@ -84,24 +84,18 @@
 				"title": "COM_PHOCAGALLERY_USERS"
 			},
 			"9": {
-				"image": "icon-16-pg-menu-fb.png",
-				"view": "phocagalleryfbs",
-				"link": "option=com_phocagallery&amp;view=phocagalleryfbs",
-				"title": "COM_PHOCAGALLERY_FB"
-			},
-			"10": {
 				"image": "icon-16-pg-menu-tags.png",
 				"view": "phocagallerytags",
 				"link": "option=com_phocagallery&amp;view=phocagallerytags",
 				"title": "COM_PHOCAGALLERY_TAGS"
 			},
-			"11": {
+			"10": {
 				"image": "icon-16-pg-menu-styles.png",
 				"view": "phocagalleryefs",
 				"link": "option=com_phocagallery&amp;view=phocagalleryefs",
 				"title": "COM_PHOCAGALLERY_STYLES"
 			},
-			"12": {
+			"11": {
 				"image": "icon-16-pg-menu-info.png",
 				"view": "phocagalleryin",
 				"link": "option=com_phocagallery&amp;view=phocagalleryin",
