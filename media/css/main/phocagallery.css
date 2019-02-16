@@ -1091,3 +1091,11 @@ video {
   width: 100% !important;
   height: auto !important;
 }
+
+#phocagallery .pg-mapbox-description {
+	padding: 0 5px;
+}
+#phocagallery .pg-mapbox-description p {
+	margin: 0;
+	padding: 0;
+}

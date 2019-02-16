@@ -747,3 +747,12 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	transform: scale(0.6);
 	transform-origin: 0 50%;
 }
+
+.ph-msg-success {
+    color: #fff;
+    background-color: #28A745;
+    padding: 5px;
+}
+.ph-info-modal {
+    float: left;
+}

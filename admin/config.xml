@@ -749,11 +749,35 @@
 <field name="phocahead19" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_GEO_SETTINGS_LABEL" label="" description=""/>
 
 
+		<field name="map_type" type="list" default="2" label="COM_PHOCAGALLERY_FIELD_MAP_TYPE_LABEL" description="COM_PHOCAGALLERY_FIELD_MAP_TYPE_DESC">
+			<option value="1">COM_PHOCAGALLERY_GOOGLE_MAPS</option>
+			<option value="2">COM_PHOCAGALLERY_OPENSTREETMAP</option>
+		</field>
+
 <field name="maps_api_key" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_MAPS_API_KEY_LABEL" description="COM_PHOCAGALLERY_FIELD_MAPS_API_KEY_DESC"/>
 	<field name="maps_api_ssl" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_MAPS_API_SSL_ENABLED_LABEL" description="COM_PHOCAGALLERY_FIELD_MAPS_API_SSL_ENABLED_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
+
+
+
+		<field name="osm_map_type" type="list" default="osm" label="COM_PHOCAGALLERY_FIELD_OSM_MAP_TYPE_OSM_LABEL" description="COM_PHOCAGALLERY_FIELD_OSM_MAP_TYPE_OSM_DESC">
+			<option value="osm">COM_PHOCAGALLERY_OPENSTREETMAP</option>
+			<option value="osm_bw">COM_PHOCAGALLERY_OPENSTREETMAP_BLACK_WHITE</option>
+			<option value="osm_de">COM_PHOCAGALLERY_OPENSTREETMAP_GERMANY</option>
+			<option value="osm_fr">COM_PHOCAGALLERY_OPENSTREETMAP_FRANCE</option>
+			<option value="osm_hot">COM_PHOCAGALLERY_HUMANITARIAN_OPENSTREETMAP</option>
+			<option value="thunderforest">COM_PHOCAGALLERY_THUNDERFOREST_API_KEY_NEEDED</option>
+			<option value="mapbox">COM_PHOCAGALLERY_MAPBOX_API_KEY_NEEDED</option>
+			<option value="opentopomap">COM_PHOCAGALLERY_OPENTOPOMAP</option>
+			<option value="wikimedia">COM_PHOCAGALLERY_WIKIMEDIA_MAPS</option>
+
+		</field>
+
+		<field name="osm_map_router_api_key" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_MAP_API_KEY_OSM_LABEL" description="COM_PHOCAGALLERY_FIELD_MAP_API_KEY_OSM_DESC"/>
+
+		<field name="thunderforest_map_type" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_THUNDERFOREST_MAP_TYPE_OSM_LABEL" description="COM_PHOCAGALLERY_FIELD_THUNDERFOREST_MAP_TYPE_OSM_DESC"/>
 
 
 
@@ -803,11 +827,6 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
-
-
-
-
 
 
 	</fieldset>

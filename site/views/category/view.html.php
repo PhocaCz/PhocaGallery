@@ -111,6 +111,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$this->tmpl['equal_heights']			= $this->params->get( 'equal_heights', 0 );
 		$this->tmpl['photoswipe_display_caption']= $this->params->get( 'photoswipe_display_caption', 1 );
 		$this->tmpl['masonry_center']			= $this->params->get( 'masonry_center', 0 );
+		$this->tmpl['map_type']					= $this->params->get( 'map_type', 2 );
 
 		// Switch image JS
 		$this->tmpl['basic_image']	= '';

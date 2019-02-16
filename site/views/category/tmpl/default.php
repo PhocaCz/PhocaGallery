@@ -150,7 +150,13 @@ if ((int)$this->tagId > 0) {
 			} else {
 				//echo JHtml::_('tabs.panel', JHtml::_( 'image', 'media/com_phocagallery/images/icon-geo.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_GEOTAGGING'), 'pggeotagging' );
 				echo JHtml::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('geo', 'media/com_phocagallery/images/icon-geo.png', '') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_GEOTAGGING'), 'pggeotagging' );
-				echo $this->loadTemplate('geotagging');
+				
+				if ($this->tmpl['map_type'] == 2){
+					echo $this->loadTemplate('geotagging_osm');
+				} else {
+					echo $this->loadTemplate('geotagging');
+				}
+				
 			}
 		}
 		if ((int)$this->tmpl['displaycreatecat'] == 1)

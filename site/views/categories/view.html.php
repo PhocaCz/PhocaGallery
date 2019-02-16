@@ -17,6 +17,7 @@ phocagalleryimport('phocagallery.render.renderinfo');
 phocagalleryimport('phocagallery.picasa.picasa');
 phocagalleryimport('phocagallery.image.imagefront');
 phocagalleryimport('phocagallery.ordering.ordering');
+phocagalleryimport('phocagallery.render.rendermaposm');
 
 class PhocaGalleryViewCategories extends JViewLegacy
 {
@@ -69,6 +70,7 @@ class PhocaGalleryViewCategories extends JViewLegacy
 		$this->tmpl['bootstrap_icons']			= $this->params->get( 'bootstrap_icons', 0 );
 		$this->tmpl['equal_heights']			= $this->params->get( 'equal_heights', 0 );
 		$this->tmpl['masonry_center']			= $this->params->get( 'masonry_center', 0 );
+		$this->tmpl['map_type']					= $this->params->get( 'map_type', 2 );
 
 		// L E G A C Y ===
 		$this->tmpl['equalpercentagewidth']		= $this->params->get( 'equal_percentage_width', 1);
@@ -479,7 +481,13 @@ class PhocaGalleryViewCategories extends JViewLegacy
 				$this->tmplGeo['categorieslat'] = $latLng['lat'];
 			}
 			$this->assignRef('tmplGeo',	$this->tmplGeo);
-			parent::display('map');
+			
+			if ($this->tmpl['map_type'] == 2) {
+				parent::display('map_osm');
+			} else {
+				parent::display('map');
+			}
+			
 		} else {
 			parent::display($tpl);
 		}
