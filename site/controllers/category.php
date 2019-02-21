@@ -314,7 +314,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
@@ -412,7 +412,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
@@ -523,7 +523,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
@@ -647,7 +647,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			}
 
 
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 
 
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,

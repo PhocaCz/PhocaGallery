@@ -296,5 +296,41 @@ class PhocaGalleryImage
 
 		return $image;
 	}
+
+	public static function updateRealThumbnailSizes($image, $sizes) {
+
+		if ($image == '') {
+			return false;
+		}
+		if (empty($sizes)) {
+			return false;
+		}
+
+		$path = PhocaGalleryPath::getPath();
+        $file = str_replace($path->image_rel, '', $image);
+
+        $extW = '';
+        if (isset($sizes['l']['w']) && isset($sizes['m']['w']) && isset($sizes['s']['w'])) {
+            $extW = (int)$sizes['l']['w'].','.(int)$sizes['m']['w'].','.(int)$sizes['s']['w'];
+        }
+        $extH = '';
+        if (isset($sizes['l']['h']) && isset($sizes['m']['h']) && isset($sizes['s']['h'])) {
+            $extH = (int)$sizes['l']['h'].','.(int)$sizes['m']['h'].','.(int)$sizes['s']['h'];
+        }
+
+        if ($file != '' && $extW != '' && $extH != '') {
+
+            $db 	= JFactory::getDBO();
+            $query = 'UPDATE #__phocagallery'
+                .' SET extw = '.$db->quote($extW).','
+                .' exth = '.$db->quote($extH)
+                .' WHERE filename = '.$db->quote($file);
+
+            $db->setQuery($query);
+            $db->execute();
+            return true;
+        }
+        return false;
+	}
 }
 ?>

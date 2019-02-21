@@ -753,7 +753,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				exit( 'ERROR: '.JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
@@ -839,7 +839,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->redirect($redirectUrl, $errUploadMsg);
 				return false;
@@ -931,7 +931,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = JText::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg );
 				$app->redirect($redirectUrl);
@@ -947,7 +947,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 			$ytbLink	= $this->input->get( 'phocagalleryytbuploadlink', '', 'post', 'string');
 			$errorYtbMsg	= '';
-			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . DS, $errorYtbMsg);
+			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . '/', $errorYtbMsg);
 
 
 			if ($ytbData && isset($ytbData['filename'])) {
@@ -1065,7 +1065,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
 				return false;
 			}
-			if (!JFolder::exists($path->image_abs . $rightFolder . DS)) {
+			if (!JFolder::exists($path->image_abs . $rightFolder . '/')) {
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
 				'message' => JText::_('COM_PHOCAGALLERY_ERROR').': ',
 				'details' => JTEXT::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));

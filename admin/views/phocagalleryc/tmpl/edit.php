@@ -33,6 +33,9 @@ Joomla.submitbutton = function(task) {
 		if (task == 'phocagalleryc.uploadextimgf') {
 			document.getElementById('uploading-ext-imgf').style.display='block';
 		}
+        if (task == 'phocagalleryc.loadextimgi') {
+            document.getElementById('loading-ext-imgi').style.display='block';
+        }
 		<?php echo $this->form->getField('description')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
@@ -48,7 +51,8 @@ $tabs = array (
 'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
 'metadata'		=> JText::_($OPT.'_METADATA_OPTIONS'),
-'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS')/*,
+'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS'),
+'imgur'		    => JText::_($OPT.'_IMGUR_SETTINGS')/*,
 'facebook'		=> JText::_($OPT.'_FB_SETTINGS')*/);
 echo $r->navigation($tabs);
 
@@ -83,6 +87,11 @@ if ($this->tmpl['enablepicasaloading'] == 1) {
 	echo $r->group($this->form, $formArray);
 	echo '</div>';
 }
+
+echo '<div class="tab-pane" id="imgur">'. "\n";
+$formArray = array ('imgurclient', 'imguralbum');
+echo $r->group($this->form, $formArray);
+echo '</div>';
 ///
 /*
 echo '<div class="tab-pane" id="facebook">'. "\n";
@@ -101,3 +110,4 @@ echo $r->endForm();
 <div id="loading-ext-imgp"><div class="loading"><div><center><?php echo JHTML::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', JText::_('COM_PHOCAGALLERY_LOADING') ) . '</center></div><div>&nbsp;</div><div><center>'. JText::_('COM_PHOCAGALLERY_PICASA_LOADING_DATA'); ?></center></div></div></div>
 <div id="loading-ext-imgf"><div class="loading"><div><center><?php echo JHTML::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', JText::_('COM_PHOCAGALLERY_LOADING') ) . '</center></div><div>&nbsp;</div><div><center>'. JText::_('COM_PHOCAGALLERY_FACEBOOK_LOADING_DATA'); ?></center></div></div></div>
 <div id="uploading-ext-imgf"><div class="loading"><div><center><?php echo JHTML::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', JText::_('COM_PHOCAGALLERY_UPLOADING') ) . '</center></div><div>&nbsp;</div><div><center>'. JText::_('COM_PHOCAGALLERY_FB_UPLOADING_DATA'); ?></center></div></div></div>
+<div id="loading-ext-imgi"><div class="loading"><div><center><?php echo JHTML::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', JText::_('COM_PHOCAGALLERY_LOADING') ) . '</center></div><div>&nbsp;</div><div><center>'. JText::_('COM_PHOCAGALLERY_IMGUR_LOADING_DATA'); ?></center></div></div></div>

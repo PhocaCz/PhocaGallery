@@ -176,7 +176,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 			// Get folder variables from Helper
 			$path 				= PhocaGalleryPath::getPath();
 			$origPath 			= $path->image_abs;
-			$origPathServer 	= str_replace(DS, '/', $path->image_abs);
+			$origPathServer 	= str_replace('\\', '/', $path->image_abs);
 
 			//-----------------------------------------
 			//Do all thumbnails no limit no pagination

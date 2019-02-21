@@ -95,7 +95,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		$user = JFactory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
 		$table->parent_id 	= PhocaGalleryUtils::getIntFromString($table->parent_id);
 		$table->image_id 	= PhocaGalleryUtils::getIntFromString($table->image_id);
 		$table->hits 		= PhocaGalleryUtils::getIntFromString($table->hits);
@@ -103,7 +103,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		$table->extfbuid 	= PhocaGalleryUtils::getIntFromString($table->extfbuid);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -196,6 +196,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	public function save($data, &$extImgError = false)
 	{
 
+		$app = JFactory::getApplication();
 		// = = = = = = = = = =
 		// Default VALUES FOR Rights in FRONTEND
 		// ACCESS -  0: all users can see the category (registered or not registered)
@@ -301,10 +302,17 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 				if(!$this->loadExtImages($table->$pkName, $data, $message)) {
 					$this->setError($message, 'error');
+
+					//$app->enqueueMessage($message, 'error');
 					// Be aware the category is stored yet
 					//return false;
 					$extImgError = true;
 					return true;//but with error message
+				} else {
+
+					//$this->setError($message, 'message');
+					$app->enqueueMessage($message, 'message');
+					return true;
 				}
 			}
 		}
@@ -313,10 +321,37 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				$errorMsg = '';
 				if(!$this->loadExtImagesFb($table->$pkName, $data, $message)) {
 					$this->setError($message, 'error');
+					//$app->enqueueMessage($message, 'error');
 					// Be aware the category is stored yet
 					//return false;
 					$extImgError = true;
 					return true;//but with error message
+				} else {
+
+					//$this->setError($message, 'message');
+					$app->enqueueMessage($message, 'message');
+					return true;
+				}
+			}
+		}
+
+		if ((string)$subTask == 'loadextimgi') {
+			if (isset($table->$pkName)) {
+				$errorMsg = '';
+				if(!$this->loadExtImagesI($table->$pkName, $data, $message)) {
+					$this->setError($message, 'error');
+
+					//$app->enqueueMessage($message, 'error');
+					// Be aware the category is stored yet
+					//return false;
+					$extImgError = true;
+
+					return true;//but with error message
+				} else {
+
+					//$this->setError($message, 'message');
+					$app->enqueueMessage($message, 'message');
+					return true;
 				}
 			}
 		}
@@ -326,6 +361,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 			if(!$this->setOwnerOfCategory($data)) {
 				$this->setError($message);
+				//$app->enqueueMessage($message, 'error');
 				return false;
 			}
 		}
@@ -1004,6 +1040,218 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 
+	public function loadExtImagesI($idCat, $data, &$message) {
+
+
+
+		if ((isset($data['imgurclient']) && $data['imgurclient'] == '') || !isset($data['imgurclient'])) {
+			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_CLIENT_ID_NOT_SET' ), $message);
+			return false;
+		}
+
+		if ((isset($data['imguralbum']) && $data['imguralbum'] == '') || !isset($data['imguralbum'])) {
+			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_ALBUM_ID_NOT_SET' ), $message);
+			return false;
+		}
+
+		if(!function_exists("curl_init")) {
+			$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_NOT_LOADED_CURL'), $message);
+			return false;
+		}
+
+
+		$cUrl = curl_init();
+		curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($cUrl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($cUrl, CURLOPT_URL,"https://api.imgur.com/3/album/".urlencode($data['imguralbum']));
+		curl_setopt($cUrl, CURLOPT_HTTPHEADER, array('Authorization: Client-ID ' . urlencode($data['imgurclient'])));
+		$result=curl_exec($cUrl);
+		curl_close($cUrl);
+		$jsonArray = json_decode($result, true);
+
+
+
+
+		phocagalleryimport('phocagallery.imgur.imgur');
+		$sizes = PhocaGalleryImgur::getSize();
+
+
+		$dataImg = array();
+		if ($idCat && $idCat > 0) {
+			if (!empty($jsonArray['data']['images'])) {
+				$i = 0;
+				foreach ($jsonArray['data']['images'] as $k => $v) {
+
+
+					if (isset($v['link']) && $v['link'] != '') {
+
+						$s = str_replace($v['id'], $v['id'] . $sizes['s'][0], $v['link']);
+						$m = str_replace($v['id'], $v['id'] . $sizes['m'][0], $v['link']);
+						$l = str_replace($v['id'], $v['id'] . $sizes['l'][0], $v['link']);
+
+						//$row->date = gmdate('Y-m-d H:i:s');
+						$dataImg[$i]['extid'] = $v['id'];
+
+						$dataImg[$i]['title'] = $v['title'];
+						if ($dataImg[$i]['title'] == '') {
+							$dataImg[$i]['title'] = $v['id'];
+						}
+						$dataImg[$i]['description'] = $v['description'];
+						$dataImg[$i]['extl'] = $l;
+						$dataImg[$i]['extm'] = $m;
+						$dataImg[$i]['exts'] = $s;
+						$dataImg[$i]['exto'] = $v['link'];
+
+
+						$dataImg[$i]['date'] = date ("Y-m-d H:i:s", $v['datetime']);
+						$dataImg[$i]['language'] = $data['language'];
+
+
+						// Not POSSIBLE - take a lot of time :-(
+
+						/*try {
+							if ($i == 6) {
+								$sSize = getimagesize($s);
+								$mSize = getimagesize($m);
+								$lSize = getimagesize($l);
+
+								// Large
+								$dataImg[$i]['extw'][0] = isset($lSize[0]) ? $lSize[0] : '';
+								$dataImg[$i]['exth'][0] = isset($lSize[1]) ? $lSize[1] : '';
+
+								// Medium
+								$dataImg[$i]['extw'][1] = isset($mSize[0]) ? $mSize[0] : '';
+								$dataImg[$i]['exth'][1] = isset($mSize[1]) ? $mSize[1] : '';
+
+								// Small
+								$dataImg[$i]['extw'][2] = isset($sSize[0]) ? $sSize[0] : '';
+								$dataImg[$i]['exth'][2] = isset($sSize[1]) ? $sSize[1] : '';
+
+								if (isset($dataImg[$i]['extw'][0]) && isset($dataImg[$i]['exth'][0])
+									&& (int)$dataImg[$i]['exth'][0] > (int)$dataImg[$i]['extw'][0]) {
+									$dataImg[$i]['format'] = 2;
+								} else {
+									$dataImg[$i]['format'] = 1;
+								}
+
+
+								$dataImg[$i]['extw'] = implode(',', $dataImg[$i]['extw']);
+								$dataImg[$i]['exth'] = implode(',', $dataImg[$i]['exth']);
+
+
+							}
+						} catch (Exception $e) {
+							// no error message yet
+						}*/
+
+
+						// There is no option to get the thumbnails size (see above)
+						// So we try to estimate by one thumbnails size used in imgur
+						// but if e.g. large thumbnail is smaller than standard size 640 in imgur, the right size will be not set
+
+						if ((int)$v['width'] > (int)$v['height']) {
+
+
+							$ratio = (int)$v['height'] / (int)$v['width'];
+							$nL = $ratio * $sizes['l'][1];
+							$nM = $ratio * $sizes['m'][1];
+							$nS = $ratio * $sizes['s'][1];
+
+							// small crop
+							if (isset($sizes['s'][0]) && $sizes['s'][0] == 'b' ) {
+								$nS = $sizes['s'][1];
+							}
+							// medium crop
+							if (isset($sizes['m'][0]) && $sizes['m'][0] == 'b' ) {
+								$nM = $sizes['m'][1];
+							}
+
+							$dataImg[$i]['extw'] = implode(',', array($sizes['l'][1], $sizes['m'][1], $sizes['s'][1]));
+							$dataImg[$i]['exth'] = implode(',', array( (int)$nL, (int)$nM, (int)$nS));
+
+
+						} else if ((int)$v['height'] > (int)$v['width']) {
+
+							$ratio = (int)$v['width'] / (int)$v['height'];
+							$nL = $ratio * $sizes['l'][1];
+							$nM = $ratio * $sizes['m'][1];
+							$nS = $ratio * $sizes['s'][1];
+
+							// small crop
+							if (isset($sizes['s'][0]) && $sizes['s'][0] == 'b' ) {
+								$nS = $sizes['s'][1];
+							}
+							// medium crop
+							if (isset($sizes['m'][0]) && $sizes['m'][0] == 'b' ) {
+								$nM = $sizes['m'][1];
+							}
+
+							$dataImg[$i]['extw'] = implode(',', array( (int)$nL, (int)$nM, (int)$nS));
+							$dataImg[$i]['exth'] = implode(',', array($sizes['l'][1], $sizes['m'][1], $sizes['s'][1]));
+
+						} else {
+							$dataImg[$i]['extw'] = implode(',', array($sizes['l'][1], $sizes['m'][1], $sizes['s'][1]));
+							$dataImg[$i]['exth'] = implode(',', array($sizes['l'][1], $sizes['m'][1], $sizes['s'][1]));
+						}
+
+
+
+						$dataImg[$i]['exttype'] = 2;
+						$dataImg[$i]['published'] = 1;
+						$dataImg[$i]['approved'] = 1;
+
+
+						$dataImg[$i]['catid'] = $idCat;
+						$i++;
+
+
+					}
+				}
+
+
+
+				// The extid is not a part of post data, so we must store it after
+				$query = $this->_db->getQuery(true);
+				$query->update('`#__phocagallery_categories`');
+				$query->set('`extid` = ' . $this->_db->quote(urlencode($data['imguralbum'])));
+				$query->where('`id` = ' . (int)$idCat);
+				$this->_db->setQuery((string)$query);
+
+				if (!$this->_db->execute()) {
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+
+				if(count($dataImg) > 0) {
+
+					if($this->storeImage($dataImg, $idCat, 'imgur')) {
+
+						$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_IMPORTED_NUMBER_OF_IMPORTED_IMAGES') . ': '.$i, $message);
+						return true;
+					} else {
+						$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_SAVE_ERROR'), $message);
+						return false;
+					}
+				} else {
+					$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND'), $message);
+					return false;
+
+				}
+
+				//$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_LOADED'), $message);
+				//return true;
+			} else {
+				$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND' ), $message);
+				return false;
+			}
+		}  else {
+			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ), $message);
+			return false;
+		}
+	}
+
+
+
 	/*
 	 * AUTHOR - OWNER
 	 * Get information about owner's category
@@ -1568,9 +1816,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 			// Before it remove all images so they can be updated
 			// But not if pagination is used - pagination in progress
-			if (!isset($_GET['picstart']) || $type == 'facebook') {
+			if (!isset($_GET['picstart']) || $type == 'facebook' || $type == 'imgur') {
 
-				if ($type == 'facebook') {
+				if ($type == 'imgur') {
+					$exttype = 2;
+				} else if ($type == 'facebook') {
 					$exttype = 1;
 				} else {
 					$exttype = 0;//Picasa

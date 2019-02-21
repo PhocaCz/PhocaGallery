@@ -63,10 +63,10 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		$user = JFactory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -128,7 +128,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		if ($data['id'] < 1) {
 			$data['type'] = 2;// Custom in every case
 			if ($data['title'] != '') {
-				$filename = JApplication::stringURLSafe($data['title']);
+				$filename = \JApplicationHelper::stringURLSafe($data['title']);
 
 				if (trim(str_replace('-','',$filename)) == '') {
 					$filename = JFactory::getDate()->format("Y-m-d-H-i-s");

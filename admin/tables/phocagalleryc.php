@@ -49,7 +49,7 @@ class TablePhocaGalleryc extends JTable {
 		if (empty($this->alias)) {
 			$this->alias = $this->title;
 		}
-		$this->alias = JApplication::stringURLSafe($this->alias);
+		$this->alias = \JApplicationHelper::stringURLSafe($this->alias);
 		if (trim(str_replace('-','',$this->alias)) == '') {
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}

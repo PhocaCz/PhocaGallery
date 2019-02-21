@@ -96,7 +96,24 @@ if (!empty($this->items)) {
 				if (isset($cv->videocode) && $cv->videocode != '' && $cv->videocode != '0')
                 {
                     echo 'data-type="video" data-video="<div class=\'ph-pswp-wrapper\'><div class=\'ph-pswp-video-wrapper\'>' . str_replace('"', "'", PhocaGalleryYoutube::displayVideo($cv->videocode)) . '</div></div>"';
-                }
+                } else {
+					
+					// DATA SIZE
+					$w = $h = 0;
+					if (isset($v->extw) && $v->extw != '') {
+                    $extWA = explode(',', $v->extw);
+                    if (isset($extWA[0])) { $w = $extWA[0];}
+					}
+
+					if (isset($v->exth) && $v->exth != '') {
+						$extHA = explode(',', $v->exth);
+						if (isset($extHA[0])) { $h = $extHA[0];}
+					}
+					
+					if ($w > 0 && $h > 0) {
+						echo 'data-size="'.$w.'x'.$h.'"';
+					}
+				}
 				echo ' >';// A End
 
 				$cv->ooverlibclass['class'] .= " c-Image c-Image--shaded";

@@ -121,6 +121,7 @@ class PhocaGalleryImageFront
 		phocagalleryimport('phocagallery.file.filethumbnail');
 		$path		= PhocaGalleryPath::getPath();
 
+
 		$fileThumbnail =  new JObject;
 		$fileThumbnail->rel 	= '';
 		$fileThumbnail->extw 	= '';
@@ -128,6 +129,17 @@ class PhocaGalleryImageFront
 		$fileThumbnail->extpic 	= false;
 		$extw = explode(',',$extw);
 		$exth = explode(',',$exth);
+
+
+		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+
+
+		if (!isset($extw[0])) {$extw[0] = $paramsC->get( 'large_image_width', 640 );}
+		if (!isset($extw[1])) {$extw[1] = $paramsC->get( 'medium_image_width', 100 );}
+		if (!isset($extw[2])) {$extw[2] = $paramsC->get( 'small_image_width', 50 );}
+		if (!isset($exth[0])) {$exth[0] = $paramsC->get( 'large_image_height', 480 );}
+		if (!isset($exth[1])) {$exth[1] = $paramsC->get( 'medium_image_height', 100 );}
+		if (!isset($exth[2])) {$exth[2] = $paramsC->get( 'small_image_height', 50 );}
 
 		// if category is not accessable, display the key in the image:
 		$key = '';

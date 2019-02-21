@@ -106,6 +106,8 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 			if($this->tmpl['enablepicasaloading'] == 1){
 				JToolbarHelper ::custom('phocagalleryc.loadextimgp', 'loadextp.png', '', 'COM_PHOCAGALLERY_P_IMPORT' , false);
 			}
+
+			JToolbarHelper ::custom('phocagalleryc.loadextimgi', 'loadexti.png', '', 'COM_PHOCAGALLERY_I_IMPORT' , false);
 ///			if($this->tmpl['enablefacebookloading'] == 1){
 				///JToolbarHelper ::custom('phocagalleryc.loadextimgf', 'loadextf.png', '', 'COM_PHOCAGALLERY_FB_IMPORT' , false);
 				///JToolbarHelper ::custom('phocagalleryc.uploadextimgf', 'uploadextf.png', '', 'COM_PHOCAGALLERY_FB_EXPORT' , false);

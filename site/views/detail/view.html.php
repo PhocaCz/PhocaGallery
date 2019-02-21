@@ -387,6 +387,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 					$backLink = 'index.php?option=com_phocagallery&view=category&id='. $item->catslug.'&Itemid='. $this->itemId;
 					phocagalleryimport('phocagallery.file.filedownload');
 					if (isset($item->exto) && $item->exto != '') {
+						
 						PhocaGalleryFileDownload::download($item, $backLink, 1);
 					} else {
 						PhocaGalleryFileDownload::download($item, $backLink);
@@ -425,6 +426,7 @@ class PhocaGalleryViewDetail extends JViewLegacy
 					$backLink = 'index.php?option=com_phocagallery&view=category&id='. $item->catslug.'&Itemid='. $this->itemId;
 					phocagalleryimport('phocagallery.file.filedownload');
 					if (isset($item->exto) && $item->exto != '') {
+						
 						PhocaGalleryFileDownload::download($item, $backLink, 1);
 					} else {
 						PhocaGalleryFileDownload::download($item, $backLink);
