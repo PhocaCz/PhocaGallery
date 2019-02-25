@@ -261,15 +261,17 @@ class PhocaGalleryFileThumbnail
 					//Small thumbnail
 					if ($small == 1) {
 
-						PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameS->abs, 'small', $frontUpload, $errorMsgS);
+						$createSmall = PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameS->abs, 'small', $frontUpload, $errorMsgS);
 						if ($additional_thumbnails == 2 || $additional_thumbnails == 3 || $additional_thumbnails == 7) {
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_s_', 'phoca_thumb_s1_', $thumbNameS->abs), 'small1', $frontUpload, $errorMsgS);
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_s_', 'phoca_thumb_s2_', $thumbNameS->abs), 'small2', $frontUpload, $errorMsgS);
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_s_', 'phoca_thumb_s3_', $thumbNameS->abs), 'small3', $frontUpload, $errorMsgS);
 						}
 
+
+
 						// Thumbnail real size
-						if (JFile::exists($thumbNameS->abs)) {
+						if ($createSmall && JFile::exists($thumbNameS->abs)) {
 							$size = getimagesize($thumbNameS->abs);
 							if (isset($size[0])) {
 								$tRS['s']['w'] = $size[0];
@@ -284,7 +286,7 @@ class PhocaGalleryFileThumbnail
 
 					//Medium thumbnail
 					if ($medium == 1) {
-						PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameM->abs, 'medium', $frontUpload, $errorMsgM);
+						$createMedium = PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameM->abs, 'medium', $frontUpload, $errorMsgM);
 						if ($additional_thumbnails == 1 || $additional_thumbnails == 3 || $additional_thumbnails == 7) {
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_m_', 'phoca_thumb_m1_', $thumbNameM->abs), 'medium1', $frontUpload, $errorMsgM);
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_m_', 'phoca_thumb_m2_', $thumbNameM->abs), 'medium2', $frontUpload, $errorMsgM);
@@ -293,7 +295,7 @@ class PhocaGalleryFileThumbnail
 						}
 
 						// Thumbnail real size
-						if (JFile::exists($thumbNameM->abs)) {
+						if ($createMedium && JFile::exists($thumbNameM->abs)) {
 							$size = getimagesize($thumbNameM->abs);
 							if (isset($size[0])) {
 								$tRS['m']['w'] = $size[0];
@@ -309,13 +311,14 @@ class PhocaGalleryFileThumbnail
 
 					//Large thumbnail
 					if ($large == 1) {
-						PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameL->abs, 'large', $frontUpload, $errorMsgL);
+						$createLarge = PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], $thumbNameL->abs, 'large', $frontUpload, $errorMsgL);
 						if ($additional_thumbnails == 7) {
 							PhocaGalleryFileThumbnail::createFileThumbnail($file['name_original_abs'], str_replace('phoca_thumb_l_', 'phoca_thumb_l1_', $thumbNameL->abs), 'large1', $frontUpload, $errorMsgL);
 						}
 
 						// Thumbnail real size
-						if (JFile::exists($thumbNameL->abs)) {
+						if ($createLarge && JFile::exists($thumbNameL->abs)) {
+
 							$size = getimagesize($thumbNameL->abs);
 							if (isset($size[0])) {
 								$tRS['l']['w'] = $size[0];
@@ -346,8 +349,12 @@ class PhocaGalleryFileThumbnail
 
 					} else {
 
-						PhocaGalleryImage::updateRealThumbnailSizes($file['name_original_rel'], $tRS);
 
+						if ($createSmall || $createMedium || $createLarge) {
+							// Set it only when really new thumbnail was created
+
+							PhocaGalleryImage::updateRealThumbnailSizes($file['name_original_rel'], $tRS);
+						}
 					}
 
 

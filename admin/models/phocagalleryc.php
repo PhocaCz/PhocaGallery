@@ -1818,6 +1818,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			// But not if pagination is used - pagination in progress
 			if (!isset($_GET['picstart']) || $type == 'facebook' || $type == 'imgur') {
 
+
 				if ($type == 'imgur') {
 					$exttype = 2;
 				} else if ($type == 'facebook') {
@@ -1828,7 +1829,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				$query = "DELETE FROM #__phocagallery"
 				. " WHERE catid = ".(int)$catid
 				. " AND extid IS NOT NULL"
-				. " AND exttype =".(int)$exttype;
+				//. " AND exttype =".(int)$exttype;
+
+				// We need to remove all possible external images
+				." AND exttype IN (0,1,2)"; // in fact all images from the current category even 0 as exttype for internal images
 				$this->_db->setQuery( $query );
 			}
 
