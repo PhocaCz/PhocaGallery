@@ -199,6 +199,7 @@ class PhocaGalleryFileThumbnail
 			case 'png':
 			case 'gif':
 			case 'jpeg':
+			case 'webp':
 
 			//Get File thumbnails name
 

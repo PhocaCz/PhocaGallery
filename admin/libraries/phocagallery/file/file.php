@@ -56,6 +56,9 @@ class PhocaGalleryFile
 			case 'gif':
 				$mime = 'image/gif';
 			break;
+			case 'webp':
+				$mime = 'image/webp';
+			break;
 			Default:
 				$mime = '';
 			break;

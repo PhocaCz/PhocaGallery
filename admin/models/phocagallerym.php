@@ -183,7 +183,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends JModelAdmin
 					if ($dontCreateThumb == 1) {
 						$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 					}
-					if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg') {
+					if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
 
 						$row = $this->getTable('phocagallery');
 
@@ -340,7 +340,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends JModelAdmin
 				if ($dontCreateThumb == 1) {
 					$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 				}
-				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg') {
+				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
 					if (JFile::exists($fullPath. '/'. $filename) &&
 					    substr($filename, 0, 1) != '.' &&
 						strtolower($filename) !== 'index.html' &&
