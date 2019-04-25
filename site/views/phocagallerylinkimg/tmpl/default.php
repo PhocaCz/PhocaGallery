@@ -85,7 +85,7 @@ function insertLink() {
 				</label>
 			</td>
 			<td width="80%">
-				<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+				<input type="text" name="search" id="search" value="<?php echo htmlspecialchars($this->lists['search']);?>" class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();"><?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'COM_PHOCAGALLERY_RESET' ); ?></button>
 			</td>

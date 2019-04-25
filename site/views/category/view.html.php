@@ -633,7 +633,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->items[$iS]->display_icon_extlink1	= 0;
 					$this->items[$iS]->display_icon_extlink2	= 0;
 					$this->items[$iS]->description				= '';
-					$this->items[$iS]->altvalue					= '';
+					$this->items[$iS]->altvalue					= JText::_('COM_PHOCAGALLERY_BACK');
 					$iS++;
 				} else {
 					// There is no right to see the data but the object exists (because it was loaded from database
@@ -672,7 +672,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->items[$iS]->display_icon_extlink1	= 0;
 					$this->items[$iS]->display_icon_extlink2	= 0;
 					$this->items[$iS]->description			= '';
-					$this->items[$iS]->altvalue				= '';
+					$this->items[$iS]->altvalue				= JText::_('COM_PHOCAGALLERY_BACK');
 					$iS++;
 				}
 			}
@@ -712,7 +712,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->itemscv[$iCV]->numlinks 			= 0;// We are in category view
 					$this->itemscv[$iCV]->link 				= JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->itemscv[$iCV]->slug.'&Itemid='. $this->itemId  );
 					$this->itemscv[$iCV]->type				= 3;
-					$this->itemscv[$iCV]->altvalue			= '';
+					$this->itemscv[$iCV]->altvalue			= JText::_('COM_PHOCAGALLERY_BACK');
 					$iCV++;
 				} else {
 					// There is no right to see the data but the object exists (because it was loaded from database
@@ -733,7 +733,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 					$this->itemscv[$iCV]->numlinks = 0;// We are in category view
 					$this->itemscv[$iCV]->link 				= JRoute::_( $this->itemscv[$iCV]->link );
 					$this->itemscv[$iCV]->type				= 3;
-					$this->itemscv[$iCV]->altvalue			= '';
+					$this->itemscv[$iCV]->altvalue			= htmlspecialchars(JTEXT::_('COM_PHOCAGALLERY_CATEGORY_LIST'));
 					$iCV++;
 				}
 			}
@@ -873,7 +873,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 						$this->items[$iS]->display_icon_extlink2	= 0;
 						$this->items[$iS]->description				= '';
 						$this->items[$iS]->display_icon_commentimg	= 0;
-						$this->items[$iS]->altvalue					= '';
+						$this->items[$iS]->altvalue					= htmlspecialchars($this->items[$iS]->title);
 						$iS++;
 					} else {
 						// There is no right to see the data but the object exists (because it was loaded from database
@@ -968,7 +968,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 								$fileThumbnail 	= PhocaGalleryImageFront::displayCategoryImageOrFolder($this->itemscv[$iCV]->filename, 'medium', $rightDisplayKey, 'display_category_icon_image_cv');
 							}*/
 							$this->itemscv[$iCV]->linkthumbnailpath		= '';
-							$this->itemscv[$iCV]->altvalue				= '';
+							$this->itemscv[$iCV]->altvalue				= htmlspecialchars($this->items[$iCV]->title);
 
 						}
 						$iCV++;

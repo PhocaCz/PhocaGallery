@@ -84,7 +84,7 @@ function insertLink() {
 				</label>
 			</td>
 			<td width="80%">
-				<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+				<input type="text" name="search" id="search" value="<?php echo htmlspecialchars($this->lists['search']);?>" class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();"><?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?></button>
 				<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'COM_PHOCAGALLERY_RESET' ); ?></button>
 			</td>
@@ -137,7 +137,7 @@ function insertLink() {
 										<?php
 										// PICASA of FB
 
-										if (0 == 1 && isset($row->extid) && $row->extid !='') {
+										if (isset($row->extid) && $row->extid !='') {
 
 											$resW	= explode(',', $row->extw);
 											$resH	= explode(',', $row->exth);
@@ -146,7 +146,7 @@ function insertLink() {
 											//echo JHTML::_( 'image', $row->exts.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 											echo '<img src="'.$row->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
 
-										} else if (0 == 1 &&  isset ($row->fileoriginalexist) && $row->fileoriginalexist == 1) {
+										} else if (isset ($row->fileoriginalexist) && $row->fileoriginalexist == 1) {
 
 											$imageRes	= PhocaGalleryImage::getRealImageSize($row->filename, 'small');
 											$correctImageRes = PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);

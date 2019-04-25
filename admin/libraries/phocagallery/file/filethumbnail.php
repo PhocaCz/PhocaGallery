@@ -351,7 +351,7 @@ class PhocaGalleryFileThumbnail
 					} else {
 
 
-						if ($createSmall || $createMedium || $createLarge) {
+						if ((isset($createSmall) && $createSmall) || (isset($createMedium) && $createMedium) || (isset($createLarge) && $createLarge)) {
 							// Set it only when really new thumbnail was created
 
 							PhocaGalleryImage::updateRealThumbnailSizes($file['name_original_rel'], $tRS);

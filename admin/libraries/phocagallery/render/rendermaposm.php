@@ -136,7 +136,7 @@ class PhocaGalleryRenderMaposm
 
 		$o 	= array();
 
-		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.$lat.', '.$lng.'], '.$zoom.');';
+		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.htmlspecialchars($lat).', '.htmlspecialchars($lng).'], '.(int)$zoom.');';
 
 
 		$this->output[] = implode("\n", $o);
@@ -256,7 +256,7 @@ class PhocaGalleryRenderMaposm
 
 
 		if($open != 2){
-			$o[]= 'var marker'.$markerId.' = L.marker(['.$lat.', '.$lng.']).addTo(map'.$this->name.$this->id.');';
+			$o[]= 'var marker'.$markerId.' = L.marker(['.htmlspecialchars($lat).', '.htmlspecialchars($lng).']).addTo(map'.$this->name.$this->id.');';
 		}
 
 		jimport('joomla.filter.output');

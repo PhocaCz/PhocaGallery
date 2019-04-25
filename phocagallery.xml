@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>04/04/2019</creationDate>
+	<creationDate>25/04/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.3.16</version>
+	<version>4.3.17</version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>
@@ -87,7 +87,6 @@
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>phocagallery.php</filename>
-			<filename>script.php</filename>
 		</files>
 
 		<languages folder="admin/language">

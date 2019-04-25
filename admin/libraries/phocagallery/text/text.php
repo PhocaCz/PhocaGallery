@@ -20,7 +20,7 @@ class PhocaGalleryText
 			return StringHelper::substr($string, 0, $length) . $end;
 		}
 	}
-	
+
 	public static function wordDeleteWhole($string,$length,$end = '...') {
 		if (StringHelper::strlen($string) < $length || StringHelper::strlen($string) == $length) {
 			return $string;
@@ -30,7 +30,7 @@ class PhocaGalleryText
 		}
 	}
 
-	
+
 	public static function strTrimAll($input) {
 		$output	= '';
 	    $input	= trim($input);
@@ -43,12 +43,12 @@ class PhocaGalleryText
 	    }
 	    return $output;
 	}
-	
+
 	public static function getAliasName($name) {
-		
+
 		$paramsC		= JComponentHelper::getParams( 'com_phocagallery' );
 		$alias_iconv	= $paramsC->get( 'alias_iconv', 0 );
-		
+
 		$iconv = 0;
 		if ($alias_iconv == 1) {
 			if (function_exists('iconv')) {
@@ -62,15 +62,21 @@ class PhocaGalleryText
 				$iconv = 0;
 			}
 		}
-		
+
 		if ($iconv == 0) {
 			$name = JFilterOutput::stringURLSafe($name);
 		}
-		
+
 		if(trim(str_replace('-','',$name)) == '') {
 			JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
 		return $name;
 	}
+
+	public static function removeSpecChars($text) {
+
+	    $charsA = array('(', '[', '{', '}', ']', ')', ';');
+	    return str_replace($charsA, '', $text);
+    }
 }
 ?>
