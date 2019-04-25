@@ -120,10 +120,12 @@ class PhocaGalleryFileUploadMultiple
 			$chunkEnabled = 1;
 		}
 
-        $this->url      = htmlspecialchars($this->url);
-        $this->reload 	= htmlspecialchars($this->reload);
+        $this->url      = PhocaGalleryText::filterValue($this->url, 'text');
+        $this->reload 	= PhocaGalleryText::filterValue($this->reload, 'text');
 		$this->url 		= str_replace('&amp;', '&', $this->url);
 		$this->reload 	= str_replace('&amp;', '&', $this->reload);
+
+
 
 
 		//$js = ' var pgJQ = jQuery.noConflict();';

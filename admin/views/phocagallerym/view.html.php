@@ -97,13 +97,13 @@ class PhocaGalleryCpViewPhocaGalleryM extends JViewLegacy
 		// Upload
 		// - - - - - - - - - - -
 		$sU							= new PhocaGalleryFileUploadSingle();
-		$sU->returnUrl				= 'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&tab=upload&folder='. htmlspecialchars(PhocaGalleryText::removeSpecChars($this->currentFolder));
+		$sU->returnUrl				= 'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&tab=upload&folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath');
 		$sU->tab					= 'upload';
 		$this->tmpl['su_output']	= $sU->getSingleUploadHTML();
 		$this->tmpl['su_url']		= JURI::base().'index.php?option=com_phocagallery&task=phocagalleryu.upload&amp;'
 								  .$this->session->getName().'='.$this->session->getId().'&amp;'
 								  . JSession::getFormToken().'=1&amp;viewback=phocagallerym&amp;'
-								  .'folder='. htmlspecialchars(PhocaGalleryText::removeSpecChars($this->currentFolder)).'&amp;tab=upload';
+								  .'folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath').'&amp;tab=upload';
 
 
 		// - - - - - - - - - - -
@@ -146,10 +146,10 @@ class PhocaGalleryCpViewPhocaGalleryM extends JViewLegacy
 			$mU->method				= $this->tmpl['multipleuploadmethod'];
 			$mU->url				= JURI::base().'index.php?option=com_phocagallery&task=phocagalleryu.multipleupload&amp;'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&tab=multipleupload&folder='. htmlspecialchars(PhocaGalleryText::removeSpecChars($this->currentFolder));
+									 . JSession::getFormToken().'=1&tab=multipleupload&folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath');
 			$mU->reload				= JURI::base().'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&'
 									.$this->session->getName().'='.$this->session->getId().'&'
-									. JSession::getFormToken().'=1&tab=multipleupload&folder='. htmlspecialchars(PhocaGalleryText::removeSpecChars($this->currentFolder));
+									. JSession::getFormToken().'=1&tab=multipleupload&folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath');
 			$mU->maxFileSize		= PhocaGalleryFileUploadMultiple::getMultipleUploadSizeFormat($this->tmpl['uploadmaxsize']);
 			$mU->chunkSize			= '1mb';
 			$mU->imageHeight		= $this->tmpl['multipleresizeheight'];
@@ -169,10 +169,10 @@ class PhocaGalleryCpViewPhocaGalleryM extends JViewLegacy
 			$jU->resizewidth			= $this->tmpl['multipleresizewidth'];
 			$jU->resizeheight			= $this->tmpl['multipleresizeheight'];
 			$jU->uploadmaxsize			= $this->tmpl['uploadmaxsize'];
-			$jU->returnUrl				= JURI::base().'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&tab=javaupload&folder='. htmlspecialchars(PhocaGalleryText::removeSpecChars($this->currentFolder));
-			$jU->url					= JURI::base(). htmlspecialchars('index.php?option=com_phocagallery&task=phocagalleryu.javaupload&'
+			$jU->returnUrl				= JURI::base().'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&tab=javaupload&folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath');
+			$jU->url					= JURI::base(). 'index.php?option=com_phocagallery&task=phocagalleryu.javaupload&'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&viewback=phocagallerym&tab=javaupload&folder='. PhocaGalleryText::removeSpecChars($this->currentFolder));
+									 . JSession::getFormToken().'=1&viewback=phocagallerym&tab=javaupload&folder='. PhocaGalleryText::filterValue($this->currentFolder, 'folderpath');
 			$jU->source 				= JURI::root(true).'/components/com_phocagallery/assets/jupload/wjhk.jupload.jar';
 			$this->tmpl['ju_output']	= $jU->getJavaUploadHTML();
 

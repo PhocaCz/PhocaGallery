@@ -136,7 +136,7 @@ class PhocaGalleryRenderMaposm
 
 		$o 	= array();
 
-		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.htmlspecialchars($lat).', '.htmlspecialchars($lng).'], '.(int)$zoom.');';
+		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.PhocaGalleryText::filterValue($lat, 'number').', '.PhocaGalleryText::filterValue($lng, 'number').'], '.(int)$zoom.');';
 
 
 		$this->output[] = implode("\n", $o);
@@ -180,9 +180,9 @@ class PhocaGalleryRenderMaposm
 				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_ERROR_MAP_TYPE_NOT_SET'));
 				return false;
 			}
-			$o[] = 'L.tileLayer(\'https://{s}.tile.thunderforest.com/'.$thunderForestMapType.'/{z}/{x}/{y}.png?apikey={apikey}\', {';
+			$o[] = 'L.tileLayer(\'https://{s}.tile.thunderforest.com/'.PhocaGalleryText::filterValue($thunderForestMapType, 'url').'/{z}/{x}/{y}.png?apikey={apikey}\', {';
 			$o[] = '	maxZoom: 22,';
-			$o[] = '	apikey: '.$thunderForestKey.',';
+			$o[] = '	apikey: '.PhocaGalleryText::filterValue($thunderForestKey).',';
 			$o[] = '	attribution: \'&copy; <a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>\'';
 			$o[] = '}).addTo(map'.$this->name.$this->id.');';
 
@@ -194,7 +194,7 @@ class PhocaGalleryRenderMaposm
 			}
 
 
-			$o[] = 'L.tileLayer(\'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='.$mapBoxKey.'\', {';
+			$o[] = 'L.tileLayer(\'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='.PhocaGalleryText::filterValue($mapBoxKey, 'url').'\', {';
 			$o[] = '	maxZoom: 18,';
 			$o[] = '	attribution: \'Map data &copy; <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a> contributors, \' + ';
 			$o[] = '		\'<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" target="_blank">CC-BY-SA</a>, \' + ';
@@ -256,7 +256,7 @@ class PhocaGalleryRenderMaposm
 
 
 		if($open != 2){
-			$o[]= 'var marker'.$markerId.' = L.marker(['.htmlspecialchars($lat).', '.htmlspecialchars($lng).']).addTo(map'.$this->name.$this->id.');';
+			$o[]= 'var marker'.$markerId.' = L.marker(['.PhocaGalleryText::filterValue($lat, 'number').', '.PhocaGalleryText::filterValue($lng, 'number').']).addTo(map'.$this->name.$this->id.');';
 		}
 
 		jimport('joomla.filter.output');
@@ -307,12 +307,12 @@ class PhocaGalleryRenderMaposm
 
 		$o[]= 'var icon'.$markerId.' = new L.AwesomeMarkers.icon({';
 
-		$o[]= $o2[] = '   icon: "'.$icon.'",';
-		$o[]= $o2[] = '   markerColor: "'.$markerColor.'",';
-		$o[]= $o2[] = '   iconColor: "'.$iconColor.'",';
-		$o[]= $o2[] = '   prefix: "'.$prefix.'",';
-		$o[]= $o2[] = '   spin: '.$spin.',';
-		$o[]= $o2[] = '   extraClasses: "'.$extraClasses.'",';
+		$o[]= $o2[] = '   icon: "'.PhocaGalleryText::filterValue($icon).'",';
+		$o[]= $o2[] = '   markerColor: "'.PhocaGalleryText::filterValue($markerColor).'",';
+		$o[]= $o2[] = '   iconColor: "'.PhocaGalleryText::filterValue($iconColor).'",';
+		$o[]= $o2[] = '   prefix: "'.PhocaGalleryText::filterValue($prefix).'",';
+		$o[]= $o2[] = '   spin: '.PhocaGalleryText::filterValue($spin).',';
+		$o[]= $o2[] = '   extraClasses: "'.PhocaGalleryText::filterValue($extraClasses).'",';
 
 		$o[]= '})';
 		$o[]= ' marker'.$markerId.'.setIcon(icon'.$markerId.');';
@@ -506,16 +506,16 @@ class PhocaGalleryRenderMaposm
 		} else if ($latFrom == 0 && $lngFrom == 0) {
 			$o[] = '      L.latLng(\'\'),';
 		} else {
-			$o[] = '      L.latLng('.$latFrom.', '.$lngFrom.'),';
+			$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latFrom, 'number').', '.PhocaGalleryText::filterValue($lngFrom, 'number').'),';
 		}
 	    if ($latTo == 0 && $lngTo == 0) {
 	    	$o[] = '      L.latLng(\'\'),';
 	    } else {
-	    	$o[] = '      L.latLng('.$latTo.', '.$lngTo.')';
+	    	$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latTo, 'number').', '.PhocaGalleryText::filterValue($lngTo, 'number').')';
 	    }
 	    $o[] = '   ],';
 	    if ($language != '') {
-	     	$o[] = '   language: \''.htmlspecialchars(strip_tags($language)).'\',';
+	     	$o[] = '   language: \''.PhocaGalleryText::filterValue($language, 'text').'\',';
 	    }
 
 	    if ($markerId != '') {
@@ -528,8 +528,8 @@ class PhocaGalleryRenderMaposm
 	    	if ($latTo != 0 && $lngTo != 0) {
 	    		$o[] = '   createMarker: function(i,wp, n) {';
 
-	    		$o[] = '      var latToMarker = '.$latTo.';';
-	    		$o[] = '      var lngToMarker = '.$lngTo.';';
+	    		$o[] = '      var latToMarker = '.PhocaGalleryText::filterValue($latTo, 'number').';';
+	    		$o[] = '      var lngToMarker = '.PhocaGalleryText::filterValue($lngTo, 'number').';';
 
 	    		$o[] = '      if (wp.latLng.lat == latToMarker && wp.latLng.lng == lngToMarker) {';
 	    		$o[] = '         return false;';
@@ -578,7 +578,7 @@ class PhocaGalleryRenderMaposm
 	    } else if ($this->routerserviceurl != '') {
 	    	$o[] = '   routerserviceurl: \''.$this->routerserviceurl.'\',';
 	    } else if ($this->osm_map_type == 'mapbox' && $this->maprouterapikey != '') {
-	    	$o[] = '   router: L.Routing.mapbox(\''.$this->maprouterapikey.'\'),';
+	    	$o[] = '   router: L.Routing.mapbox(\''.PhocaGalleryText::filterValue($this->maprouterapikey).'\'),';
 	    } else {
 			$o[] = array();
 			$o[] = 'console.log(\'Routing Error: No router or service url set\')';
@@ -589,7 +589,7 @@ class PhocaGalleryRenderMaposm
 
 
 	    if ($this->routerprofile != '') {
-	    	$o[] = '   profile: \''.$this->routerprofile.'\',';
+	    	$o[] = '   profile: \''.PhocaGalleryText::filterValue($this->routerprofile).'\',';
 	    }
 	    $o[] = '})';
 

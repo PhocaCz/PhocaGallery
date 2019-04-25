@@ -77,7 +77,7 @@ if ($this->tmpl['displaytabs'] > 0) {
 	echo '</div>'. "\n";
 
 	echo '<div class="tab-pane" id="createfolder">'. "\n";
-	echo PhocaGalleryFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocagalleryi', 'tab=createfolder&amp;field='.$this->field );
+	echo PhocaGalleryFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocagalleryi', 'tab=createfolder&amp;field='.PhocaGalleryText::filterValue($this->field, 'alphanumeric2'));
 	echo '</div>'. "\n";
 
 	echo '</div>'. "\n";
@@ -121,7 +121,7 @@ if ($this->tmpl['displaytabs'] > 0) {
 
 //TEMP
 //$this->tmpl['tab'] = 'multipleupload';
-if ($this->tmpl['tab'] != '') {$jsCt = 'a[href=#'.htmlspecialchars(PhocaGalleryText::removeSpecChars($this->tmpl['tab'])) .']';} else {$jsCt = 'a:first';}
+if ($this->tmpl['tab'] != '') {$jsCt = 'a[href=#'.PhocaGalleryText::filterValue($this->tmpl['tab'], 'alphanumeric2') .']';} else {$jsCt = 'a:first';}
 echo '<script type="text/javascript">';
 echo '   jQuery(\'#configTabs '.$jsCt.'\').tab(\'show\');'; // Select first tab
 echo '</script>';

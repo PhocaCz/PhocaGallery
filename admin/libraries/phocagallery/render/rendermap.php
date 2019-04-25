@@ -35,7 +35,7 @@ class PhocaGalleryRenderMap
 			$h = 'http://';
 		}
 		if ($key) {
-			$k = '&key='.strip_tags($key);
+			$k = '&key='.PhocaGalleryText::filterValue($key, 'text');
 		} else {
 			$k = '';
 		}
@@ -64,7 +64,7 @@ class PhocaGalleryRenderMap
 	}
 
 	public function setLatLng($latitude, $longitude) {
-		return 'var '.$this->_latlng.' = new google.maps.LatLng('.htmlspecialchars($latitude) .', '. htmlspecialchars($longitude) .');'."\n";
+		return 'var '.$this->_latlng.' = new google.maps.LatLng('.PhocaGalleryText::filterValue($latitude, 'number') .', '. PhocaGalleryText::filterValue($longitude, 'number') .');'."\n";
 	}
 
 	public function startOptions() {
@@ -191,15 +191,15 @@ class PhocaGalleryRenderMap
 		$output = '';
 		if ($text == '') {
 			if ($title != ''){
-				$text .=  '<h1>' . addslashes($title) . '</h1>';
+				$text .=  '<h1>' . PhocaGalleryText::filterValue($title, 'text') . '</h1>';
 			}
 			if ($description != '') {
-				$text .= '<div>'. PhocaGalleryText::strTrimAll(addslashes($description)).'</div>';
+				$text .= '<div>'. PhocaGalleryText::strTrimAll(PhocaGalleryText::filterValue($description, 'text')).'</div>';
 			}
 		}
 
-		$output .= 'var phocaPoint'.$id.' = new google.maps.LatLng('. htmlspecialchars($latitude).', ' .htmlspecialchars($longitude).');'."\n";
-		$output .= 'var markerPhocaMarker'.$id.' = new google.maps.Marker({title:"'.$title.'"';
+		$output .= 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number').', ' .PhocaGalleryText::filterValue($longitude, 'number').');'."\n";
+		$output .= 'var markerPhocaMarker'.$id.' = new google.maps.Marker({title:"'.PhocaGalleryText::filterValue($title, 'text').'"';
 
 		if ($icon == 1) {
 			$output .= ', icon:phocaImage';
@@ -334,7 +334,7 @@ class PhocaGalleryRenderMap
 
 	public function exportMarker($id, $latitude, $longitude, $valueLat = '', $valueLng = '', $jFormLat = '', $jFormLng = '') {
 
-		$js = 'var phocaPoint'.$id.' = new google.maps.LatLng('. htmlspecialchars($latitude).', ' .htmlspecialchars($longitude).');'."\n";
+		$js = 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number').', ' .PhocaGalleryText::filterValue($longitude, 'number').');'."\n";
 		$js .= 'var markerPhocaMarker'.$id.' = new google.maps.Marker({'."\n"
 			 .'   position: phocaPoint'.$id.','."\n"
 			 .'   map: '.$this->_map.','."\n"
@@ -377,17 +377,17 @@ class PhocaGalleryRenderMap
 
 		$js .= 'function exportPoint'.$id.'(phocaPointTmp3) {'."\n";
 			if ($valueLat != '') {
-				$js .= '   '.$valueLat.'.value = phocaPointTmp3.lat();'."\n";
+				$js .= '   '.PhocaGalleryText::filterValue($valueLat).'.value = phocaPointTmp3.lat();'."\n";
 			}
 			if ($valueLng != '') {
-				$js .= '   '.$valueLng.'.value = phocaPointTmp3.lng();'."\n";
+				$js .= '   '.PhocaGalleryText::filterValue($valueLng).'.value = phocaPointTmp3.lng();'."\n";
 			}
 
 			if ($jFormLat != '') {
-				$js .= '   if (window.parent) window.parent.'.$jFormLat.'(phocaPointTmp3.lat());'."\n";
+				$js .= '   if (window.parent) window.parent.'.PhocaGalleryText::filterValue($jFormLat).'(phocaPointTmp3.lat());'."\n";
 			}
 			if ($jFormLng != '') {
-				$js .= '   if (window.parent) window.parent.'.$jFormLng.'(phocaPointTmp3.lng());'."\n";
+				$js .= '   if (window.parent) window.parent.'.PhocaGalleryText::filterValue($jFormLng).'(phocaPointTmp3.lng());'."\n";
 			}
 		$js .= '}'."\n";
 

@@ -43,7 +43,7 @@ function pasteYtb() {
 
 	if (window.parent) {
 		window.parent.jInsertEditorText(desc, 'jform_description');
-		window.parent.phocaSelectYtb_<?php echo htmlspecialchars(PhocaGalleryText::removeSpecChars($this->tmpl['field'])) ;?>(link, title, desc, filename);
+		window.parent.phocaSelectYtb_<?php echo PhocaGalleryText::filterValue($this->tmpl['field'], 'alphanumeric2') ;?>(link, title, desc, filename);
 	}
 }
 </script>
@@ -56,7 +56,7 @@ function pasteYtb() {
 				<table>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_YTB_LINK' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_link" id="ytblink" size="60" value="<?php echo htmlspecialchars(strip_tags($this->tmpl['ytblink']));?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_link" id="ytblink" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytblink'], 'text');?>" /></td>
 </tr>
 <?php if ((int)$this->tmpl['catid'] < 1) { ?>
 	<tr>
@@ -72,15 +72,15 @@ if ($this->tmpl['import'] == '1') {
 	?>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_TITLE' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_title" id="ytbtitle" size="60" value="<?php echo htmlspecialchars(strip_tags($this->tmpl['ytbtitle']));?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_title" id="ytbtitle" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytbtitle'], 'text');?>" /></td>
 </tr>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</label></td>
-	<td colspan="2"><textarea class="text_area" type="text" name="ytb_desc" id="ytbdesc" cols="9" rows="3"><?php echo htmlspecialchars(strip_tags($this->tmpl['ytbdesc']));?></textarea></td>
+	<td colspan="2"><textarea class="text_area" type="text" name="ytb_desc" id="ytbdesc" cols="9" rows="3"><?php echo PhocaGalleryText::filterValue($this->tmpl['ytbdesc'], 'text');?></textarea></td>
 </tr>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_FILENAME' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_filename" id="ytbfilename" size="60" value="<?php echo htmlspecialchars(strip_tags($this->tmpl['ytbfilename']));?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_filename" id="ytbfilename" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytbfilename'], 'filepath');?>" /></td>
 </tr>
 	<?php
 }
@@ -99,7 +99,7 @@ if ($this->tmpl['import'] == '1') {
 <?php if ((int)$this->tmpl['catid'] > 0) { ?>
 <input type="hidden" name="catid" value="<?php echo (int)$this->tmpl['catid'] ;?>" />
 <?php } ?>
-<input type="hidden" name="field" value="<?php echo htmlspecialchars(PhocaGalleryText::removeSpecChars($this->tmpl['field'])) ;?>" />
+<input type="hidden" name="field" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['field'], 'alphanumeric2') ;?>" />
 <?php echo JHtml::_('form.token'); ?>
 </form>
 
