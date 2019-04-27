@@ -136,7 +136,7 @@ class PhocaGalleryRenderMaposm
 
 		$o 	= array();
 
-		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.PhocaGalleryText::filterValue($lat, 'number').', '.PhocaGalleryText::filterValue($lng, 'number').'], '.(int)$zoom.');';
+		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.PhocaGalleryText::filterValue($lat, 'number2').', '.PhocaGalleryText::filterValue($lng, 'number2').'], '.(int)$zoom.');';
 
 
 		$this->output[] = implode("\n", $o);
@@ -256,7 +256,7 @@ class PhocaGalleryRenderMaposm
 
 
 		if($open != 2){
-			$o[]= 'var marker'.$markerId.' = L.marker(['.PhocaGalleryText::filterValue($lat, 'number').', '.PhocaGalleryText::filterValue($lng, 'number').']).addTo(map'.$this->name.$this->id.');';
+			$o[]= 'var marker'.$markerId.' = L.marker(['.PhocaGalleryText::filterValue($lat, 'number2').', '.PhocaGalleryText::filterValue($lng, 'number2').']).addTo(map'.$this->name.$this->id.');';
 		}
 
 		jimport('joomla.filter.output');
@@ -506,12 +506,12 @@ class PhocaGalleryRenderMaposm
 		} else if ($latFrom == 0 && $lngFrom == 0) {
 			$o[] = '      L.latLng(\'\'),';
 		} else {
-			$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latFrom, 'number').', '.PhocaGalleryText::filterValue($lngFrom, 'number').'),';
+			$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latFrom, 'number2').', '.PhocaGalleryText::filterValue($lngFrom, 'number2').'),';
 		}
 	    if ($latTo == 0 && $lngTo == 0) {
 	    	$o[] = '      L.latLng(\'\'),';
 	    } else {
-	    	$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latTo, 'number').', '.PhocaGalleryText::filterValue($lngTo, 'number').')';
+	    	$o[] = '      L.latLng('.PhocaGalleryText::filterValue($latTo, 'number2').', '.PhocaGalleryText::filterValue($lngTo, 'number2').')';
 	    }
 	    $o[] = '   ],';
 	    if ($language != '') {
@@ -528,8 +528,8 @@ class PhocaGalleryRenderMaposm
 	    	if ($latTo != 0 && $lngTo != 0) {
 	    		$o[] = '   createMarker: function(i,wp, n) {';
 
-	    		$o[] = '      var latToMarker = '.PhocaGalleryText::filterValue($latTo, 'number').';';
-	    		$o[] = '      var lngToMarker = '.PhocaGalleryText::filterValue($lngTo, 'number').';';
+	    		$o[] = '      var latToMarker = '.PhocaGalleryText::filterValue($latTo, 'number2').';';
+	    		$o[] = '      var lngToMarker = '.PhocaGalleryText::filterValue($lngTo, 'number2').';';
 
 	    		$o[] = '      if (wp.latLng.lat == latToMarker && wp.latLng.lng == lngToMarker) {';
 	    		$o[] = '         return false;';

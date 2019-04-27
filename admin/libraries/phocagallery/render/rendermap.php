@@ -64,7 +64,7 @@ class PhocaGalleryRenderMap
 	}
 
 	public function setLatLng($latitude, $longitude) {
-		return 'var '.$this->_latlng.' = new google.maps.LatLng('.PhocaGalleryText::filterValue($latitude, 'number') .', '. PhocaGalleryText::filterValue($longitude, 'number') .');'."\n";
+		return 'var '.$this->_latlng.' = new google.maps.LatLng('.PhocaGalleryText::filterValue($latitude, 'number2') .', '. PhocaGalleryText::filterValue($longitude, 'number2') .');'."\n";
 	}
 
 	public function startOptions() {
@@ -198,7 +198,7 @@ class PhocaGalleryRenderMap
 			}
 		}
 
-		$output .= 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number').', ' .PhocaGalleryText::filterValue($longitude, 'number').');'."\n";
+		$output .= 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number2').', ' .PhocaGalleryText::filterValue($longitude, 'number2').');'."\n";
 		$output .= 'var markerPhocaMarker'.$id.' = new google.maps.Marker({title:"'.PhocaGalleryText::filterValue($title, 'text').'"';
 
 		if ($icon == 1) {
@@ -334,7 +334,7 @@ class PhocaGalleryRenderMap
 
 	public function exportMarker($id, $latitude, $longitude, $valueLat = '', $valueLng = '', $jFormLat = '', $jFormLng = '') {
 
-		$js = 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number').', ' .PhocaGalleryText::filterValue($longitude, 'number').');'."\n";
+		$js = 'var phocaPoint'.$id.' = new google.maps.LatLng('. PhocaGalleryText::filterValue($latitude, 'number2').', ' .PhocaGalleryText::filterValue($longitude, 'number2').');'."\n";
 		$js .= 'var markerPhocaMarker'.$id.' = new google.maps.Marker({'."\n"
 			 .'   position: phocaPoint'.$id.','."\n"
 			 .'   map: '.$this->_map.','."\n"
