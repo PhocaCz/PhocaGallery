@@ -15,26 +15,26 @@ class PhocaGalleryPaginationCategory extends JPagination
 {
 	public function getLimitBox() {
 		$app	= JFactory::getApplication();
-		
+
 		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
 		$pagination 		= $paramsC->get( 'pagination_category', '5,10,15,20,50' );
 		$paginationArray	= explode( ',', $pagination );
-		
+
 		// Initialize variables
 		$limits = array ();
 
 		foreach ($paginationArray as $paginationValue) {
-			$limits[] = JHTML::_('select.option', $paginationValue);
+			$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', $paginationValue);
 		}
-		$limits[] = JHTML::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

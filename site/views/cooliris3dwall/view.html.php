@@ -12,7 +12,7 @@ defined( '_JEXEC' ) or die();
 jimport( 'joomla.application.component.view' );
 class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 {
-	public $tmpl;
+	public $t;
 	protected $params;
 
 	function display($tpl = null) {
@@ -23,27 +23,27 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 		$menus				= $app->getMenu();
 		$menu				= $menus->getActive();
 		$this->params		= $app->getParams();
-		$this->tmpl['path']	= PhocaGalleryPath::getPath();
+		$this->t['path']	= PhocaGalleryPath::getPath();
 		$model				= $this->getModel();
 
 		// PARAMS
-		$this->tmpl['displaycatnametitle'] 			= $this->params->get( 'display_cat_name_title', 1 );
+		$this->t['displaycatnametitle'] 			= $this->params->get( 'display_cat_name_title', 1 );
 		$display_cat_name_breadcrumbs 				= $this->params->get( 'display_cat_name_breadcrumbs', 1 );
-		$this->tmpl['showpageheading'] 				= $this->params->get( 'show_page_heading', 1 );
-		$this->tmpl['cooliris3d_wall_width']		= $this->params->get( 'cooliris3d_wall_width', 600 );
-		$this->tmpl['cooliris3d_wall_height']		= $this->params->get( 'cooliris3d_wall_height', 370 );
-		$this->tmpl['gallerymetakey'] 				= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 				= $this->params->get( 'gallery_metadesc', '' );
-		$this->tmpl['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
-		$this->tmpl['customcss']					= $this->params->get( 'custom_css', '');
+		$this->t['showpageheading'] 				= $this->params->get( 'show_page_heading', 1 );
+		$this->t['cooliris3d_wall_width']		= $this->params->get( 'cooliris3d_wall_width', 600 );
+		$this->t['cooliris3d_wall_height']		= $this->params->get( 'cooliris3d_wall_height', 370 );
+		$this->t['gallerymetakey'] 				= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 				= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
+		$this->t['customcss']					= $this->params->get( 'custom_css', '');
 
 		$idCategory									= $app->input->get('id', 0, 'int');
 
 		// CSS
 		JHtml::stylesheet('media/com_phocagallery/css/phocagallery.css' );
-		if ($this->tmpl['enablecustomcss'] == 1) {
+		if ($this->t['enablecustomcss'] == 1) {
 			JHtml::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
-			PhocaGalleryRenderFront::displayCustomCSS($this->tmpl['customcss']);
+			PhocaGalleryRenderFront::displayCustomCSS($this->t['customcss']);
 		}
 
 		if ((int)$idCategory > 0) {
@@ -53,19 +53,19 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 			/*if (!empty ($category->image)) {
 				$attribs['align'] = '"'.$category->image_position.'"';
 				$attribs['hspace'] = '"6"';
-				$this->tmpl['image'] = JHtml::_('image', 'images/stories/'.$category->image, '', $attribs);
+				$this->t['image'] = Joomla\CMS\HTML\HTMLHelper::_('image', 'images/stories/'.$category->image, '', $attribs);
 			}*/
 
 			$this->_addBreadCrumbs($category, isset($menu->query['id']) ? $menu->query['id'] : 0, $display_cat_name_breadcrumbs);
 
 			// ASIGN
-			$this->tmpl['display_category']		= 1;
-			$this->assignRef( 'tmpl',		$this->tmpl);
+			$this->t['display_category']		= 1;
+			$this->assignRef( 'tmpl',		$this->t);
 			$this->assignRef( 'category',	$category);
 			$this->assignRef( 'params' ,	$this->params);
 		} else {
-			$this->tmpl['display_category']		= 0;
-			$this->assignRef( 'tmpl',		$this->tmpl);
+			$this->t['display_category']		= 0;
+			$this->assignRef( 'tmpl',		$this->t);
 		}
 			parent::display($tpl);
 	}
@@ -78,9 +78,9 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 		//$this->params		= $app->getParams();
 		$title 		= null;
 
-		$this->tmpl['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
-		$this->tmpl['displaycatnametitle'] 			= $this->params->get( 'display_cat_name_title', 1 );
+		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['displaycatnametitle'] 			= $this->params->get( 'display_cat_name_title', 1 );
 
 		$menu = $menus->getActive();
 		if ($menu) {
@@ -95,13 +95,13 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
 			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
-			if ($this->tmpl['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
+			if ($this->t['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
 				$title = $title .' - ' .  $this->category->title;
 			}
 
 		} else if ($app->get('sitename_pagetitles', 0) == 2) {
 
-			if ($this->tmpl['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
+			if ($this->t['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
 				$title = $title .' - ' .  $this->category->title;
 			}
 
@@ -112,16 +112,16 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 
 		if ($category->metadesc != '') {
 			$this->document->setDescription($category->metadesc);
-		} else if ($this->tmpl['gallerymetadesc'] != '') {
-			$this->document->setDescription($this->tmpl['gallerymetadesc']);
+		} else if ($this->t['gallerymetadesc'] != '') {
+			$this->document->setDescription($this->t['gallerymetadesc']);
 		} else if ($this->params->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->params->get('menu-meta_description', ''));
 		}
 
 		if ($category->metakey != '') {
 			$this->document->setMetadata('keywords', $category->metakey);
-		} else if ($this->tmpl['gallerymetakey'] != '') {
-			$this->document->setMetadata('keywords', $this->tmpl['gallerymetakey']);
+		} else if ($this->t['gallerymetakey'] != '') {
+			$this->document->setMetadata('keywords', $this->t['gallerymetakey']);
 		} else if ($this->params->get('menu-meta_keywords', '')) {
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords', ''));
 		}

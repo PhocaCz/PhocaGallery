@@ -19,13 +19,17 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 	protected $state;
 	protected $item;
 	protected $form;
-	protected $tmpl;
+	protected $t;
+	protected $r;
 
 	public function display($tpl = null) {
 
 		$this->state	= $this->get('State');
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
+
+		$this->t	= PhocaGalleryUtils::setVars('c');
+		$this->r	= new PhocaGalleryRenderAdminview();
 
 
 		//$this->item->accessuserid = PhocaGalleryUtils::toArray($this->item->accessuserid);
@@ -41,10 +45,10 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 		$editor 	= \Joomla\CMS\Editor\Editor::getInstance();
 		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
 
-		$this->tmpl['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
+		$this->t['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
 
-		JHTML::_('behavior.calendar');
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+		//Joomla\CMS\HTML\HTMLHelper::_('behavior.calendar');
+
 
 		//Data from model
 		//$this->item	=& $this->get('Data');
@@ -101,14 +105,14 @@ class PhocaGalleryCpViewPhocaGalleryC extends JViewLegacy
 			JToolbarHelper ::apply('phocagalleryc.apply', 'JToolbar_APPLY');
 			JToolbarHelper ::save('phocagalleryc.save', 'JToolbar_SAVE');
 			JToolbarHelper ::addNew('phocagalleryc.save2new', 'JToolbar_SAVE_AND_NEW');
-			$this->tmpl['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
-			///$this->tmpl['enablefacebookloading'] = $paramsC->get( 'enable_facebook_loading', 1 );
-			if($this->tmpl['enablepicasaloading'] == 1){
+			$this->t['enablepicasaloading'] = $paramsC->get( 'enable_picasa_loading', 1 );
+			///$this->t['enablefacebookloading'] = $paramsC->get( 'enable_facebook_loading', 1 );
+			if($this->t['enablepicasaloading'] == 1){
 				JToolbarHelper ::custom('phocagalleryc.loadextimgp', 'loadextp.png', '', 'COM_PHOCAGALLERY_P_IMPORT' , false);
 			}
 
 			JToolbarHelper ::custom('phocagalleryc.loadextimgi', 'loadexti.png', '', 'COM_PHOCAGALLERY_I_IMPORT' , false);
-///			if($this->tmpl['enablefacebookloading'] == 1){
+///			if($this->t['enablefacebookloading'] == 1){
 				///JToolbarHelper ::custom('phocagalleryc.loadextimgf', 'loadextf.png', '', 'COM_PHOCAGALLERY_FB_IMPORT' , false);
 				///JToolbarHelper ::custom('phocagalleryc.uploadextimgf', 'uploadextf.png', '', 'COM_PHOCAGALLERY_FB_EXPORT' , false);
 ///			}

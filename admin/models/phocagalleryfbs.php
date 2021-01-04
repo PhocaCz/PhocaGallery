@@ -16,7 +16,7 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 {
 	protected	$option 		= 'com_phocagallery';
 	//public 		$context		= 'com_phocagallery.phocagallerycos';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -40,8 +40,8 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = null, $direction = null)
+
+	protected function populateState($ordering = 'a.name', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -53,8 +53,8 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 */
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 
 
 		$language = $app->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
@@ -65,20 +65,20 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		//$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.fb_id');
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 		// Create a new query object.
@@ -98,8 +98,8 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
-		
-		
+
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
@@ -114,7 +114,7 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 		}*/
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -136,16 +136,16 @@ class PhocaGalleryCpModelPhocaGalleryFbs extends JModelList
 				$query->where('( a.name LIKE '.$search.' )');
 			}
 		}
-		
+
 	//	$query->group('a.id');
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
-		
+
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
-	
+
 		return $query;
 	}
 }

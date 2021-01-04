@@ -28,12 +28,12 @@ defined('_JEXEC') or die;
 		
 		<tr>
 			<td><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</td>
-			<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload('<?php echo $this->tmpl['upload_form_id']; ?>');" cols="30" rows="10" class="comment-input"></textarea></td>
+			<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload('<?php echo $this->t['upload_form_id']; ?>');" cols="30" rows="10" class="comment-input"></textarea></td>
 		</tr>
 			
 		<tr>
 			<td>&nbsp;</td>
-			<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->tmpl['maxuploadchar'];?>" readonly="readonly" class="comment-input2" />
+			<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->t['maxuploadchar'];?>" readonly="readonly" class="comment-input2" />
 			</td>
 		</tr>
 </table>
@@ -41,18 +41,18 @@ defined('_JEXEC') or die;
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="viewback" value="user" />
 <input type="hidden" name="view" value="user"/>
-<input type="hidden" name="tab" value="<?php echo $this->tmpl['currenttab']['images'];?>" />
+<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['images'];?>" />
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
 <input type="hidden" name="filter_order_image" value="<?php echo $this->listsimage['order']; ?>" />
 <input type="hidden" name="filter_order_Dir_image" value="" />
-<input type="hidden" name="catid" value="<?php echo $this->tmpl['catidimage'] ?>"/>
+<input type="hidden" name="catid" value="<?php echo $this->t['catidimage'] ?>"/>
 
 <?php
 
 
-if ($this->tmpl['upload_form_id'] == 'phocaGalleryUploadFormU') {
+if ($this->t['upload_form_id'] == 'phocaGalleryUploadFormU') {
 	echo '<div id="loading-label" style="text-align:center">'
-	. JHtml::_('image', 'media/com_phocagallery/images/icon-switch.gif', '') 
+	. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-switch.gif', '') 
 	. '  '.JText::_('COM_PHOCAGALLERY_LOADING').'</div>';
 }
 ?>

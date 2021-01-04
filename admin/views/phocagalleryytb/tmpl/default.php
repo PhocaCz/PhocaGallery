@@ -9,44 +9,40 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
-// Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
-?>
-<script type="text/javascript">
-function importYtb(task) {
-	if (document.getElementById('ytblink').value == '') {
-		alert('<?php echo $this->escape(JText::_('COM_PHOCAGALLERY_YTB_LINK_NOT_SET'));?>');
+
+JFactory::getDocument()->addScriptDeclaration(
+'function importYtb(task) {
+	if (document.getElementById("ytblink").value == "") {
+		alert("'. $this->escape(JText::_("COM_PHOCAGALLERY_YTB_LINK_NOT_SET")).'");
 	} else {
-		Joomla.submitform(task, document.getElementById('phocagalleryytb-form'));
+		Joomla.submitform(task, document.getElementById("phocagalleryytb-form"));
 	}
 }
+
 function pasteYtb() {
-	var link 	= '';
-	var title 	= '';
-	var desc	= '';
-	var filename= '';
-	if (document.getElementById('ytblink').value != '') {
-		link = document.getElementById('ytblink').value;
+	var link 	= "";
+	var title 	= "";
+	var desc	= "";
+	var filename= "";
+	if (document.getElementById("ytblink").value != "") {
+		link = document.getElementById("ytblink").value;
 	}
-	if (document.getElementById('ytbtitle').value != '') {
-		title = document.getElementById('ytbtitle').value;
+	if (document.getElementById("ytbtitle").value != "") {
+		title = document.getElementById("ytbtitle").value;
 	}
-	if (document.getElementById('ytbdesc').value != '') {
-		desc = document.getElementById('ytbdesc').value;
+	if (document.getElementById("ytbdesc").value != "") {
+		desc = document.getElementById("ytbdesc").value;
 	}
-	if (document.getElementById('ytbfilename').value != '') {
-		filename = document.getElementById('ytbfilename').value;
+	if (document.getElementById("ytbfilename").value != "") {
+		filename = document.getElementById("ytbfilename").value;
 	}
 
 	if (window.parent) {
-		window.parent.jInsertEditorText(desc, 'jform_description');
-		window.parent.phocaSelectYtb_<?php echo PhocaGalleryText::filterValue($this->tmpl['field'], 'alphanumeric2') ;?>(link, title, desc, filename);
+		window.parent.jInsertEditorText(desc, "jform_description");
+		window.parent.phocaSelectYtb_'. PhocaGalleryText::filterValue($this->t["field"], "alphanumeric2") .'(link, title, desc, filename);
 	}
-}
-</script>
+}'
+); ?>
 
 
 <form action="<?php JRoute::_('index.php?option=com_phocagallery'); ?>" method="post" name="adminForm" id="phocagalleryytb-form" class="form-validate">
@@ -56,37 +52,37 @@ function pasteYtb() {
 				<table>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_YTB_LINK' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_link" id="ytblink" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytblink'], 'text');?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_link" id="ytblink" size="60" value="<?php echo PhocaGalleryText::filterValue($this->t['ytblink'], 'text');?>" /></td>
 </tr>
-<?php if ((int)$this->tmpl['catid'] < 1) { ?>
+<?php if ((int)$this->t['catid'] < 1) { ?>
 	<tr>
 		<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_SELECT_CATEGORY' ); ?>:</label></td>
 		<td colspan="2"><select name="catid" class="inputbox">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo JHtml::_('select.options', PhocaGalleryCategory::options('com_phocagallery'), 'value', 'text', '');?>
+				<?php echo Joomla\CMS\HTML\HTMLHelper::_('select.options', PhocaGalleryCategory::options('com_phocagallery'), 'value', 'text', '');?>
 			</select></td>
 	</tr>
 <?php }
 
-if ($this->tmpl['import'] == '1') {
+if ($this->t['import'] == '1') {
 	?>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_TITLE' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_title" id="ytbtitle" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytbtitle'], 'text');?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_title" id="ytbtitle" size="60" value="<?php echo PhocaGalleryText::filterValue($this->t['ytbtitle'], 'text');?>" /></td>
 </tr>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</label></td>
-	<td colspan="2"><textarea class="text_area" type="text" name="ytb_desc" id="ytbdesc" cols="9" rows="3"><?php echo PhocaGalleryText::filterValue($this->tmpl['ytbdesc'], 'text');?></textarea></td>
+	<td colspan="2"><textarea class="text_area" type="text" name="ytb_desc" id="ytbdesc" cols="9" rows="3"><?php echo PhocaGalleryText::filterValue($this->t['ytbdesc'], 'text');?></textarea></td>
 </tr>
 <tr>
 	<td width="100" align="right" class="key"><label for="title"><?php echo JText::_( 'COM_PHOCAGALLERY_FILENAME' ); ?>:</label></td>
-	<td colspan="2"><input class="text_area" type="text" name="ytb_filename" id="ytbfilename" size="60" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['ytbfilename'], 'filepath');?>" /></td>
+	<td colspan="2"><input class="text_area" type="text" name="ytb_filename" id="ytbfilename" size="60" value="<?php echo PhocaGalleryText::filterValue($this->t['ytbfilename'], 'filepath');?>" /></td>
 </tr>
 	<?php
 }
 echo '</table>';
 
-if ($this->tmpl['import'] == '1') {
+if ($this->t['import'] == '1') {
 	echo '<div style="float:right;"><a href="javascript:void(0)" onclick="pasteYtb()"><div class=" btn btn-primary">'.JText::_('COM_PHOCAGALLERY_YTB_IMPORT_PASTE').'</div></a></div>';
 } else {
 	echo '<div style="float:right;"><a href="javascript:void(0)" onclick="importYtb(\'phocagalleryytb.import\')"><div class=" btn btn-primary">'.JText::_('COM_PHOCAGALLERY_YTB_IMPORT_IMPORT').'</div></a></div>';
@@ -96,11 +92,11 @@ if ($this->tmpl['import'] == '1') {
 	</div>
 	<div class="clearfix"></div>
 <input type="hidden" name="task" value="" />
-<?php if ((int)$this->tmpl['catid'] > 0) { ?>
-<input type="hidden" name="catid" value="<?php echo (int)$this->tmpl['catid'] ;?>" />
+<?php if ((int)$this->t['catid'] > 0) { ?>
+<input type="hidden" name="catid" value="<?php echo (int)$this->t['catid'] ;?>" />
 <?php } ?>
-<input type="hidden" name="field" value="<?php echo PhocaGalleryText::filterValue($this->tmpl['field'], 'alphanumeric2') ;?>" />
-<?php echo JHtml::_('form.token'); ?>
+<input type="hidden" name="field" value="<?php echo PhocaGalleryText::filterValue($this->t['field'], 'alphanumeric2') ;?>" />
+<?php echo Joomla\CMS\HTML\HTMLHelper::_('form.token'); ?>
 </form>
 
 

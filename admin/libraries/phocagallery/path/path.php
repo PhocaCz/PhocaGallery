@@ -36,12 +36,12 @@ class PhocaGalleryPath extends JObject
 			$instance->media_js_abs			= JPATH_ROOT .'/media/com_phocagallery/js/';
 			$instance->media_css_rel		= 'media/com_phocagallery/css/';
 			$instance->media_img_rel		= 'media/com_phocagallery/images/';
-			$instance->media_js_rel			= 'components/com_phocagallery/assets/';
+			$instance->media_js_rel			= 'media/com_phocagallery/js/';
 			$instance->media_css_rel_full	= $baseFront  . '/' . $instance->media_css_rel;
 			$instance->media_img_rel_full	= $baseFront  . '/' . $instance->media_img_rel;
 			$instance->media_js_rel_full	= $baseFront  . '/' . $instance->media_js_rel;
-			$instance->assets_abs			= JPATH_ROOT . '/components/com_phocagallery/assets/';
-			$instance->assets_rel			= 'components/com_phocagallery/assets/';
+			$instance->assets_abs			= JPATH_ROOT . '/media/com_phocagallery/js/';
+			$instance->assets_rel			= 'media/com_phocagallery/js/';
 		}
 
 		return $instance;

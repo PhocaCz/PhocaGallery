@@ -10,46 +10,54 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
- 
+
 class PhocaGalleryCpViewPhocaGalleryCoImgs extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
 	protected $state;
+	protected $r;
+	protected $t;
+	public $filterForm;
+	public $activeFilters;
 
 
 	function display($tpl = null) {
-		
+
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
-		
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t			= PhocaGalleryUtils::setVars('coimg');
+
+
 		foreach ($this->items as &$item) {
 			$this->ordering[$item->image_id][] = $item->id;
 		}
-		
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
-		
+
 		$this->addToolbar();
 		parent::display($tpl);
-		
+
 	}
-	
+
 	function addToolbar() {
-	
+
 		require_once JPATH_COMPONENT.'/helpers/phocagallerycoimgs.php';
-	
+
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryCoImgsHelper::getActions($state->get('filter.category_id'));
-	
+
 		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_IMAGE_COMMENTS' ), 'comment' );
-	
+
 		if ($canDo->get('core.edit')) {
 			JToolbarHelper ::editList('phocagallerycoimg.edit','JToolbar_EDIT');
 		}
@@ -59,14 +67,14 @@ class PhocaGalleryCpViewPhocaGalleryCoImgs extends JViewLegacy
 			JToolbarHelper ::custom('phocagallerycoimgs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
 			JToolbarHelper ::custom('phocagallerycoimgs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
 		}
-	
+
 		if ($canDo->get('core.delete')) {
 			JToolbarHelper ::deleteList(  JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagallerycoimgs.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 		JToolbarHelper ::divider();
 		JToolbarHelper ::help( 'screen.phocagallery', true );
 	}
-	
+
 	protected function getSortFields() {
 		return array(
 			'a.ordering'	=> JText::_('COM_PHOCAGALLERY_ORDERING'),

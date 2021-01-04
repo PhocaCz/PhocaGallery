@@ -18,10 +18,10 @@ echo '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>
 echo '<div align="center" style="margin:0;padding:0;margin-top:10px;">';
 
 $cmw = '';
-if ((int)$this->tmpl['categorymapwidth'] > 0) {
-	$cmw = 'width:'.$this->tmpl['categorymapwidth'].'px;';
+if ((int)$this->t['categorymapwidth'] > 0) {
+	$cmw = 'width:'.$this->t['categorymapwidth'].'px;';
 }
-echo '<div id="phocaMap" style="margin:0;padding:0;'. $cmw. 'height:'.$this->tmpl['categorymapheight'].'px">';
+echo '<div id="phocaMap" style="margin:0;padding:0;'. $cmw. 'height:'.$this->t['categorymapheight'].'px">';
 echo '</div></div>';
 
 

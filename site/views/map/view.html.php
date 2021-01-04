@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 class PhocaGalleryViewMap extends JViewLegacy
 {
-	public 		$tmpl;
+	public 		$t;
 	protected	$params;
 	
 	function display($tpl = null) {
@@ -27,73 +27,73 @@ class PhocaGalleryViewMap extends JViewLegacy
 		// Multibox
 		$get['mapwidth']						= $app->input->get( 'mapwidth', '', 'string' );
 		$get['mapheight']						= $app->input->get( 'mapheight', '', 'string' );
-		$this->tmpl['enable_multibox']			= $this->params->get( 'enable_multibox', 0);
-		$this->tmpl['enable_multibox_iframe'] 	= 0;
+		$this->t['enable_multibox']			= $this->params->get( 'enable_multibox', 0);
+		$this->t['enable_multibox_iframe'] 	= 0;
 		if ($get['mapwidth'] != '') {
 			// Seems we are in iframe
-			$this->tmpl['enable_multibox_iframe'] = 1;
+			$this->t['enable_multibox_iframe'] = 1;
 		}
 		
-		$this->tmpl['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
-		$this->tmpl['customcss']					= $this->params->get( 'custom_css', '');
-		$this->tmpl['map_type']						= $this->params->get( 'map_type', 2 );
+		$this->t['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
+		$this->t['customcss']					= $this->params->get( 'custom_css', '');
+		$this->t['map_type']						= $this->params->get( 'map_type', 2 );
 		
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
 		
 		// PARAMS - Open window parameters - modal popup box or standard popup window
-		$this->tmpl['detailwindow'] = $this->params->get( 'detail_window', 0 );
+		$this->t['detailwindow'] = $this->params->get( 'detail_window', 0 );
 		
 		// Plugin information
 		if (isset($get['map']) && $get['map'] != '') {
-			$this->tmpl['detailwindow'] = $get['map'];
+			$this->t['detailwindow'] = $get['map'];
 		}
 		
 		// Close and Reload links (for different window types)
-		$close = PhocaGalleryRenderFront::renderCloseReloadDetail($this->tmpl['detailwindow']);
+		$close = PhocaGalleryRenderFront::renderCloseReloadDetail($this->t['detailwindow']);
 		$detail_window_close	= $close['detailwindowclose'];
 		$detail_window_reload	= $close['detailwindowreload'];
 		
 		// PARAMS - Display Description in Detail window - set the font color
-		$this->tmpl['detailwindow']			 	= $this->params->get( 'detail_window', 0 );
-		$this->tmpl['detailwindowbackgroundcolor']= $this->params->get( 'detail_window_background_color', '#ffffff' );
+		$this->t['detailwindow']			 	= $this->params->get( 'detail_window', 0 );
+		$this->t['detailwindowbackgroundcolor']= $this->params->get( 'detail_window_background_color', '#ffffff' );
 		
 		$description_lightbox_font_color 	= $this->params->get( 'description_lightbox_font_color', '#ffffff' );
 		$description_lightbox_bg_color 		= $this->params->get( 'description_lightbox_bg_color', '#000000' );
 		$description_lightbox_font_size 	= $this->params->get( 'description_lightbox_font_size', 12 );
-		$this->tmpl['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
-		if ($this->tmpl['gallerymetakey'] != '') {
-			$document->setMetaData('keywords', $this->tmpl['gallerymetakey']);
+		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
+		if ($this->t['gallerymetakey'] != '') {
+			$document->setMetaData('keywords', $this->t['gallerymetakey']);
 		}
-		if ($this->tmpl['gallerymetadesc'] != '') {
-			$document->setMetaData('description', $this->tmpl['gallerymetadesc']);
+		if ($this->t['gallerymetadesc'] != '') {
+			$document->setMetaData('description', $this->t['gallerymetadesc']);
 		}
 
 		// NO SCROLLBAR IN DETAIL WINDOW
-		if ($this->tmpl['detailwindow'] == 7) {
+		if ($this->t['detailwindow'] == 7) {
 	
 		} else {
 			$document->addCustomTag( "<style type=\"text/css\"> \n" 
-				." html,body, .contentpane{overflow:hidden;background:".$this->tmpl['detailwindowbackgroundcolor'].";} \n" 
-				." center, table {background:".$this->tmpl['detailwindowbackgroundcolor'].";} \n" 
+				." html,body, .contentpane{overflow:hidden;background:".$this->t['detailwindowbackgroundcolor'].";} \n" 
+				." center, table {background:".$this->t['detailwindowbackgroundcolor'].";} \n" 
 				." #sbox-window {background-color:#fff;padding:5px} \n" 
 				." </style> \n");
 		}
 		
 		// PARAMS - Get image height and width
-		$this->tmpl['largemapwidth']		= (int)$this->params->get( 'front_modal_box_width', 680 ) - 40;
-		$this->tmpl['largemapheight']		= (int)$this->params->get( 'front_modal_box_height', 560 ) - 20;
+		$this->t['largemapwidth']		= (int)$this->params->get( 'front_modal_box_width', 680 ) - 40;
+		$this->t['largemapheight']		= (int)$this->params->get( 'front_modal_box_height', 560 ) - 20;
 		
 		// Multibox
 		if (isset($get['mapwidth']) && $get['mapwidth'] != '') {
-			$this->tmpl['largemapwidth'] = $get['mapwidth'];
+			$this->t['largemapwidth'] = $get['mapwidth'];
 		}
 		if (isset($get['mapheight']) && $get['mapheight'] != '') {
-			$this->tmpl['largemapheight'] = $get['mapheight'];
+			$this->t['largemapheight'] = $get['mapheight'];
 		}
 		
-	//	$this->tmpl['googlemapsapikey']	= $this->params->get( 'google_maps_api_key', '' );
+	//	$this->t['googlemapsapikey']	= $this->params->get( 'google_maps_api_key', '' );
 			
 		// MODEL
 		$model	= $this->getModel();
@@ -150,20 +150,20 @@ class PhocaGalleryViewMap extends JViewLegacy
 		
 		
 		// Back button
-		$this->tmpl['backbutton'] = '';
-		if ($this->tmpl['detailwindow'] == 7) {
+		$this->t['backbutton'] = '';
+		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->tmpl['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
 				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}
 	
 		// ASIGN
-		$this->assignRef( 'tmpl', $this->tmpl );
+		$this->assignRef( 'tmpl', $this->t );
 		$this->assignRef( 'map', $map );
 		$this->_prepareDocument($map);
 		
-		if($this->tmpl['map_type'] == 2){
+		if($this->t['map_type'] == 2){
 			parent::display('osm');
 		} else {
 			parent::display($tpl);
@@ -179,10 +179,10 @@ class PhocaGalleryViewMap extends JViewLegacy
 		$this->params	= $app->getParams();
 		$title 			= null;
 		
-		JHtml::_('jquery.framework', false);
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 		
-		$this->tmpl['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
 		
 
 		$menu = $menus->getActive();
@@ -214,16 +214,16 @@ class PhocaGalleryViewMap extends JViewLegacy
 	/*	
 		if ($item->metadesc != '') {
 			$this->document->setDescription($item->metadesc);
-		} else */ if ($this->tmpl['gallerymetadesc'] != '') {
-			$this->document->setDescription($this->tmpl['gallerymetadesc']);
+		} else */ if ($this->t['gallerymetadesc'] != '') {
+			$this->document->setDescription($this->t['gallerymetadesc']);
 		} else if ($this->params->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->params->get('menu-meta_description', ''));
 		} 
 /*
 		if ($item->metakey != '') {
 			$this->document->setMetadata('keywords', $item->metakey);
-		} else*/ if ($this->tmpl['gallerymetakey'] != '') {
-			$this->document->setMetadata('keywords', $this->tmpl['gallerymetakey']);
+		} else*/ if ($this->t['gallerymetakey'] != '') {
+			$this->document->setMetadata('keywords', $this->t['gallerymetakey']);
 		} else if ($this->params->get('menu-meta_keywords', '')) {
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords', ''));
 		}

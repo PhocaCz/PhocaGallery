@@ -8,11 +8,15 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
-
+phocagalleryimport('phocagallery.render.renderadminviews');
 class phocaGalleryViewphocaGalleryLinks extends JViewLegacy
 {
+		protected $r;
+		protected $t;	  
 	function display($tpl = null) {
 
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t = PhocaGalleryUtils::setVars('link');										
 		$app	= JFactory::getApplication();
 
 		//Frontend Changes
@@ -28,14 +32,13 @@ class phocaGalleryViewphocaGalleryLinks extends JViewLegacy
 		$eName	= $app->input->get('e_name', '', 'cmd');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
-		$tmpl['categories']		= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkcats&amp;tmpl=component&amp;e_name='.$eName;
-		//$tmpl['COM_PHOCAGALLERY_CATEGORY']		= 'index.php?option=com_phocagallery&amp;view=phocagallerylinkcat&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['images']			= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=2&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['image']			= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=1&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['switchimage']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=3&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['slideshow']		= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=4&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['categories']		= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkcats&amp;tmpl=component&amp;e_name='.$eName;
+		//$this->t['COM_PHOCAGALLERY_CATEGORY']		= 'index.php?option=com_phocagallery&amp;view=phocagallerylinkcat&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['images']			= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=2&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['image']			= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=1&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['switchimage']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=3&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['slideshow']		= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkimg&amp;type=4&amp;tmpl=component&amp;e_name='.$eName;
 
-		$this->assignRef('tmpl',	$tmpl);
 		parent::display($tpl);
 	}
 }

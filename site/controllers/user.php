@@ -168,23 +168,23 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$userLang			= PhocaGalleryUser::getUserLang();
 		$post['language']	= $userLang['lang'];
 		/*
-		switch ($this->tmpl['userucplang']){
+		switch ($this->t['userucplang']){
 
 			case 2:
 				$registry = new JRegistry;
 				$registry->loadString($user->params);
 				$lang = $registry->get('language','*');
-				$this->tmpl['userucplangvalue'] = '<input type="hidden" name="language" value="'.$lang.'" />';
+				$this->t['userucplangvalue'] = '<input type="hidden" name="language" value="'.$lang.'" />';
 			break;
 
 			case 3:
 				$lang = JFactory::getLanguage()->getTag();
-				$this->tmpl['userucplangvalue'] = '<input type="hidden" name="language" value="*" />';
+				$this->t['userucplangvalue'] = '<input type="hidden" name="language" value="*" />';
 			break;
 
 			default:
 			case 1:
-				$this->tmpl['userucplangvalue'] = '<input type="hidden" name="language" value="*" />';
+				$this->t['userucplangvalue'] = '<input type="hidden" name="language" value="*" />';
 			break;
 		}*/
 

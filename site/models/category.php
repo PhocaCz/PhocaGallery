@@ -206,8 +206,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 			if ($rightDisplay == 0) {
 				$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
-				$tmpl['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($tmpl['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
+				$app->redirect(JRoute::_($t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - -

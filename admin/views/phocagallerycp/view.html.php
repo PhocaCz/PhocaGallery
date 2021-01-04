@@ -13,28 +13,35 @@ phocagalleryimport( 'phocagallery.render.renderinfo' );
 class PhocaGalleryCpViewPhocaGallerycp extends JViewLegacy
 {
 	protected $t;
+	protected $r;
 
 	public function display($tpl = null) {
 
 		$this->t	= PhocaGalleryUtils::setVars('cp');
+		$this->r	= new PhocaGalleryRenderAdminview();
+
+		$i = ' icon-';
+		$d = 'duotone ';
+
 		$this->views= array(
-		'imgs'		=> $this->t['l'] . '_IMAGES',
-		'cs'		=> $this->t['l'] . '_CATEGORIES',
-		't'			=> $this->t['l'] . '_THEMES',
-		'ra'		=> $this->t['l'] . '_CATEGORY_RATING',
-		'raimg'		=> $this->t['l'] . '_IMAGE_RATING',
-		'cos'		=> $this->t['l'] . '_CATEGORY_COMMENTS',
-		'coimgs'	=> $this->t['l'] . '_IMAGE_COMMENTS',
-		'users'		=> $this->t['l'] . '_USERS',
+		'imgs'		=> array($this->t['l'] . '_IMAGES', $d.$i.'pictures', '#dd5500'),
+		'cs'		=> array($this->t['l'] . '_CATEGORIES', $d.$i.'folder-open', '#da7400'),
+		't'			=> array($this->t['l'] . '_THEMES', $d.$i.'modules', '#cd76cc'),
+		'ra'		=> array($this->t['l'] . '_CATEGORY_RATING', $i.'star-empty', '#ffd460'),
+		'raimg'		=> array($this->t['l'] . '_IMAGE_RATING', $i.'star-empty', '#f5b300'),
+		'cos'		=> array($this->t['l'] . '_CATEGORY_COMMENTS', $d.$i.'comment', '#399ed0'),
+		'coimgs'	=> array($this->t['l'] . '_IMAGE_COMMENTS', $d.$i.'comment', '#1e6080'),
+		'users'		=> array($this->t['l'] . '_USERS', $d.$i.'users', '#7faa7f'),
 		///'fbs'		=> $this->t['l'] . '_FB',
-		'tags'		=> $this->t['l'] . '_TAGS',
-		'efs'	=> $this->t['l'] . '_STYLES',
-		'in'		=> $this->t['l'] . '_INFO'
+		'tags'		=> array($this->t['l'] . '_TAGS', $d.$i.'tag-double', '#CC0033'),
+		'efs'		=> array($this->t['l'] . '_STYLES', $i.'styles', '#9900CC'),
+		'in'		=> array($this->t['l'] . '_INFO', $d.$i.'info-circle', '#3378cc')
 		);
 
 
+
 		JHTML::stylesheet( $this->t['s'] );
-		//JHTML::_('behavior.tooltip');
+		////Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 		$this->t['version'] = PhocaGalleryRenderInfo::getPhocaVersion();
 
 		$this->addToolbar();

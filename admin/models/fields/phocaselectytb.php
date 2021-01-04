@@ -42,7 +42,7 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		$onchange = (string) $this->element['onchange'];
 
 		
-		JHtml::_('jquery.framework');
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectytb';
 
 		// Build the script.
@@ -96,7 +96,7 @@ class JFormFieldPhocaSelectYtb extends JFormField
 		
 		$html[] = '</div>'. "\n";		
 		
-		$html[] = JHtml::_(
+		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(

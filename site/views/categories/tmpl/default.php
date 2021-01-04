@@ -20,12 +20,12 @@ echo '</div>';
 echo '<div class="ph-cb"></div>';
 
 
-if ($this->tmpl['categories_description'] != '') {
-	echo '<div class="pg-csv-desc" >'.JHTML::_('content.prepare', $this->tmpl['categories_description']).'</div>';
+if ($this->t['categories_description'] != '') {
+	echo '<div class="pg-csv-desc" >'.Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $this->t['categories_description']).'</div>';
 }
 
 // Obsolete methods
-switch($this->tmpl['display_image_categories']) {
+switch($this->t['display_image_categories']) {
 
 	case 0:
 		echo $this->loadTemplate('obs_catimgdetailtitleonly');
@@ -52,10 +52,6 @@ switch($this->tmpl['display_image_categories']) {
 		echo $this->loadTemplate('categories');
 	break;
 }
-
-
-
-
 echo $this->loadTemplate('pagination');
-echo PhocaGalleryUtils::getInfo();
+echo PhocaGalleryUtils::getExtInfo();
 echo '</div>';

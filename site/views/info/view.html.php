@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 class PhocaGalleryViewInfo extends JViewLegacy
 {
-	public 		$tmpl;
+	public 		$t;
 	protected 	$params;
 
 	/*
@@ -68,72 +68,72 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		$document		= JFactory::getDocument();
 		$this->params	= $app->getParams();
 
-		$this->tmpl['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
-		$this->tmpl['customcss']					= $this->params->get( 'custom_css', '');
+		$this->t['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
+		$this->t['customcss']					= $this->params->get( 'custom_css', '');
 
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
 
 		// PARAMS - Open window parameters - modal popup box or standard popup window
-		$this->tmpl['detailwindow'] =$this->params->get( 'detail_window', 0 );
+		$this->t['detailwindow'] =$this->params->get( 'detail_window', 0 );
 
 		// Plugin information
 		if (isset($get['info']) && $get['info'] != '') {
-			$this->tmpl['detailwindow'] = $get['info'];
+			$this->t['detailwindow'] = $get['info'];
 		}
 
 		// Close and Reload links (for different window types)
-		$close = PhocaGalleryRenderFront::renderCloseReloadDetail($this->tmpl['detailwindow']);
+		$close = PhocaGalleryRenderFront::renderCloseReloadDetail($this->t['detailwindow']);
 		$detail_window_close	= $close['detailwindowclose'];
 		$detail_window_reload	= $close['detailwindowreload'];
 
 
 		// PARAMS - Display Description in Detail window - set the font color
-		$this->tmpl['detailwindowbackgroundcolor']=$this->params->get( 'detail_window_background_color', '#ffffff' );
+		$this->t['detailwindowbackgroundcolor']=$this->params->get( 'detail_window_background_color', '#ffffff' );
 		$description_lightbox_font_color 	= $this->params->get( 'description_lightbox_font_color', '#ffffff' );
 		$description_lightbox_bg_color 		= $this->params->get( 'description_lightbox_bg_color', '#000000' );
 		$description_lightbox_font_size 	= $this->params->get( 'description_lightbox_font_size', 12 );
-		$this->tmpl['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
 
 		// NO SCROLLBAR IN DETAIL WINDOW
 /*		$document->addCustomTag( "<style type=\"text/css\"> \n"
-			." html,body, .contentpane{overflow:hidden;background:".$this->tmpl['detailwindowbackgroundcolor'].";} \n"
-			." center, table {background:".$this->tmpl['detailwindowbackgroundcolor'].";} \n"
+			." html,body, .contentpane{overflow:hidden;background:".$this->t['detailwindowbackgroundcolor'].";} \n"
+			." center, table {background:".$this->t['detailwindowbackgroundcolor'].";} \n"
 			." #sbox-window {background-color:#fff;padding:5px} \n"
 			." </style> \n");
 */
 
 		// PARAMS - Get image height and width
-		$this->tmpl['boxlargewidth']		=$this->params->get( 'front_modal_box_width', 680 );
-		$this->tmpl['boxlargeheight'] 	=$this->params->get( 'front_modal_box_height', 560 );
-		$front_popup_window_width 	= $this->tmpl['boxlargewidth'];//since version 2.2
-		$front_popup_window_height 	= $this->tmpl['boxlargeheight'];//since version 2.2
+		$this->t['boxlargewidth']		=$this->params->get( 'front_modal_box_width', 680 );
+		$this->t['boxlargeheight'] 	=$this->params->get( 'front_modal_box_height', 560 );
+		$front_popup_window_width 	= $this->t['boxlargewidth'];//since version 2.2
+		$front_popup_window_height 	= $this->t['boxlargeheight'];//since version 2.2
 
-		if ($this->tmpl['detailwindow'] == 1) {
-			$this->tmpl['windowwidth']	= $front_popup_window_width;
-			$this->tmpl['windowheight']	= $front_popup_window_height;
+		if ($this->t['detailwindow'] == 1) {
+			$this->t['windowwidth']	= $front_popup_window_width;
+			$this->t['windowheight']	= $front_popup_window_height;
 		} else {//modal popup window
-			$this->tmpl['windowwidth']	= $this->tmpl['boxlargewidth'];
-			$this->tmpl['windowheight']	= $this->tmpl['boxlargeheight'];
+			$this->t['windowwidth']	= $this->t['boxlargewidth'];
+			$this->t['windowheight']	= $this->t['boxlargeheight'];
 		}
 
-		$this->tmpl['largemapwidth']		= (int)$this->tmpl['windowwidth'] - 20;
-		$this->tmpl['largemapheight']		= (int)$this->tmpl['windowheight'] - 20;
-		$this->tmpl['googlemapsapikey']	=$this->params->get( 'google_maps_api_key', '' );
+		$this->t['largemapwidth']		= (int)$this->t['windowwidth'] - 20;
+		$this->t['largemapheight']		= (int)$this->t['windowheight'] - 20;
+		$this->t['googlemapsapikey']	=$this->params->get( 'google_maps_api_key', '' );
 
-		$this->tmpl['exifinformation']	=$this->params->get( 'exif_information', 'FILE.FileName,FILE.FileDateTime,FILE.FileSize,FILE.MimeType,COMPUTED.Height,COMPUTED.Width,COMPUTED.IsColor,COMPUTED.ApertureFNumber,IFD0.Make,IFD0.Model,IFD0.Orientation,IFD0.XResolution,IFD0.YResolution,IFD0.ResolutionUnit,IFD0.Software,IFD0.DateTime,IFD0.Exif_IFD_Pointer,IFD0.GPS_IFD_Pointer,EXIF.ExposureTime,EXIF.FNumber,EXIF.ExposureProgram,EXIF.ISOSpeedRatings,EXIF.ExifVersion,EXIF.DateTimeOriginal,EXIF.DateTimeDigitized,EXIF.ShutterSpeedValue,EXIF.ApertureValue,EXIF.ExposureBiasValue,EXIF.MaxApertureValue,EXIF.MeteringMode,EXIF.LightSource,EXIF.Flash,EXIF.FocalLength,EXIF.SubSecTimeOriginal,EXIF.SubSecTimeDigitized,EXIF.ColorSpace,EXIF.ExifImageWidth,EXIF.ExifImageLength,EXIF.SensingMethod,EXIF.CustomRendered,EXIF.ExposureMode,EXIF.WhiteBalance,EXIF.DigitalZoomRatio,EXIF.FocalLengthIn35mmFilm,EXIF.SceneCaptureType,EXIF.GainControl,EXIF.Contrast,EXIF.Saturation,EXIF.Sharpness,EXIF.SubjectDistanceRange,GPS.GPSLatitudeRef,GPS.GPSLatitude,GPS.GPSLongitudeRef,GPS.GPSLongitude,GPS.GPSAltitudeRef,GPS.GPSAltitude,GPS.GPSTimeStamp,GPS.GPSStatus,GPS.GPSMapDatum,GPS.GPSDateStamp' );
+		$this->t['exifinformation']	=$this->params->get( 'exif_information', 'FILE.FileName,FILE.FileDateTime,FILE.FileSize,FILE.MimeType,COMPUTED.Height,COMPUTED.Width,COMPUTED.IsColor,COMPUTED.ApertureFNumber,IFD0.Make,IFD0.Model,IFD0.Orientation,IFD0.XResolution,IFD0.YResolution,IFD0.ResolutionUnit,IFD0.Software,IFD0.DateTime,IFD0.Exif_IFD_Pointer,IFD0.GPS_IFD_Pointer,EXIF.ExposureTime,EXIF.FNumber,EXIF.ExposureProgram,EXIF.ISOSpeedRatings,EXIF.ExifVersion,EXIF.DateTimeOriginal,EXIF.DateTimeDigitized,EXIF.ShutterSpeedValue,EXIF.ApertureValue,EXIF.ExposureBiasValue,EXIF.MaxApertureValue,EXIF.MeteringMode,EXIF.LightSource,EXIF.Flash,EXIF.FocalLength,EXIF.SubSecTimeOriginal,EXIF.SubSecTimeDigitized,EXIF.ColorSpace,EXIF.ExifImageWidth,EXIF.ExifImageLength,EXIF.SensingMethod,EXIF.CustomRendered,EXIF.ExposureMode,EXIF.WhiteBalance,EXIF.DigitalZoomRatio,EXIF.FocalLengthIn35mmFilm,EXIF.SceneCaptureType,EXIF.GainControl,EXIF.Contrast,EXIF.Saturation,EXIF.Sharpness,EXIF.SubjectDistanceRange,GPS.GPSLatitudeRef,GPS.GPSLatitude,GPS.GPSLongitudeRef,GPS.GPSLongitude,GPS.GPSAltitudeRef,GPS.GPSAltitude,GPS.GPSTimeStamp,GPS.GPSStatus,GPS.GPSMapDatum,GPS.GPSDateStamp' );
 
 		// MODEL
 		$model	= $this->getModel();
 		$info	= $model->getData();
 
 		// Back button
-		$this->tmpl['backbutton'] = '';
-		if ($this->tmpl['detailwindow'] == 7) {
+		$this->t['backbutton'] = '';
+		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->tmpl['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
 				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}
@@ -160,7 +160,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 				$outputExif .= JText::_('COM_PHOCAGALLERY_NO_HEADER_DATA_FOUND');
 			}
 
-			$setExif 		= $this->tmpl['exifinformation'];
+			$setExif 		= $this->t['exifinformation'];
 			$setExifArray	= explode(",", $setExif, 200);
 			$exif 			= @exif_read_data($originalFile, 0, true);
 
@@ -713,7 +713,7 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		}
 
 		// ASIGN
-		$this->assignRef( 'tmpl', $this->tmpl );
+		$this->assignRef( 'tmpl', $this->t );
 		$this->assignRef( 'infooutput', $infoOutput );
 	//	$this->assignRef( 'infooutput', $infoOutput );
 		$this->_prepareDocument($info);
@@ -728,8 +728,8 @@ class PhocaGalleryViewInfo extends JViewLegacy
 		$this->params		= $app->getParams();
 		$title 		= null;
 
-		$this->tmpl['gallerymetakey'] 		=$this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		=$this->params->get( 'gallery_metadesc', '' );
+		$this->t['gallerymetakey'] 		=$this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		=$this->params->get( 'gallery_metadesc', '' );
 
 
 		$menu = $menus->getActive();
@@ -761,16 +761,16 @@ class PhocaGalleryViewInfo extends JViewLegacy
 
 		if ($item->metadesc != '') {
 			$this->document->setDescription($item->metadesc);
-		} else if ($this->tmpl['gallerymetadesc'] != '') {
-			$this->document->setDescription($this->tmpl['gallerymetadesc']);
+		} else if ($this->t['gallerymetadesc'] != '') {
+			$this->document->setDescription($this->t['gallerymetadesc']);
 		} else if ($this->params->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->params->get('menu-meta_description', ''));
 		}
 
 		if ($item->metakey != '') {
 			$this->document->setMetadata('keywords', $item->metakey);
-		} else if ($this->tmpl['gallerymetakey'] != '') {
-			$this->document->setMetadata('keywords', $this->tmpl['gallerymetakey']);
+		} else if ($this->t['gallerymetakey'] != '') {
+			$this->document->setMetadata('keywords', $this->t['gallerymetakey']);
 		} else if ($this->params->get('menu-meta_keywords', '')) {
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords', ''));
 		}

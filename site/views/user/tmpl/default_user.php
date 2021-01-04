@@ -10,58 +10,58 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-echo '<div id="phocagallery-user">'.$this->tmpl['iepx'];
+echo '<div id="phocagallery-user">'.$this->t['iepx'];
 ?><h4><?php echo JText::_( 'COM_PHOCAGALLERY_USER' ); ?></h4>
 <table>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_USER');?>:</strong></td>
-		<td><?php echo $this->tmpl['user']?></td>
+		<td><?php echo $this->t['user']?></td>
 	</tr>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_USERNAME');?>:</strong></td>
-		<td><?php echo $this->tmpl['username']?></td>
+		<td><?php echo $this->t['username']?></td>
 	</tr>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_MAIN_CATEGORY');?>:</strong></td>
-		<td><?php echo $this->tmpl['usermaincategory']?></td>
+		<td><?php echo $this->t['usermaincategory']?></td>
 	</tr>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_NUMBER_OF_SUBCATEGORIES');?>:</strong></td>
-		<td><?php echo $this->tmpl['usersubcategory'] . ' ('.JText::_('COM_PHOCAGALLERY_MAX').': '.$this->tmpl['usersubcatcount'].', '.JText::_('COM_PHOCAGALLERY_SPACE_LEFT').': '.$this->tmpl['usersubcategoryleft'].')'; ?></td>
+		<td><?php echo $this->t['usersubcategory'] . ' ('.JText::_('COM_PHOCAGALLERY_MAX').': '.$this->t['usersubcatcount'].', '.JText::_('COM_PHOCAGALLERY_SPACE_LEFT').': '.$this->t['usersubcategoryleft'].')'; ?></td>
 	</tr>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_NUMBER_OF_IMAGES');?>:</strong></td>
-		<td><?php echo $this->tmpl['userimages']; ?></td>
+		<td><?php echo $this->t['userimages']; ?></td>
 	</tr>
 	<tr>
 		<td><strong><?php echo JText::_('COM_PHOCAGALLERY_USED_SPACE');?>:</strong></td>
-		<td><?php echo $this->tmpl['userimagesspace']. ' ('.JText::_('COM_PHOCAGALLERY_MAX').': '.$this->tmpl['userimagesmaxspace'].', '.JText::_('COM_PHOCAGALLERY_SPACE_LEFT').': '.$this->tmpl['userimagesspaceleft'].')'; ?></td>
+		<td><?php echo $this->t['userimagesspace']. ' ('.JText::_('COM_PHOCAGALLERY_MAX').': '.$this->t['userimagesmaxspace'].', '.JText::_('COM_PHOCAGALLERY_SPACE_LEFT').': '.$this->t['userimagesspaceleft'].')'; ?></td>
 	</tr>
-</table><?php 
+</table><?php
 
-if ($this->tmpl['enableuploadavatar'] == 1) {
+if ($this->t['enableuploadavatar'] == 1) {
 	?><p>&nbsp;</p>
-<h4><?php 
-	echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_AVATAR' ).' [ '. JText::_( 'COM_PHOCAGALLERY_MAX_SIZE' ).':&nbsp;'.$this->tmpl['uploadmaxsizeread'].','
-	.' '.JText::_('COM_PHOCAGALLERY_MAX_RESOLUTION').':&nbsp;'. $this->tmpl['uploadmaxreswidth'].' x '.$this->tmpl['uploadmaxresheight'].' px ]';
-?></h4>			
-				
-<form onsubmit="return OnUploadSubmitUserPG();" action="<?php echo htmlspecialchars($this->tmpl['actionamp']) . $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;viewback=user" id="uploadForm" method="post" enctype="multipart/form-data">
-		
+<h4><?php
+	echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_AVATAR' ).' [ '. JText::_( 'COM_PHOCAGALLERY_MAX_SIZE' ).':&nbsp;'.$this->t['uploadmaxsizeread'].','
+	.' '.JText::_('COM_PHOCAGALLERY_MAX_RESOLUTION').':&nbsp;'. $this->t['uploadmaxreswidth'].' x '.$this->t['uploadmaxresheight'].' px ]';
+?></h4>
+
+<form onsubmit="return OnUploadSubmitUserPG();" action="<?php echo htmlspecialchars($this->t['actionamp']) . $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;viewback=user" id="uploadForm" method="post" enctype="multipart/form-data">
+
 	<table>
 		<tr>
 			<td><strong><?php echo JText::_('COM_PHOCAGALLERY_AVATAR');?>:</strong></td>
-			<td><?php echo $this->tmpl['useravatarimg']?></td>
+			<td><?php echo $this->t['useravatarimg']?></td>
 		</tr>
 		<tr>
 			<td><strong><?php echo JText::_('COM_PHOCAGALLERY_APPROVED');?>:</strong></td>
 			<td><?php
-			if ($this->tmpl['useravatarapproved'] == 1) {
-				//echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-				echo PhocaGalleryRenderFront::renderIcon('publish', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-			} else {	
-				//echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
-				echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+			if ($this->t['useravatarapproved'] == 1) {
+				//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+				echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+			} else {
+				//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+				echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
 			}
 		?></td>
 		</tr>
@@ -73,21 +73,22 @@ if ($this->tmpl['enableuploadavatar'] == 1) {
 			<span id="upload-clear"></span>
 			</td>
 		</tr>
-	</table>	
-			
+	</table>
+
 	<ul class="upload-queue" id="upload-queue">
 		<li style="display: none" ></li>
 	</ul>
 
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 	<input type="hidden" name="task" value="uploadavatar"/>
-	<input type="hidden" name="tab" value="<?php echo $this->tmpl['currenttab']['user'];?>" />
+	<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['user'];?>" />
 	<input type="hidden" name="controller" value="user" />
 	<input type="hidden" name="viewback" value="user" />
 	<input type="hidden" name="view" value="user"/>
 	<input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
 </form>
-<div id="loading-label-user" style="text-align:center"><?php echo JHtml::_('image', $this->tmpl['pi'].'icon-switch.gif', '') . '  '. JText::_('COM_PHOCAGALLERY_LOADING'); ?></div><?php
+<?php /*<div id="loading-label-user" style="text-align:center"><?php echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-switch.gif', '') . '  '. JText::_('COM_PHOCAGALLERY_LOADING'); ?></div>*/
+    echo '<div id="loading-label-user" style="text-align:center"><div class="ph-lds-ellipsis"><div></div><div></div><div></div><div></div></div><div>'. JText::_('COM_PHOCAGALLERY_LOADING') . '</div></div>';
 }
-echo '</div>'; 	
+echo '</div>';
 ?>

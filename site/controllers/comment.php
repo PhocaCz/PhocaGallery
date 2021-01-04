@@ -46,9 +46,9 @@ class PhocaGalleryControllerComment extends PhocaGalleryController
 		$post['comment']	= substr($post['comment'], 0, (int)$maxCommentChar);
 
 		if ($detailWindow == 7 || $displayCommentNoPopup == 1) {
-			$tmplCom = '';
+			$tCom = '';
 		} else {
-			$tmplCom = '&tmpl=component';
+			$tCom = '&tmpl=component';
 		}
 
 		// Close Tags
@@ -106,7 +106,7 @@ class PhocaGalleryControllerComment extends PhocaGalleryController
 			}
 		}
 		$app->enqueueMessage($msg);
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=comment&catid='.$catidAlias.'&id='.$imgidAlias.$tmplCom.'&Itemid='. $Itemid, false));
+		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=comment&catid='.$catidAlias.'&id='.$imgidAlias.$tCom.'&Itemid='. $Itemid, false));
 	}
 }
 ?>

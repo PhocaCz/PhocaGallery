@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('jquery.framework', false);
+Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 $document	= JFactory::getDocument();
 // jQuery(\'input[type=file]\').click(function(){
 $document->addScriptDeclaration(
@@ -31,7 +31,7 @@ if ($this->params->get( 'page_title' ) != '') {
 	$heading .= $this->params->get( 'page_title' );
 }
 
-if ($this->tmpl['showpageheading'] != 0) {
+if ($this->t['showpageheading'] != 0) {
 	if ( $heading != '') {
 	    echo '<h1>'
 	        .$this->escape($heading)
@@ -39,7 +39,7 @@ if ($this->tmpl['showpageheading'] != 0) {
 	}
 }
 $tab = 0;
-switch ($this->tmpl['tab']) {
+switch ($this->t['tab']) {
 	case 'up':
 		$tab = 1;
 	break;
@@ -52,25 +52,58 @@ switch ($this->tmpl['tab']) {
 
 echo '<div>&nbsp;</div>';
 
-if ($this->tmpl['displaytabs'] > 0) {
-	echo '<div id="phocagallery-pane">';
-	echo JHtml::_('tabs.start', 'config-tabs-com_phocagallery-user', array('useCookie'=>1, 'startOffset'=> $this->tmpl['tab']));
-	echo JHtml::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('user', $this->tmpl['pi'].'icon-user.png', '') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_USER'), 'user' );
+if ($this->t['displaytabs'] > 0) {
+	//echo '<div id="phocagallery-pane">';
+
+	$tabItems = array();
+	phocagalleryimport('phocagallery.render.rendertabs');
+	$tabs = new PhocaGalleryRenderTabs();
+	echo $tabs->startTabs();
+
+	$tabItems[0] = array('id' => 'user', 'title' => JText::_('COM_PHOCAGALLERY_USER'), 'image' => 'user', 'icon' => 'user');
+	$tabItems[1] = array('id' => 'category', 'title' => $this->t['categorycreateoredithead'], 'image' => 'folder-small', 'icon' => 'category');
+	$tabItems[2] = array('id' => 'subcategories', 'title' => JText::_('COM_PHOCAGALLERY_SUBCATEGORIES'), 'image' => 'subcategories', 'icon' => 'subcategory');
+	$tabItems[3] = array('id' => 'images', 'title' => JText::_('COM_PHOCAGALLERY_IMAGES'), 'image' => 'images', 'icon' => 'image');
+
+	$tabs->setActiveTab(isset($tabItems[$this->t['tab']]['id']) ? $tabItems[$this->t['tab']]['id'] : 0);
+	echo $tabs->renderTabsHeader($tabItems);
+
+	echo $tabs->startTab('user');
+	echo $this->loadTemplate('user');
+	echo $tabs->endTab();
+
+	echo $tabs->startTab('category');
+	echo $this->loadTemplate('category');
+	echo $tabs->endTab();
+
+	echo $tabs->startTab('subcategories');
+	echo $this->loadTemplate('subcategories');
+	echo $tabs->endTab();
+
+	echo $tabs->startTab('images');
+	echo $this->loadTemplate('images');
+	echo $tabs->endTab();
+
+	echo $tabs->endTabs();
+
+	/*
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.start', 'config-tabs-com_phocagallery-user', array('useCookie'=>1, 'startOffset'=> $this->t['tab']));
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('user', $this->t['pi'].'icon-user.png', '') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_USER'), 'user' );
 	echo $this->loadTemplate('user');
 
-	echo JHtml::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('category', $this->tmpl['pi'].'icon-folder-small.png', '') . '&nbsp;'.$this->tmpl['categorycreateoredithead'], 'category' );
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('category', $this->t['pi'].'icon-folder-small.png', '') . '&nbsp;'.$this->t['categorycreateoredithead'], 'category' );
 	echo $this->loadTemplate('category');
 
-	echo JHtml::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('subcategory', $this->tmpl['pi'].'icon-subcategories.png', ''). '&nbsp;'.JText::_('COM_PHOCAGALLERY_SUBCATEGORIES'), 'subcategories' );
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('subcategory', $this->t['pi'].'icon-subcategories.png', ''). '&nbsp;'.JText::_('COM_PHOCAGALLERY_SUBCATEGORIES'), 'subcategories' );
 	echo $this->loadTemplate('subcategories');
 
-	echo JHtml::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('image', $this->tmpl['pi'].'icon-images.png', ''). '&nbsp;'.JText::_('COM_PHOCAGALLERY_IMAGES'), 'images' );
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', PhocaGalleryRenderFront::renderIcon('image', $this->t['pi'].'icon-images.png', ''). '&nbsp;'.JText::_('COM_PHOCAGALLERY_IMAGES'), 'images' );
 	echo $this->loadTemplate('images');
 
-	echo JHtml::_('tabs.end');
-	echo '</div>';
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.end');*/
+	//echo '</div>';
 }
 echo '<div>&nbsp;</div>';
-echo PhocaGalleryUtils::getInfo();
+echo PhocaGalleryUtils::getExtInfo();
 echo '</div>';
 ?>

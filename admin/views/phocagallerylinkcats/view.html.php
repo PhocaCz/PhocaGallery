@@ -13,12 +13,15 @@ jimport( 'joomla.application.component.view' );
 
 class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 {
+
+	protected $r;
+	protected $t;
+	protected $categoriesoutput;
+
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t = PhocaGalleryUtils::setVars('link');
 
 		//Frontend Changes
 		$tUri = '';
@@ -27,14 +30,11 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 			phocagalleryimport('phocagallery.render.renderadmin');
 		}
 
+		
 
-		$document	=JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
-
-		$eName				= JFactory::getApplication()->input->get('e_name');
-		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$tmpl['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
+		$eName				= $app->input->get('e_name');
+		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 
 
 		// Category Tree
@@ -62,10 +62,10 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$categoriesOutput = JHTML::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$this->categoriesoutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
-		$this->assignRef('categoriesoutput',	$categoriesOutput);
-		$this->assignRef('tmpl',	$tmpl);
+
+
 		parent::display($tpl);
 	}
 }

@@ -202,7 +202,7 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 
 	function _buildContentWhere() {
 		$app	= JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state',	'',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
@@ -222,10 +222,10 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}

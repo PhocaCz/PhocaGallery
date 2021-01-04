@@ -15,67 +15,67 @@ $user 	= JFactory::getUser();
 //Ordering allowed ?
 $ordering = ($this->lists['order'] == 'a.ordering');
 
-JHtml::_('behavior.tooltip');
-?>
-<script type="text/javascript">
-//<![CDATA[
-function insertLink() {
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+$js = '
+function insertLink() {';
 
-	<?php
+
 	$items = array('imageshadow', 'fontcolor', 'bgcolor', 'bgcolorhover', 'imagebgcolor', 'bordercolor', 'bordercolorhover', 'detail','displayname', 'displaydetail', 'displaydownload', 'displaybuttons', 'displaydescription', 'descriptionheight' ,'namefontsize', 'namenumchar', 'enableswitch', 'overlib', 'piclens','float', 'boxspace', 'displayimgrating', 'pluginlink', 'type', 'minboxwidth' );
 	$itemsArrayOutput = '';
 	foreach ($items as $key => $value) {
 
-		echo 'var '.$value.' = document.getElementById("'.$value.'").value;'."\n"
+		$js .= 'var '.$value.' = document.getElementById("'.$value.'").value;'."\n"
 			.'if ('.$value.' != \'\') {'. "\n"
 			.''.$value.' = "|'.$value.'="+'.$value.';'."\n"
 			.'}';
 		$itemsArrayOutput .= '+'.$value;
 	}
-	?>
+
+$js .= '	
 	/* Category */
 	var categoryid = document.getElementById("filter_catid").value;
-	var categoryIdOutput = '';
-	if (categoryid != '') {
+	var categoryIdOutput = \'\';
+	if (categoryid != \'\') {
 		categoryIdOutput = "|categoryid="+categoryid;
 	}
 
 	/* Image */
-	var imageIdOutput = '';
+	var imageIdOutput = \'\';
 	len = document.getElementsByName("imageid").length;
 	for (i = 0; i <len; i++) {
-		if (document.getElementsByName('imageid')[i].checked) {
-			imageid = document.getElementsByName('imageid')[i].value;
-			if (imageid != '' && parseInt(imageid) > 0) {
+		if (document.getElementsByName(\'imageid\')[i].checked) {
+			imageid = document.getElementsByName(\'imageid\')[i].value;
+			if (imageid != \'\' && parseInt(imageid) > 0) {
 				imageIdOutput = "|imageid="+imageid;
 			} else {
-				imageIdOutput = '';
+				imageIdOutput = \'\';
 			}
 		}
 	}
 
-	if (categoryIdOutput != '' &&  parseInt(categoryid) > 0) {
+	if (categoryIdOutput != \'\' &&  parseInt(categoryid) > 0) {
 		/*return false;*/
 	} else {
-		alert("<?php echo JText::_( 'COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true ); ?>");
+		alert("'. JText::_( 'COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true ).'");
 		return false;
 	}
-	if (imageIdOutput != '' &&  parseInt(imageid) > 0) {
+	if (imageIdOutput != \'\' &&  parseInt(imageid) > 0) {
 		/*return false;*/
 	} else {
-		alert("<?php echo JText::_( 'COM_PHOCAGALLERY_PLEASE_SELECT_IMAGE', true ); ?>");
+		alert("'. JText::_( 'COM_PHOCAGALLERY_PLEASE_SELECT_IMAGE', true ).'");
 		return false;
 	}
-	var tag = "{phocagallery view=category"+categoryIdOutput+imageIdOutput<?php echo $itemsArrayOutput ?>+"}";
-	window.parent.jInsertEditorText(tag, '<?php echo $this->tmpl['ename']; ?>');
+	var tag = "{phocagallery view=category"+categoryIdOutput+imageIdOutput'. $itemsArrayOutput .'+"}";
+	window.parent.jInsertEditorText(tag, \''. $this->t['ename'].'\');
 	window.parent.SqueezeBox.close();
-}
-//]]>
-</script>
+}';
+
+JFactory::getDocument()->addScriptDeclaration($js);
+?>
 <div id="phocagallery-links">
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_PHOCAGALLERY_IMAGE'); ?></legend>
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm"  id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 
 <table class="admintable" width="100%">
 		<tr>
@@ -107,13 +107,13 @@ function insertLink() {
 				<th width="1"><?php echo JText::_( 'COM_PHOCAGALLERY_NUM' ); ?></th>
 				<th width="1"></th>
 				<th class="image" width="2" align="center"><?php echo JText::_('COM_PHOCAGALLERY_IMAGE'); ?></th>
-				<th class="title" width="50%"><?php echo JHtml::_('grid.sort',  'COM_PHOCAGALLERY_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<th class="title" width="50%"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCAGALLERY_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 				</th>
-				<th width="20%" nowrap="nowrap"><?php echo JHtml::_('grid.sort',  'COM_PHOCAGALLERY_FILENAME', 'a.filename', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<th width="20%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCAGALLERY_FILENAME', 'a.filename', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 				</th>
 
 
-				<th width="1%" nowrap="nowrap"><?php echo JHtml::_('grid.sort',  'COM_PHOCAGALLERY_ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<th width="1%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCAGALLERY_ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -126,7 +126,7 @@ function insertLink() {
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo $this->tmpl['pagination']->getRowOffset( $i ); ?></td>
+				<td><?php echo $this->t['pagination']->getRowOffset( $i ); ?></td>
 				<td><input type="radio" name="imageid" value="<?php echo $row->id ?>" /></td>
 				<td align="center" valign="middle">
 					<div class="phocagallery-box-file">
@@ -144,17 +144,17 @@ function insertLink() {
 											$resH	= explode(',', $row->exth);
 
 											$correctImageRes = PhocaGalleryImage::correctSizeWithRate($resW[2], $resH[2], 50, 50);
-											//echo JHtml::_( 'image', $row->exts.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+											//echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $row->exts.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 											echo '<img src="'.$row->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
 
 										} else if (isset ($row->fileoriginalexist) && $row->fileoriginalexist == 1) {
 
 											$imageRes	= PhocaGalleryImage::getRealImageSize($row->filename, 'small');
 											$correctImageRes = PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
-											 //echo JHtml::_( 'image', $row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+											 //echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 											 echo '<img src="'.JURI::root().$row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
 										} else {
-											//echo JHtml::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+											//echo Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
                                             echo '<img src="'.JURI::root().'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif'.'" alt="" />';
 										}
 										?>
@@ -186,7 +186,7 @@ function insertLink() {
 
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->tmpl['pagination']->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->t['pagination']->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 	</table>
@@ -194,11 +194,11 @@ function insertLink() {
 
 
 <input type="hidden" name="controller" value="phocagallerylinkimg" />
-<input type="hidden" name="type" value="<?php echo $this->tmpl['type']; ?>" />
+<input type="hidden" name="type" value="<?php echo $this->t['type']; ?>" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<input type="hidden" name="e_name" value="<?php echo $this->tmpl['ename']?>" />
+<input type="hidden" name="e_name" value="<?php echo $this->t['ename']?>" />
 </form>
 
 
@@ -339,5 +339,5 @@ function insertLink() {
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
 </div>

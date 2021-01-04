@@ -13,6 +13,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class PhocaGalleryUtils
 {
 
+	public static function getExtInfo() {
+
+        JPluginHelper::importPlugin('phocatools');
+        $results = \JFactory::getApplication()->triggerEvent('PhocatoolsOnDisplayInfo', array('NzI5NzY5NTcxMTc='));
+        if (isset($results[0]) && $results[0] === true) {
+            return '';
+        }
+	    return '<div style="display:block;color:#ccc;text-align:right;">Powered by <a href="https://www.phoca.cz/phocagallery">Phoca Gallery</a></div>';
+    }
+
 	public static function htmlToRgb($clr) {
 		if ($clr[0] == '#') {
 			$clr = substr($clr, 1);
@@ -145,15 +155,5 @@ class PhocaGalleryUtils
 		}
 		return $int;
 	}
-
-	public static function getInfo() {
-
-        JPluginHelper::importPlugin('phocatools');
-        $results = \JFactory::getApplication()->triggerEvent('PhocatoolsOnDisplayInfo', array('NzI5NzY5NTcxMTc='));
-        if (isset($results[0]) && $results[0] === true) {
-            return '';
-        }
-	    return '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="https://www.phoca.cz/phocagallery">Phoca Gallery</a></div>';
-    }
 }
 ?>

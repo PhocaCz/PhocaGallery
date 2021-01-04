@@ -18,7 +18,7 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 {
 	protected	$option 		= 'com_phocagallery';
 	//public 		$context		= 'com_phocagallery.phocagallerycoimgs';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -45,8 +45,8 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = null, $direction = null)
+
+	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -58,39 +58,39 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 */
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
 
 		$language = $app->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
-		
 
-	
+
+
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_phocagallery');
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.title', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		//$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.category_id');
 		$id	.= ':'.$this->getState('filter.image_id');
 
 		return parent::getStoreId($id);
 	}
-	
-	
+
+
 	protected function getListQuery()
 	{
 		/*
@@ -120,15 +120,15 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		// Join over the language
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
-		
-		
+
+
 
 		// Join over the users for the checked out user.
-		
-		
+
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		$query->select('uua.id AS uploaduserid, uua.username AS uploadusername, uua.name AS uploadname');
 		$query->join('LEFT', '#__users AS uua ON uua.id=a.userid');
 
@@ -139,10 +139,10 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title, c.id AS category_id, c.owner_id AS category_owner_id');
 		$query->join('LEFT', '#__phocagallery_categories AS c ON c.id = a.catid');
-		
+
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		$query->join('LEFT', '#__users AS ua ON ua.id = c.owner_id');
-		
+
 		$query->select('v.average AS ratingavg');
 		$query->join('LEFT', '#__phocagallery_img_votes_statistics AS v ON v.imgid = a.id');
 
@@ -152,7 +152,7 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		}
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -165,7 +165,7 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		if (is_numeric($categoryId)) {
 			$query->where('a.catid = ' . (int) $categoryId);
 		}
-		
+
 		// Filter on the language.
 		if ($language = $this->getState('filter.language')) {
 			$query->where('a.language = ' . $db->quote($language));
@@ -184,7 +184,7 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 				$query->where('( a.title LIKE '.$search.' OR a.filename LIKE '.$search.')');
 			}
 		}
-		
+
 	//	$query->group('a.id');
 
 		// Add the list ordering clause.
@@ -195,7 +195,7 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		}*/
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
-		
+
 		return $query;
 	}
 
@@ -203,12 +203,12 @@ class PhocaGalleryCpModelPhocaGalleryImgs extends JModelList
 		$query = ' SELECT a.filename FROM #__phocagallery AS a ';
 		$this->_db->setQuery($query);
 		$itemsThumbnail = $this->_db->loadObjectList();
-		
+
 		return $itemsThumbnail;
 	}
 
 	public function getNotApprovedImage() {
-		
+
 		$query = 'SELECT COUNT(a.id) AS count'
 			.' FROM #__phocagallery AS a'
 			.' WHERE approved = 0';

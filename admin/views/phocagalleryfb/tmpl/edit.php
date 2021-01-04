@@ -11,27 +11,26 @@ defined('_JEXEC') or die;
 
 $task		= 'phocagalleryimg';
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
-$r 			=  new PhocaGalleryRenderAdminView();
+$r 			= $this->r;
 $app		= JFactory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
-?>
-<script type="text/javascript">
-Joomla.submitbutton = function(task)
-{
-	if (task == 'phocagalleryfb.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		Joomla.submitform(task, document.getElementById('adminForm'));
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) {
+	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+		return false;
 	}
-	else {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-	}
-}
-</script><?php
+}'
+
+);
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
 echo '<div class="span10 form-horizontal">';
@@ -41,9 +40,10 @@ $tabs = array (
 );
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+echo $r->startTabs();
 
-echo '<div class="tab-pane active" id="application">'."\n";
+
+echo $r->startTab('application', $tabs['application'], 'active');
 
 echo '<h4>'. JText::_($OPT.'_FB_APPLICATION').'</h4>';
 
@@ -166,9 +166,9 @@ if (isset($this->item->appid) && $this->item->appid != ''
 	}
 
 }
-echo '</div>';
+echo $r->endTab();
 
-echo '<div class="tab-pane" id="publishing">'."\n";
+echo $r->startTab('publishing', $tabs['publishing']);
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -178,12 +178,13 @@ foreach($this->form->getFieldset('publish') as $field) {
 	echo $field->input;
 	echo '</div></div>';
 }
-echo '</div>';
+echo $r->endTab();
+echo $r->endTabs();
 
 echo '</div>';//end span10
 // Second Column
 echo '<div class="span2"></div>';//end span2
-echo $r->formInputs();
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 
 

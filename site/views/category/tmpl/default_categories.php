@@ -14,7 +14,7 @@ echo '<div id="phocagallery-categories-detail" class="pg-cvcsv">'."\n";
 
 foreach ($this->itemscv as $ck => $cv) {
 	
-	if ($this->tmpl['bootstrap_icons'] == 0) {
+	if ($this->t['bootstrap_icons'] == 0) {
 		$cls 	= 'class="'.$cv->cls.'"';
 		$icon	= '';
 	} else {

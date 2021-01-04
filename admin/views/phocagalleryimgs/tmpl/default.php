@@ -11,12 +11,7 @@ defined('_JEXEC') or die;
 
 $task		= 'phocagalleryimg';
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-
-$r 			=  new PhocaGalleryRenderAdminViews();
+$r 			= $this->r;
 $app		= JFactory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
@@ -27,28 +22,27 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $option);
 $saveOrder	= $listOrder == 'a.ordering';
-if ($saveOrder) {
-
-	$saveOrderingUrl = 'index.php?option='.$option.'&task='.$tasks.'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
 echo $r->jsJorderTable($listOrder);
 
-echo '<div class="phoca-thumb-status">' . $this->tmpl['enablethumbcreationstatus'] .'</div>';
+echo '<div class="phoca-thumb-status">' . $this->t['enablethumbcreationstatus'] .'</div>';
 //echo '<div class="clearfix"></div>';
 
 echo $r->startForm($option, $tasks, 'adminForm');
-echo $r->startFilter();
-echo $r->endFilter();
+//echo $r->startFilter();
+//echo $r->endFilter();
 
 echo $r->startMainContainer();
-if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
+if (isset($this->t['notapproved']->count) && (int)$this->t['notapproved']->count > 0 ) {
 	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_IMAGE_IN_GALLERY').': '
-	.(int)$this->tmpl['notapproved']->count.'</div>';
+	.(int)$this->t['notapproved']->count.'</div>';
 }
-
+/*
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($OPT.'_FILTER_SEARCH_LABEL', $OPT.'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -58,37 +52,39 @@ echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING'
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
 
 echo $r->startFilterBar(2);
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.published'));
 echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
 echo $r->selectFilterCategory(PhocaGalleryCategory::options($option, 1), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
-echo $r->endFilterBar();
+//echo $r->endFilterBar();
 
-echo $r->endFilterBar();
+echo $r->endFilterBar();*/
+
+echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo $r->firstColumnHeader($listDirn, $listOrder);
+echo $r->secondColumnHeader($listDirn, $listOrder);
+
 echo '<th class="ph-image">'.JText::_( $OPT. '_IMAGE' ).'</th>'."\n";
-echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$OPT.'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-filename">'.JHTML::_('grid.sort',  	$OPT.'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-title">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-filename">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-functions">'.JText::_( $OPT. '_FUNCTIONS' ).'</th>'."\n";
-echo '<th class="ph-published">'.JHTML::_('grid.sort',  $OPT.'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-approved">'.JHTML::_('grid.sort',  	$OPT.'_APPROVED', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-parentcattitle">'.JHTML::_('grid.sort', $OPT.'_CATEGORY', 'category_id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-published">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-approved">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_APPROVED', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-parentcattitle">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $OPT.'_CATEGORY', 'category_id', $listDirn, $listOrder ).'</th>'."\n";
 //echo '<th class="ph-access">'.JTEXT::_($OPT.'_ACCESS').'</th>'."\n";
-echo '<th class="ph-owner">'.JHTML::_('grid.sort',  	$OPT.'_OWNER', 'category_owner_id', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-uploaduser">'.JHTML::_('grid.sort', $OPT.'_UPLOADED_BY', 'uploadusername', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-rating">'.JHTML::_('grid.sort',  	$OPT.'_RATING', 'ratingavg', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-hits">'.JHTML::_('grid.sort',  		$OPT.'_HITS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-language">'.JHTML::_('grid.sort',  	'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.JHTML::_('grid.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-owner">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_OWNER', 'category_owner_id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-uploaduser">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $OPT.'_UPLOADED_BY', 'uploadusername', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-rating">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'ratingavg', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-hits">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_HITS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-language">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
-
-echo '<tbody>'. "\n";
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
 
 $originalOrders = array();
 $parentsStr 	= "";
@@ -115,18 +111,13 @@ $linkDeleteThumbs= JRoute::_( $urlTask.'.recreate&cid[]='. (int)$item->id );
 $linkCat	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $option);
 
-
-$iD = $i % 2;
-echo "\n\n";
-//echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" >'. "\n";
-
-echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small");
+echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->tdImage($item, $this->button, 'COM_PHOCAGALLERY_ENLARGE_IMAGE');
 $checkO = '';
 if ($item->checked_out) {
-	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
+	$checkO .= Joomla\CMS\HTML\HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
 }
 if ($canCreate || $canEdit) {
 	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
@@ -151,17 +142,19 @@ if (isset($item->extid) && $item->extid !='') {
 	echo $r->td($item->filename);
 	echo '<td align="center">';
 
-	echo '<a href="'. $linkRotate90 .'" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_LEFT' ).'">'
-		. JHTML::_( 'image', 'media/com_phocagallery/images/administrator/icon-22-rotate-left.png', JText::_( 'COM_PHOCAGALLERY_ROTATE_LEFT' )).'</a> '
-		.'<a href="'. $linkRotate270 .'" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_RIGHT' ).'">'
-		. JHTML::_( 'image', 'media/com_phocagallery/images/administrator/icon-22-rotate-right.png', JText::_( 'COM_PHOCAGALLERY_ROTATE_RIGHT' )).'</a> '
-		.'<a href="'. $linkDeleteThumbs.'" title="'. JText::_( 'COM_PHOCAGALLERY_RECREATE_THUMBS' ).'">'. JHTML::_( 'image', 'media/com_phocagallery/images/administrator/icon-22-remove-create.png', JText::_( 'COM_PHOCAGALLERY_DELETE_RECREATE_THUMBS' )).'</a> '
-		.'<a href="#" onclick="window.location.reload(true);" title="'. JText::_( 'COM_PHOCAGALLERY_RELOAD_SITE' ).'">'. JHTML::_( 'image', 'media/com_phocagallery/images/administrator/icon-22-reload.png', JText::_( 'COM_PHOCAGALLERY_RELOAD_SITE' )).'</a>';
+	echo '<div class="pha-toolbox">';
+	echo '<a class="pha-no-underline" href="'. $linkRotate90 .'" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_LEFT' ).'">'
+		. '<span class="ph-cp-item"><i class="phi phi-mirror duotone icon-unblock phi-fs-m phi-fc-od" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_LEFT' ).'"></i></span>'.'</a> '
+		.'<a class="pha-no-underline" href="'. $linkRotate270 .'" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_RIGHT' ).'">'
+		. '<span class="ph-cp-item"><i class="phi duotone icon-unblock phi-fs-m phi-fc-od" title="'. JText::_( 'COM_PHOCAGALLERY_ROTATE_RIGHT' ).'"></i></span>'.'</a> '
+		.'<a class="pha-no-underline" href="'. $linkDeleteThumbs.'" title="'. JText::_( 'COM_PHOCAGALLERY_RECREATE_THUMBS' ).'">'. '<span class="ph-cp-item"><i class="phi duotone icon-plus-circle phi-fs-m phi-fc-gd" title="'. JText::_( 'COM_PHOCAGALLERY_RECREATE_THUMBS' ).'"></i></span>'.'</a> '
+		.'<a class="pha-no-underline" href="#" onclick="window.location.reload(true);" title="'. JText::_( 'COM_PHOCAGALLERY_RELOAD_SITE' ).'">'. '<span class="ph-cp-item"><i class="phi duotone icon-loop phi-fs-m phi-fc-bl " title="'. JText::_( 'COM_PHOCAGALLERY_RELOAD_SITE' ).'"></i></span>'.'</a>';
 
+	echo '</div>';
 	echo '</td>';
 }
 
-echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
+echo $r->td(Joomla\CMS\HTML\HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
 echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small");
 
 if ($canEditCat) {
@@ -185,19 +178,19 @@ echo $r->td($item->hits, "small");
 echo $r->tdLanguage($item->language, $item->language_title, $this->escape($item->language_title));
 echo $r->td($item->id, "small");
 
-echo '</tr>'. "\n";
+echo $r->endTr();
 
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
 echo $this->loadTemplate('batch');
 
-echo $r->formInputs($listOrder, $listDirn, $originalOrders);
+echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

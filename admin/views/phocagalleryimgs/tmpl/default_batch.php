@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Layout\LayoutHelper;
 
-$published = $this->state->get('filter.state');
+$published = $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
@@ -32,7 +32,7 @@ $published = $this->state->get('filter.state');
 		<?php if ($published >= 0) : ?>
 		<div class="control-group">
 			<div class="controls">
-				<?php /* echo JHtml::_('batch.item', 'com_phocagallery'); */ ?>
+				<?php /* echo Joomla\CMS\HTML\HTMLHelper::_('batch.item', 'com_phocagallery'); */ ?>
 				<?php echo PhocaGalleryBatch::item($published); ?>
 			</div>
 		</div>

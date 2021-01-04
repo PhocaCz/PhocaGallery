@@ -17,7 +17,7 @@ phocagalleryimport('phocagallery.html.category');
 
 class JFormFieldPhocaGalleryCategory extends JFormField
 {
-	protected $type 		= 'PhocaGallery';
+	protected $type 		= 'PhocaGalleryCategory';
 
 	protected function getInput() {
 		
@@ -65,8 +65,8 @@ function changeCatid() {
 		$tree = array();
 		$text = '';
 		$tree = PhocaGalleryCategory::CategoryTreeOption($phocagallerys, $tree, 0, $text, $catId);
-		array_unshift($tree, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCAGALLERY_SELECT_CATEGORY').' -', 'value', 'text'));
-		return JHTML::_('select.genericlist',  $tree,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
+		array_unshift($tree, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCAGALLERY_SELECT_CATEGORY').' -', 'value', 'text'));
+		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $tree,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

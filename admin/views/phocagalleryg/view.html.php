@@ -19,10 +19,15 @@ class PhocaGalleryCpViewPhocagalleryG extends JViewLegacy
 	protected $zoom;
 	protected $map_type;
 	protected $type;
-	
+	protected $r;
+	protected $t;
+
 	public function display($tpl = null) {
-		
+
 		$app = JFactory::getApplication();
+
+		$this->t	= PhocaGalleryUtils::setVars('g');
+		$this->r	= new PhocaGalleryRenderAdminview();
 
 		$params	 			= JComponentHelper::getParams( 'com_phocagallery' );
 		$this->latitude		= $app->input->get( 'lat', '50.079623358200884', 'get', 'string' );
@@ -31,15 +36,15 @@ class PhocaGalleryCpViewPhocagalleryG extends JViewLegacy
 		$this->map_type		= $params->get( 'map_type', 2 );
 
 		$this->type 		= 'map';
-	
+
 		$document	= JFactory::getDocument();
-		$document->addCustomTag( "<style type=\"text/css\"> \n" 
-			." html,body, .contentpane{overflow:hidden;background:#ffffff;} \n" 
+		$document->addCustomTag( "<style type=\"text/css\"> \n"
+			." html,body, .contentpane{overflow:hidden;background:#ffffff;} \n"
 			." </style> \n");
-		
-		
-		
-		
+
+
+
+
 		if ($this->map_type == 2) {
 			parent::display('osm');
 		} else {

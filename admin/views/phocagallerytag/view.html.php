@@ -16,22 +16,25 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 	protected $state;
 	protected $item;
 	protected $form;
-	protected $tmpl;
+	protected $t;
+	protected $r;
 
 	public function display($tpl = null) {
-		
+
 		$this->state	= $this->get('State');
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
-		
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+
+		$this->t	= PhocaGalleryUtils::setVars();
+		$this->r	= new PhocaGalleryRenderAdminview();
+
 
 		$this->addToolbar();
 		parent::display($tpl);
 	}
-	
+
 	protected function addToolbar() {
-		
+
 		require_once JPATH_COMPONENT.'/helpers/phocagallerytags.php';
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
@@ -41,7 +44,7 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 		$canDo		= PhocaGalleryTagsHelper::getActions($this->state->get('filter.tag_id'), $this->item->id);
 		//$paramsC 	= JComponentHelper::getParams('COM_PHOCADOWNLOAD');
 
-		
+
 
 		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
 		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_TAG' ).': <small><small>[ ' . $text.' ]</small></small>' , 'tags.png');
@@ -52,7 +55,7 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 			JToolbarHelper ::save('phocagallerytag.save', 'JToolbar_SAVE');
 			JToolbarHelper ::addNew('phocagallerytag.save2new', 'JToolbar_SAVE_AND_NEW');
 		}
-	
+
 		if (empty($this->item->id))  {
 			JToolbarHelper ::cancel('phocagallerytag.cancel', 'JToolbar_CANCEL');
 		}

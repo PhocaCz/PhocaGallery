@@ -64,8 +64,8 @@ class PhocaGalleryGrid extends JHtmlGrid
 	
 	public static function sort($title, $order, $direction = 'asc', $selected = 0, $task = null, $new_direction = 'asc', $tip = '', $form = '', $suffix = '')
 	{
-		JHtml::_('behavior.core');
-		JHtml::_('bootstrap.tooltip');
+		Joomla\CMS\HTML\HTMLHelper::_('behavior.core');
+		Joomla\CMS\HTML\HTMLHelper::_('bootstrap.tooltip');
 
 		$direction = strtolower($direction);
 		$icon = array('arrow-up-3', 'arrow-down-3');

@@ -2,7 +2,7 @@
 /**
  * Copyright 2011 Facebook, Inc.
  * @copyright	Copyright 2011 Facebook, Inc.
- * @license		
+ * @license
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
  * a copy of the License at
@@ -75,17 +75,17 @@ class FacebookApiException extends Exception
     }
 	$app	= JFactory::getApplication();
     $link	= 'index.php?option=com_phocagallery';
-	
+
 	$find 	= 'Error validating access token';
 	$found	= stripos($msg, $find);
 	if ($found === false) {
-	
+
 	} else {
 		$msg .= '<br /><br />' . JText::_('COM_PHOCAGALLERY_ERROR_FB_ACCESS_TOKEN');
 	}
-	
-	$tmpl = JFactory::getApplication()->input->get('tmpl', '', '', 'string');
-	if ($tmpl == 'component') {
+
+	$t = JFactory::getApplication()->input->get('tmpl', '', '', 'string');
+	if ($t == 'component') {
 		echo JText::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
 		exit;
 	} else {
@@ -680,7 +680,7 @@ abstract class BaseFacebook
    */
   public function api(/* polymorphic */) {
     $args = func_get_args();
-	
+
     if (is_array($args[0])) {
       return $this->_restserver($args[0]);
     } else {
@@ -964,22 +964,22 @@ abstract class BaseFacebook
     } else {
       $opts[CURLOPT_POSTFIELDS] = http_build_query($params, null, '&');
     }*/
-	
+
 	if ($this->getFileUploadSupport()){
 	  if(!empty($params['source'])){
 		 $nameArr = explode('/', $params['source']);
-		 $name    = $nameArr[count($nameArr)-1]; 
+		 $name    = $nameArr[count($nameArr)-1];
 		 $source  = str_replace('@', '', $params['source']);
-		 $size    = getimagesize($source); 
+		 $size    = getimagesize($source);
 		 $mime    = $size['mime'];
 		 $params['source'] = new CurlFile($source,$mime,$name);
 	  }
 
 	  if(!empty($params['image'])){
 		 $nameArr = explode('/', $params['image']);
-		 $name    = $nameArr[count($nameArr)-1]; 
+		 $name    = $nameArr[count($nameArr)-1];
 		 $image   = str_replace('@', '', $params['image']);
-		 $size    = getimagesize($image); 
+		 $size    = getimagesize($image);
 		 $mime    = $size['mime'];
 		 $params['image'] = new CurlFile($image,$mime,$name);
 	  }
@@ -987,8 +987,8 @@ abstract class BaseFacebook
 	} else {
 		$opts[CURLOPT_POSTFIELDS] = http_build_query($params, null, '&');
 	}
-	
-	
+
+
     $opts[CURLOPT_URL] = $url;
 
     // disable the 'Expect: 100-continue' behaviour. This causes CURL to wait

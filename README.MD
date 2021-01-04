@@ -2,7 +2,7 @@
 
 
 
-![Phoca Gallery](https://github.com/PhocaCz/PhocaGallery/blob/master/phocagallery.png)
+![Phoca Gallery](https://github.com/PhocaCz/PhocaGallery/blob/master/phocagallery.png?raw=true)
 
 # Phoca Gallery
 
@@ -23,6 +23,8 @@ Phoca Gallery is an efficient image gallery extension for Joomla! CMS.
 ## Documentation
 
 [Documentation](https://www.phoca.cz/documentation/category/2-phoca-gallery-component)
+
+
 
 
 
@@ -58,7 +60,7 @@ Phoca Gallery is an efficient image gallery extension for Joomla! CMS.
 
 ## Version
 
-4.3.18
+4.4.0
 
 
 

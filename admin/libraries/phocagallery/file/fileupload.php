@@ -664,7 +664,7 @@ class PhocaGalleryFileUpload
 	/*
 	function uploader($id='file-upload', $params = array()) {
 
-		$path = 'administrator/components/com_phocagallery/assets/upload/';
+		$path = 'media/com_phocagallery/js/upload/';
 		JHTML::script('swf.js', $path, false ); // mootools are loaded yet
 		JHTML::script('uploader.js', $path, false );// mootools are loaded yet
 
@@ -781,7 +781,7 @@ class PhocaGalleryFileUpload
 		.'<dd><button class="btn btn-success" type="submit">'. JText::_( 'COM_PHOCAGALLERY_CREATE_FOLDER' ).'</button></dd>'
 		.'</dl></div>'
 	    //.'</fieldset>'
-		.JHTML::_( 'form.token' )
+		.Joomla\CMS\HTML\HTMLHelper::_( 'form.token' )
 		.'</form>';
 		return $folderOutput;
 	}

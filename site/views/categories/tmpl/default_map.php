@@ -22,7 +22,7 @@ echo '<div id="pg-icons">';
 echo PhocaGalleryRenderFront::renderFeedIcon('categories');
 echo '</div>';
 
-if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == '') {
+if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
 	echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
 	//echo '<script src="http://www.google.com/js api" type="text/javascript"></script>';
@@ -34,10 +34,10 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 	echo '<div align="center" style="margin:0;padding:0;margin-top:10px;">';
 
 	$cmw = '';
-	if ((int)$this->tmplGeo['categoriesmapwidth'] > 0) {
-		$cmw = 'width:'.$this->tmplGeo['categoriesmapwidth'].'px;';
+	if ((int)$this->tGeo['categoriesmapwidth'] > 0) {
+		$cmw = 'width:'.$this->tGeo['categoriesmapwidth'].'px;';
 	}
-	echo '<div id="phocaMap" style="margin:0;padding:0;'. $cmw. 'height:'.$this->tmplGeo['categoriesmapheight'].'px">';
+	echo '<div id="phocaMap" style="margin:0;padding:0;'. $cmw. 'height:'.$this->tGeo['categoriesmapheight'].'px">';
 	echo '</div></div>';
 
 	?><script type='text/javascript'>//<![CDATA[
@@ -47,9 +47,9 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 	echo $map->cancelEventF();
 	echo $map->checkMapF();
 	echo $map->startMapF();
-		echo $map->setLatLng( $this->tmplGeo['categorieslat'], $this->tmplGeo['categorieslng'] );
+		echo $map->setLatLng( $this->tGeo['categorieslat'], $this->tGeo['categorieslng'] );
 		echo $map->startOptions();
-		echo $map->setZoomOpt($this->tmplGeo['categorieszoom']).','."\n";
+		echo $map->setZoomOpt($this->tGeo['categorieszoom']).','."\n";
 		echo $map->setCenterOpt().','."\n";
 		echo $map->setTypeControlOpt().','."\n";
 		echo $map->setNavigationControlOpt().','."\n";
@@ -70,10 +70,10 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 				}
 				$extCategory = PhocaGalleryImage::isExtImage($category->extid);
 				if ($extCategory) {
-					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->tmpl['picasa_correct_width'], $this->tmpl['picasa_correct_height']);
-					$imgLink = JHtml::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
+					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 				} else {
-					$imgLink = JHtml::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
+					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
 				}
 				$text = '<div style="text-align:left">'
 				.'<table border="0" cellspacing="5" cellpadding="5">'
@@ -102,7 +102,7 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 
 
 echo '<div>&nbsp;</div>';
-echo PhocaGalleryUtils::getInfo();
+echo PhocaGalleryUtils::getExtInfo();
 
 echo '</div>';
 ?>

@@ -11,28 +11,28 @@ defined('_JEXEC') or die;
 
 $task		= 'phocagalleryimg';
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
-$r 			=  new PhocaGalleryRenderAdminView();
+$r 			= $this->r;
 $app		= JFactory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 
-?>
+/*
 <script type="text/javascript">
 Joomla.submitbutton = function(task){
 	if (task != 'phocagalleryimg.cancel' && document.getElementById('jform_catid').value == '') {
 		alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED'));?>');
 	} else if (task == 'phocagalleryimg.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		<?php echo $this->form->getField('description')->save(); ?>
+		<?php //echo $this->form->getField('description')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {
 		<?php /* Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
-		 alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
+		 //alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); *//* ?>
 
 		// special case for modal popups validation response
 		jQuery('#adminForm .modal-value.invalid').each(function(){
@@ -44,13 +44,44 @@ Joomla.submitbutton = function(task){
 			alert(nameId);
 			jQuery(nameId).addClass('invalid');
 		});
+		return false;
 
 	}
 }
-</script><?php
+</script>
+*/
+
+
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) {
+	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
+		alert("'. $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED')).'");
+	} else if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+
+	    // special case for modal popups validation response
+		jQuery("#adminForm .modal-value.invalid").each(function(){
+
+			var field = jQuery(this),
+				idReversed = field.attr("id").split("").reverse().join(""),
+				separatorLocation = idReversed.indexOf("_"),
+				nameId = "#" + idReversed.substr(separatorLocation).split("").reverse().join("") + "name";
+			jQuery(nameId).addClass("invalid");
+		});
+		return false;
+
+	}
+
+
+}'
+
+);
+
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
 'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
@@ -59,55 +90,11 @@ $tabs = array (
 'metadata'		=> JText::_($OPT.'_METADATA_OPTIONS'));
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+echo $r->startTabs();
 
-echo '<div class="tab-pane active" id="general">'."\n";
-$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'pcproductid', 'vmproductid');
-echo $r->group($this->form, $formArray);
+echo $r->startTab('general', $tabs['general'], 'active');
 
-echo $this->form->getInput('extid');
 
-$formArray = array('description');
-echo $r->group($this->form, $formArray, 1);
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="publishing">'."\n";
-foreach($this->form->getFieldset('publish') as $field) {
-	echo '<div class="control-group">';
-	if (!$field->hidden) {
-		echo '<div class="control-label">'.$field->label.'</div>';
-	}
-	echo '<div class="controls">';
-	echo $field->input;
-	echo '</div></div>';
-}
-echo '</div>';
-
-echo '<div class="tab-pane" id="geo">'. "\n";
-$formArray = array ('latitude', 'longitude', 'zoom', 'geotitle');
-echo $r->group($this->form, $formArray);
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="external">'. "\n";
-echo '<div class="clearfix"></div>'. "\n";
-echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS1').'</h3>'."\n";
-$formArray = array ('extlink1link', 'extlink1title', 'extlink1target', 'extlink1icon');
-echo $r->group($this->form, $formArray);
-
-echo '<div class="clearfix"></div>'. "\n";
-echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS2').'</h3>'."\n";
-$formArray = array ('extlink2link', 'extlink2title', 'extlink2target', 'extlink2icon');
-echo $r->group($this->form, $formArray);
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="metadata">'. "\n";
-echo $this->loadTemplate('metadata');
-echo '</div>'. "\n";
-
-echo '</div>';//end tab content
-echo '</div>';//end span10
-// Second Column
-echo '<div class="span2">';
 
 // - - - - - - - - - -
 // Image
@@ -121,7 +108,8 @@ if (!JFile::exists($fileOriginal)) {
 	$this->item->fileoriginalexist = 1;
 }
 
-echo '<div style="float:right;margin:5px;">';
+
+echo '<div class="ph-float-right ph-admin-additional-box">';
 // PICASA
 if (isset($this->item->extid) && $this->item->extid !='') {
 
@@ -147,7 +135,66 @@ if (isset($this->item->extid) && $this->item->extid !='') {
 echo '</div>';
 
 
+
+
+$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'pcproductid', 'vmproductid');
+echo $r->group($this->form, $formArray);
+
+echo $this->form->getInput('extid');
+
+$formArray = array('description');
+echo $r->group($this->form, $formArray, 1);
+
+
+
+
+echo $r->endTab();
+
+echo $r->startTab('publishing', $tabs['publishing']);
+foreach($this->form->getFieldset('publish') as $field) {
+	echo '<div class="control-group">';
+	if (!$field->hidden) {
+		echo '<div class="control-label">'.$field->label.'</div>';
+	}
+	echo '<div class="controls">';
+	echo $field->input;
+	echo '</div></div>';
+}
+echo $r->endTab();
+
+echo $r->startTab('geo', $tabs['geo']);
+$formArray = array ('latitude', 'longitude', 'zoom', 'geotitle');
+echo $r->group($this->form, $formArray);
+echo $r->endTab();
+
+echo $r->startTab('external', $tabs['external']);
+echo '<div class="clearfix"></div>'. "\n";
+echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS1').'</h3>'."\n";
+$formArray = array ('extlink1link', 'extlink1title', 'extlink1target', 'extlink1icon');
+echo $r->group($this->form, $formArray);
+
+echo '<div class="clearfix"></div>'. "\n";
+echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS2').'</h3>'."\n";
+$formArray = array ('extlink2link', 'extlink2title', 'extlink2target', 'extlink2icon');
+echo $r->group($this->form, $formArray);
+echo $r->endTab();
+
+
+echo $r->startTab('metadata', $tabs['metadata']);
+echo $this->loadTemplate('metadata');
+echo $r->endTab();
+
+
+//echo '</div>';//end span10
+// Second Column
+//echo '<div class="span2">';
+
+
+
+
+echo $r->endTabs();
 echo '</div>';//end span2
-echo $r->formInputs();
+
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>

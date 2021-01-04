@@ -13,35 +13,43 @@ jimport( 'joomla.application.component.view' );
 phocagalleryimport('phocagallery.library.library');
 phocagalleryimport('phocagallery.render.renderdetailwindow');
 
-jimport( 'joomla.filesystem.file' ); 
+jimport( 'joomla.filesystem.file' );
 class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 {
 
 	protected $items;
 	protected $pagination;
 	protected $state;
-	protected $tmpl;
-	
-	
+	protected $t;
+	protected $r;
+	public $filterForm;
+	public $activeFilters;
+
+
 	function display($tpl = null) {
-		
-		$this->items			= $this->get('Items');
-		$this->pagination		= $this->get('Pagination');
-		$this->state			= $this->get('State');
-		
+
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t			= PhocaGalleryUtils::setVars('user');
+
 		foreach ($this->items as &$item) {
 			$this->ordering[0][] = $item->id;
 		}
-	
-		$path 							= PhocaGalleryPath::getPath();
-		$this->tmpl['avatarpathabs']	= $path->avatar_abs . '/thumbs/phoca_thumb_s_';
-		$this->tmpl['avatarpathrel']	= $path->avatar_rel . 'thumbs/phoca_thumb_s_';
-		$this->tmpl['avtrpathrel']		= $path->avatar_rel;
 
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+		$path 							= PhocaGalleryPath::getPath();
+		$this->t['avatarpathabs']	= $path->avatar_abs . '/thumbs/phoca_thumb_s_';
+		$this->t['avatarpathrel']	= $path->avatar_rel . 'thumbs/phoca_thumb_s_';
+		$this->t['avtrpathrel']		= $path->avatar_rel;
+
+
 		$document	= JFactory::getDocument();
-		//$document->addCustomTag(PhocaGalleryRenderAdmin::renderIeCssLink(1));
-		
+
+
 		// Button
 		/*
 		$this->button = new JObject();
@@ -52,37 +60,37 @@ class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 		//$this->button->set('name', 'image');
 		$this->button->set('modalname', 'modal_phocagalleryusers');
 		$this->button->set('options', "{handler: 'image', size: {x: 200, y: 150}}");*/
-		
+
 		$library 			= PhocaGalleryLibrary::getLibrary();
 		$libraries			= array();
 		$btn 				= new PhocaGalleryRenderDetailWindow();
 		$btn->popupWidth 	= '640';
 		$btn->popupHeight 	= '480';
 		$btn->backend		= 1;
-		
+
 		$btn->setButtons(12, $libraries, $library);
 		$this->button = $btn->getB1();
-		
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
-		
+
 		$this->addToolbar();
 		parent::display($tpl);
-		
+
 
 	}
-	
+
 	function addToolbar() {
-	
+
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryusers.php';
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryUsersHelper::getActions($state->get('filter.category_id'));
-		
+
 		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_USERS' ), 'users' );
-		
+
 		if ($canDo->get('core.edit.state')) {
 
 			JToolbarHelper ::custom('phocagalleryusers.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
@@ -91,26 +99,26 @@ class PhocaGalleryCpViewPhocaGalleryUsers extends JViewLegacy
 			JToolbarHelper ::custom( 'phocagalleryusers.disapprove', 'disapprove.png', '', 'COM_PHOCAGALLERY_NOT_APPROVE' , true);
 			JToolbarHelper ::divider();
 		}
-		
+
 		if ($canDo->get('core.admin')) {
 			$bar = JToolbar::getInstance('toolbar');
 		/*$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocagalleryusers.approveall\');}" class="toolbar"><span class="icon-32-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</a>');*/
-		
+
 			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCAGALLERY_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocagalleryusers.approveall\');}" ><i class="icon-authorizeall" title="'.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCAGALLERY_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
-		
-		
+
+
 			JToolbarHelper ::divider();
 		}
-		
+
 		if ($canDo->get('core.delete')) {
 			JToolbarHelper ::deleteList(  'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS_AVATAR', 'phocagalleryusers.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
-	
+
 		JToolbarHelper ::divider();
 		JToolbarHelper ::help( 'screen.phocagallery', true );
 	}
-	
+
 	protected function getSortFields() {
 		return array(
 			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),

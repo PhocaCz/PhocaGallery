@@ -17,7 +17,7 @@ class PhocaGalleryImageFront
 	 * 0-small,1-medium,2-smallFolder,3-mediumFolder,4-smallShadow,5-mediumShadow,6-smallFolderShadow,7-mediumFolderShadow
 	 */
 	public static function getCategoriesImageBackground($imgCatSize, $smallImgHeigth, $smallImgWidth, $mediumImgHeight, $mediumImgWidth) {
-
+	/*
 		phocagalleryimport('phocagallery.image.image');
 		phocagalleryimport('phocagallery.path.path');
 		$path		= PhocaGalleryPath::getPath();
@@ -53,7 +53,7 @@ class PhocaGalleryImageFront
 				$imgBg->width	= $smallImgWidth + 20;//Categories Detailed View
 			break;
 		}
-		return $imgBg;
+		return $imgBg;*/
 	}
 
 	/*
@@ -152,6 +152,7 @@ class PhocaGalleryImageFront
 			case 3:
 			case 7:
 			$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
+			
 			break;
 			// user wants to display only icon folder (parameters) small
 			case 2:
@@ -406,7 +407,7 @@ class PhocaGalleryImageFront
 		}
 
 
-        $query = 'SELECT a.id, a.filename, a.exts, a.extm, a.extw, a.exth, a.extid, c.accessuserid as cataccessuserid, c.access as cataccess' .
+         $query = 'SELECT a.id, a.filename, a.exts, a.extm, a.extw, a.exth, a.extid, a.title, a.description, a.metadesc, c.accessuserid as cataccessuserid, c.access as cataccess' .
             ' FROM #__phocagallery AS a' .
 			' LEFT JOIN #__phocagallery_categories AS c ON a.catid = c.id'.
             ' WHERE a.catid = '.(int) $categoryid.
@@ -643,6 +644,8 @@ class PhocaGalleryImageFront
 
 	public static function getMosaicFields($a, $images, $size = 0, $extImg = 0, $w = 100, $h = 100) {
 
+		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$alt_value	= $paramsC->get( 'alt_value', 1 );
 
 		if ($size == 1) {
 			$i0 = 'medium';// |
@@ -660,6 +663,7 @@ class PhocaGalleryImageFront
 		switch($a) {
 			case 1:
 
+																						$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);										   
 			if ($extImg == 1) {
 				$o['w'] = (int)$w * 3;
 				$o['h'] = (int)$h;
@@ -671,8 +675,8 @@ class PhocaGalleryImageFront
 				$wi	= $w ; $hi = $h;
 				$attr1 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr1.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr1.' alt="'.$altValue0.'" /></span>';
 			} else {
 
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i3);
@@ -689,13 +693,15 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[1][1] * 2;
 				$o['w2']= (int)$i[1][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue0.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 2:
+				$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);																												   
 			if ($extImg == 1) {
 				$o['w'] = (int)$w * 3;
 				$o['h'] = (int)$h;
@@ -707,8 +713,8 @@ class PhocaGalleryImageFront
 				$wi	= $w ; $hi = $h * 2;
 				$attr1 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>';
 			} else {
 
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i3);
@@ -725,13 +731,16 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[1][1] * 2;
 				$o['w2']= (int)$i[1][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 3:
+				$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);
+			$altValue2	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[2]->title, $images[2]->description, $images[2]->metadesc);																												   
 
 			if ($extImg == 1) {
 
@@ -746,9 +755,9 @@ class PhocaGalleryImageFront
 				$attr1 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 				$attr2 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="'.$altValue2.'" /></span>';
 			} else {
 
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i3);
@@ -768,14 +777,18 @@ class PhocaGalleryImageFront
 				$o['w1']= (int)$i[2][1] * 2;
 				$o['w2']= (int)$i[2][1];
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 4:
+				$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);
+			$altValue2	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[2]->title, $images[2]->description, $images[2]->metadesc);
+				//$altValue3	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[3]->title, $images[3]->description, $images[3]->metadesc);																												   
 
 			if ($extImg == 1) {
 
@@ -790,9 +803,9 @@ class PhocaGalleryImageFront
 				$attr1 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 				$attr2 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="'.$altValue2.'" /></span>';
 			} else {
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i1);
 				$iS 	= @getimagesize($t->abs); //INHIBITERROR
@@ -813,14 +826,18 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 5:
+																								$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);
+			$altValue2	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[2]->title, $images[2]->description, $images[2]->metadesc);
+			$altValue3	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[3]->title, $images[3]->description, $images[3]->metadesc);								   
 
 			if ($extImg == 1) {
 
@@ -837,10 +854,10 @@ class PhocaGalleryImageFront
 				$wi	= $w * 2; $hi = $h;
 				$attr3 = 'style="width:'.$wi.'px; height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="'.$altValue3.'" /></span>';
 			} else {
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i1);
 				$iS 	= @getimagesize($t->abs); //INHIBITERROR
@@ -863,15 +880,20 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 6:
+																							$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);
+			$altValue2	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[2]->title, $images[2]->description, $images[2]->metadesc);
+			$altValue3	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[3]->title, $images[3]->description, $images[3]->metadesc);
+			$altValue4	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[4]->title, $images[4]->description, $images[4]->metadesc);									   
 
 			if ($extImg == 1) {
 
@@ -889,11 +911,11 @@ class PhocaGalleryImageFront
 				$attr3 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 				$attr4 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.$images[4]->extm.'" '.$attr4.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="'.$altValue3.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.$images[4]->extm.'" '.$attr4.' alt="'.$altValue4.'" /></span>';
 			} else {
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i1);
 				$iS 	= @getimagesize($t->abs); //INHIBITERROR
@@ -919,16 +941,22 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[4][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[4][0].'" alt="'.$altValue4.'" /></span>';
 			}
 			return $o;
 			break;
 
 			case 7:
+							$altValue0	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[0]->title, $images[0]->description, $images[0]->metadesc);
+			$altValue1	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[1]->title, $images[1]->description, $images[1]->metadesc);
+			$altValue2	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[2]->title, $images[2]->description, $images[2]->metadesc);
+			$altValue3	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[3]->title, $images[3]->description, $images[3]->metadesc);
+			//$altValue4	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[4]->title, $images[4]->description, $images[4]->metadesc);
+			//$altValue5	= PhocaGalleryRenderFront::getAltValue($alt_value, $images[5]->title, $images[5]->description, $images[5]->metadesc);																												   
 
 			if ($extImg == 1) {
 
@@ -944,10 +972,10 @@ class PhocaGalleryImageFront
 				$attr2 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 				$attr3 = 'style="width:'.$wi.'px;height:'.$hi.'px"';
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="" /></span>'.
-					  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.$images[0]->extm.'" '.$attr.' alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.$images[1]->extm.'" '.$attr1.' alt="'.$altValue1.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.$images[2]->extm.'" '.$attr2.' alt="'.$altValue2.'" /></span>'.
+					  '<span class="pg-multi-img"><img src="'.$images[3]->extm.'" '.$attr3.' alt="'.$altValue3.'" /></span>';
 			} else {
 				$t 		= PhocaGalleryFileThumbnail::getThumbnailName($images[0]->filename, $i1);
 				$iS 	= @getimagesize($t->abs); //INHIBITERROR
@@ -971,10 +999,10 @@ class PhocaGalleryImageFront
 				$o['w2']= (int)$i[0][1] * 2;
 
 
-				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="" /></span>';
-				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="" /></span>'.
-						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="" /></span>';
+				$o['b1']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[0][0].'" alt="'.$altValue0.'" /></span>';
+				$o['b2']= '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[1][0].'" alt="'.$altValue1.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[2][0].'" alt="'.$altValue2.'" /></span>'.
+						  '<span class="pg-multi-img"><img src="'.JURI::base(true).'/'. $i[3][0].'" alt="'.$altValue3.'" /></span>';
 			}
 			return $o;
 			break;

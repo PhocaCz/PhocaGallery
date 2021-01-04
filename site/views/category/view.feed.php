@@ -38,8 +38,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		$imgCount			= $params->get( 'feed_img_count', 5 );
 		$feedTitle			= $params->get( 'feed_title', JText::_('COM_PHOCAGALLERY_GALLERY') );
 
-		$tmpl['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 100 );
-		$tmpl['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 100 );
+		$t['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 100 );
+		$t['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 100 );
 
 		$document->setTitle($this->escape( html_entity_decode($feedTitle)));
 
@@ -128,7 +128,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 			// - - - - - - - - - - -
 
 			if ($extImage) {
-				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $tmpl['picasa_correct_width_m'], $tmpl['picasa_correct_height_m']);
+				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $t['picasa_correct_width_m'], $t['picasa_correct_height_m']);
 				$imgLink = $value->extm;
 				//$i = '<div><a href="'.JRoute::_($link).'"><img src="'.$imgLink .'" border="0" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" /></a></div>';
 				$i = '<div><a href="'.$itemL.'"><img src="'.$imgLink .'" border="0" /></a></div>';

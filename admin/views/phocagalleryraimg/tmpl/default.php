@@ -11,12 +11,7 @@ defined('_JEXEC') or die;
 
 $task		= 'phocagalleryraimg';
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-
-$r 			=  new PhocaGalleryRenderAdminViews();
+$r 			= $this->r;
 $app		= JFactory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
@@ -26,10 +21,11 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= 0;
+$canChange  = 0;
 $saveOrder	= 0;
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option='.$option.'&task='.$task.'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
@@ -37,10 +33,11 @@ $sortFields = $this->getSortFields();
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($option, $task, 'adminForm');
-echo $r->startFilter();
-echo $r->endFilter();
+//echo $r->startFilter();
+//echo $r->endFilter();
 
 echo $r->startMainContainer();
+/*
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($OPT.'_FILTER_SEARCH_LABEL', $OPT.'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -53,27 +50,27 @@ echo $r->startFilterBar(2);
 echo $r->selectFilterCategory(PhocaGalleryCategory::options($option), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
 echo $r->endFilterBar();
 
-echo $r->endFilterBar();
+echo $r->endFilterBar();*/
+echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class="ph-user">'.JHTML::_('grid.sort',  		$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-image">'.JHTML::_('grid.sort', 		$OPT.'_IMAGE', 'image_title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-parentcattitle">'.JHTML::_('grid.sort', $OPT.'_CATEGORY', 'category_title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-rating">'.JHTML::_('grid.sort',  	$OPT.'_RATING', 'a.rating', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.JHTML::_('grid.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo $r->firstColumnHeader($listDirn, $listOrder);
+echo $r->secondColumnHeader($listDirn, $listOrder);
+
+echo '<th class="ph-user">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-image">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', 		$OPT.'_IMAGE', 'image_title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-parentcattitle">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $OPT.'_CATEGORY', 'category_title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-rating">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'a.rating', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
 
-
-echo '<tbody>'. "\n";
-
-$originalOrders = array();	
-$parentsStr 	= "";		
+$originalOrders = array();
+$parentsStr 	= "";
 $j 				= 0;
 
 if (is_array($this->items)) {
@@ -86,12 +83,9 @@ $canEditCat	= $user->authorise('core.edit', $option);
 $linkImg	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='. $item->image_id );
 $canEditImg	= $user->authorise('core.edit', $option);
 
-$iD = $i % 2;
-echo "\n\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
-
-echo $r->tdOrder(0, 0, 0);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small");
+echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, 0, $item->ordering);
+echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, 0, $item->ordering);
 
 $usrU = $item->ratingname;
 if ($item->ratingusername) {$usrU = $usrU . ' ('.$item->ratingusername.')';}
@@ -112,18 +106,18 @@ echo $r->td($catO, "small");
 echo $r->td($item->rating, "small");
 echo $r->td($item->id, "small");
 
-echo '</tr>'. "\n";
-						
+echo $r->endTr();
+
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
 
-echo $r->formInputs($listOrder, $listDirn, $originalOrders);
+echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

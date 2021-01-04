@@ -106,11 +106,11 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 						$o = '<div class="pg-cv-comment-img-box-item">';
 						$o .= '<div class="pg-cv-comment-img-box-avatar">';
 						$avatar 			= PhocaGalleryCommentImage::getUserAvatar($user->id);
-						$this->tmpl['path'] = PhocaGalleryPath::getPath();
+						$this->t['path'] = PhocaGalleryPath::getPath();
 						$img = '<div style="width: 20px; height: 20px;">&nbsp;</div>';
 						if (isset($avatar->avatar) && $avatar->avatar != '') {
-							$pathAvatarAbs	= $this->tmpl['path']->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar->avatar;
-							$pathAvatarRel	= $this->tmpl['path']->avatar_rel . 'thumbs/phoca_thumb_s_'. $avatar->avatar;
+							$pathAvatarAbs	= $this->t['path']->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar->avatar;
+							$pathAvatarRel	= $this->t['path']->avatar_rel . 'thumbs/phoca_thumb_s_'. $avatar->avatar;
 							if (JFile::exists($pathAvatarAbs)){
 								$avSize = getimagesize($pathAvatarAbs);
 								$avRatio = $avSize[0]/$avSize[1];

@@ -19,17 +19,22 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 	protected $item;
 	protected $form;
 	protected $state;
+	protected $t;
+	protected $r;
 
 	/**
 	 * Display the view
 	 */
 	public function display($tpl = null)
 	{
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
-		
+
+
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
+
+		$this->t	= PhocaGalleryUtils::setVars('fb');
+		$this->r	= new PhocaGalleryRenderAdminview();
 
 
 		if (count($errors = $this->get('Errors'))) {
@@ -42,7 +47,7 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 	}
 
 	protected function addToolbar() {
-		
+
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryfbs.php';
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$bar 		= JToolbar::getInstance('toolbar');

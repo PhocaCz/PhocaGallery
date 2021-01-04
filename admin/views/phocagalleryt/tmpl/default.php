@@ -9,19 +9,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip'); ?>
+JFactory::getDocument()->addScriptDeclaration(
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'phocagalleryt.cancel' || document.formvalidator.isValid(document.getElementById('phocagalleryt-form'))) {
-			Joomla.submitform(task, document.getElementById('phocagalleryt-form'));
-		}
-		else {
-			alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-		}
+'Joomla.submitbutton = function(task) {
+	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("phocagalleryt-form"))) {
+		Joomla.submitform(task, document.getElementById("phocagalleryt-form"));
+	} else {
+		return false;
 	}
-</script>
+}'
+
+); ?>
 
 <form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" id="phocagalleryt-form" class="form-validate">
 
@@ -86,7 +84,7 @@ if ($this->require_ftp) {
 <input type="hidden" name="type" value="" />
 <input type="hidden" name="option" value="com_phocagallery" />
 <input type="hidden" name="task" value="phocagalleryt.themeinstall" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 </form>
 
 <?php

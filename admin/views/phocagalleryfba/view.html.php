@@ -15,11 +15,17 @@ phocagalleryimport( 'phocagallery.facebook.fbsystem' );
 
 class PhocaGalleryCpViewphocaGalleryFbA extends JViewLegacy
 {
+	protected $r;
+	protected $t;
+
 	function display($tpl = null) {
 		$app		= JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+
+		$this->t	= PhocaGalleryUtils::setVars('fba');
+		$this->r	= new PhocaGalleryRenderAdminview();
+
 
 		$this->field	= JFactory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFbAlbum_'.$this->field;
@@ -66,7 +72,7 @@ class PhocaGalleryCpViewphocaGalleryFbA extends JViewLegacy
 			$this->userInfo = 1;
 		}
 
-		//$this->assignRef('tmpl',	$tmpl);
+		//$this->assignRef('tmpl',	$t);
 		parent::display($tpl);
 
 	}

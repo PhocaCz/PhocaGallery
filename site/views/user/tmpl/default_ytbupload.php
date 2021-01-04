@@ -11,17 +11,17 @@
 defined('_JEXEC') or die('Restricted access');
 echo '<div id="phocagallery-ytbupload">';
 echo '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>';
-echo '<form onsubmit="return OnUploadSubmitPG(\'loading-label-ytb\');" action="'. $this->tmpl['syu_url'] .'" id="phocaGalleryUploadFormYU" method="post">';
-//if ($this->tmpl['ftp']) { echo PhocaGalleryFileUpload::renderFTPaccess();}  
+echo '<form onsubmit="return OnUploadSubmitPG(\'loading-label-ytb\');" action="'. $this->t['syu_url'] .'" id="phocaGalleryUploadFormYU" method="post">';
+//if ($this->t['ftp']) { echo PhocaGalleryFileUpload::renderFTPaccess();}  
 //echo '<h4>'; 
 //echo JText::_('COM_PHOCAGALLERY_YTB_UPLOAD');
 //echo ' </h4>';
-if ($this->tmpl['catidimage'] == 0 || $this->tmpl['catidimage'] == '') {
+if ($this->t['catidimage'] == 0 || $this->t['catidimage'] == '') {
 	echo '<div class="alert alert-error">'.JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY_TO_BE_ABLE_TO_IMPORT_YOUTUBE_VIDEO').'</div>';
 }
-echo $this->tmpl['syu_output'];
+echo $this->t['syu_output'];
 
-$this->tmpl['upload_form_id'] = 'phocaGalleryUploadFormYU';
+$this->t['upload_form_id'] = 'phocaGalleryUploadFormYU';
 ?>
 
 <div><?php echo JText::_( 'COM_PHOCAGALLERY_YTB_LINK' ); ?>:</div>
@@ -34,16 +34,16 @@ $this->tmpl['upload_form_id'] = 'phocaGalleryUploadFormYU';
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="viewback" value="user" />
 <input type="hidden" name="view" value="user"/>
-<input type="hidden" name="tab" value="<?php echo $this->tmpl['currenttab']['images'];?>" />
+<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['images'];?>" />
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
 <input type="hidden" name="filter_order_image" value="<?php echo $this->listsimage['order']; ?>" />
 <input type="hidden" name="filter_order_Dir_image" value="" />
-<input type="hidden" name="catid" value="<?php echo $this->tmpl['catidimage'] ?>"/>
+<input type="hidden" name="catid" value="<?php echo $this->t['catidimage'] ?>"/>
 
 <?php
-if ($this->tmpl['upload_form_id'] == 'phocaGalleryUploadFormYU') {
+if ($this->t['upload_form_id'] == 'phocaGalleryUploadFormYU') {
 	echo '<div id="loading-label-ytb" style="text-align:center">'
-	. JHtml::_('image', 'media/com_phocagallery/images/icon-switch.gif', '') 
+	. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-switch.gif', '') 
 	. '  '.JText::_('COM_PHOCAGALLERY_LOADING').'</div>';
 }
 

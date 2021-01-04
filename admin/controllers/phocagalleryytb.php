@@ -149,10 +149,13 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 			}
 		}*/
 
-		JFactory::getApplication()->input->set('ytb_title', $ytb['title']);
-		JFactory::getApplication()->input->set('ytb_desc', $ytb['desc']);
-		JFactory::getApplication()->input->set('ytb_filename', $ytb['filename']);
-		JFactory::getApplication()->input->set('ytb_link', $ytb['link']);
+		if ((bool)$ytb !== false) {
+
+			JFactory::getApplication()->input->set('ytb_title', $ytb['title']);
+			JFactory::getApplication()->input->set('ytb_desc', $ytb['desc']);
+			JFactory::getApplication()->input->set('ytb_filename', $ytb['filename']);
+			JFactory::getApplication()->input->set('ytb_link', $ytb['link']);
+		}
 
 		if ($errorYtbMsg != '') {
 			$msg 	= $errorYtbMsg;

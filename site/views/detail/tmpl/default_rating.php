@@ -10,9 +10,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 $app = JFactory::getApplication();
-$amp = PhocaGalleryUtils::setQuestionmarkOrAmp($this->tmpl['action']);
+$amp = PhocaGalleryUtils::setQuestionmarkOrAmp($this->t['action']);
 
-if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
+if ((int)$this->t['display_rating_img'] == 1 || $this->t['mb_rating']) {
 	// Leave message for already voted images
 	$vote = $app->input->get('vote', 0, 'int');;
 	if ($vote == 1) {
@@ -23,11 +23,11 @@ if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
 
 	echo '<table style="text-align:left" border="0">'
 		.'<tr>'
-		.'<td><strong>' . JText::_('COM_PHOCAGALLERY_RATING'). '</strong>: ' . $this->tmpl['votesaverageimg'] .' / '.$this->tmpl['votescountimg'] . ' ' . JText::_($this->tmpl['votestextimg']). '&nbsp;&nbsp;</td>';
+		.'<td><strong>' . JText::_('COM_PHOCAGALLERY_RATING'). '</strong>: ' . $this->t['votesaverageimg'] .' / '.$this->t['votescountimg'] . ' ' . JText::_($this->t['votestextimg']). '&nbsp;&nbsp;</td>';
 		
-	if ($this->tmpl['alreay_ratedimg']) {
+	if ($this->t['alreay_ratedimg']) {
 		echo '<td style="text-align:left"><ul class="star-rating">'
-			.'<li class="current-rating" style="width:'.$this->tmpl['voteswidthimg'].'px"></li>'
+			.'<li class="current-rating" style="width:'.$this->t['voteswidthimg'].'px"></li>'
 			.'<li><span class="star1"></span></li>';
 
 		for ($i = 2;$i < 6;$i++) {
@@ -35,7 +35,7 @@ if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
 		}
 		echo '</ul></td>';
 		
-		if ($this->tmpl['enable_multibox'] == 1) {
+		if ($this->t['enable_multibox'] == 1) {
 			echo '<td></td></tr>';
 			echo '<tr><td style="text-align:left" colspan="4" class="pg-rating-msg">'.$voteMsg.'</td></tr>';
 		} else {
@@ -43,10 +43,10 @@ if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
 		}
 
 			
-	} else if ($this->tmpl['not_registered_img']) {
+	} else if ($this->t['not_registered_img']) {
 
 		echo '<td style="text-align:left"><ul class="star-rating">'
-			.'<li class="current-rating" style="width:'.$this->tmpl['voteswidthimg'].'px"></li>'
+			.'<li class="current-rating" style="width:'.$this->t['voteswidthimg'].'px"></li>'
 			.'<li><span class="star1"></span></li>';
 
 		for ($i = 2;$i < 6;$i++) {
@@ -54,7 +54,7 @@ if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
 		}
 		echo '</ul></td>';
 		
-		if ($this->tmpl['enable_multibox'] == 1) {
+		if ($this->t['enable_multibox'] == 1) {
 			echo '<td></td></tr>';
 			echo '<tr><td style="text-align:left" colspan="4" class="pg-rating-msg">'.JText::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_RATE_IMAGE').'</td></tr>';
 		} else {
@@ -65,15 +65,15 @@ if ((int)$this->tmpl['display_rating_img'] == 1 || $this->tmpl['mb_rating']) {
 	} else {
 		
 		echo '<td style="text-align:left"><ul class="star-rating">'
-			.'<li class="current-rating" style="width:'.$this->tmpl['voteswidthimg'].'px"></li>'
-			//.'<li><a href="'.$this->tmpl['action'].$amp.'controller=detail&task=rate&rating=1" title="1 '. JText::_('COM_PHOCAGALLERY_STAR_OUT_OF').' 5" class="star1">1</a></li>';
+			.'<li class="current-rating" style="width:'.$this->t['voteswidthimg'].'px"></li>'
+			//.'<li><a href="'.$this->t['action'].$amp.'controller=detail&task=rate&rating=1" title="1 '. JText::_('COM_PHOCAGALLERY_STAR_OUT_OF').' 5" class="star1">1</a></li>';
 		
-			.'<li><a href="'.htmlspecialchars($this->tmpl['action']).$amp.'controller=detail&task=rate&rating=1" title="'. JText::sprintf('COM_PHOCAGALLERY_STAR_OUT_OF', 1, 5). '" class="star1">1</a></li>'; 
+			.'<li><a href="'.htmlspecialchars($this->t['action']).$amp.'controller=detail&task=rate&rating=1" title="'. JText::sprintf('COM_PHOCAGALLERY_STAR_OUT_OF', 1, 5). '" class="star1">1</a></li>'; 
 		
 		for ($i = 2;$i < 6;$i++) {
-			//echo '<li><a href="'.$this->tmpl['action'].$amp.'controller=detail&task=rate&rating='.$i.'" title="'.$i.' '. JText::_('COM_PHOCAGALLERY_STARS_OUT_OF').' 5" class="stars'.$i.'">'.$i.'</a></li>';
+			//echo '<li><a href="'.$this->t['action'].$amp.'controller=detail&task=rate&rating='.$i.'" title="'.$i.' '. JText::_('COM_PHOCAGALLERY_STARS_OUT_OF').' 5" class="stars'.$i.'">'.$i.'</a></li>';
 			
-			echo '<li><a href="'.htmlspecialchars($this->tmpl['action']).$amp.'controller=detail&task=rate&rating='.$i.'" title="'.JText::sprintf('COM_PHOCAGALLERY_STARS_OUT_OF', $i, 5). '" class="stars'.$i.'">'.$i.'</a></li>';
+			echo '<li><a href="'.htmlspecialchars($this->t['action']).$amp.'controller=detail&task=rate&rating='.$i.'" title="'.JText::sprintf('COM_PHOCAGALLERY_STARS_OUT_OF', $i, 5). '" class="stars'.$i.'">'.$i.'</a></li>';
 		}
 		echo '</ul></td></tr>';
 	}

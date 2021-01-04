@@ -10,19 +10,20 @@
  */
 defined('_JEXEC') or die('Restricted access');
 echo '<div id="phocagallery" class="pg-detail-view'.$this->params->get( 'pageclass_sfx' ).'">';
-if ($this->tmpl['backbutton'] != '') {
-	echo $this->tmpl['backbutton'];
+if ($this->t['backbutton'] != '') {
+	echo $this->t['backbutton'];
 }
 
-if($this->tmpl['responsive'] == 1) {
+if($this->t['responsive'] == 1) {
 	$iW = '';
 	$iH = '';
 } else {
 	$iW = 'width:'.$this->item->realimagewidth. 'px;';
-	$iH = 'height:'.$this->tmpl['largeheight'].'px;';
+	$iH = 'height:'.$this->t['largeheight'].'px;';
 }
 
-switch ($this->tmpl['detailwindow']) {
+
+switch ($this->t['detailwindow']) {
 	case 4:
 	case 7:
 	case 9:
@@ -34,10 +35,15 @@ switch ($this->tmpl['detailwindow']) {
 
 
 	default:
-		$closeButton 	= '<td align="center">' . str_replace("%onclickclose%", $this->tmpl['detailwindowclose'], $this->item->closebutton). '</td>';
-		$closeImage 	= '<a href="#" onclick="'.$this->tmpl['detailwindowclose'].'" style="margin:auto;padding:0">'.$this->item->linkimage.'</a>';
+		$closeButton 	= '<td align="center">' . str_replace("%onclickclose%", $this->t['detailwindowclose'], $this->item->closebutton). '</td>';
+		$closeImage 	= '<a href="#" onclick="'.$this->t['detailwindowclose'].'" style="margin:auto;padding:0">'.$this->item->linkimage.'</a>';
 	break;
 
+}
+
+$classSuffix = ' popup';
+if ($this->t['detailwindow'] == 7) {
+	$classSuffix = ' no-popup';
 }
 
 echo '<div class="ph-mc" style="padding-top:10px">'
@@ -49,7 +55,7 @@ echo '<div class="ph-mc" style="padding-top:10px">'
 	.$closeImage;
 
 $titleDesc = '';
-if ($this->tmpl['display_title_description'] == 1) {
+if ($this->t['display_title_description'] == 1) {
 	$titleDesc .= $this->item->title;
 	if ($this->item->description != '' && $titleDesc != '') {
 		$titleDesc .= ' - ';
@@ -57,12 +63,12 @@ if ($this->tmpl['display_title_description'] == 1) {
 }
 
 // Lightbox Description
-if ($this->tmpl['displaydescriptiondetail'] == 2 && (!empty($this->item->description) || !empty($titleDesc))){
+if ($this->t['displaydescriptiondetail'] == 2 && (!empty($this->item->description) || !empty($titleDesc))){
 
 	echo '<div id="description-msg"  class="pg-dv-desc-lightbox">'
     .'<div id="description-text"  class="pg-dv-desc-lightbox">'
 	//. $titleDesc . $this->item->description.'</div></div>';
-	.(JHtml::_('content.prepare', $titleDesc . $this->item->description, 'com_phocagallery.item')).'</div></div>';
+	.(Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $titleDesc . $this->item->description, 'com_phocagallery.item')).'</div></div>';
 }
 
 echo '</div>'
@@ -71,21 +77,21 @@ echo '</div>'
 
 echo '<tr><td colspan="6"><div style="padding:0;margin:0;height:3px;font-size:0px;">&nbsp;</div></td></tr>';
 // Standard Description
-if ($this->tmpl['displaydescriptiondetail'] == 1) {
+if ($this->t['displaydescriptiondetail'] == 1) {
 	echo '<tr>'
-	.'<td colspan="6" align="left" valign="top" class="pg-dv-desc">'
-	.'<div class="pg-dv-desc">'
+	.'<td colspan="6" align="left" valign="top" class="pg-dv-desc'.$classSuffix.'">'
+	.'<div class="pg-dv-desc'.$classSuffix.'">'
 	//. $titleDesc . $this->item->description . '</div>'
-	.(JHtml::_('content.prepare', $titleDesc . $this->item->description, 'com_phocagallery.item')). '</div>'
+	.(Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $titleDesc . $this->item->description, 'com_phocagallery.item')). '</div>'
 	.'</td>'
 	.'</tr>';
 }
 
-if ($this->tmpl['detailbuttons'] == 1){
+if ($this->t['detailbuttons'] == 1){
 	echo '<tr>'
 	.'<td align="left" width="30%" style="padding-left:48px">'.$this->item->prevbutton.'</td>'
 	.'<td align="center">'.$this->item->slideshowbutton.'</td>'
-	.'<td align="center">'.str_replace("%onclickreload%", $this->tmpl['detailwindowreload'], $this->item->reloadbutton).'</td>'
+	.'<td align="center">'.str_replace("%onclickreload%", $this->t['detailwindowreload'], $this->item->reloadbutton).'</td>'
 	. $closeButton
 	.'<td align="right" width="30%" style="padding-right:48px">'.$this->item->nextbutton.'</td>'
 	.'</tr>';
@@ -94,22 +100,22 @@ if ($this->tmpl['detailbuttons'] == 1){
 echo '</table></div>';
 echo $this->loadTemplate('rating');
 // Tags
-if ($this->tmpl['displaying_tags_output'] != '') {
-	echo '<div class="pg-detail-tags">'.$this->tmpl['displaying_tags_output'].'</div>';
+if ($this->t['displaying_tags_output'] != '') {
+	echo '<div class="pg-detail-tags">'.$this->t['displaying_tags_output'].'</div>';
 }
-if ($this->tmpl['detailwindow'] == 7) {
+if ($this->t['detailwindow'] == 7) {
 
 
 
-	if ($this->tmpl['externalcommentsystem'] == 1) {
+	if ($this->t['externalcommentsystem'] == 1) {
 		if (JComponentHelper::isEnabled('com_jcomments', true)) {
 			include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
 			echo JComments::showComments($this->item->id, 'com_phocagallery_images', JText::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
 		}
-	} else if ($this->tmpl['externalcommentsystem'] == 2) {
+	} else if ($this->t['externalcommentsystem'] == 2) {
 		echo $this->loadTemplate('comments-fb');
 	}
-    echo PhocaGalleryUtils::getInfo();
+    echo PhocaGalleryUtils::getExtInfo();
 }
 echo '</div>';
 echo '<div id="phocaGallerySlideshowC" style="display:none"></div>';

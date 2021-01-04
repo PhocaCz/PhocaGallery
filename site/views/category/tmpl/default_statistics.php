@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-if ($this->tmpl['detail_window'] == 14) {
+if ($this->t['detail_window'] == 14) {
 		echo '<div id="phocagallery-statistics" class="pg-photoswipe" itemscope itemtype="http://schema.org/ImageGallery">';
 	} else {
 		echo '<div id="phocagallery-statistics">';
@@ -19,29 +19,29 @@ if ($this->tmpl['detail_window'] == 14) {
 
 echo '<div class="ph-tabs-iefix">&nbsp;</div>';//because of IE bug
 	
-	if ($this->tmpl['displaymaincatstat']) {
+	if ($this->t['displaymaincatstat']) {
 		echo '<h4>'.JText::_('COM_PHOCAGALLERY_CATEGORY').'</h4>'
 		.'<table>'
 		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_NR_PUBLISHED_IMG_CAT') .': </td>'
-		.'<td>'.$this->tmpl['numberimgpub'].'</td></tr>'
+		.'<td>'.$this->t['numberimgpub'].'</td></tr>'
 		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_NR_UNPUBLISHED_IMG_CAT') .': </td>'
-		.'<td>'.$this->tmpl['numberimgunpub'].'</td></tr>'
+		.'<td>'.$this->t['numberimgunpub'].'</td></tr>'
 		.'<tr><td>'.JText::_('COM_PHOCAGALLERY_CATEGORY_VIEWED') .': </td>'
-		.'<td>'.$this->tmpl['categoryviewed'].' x</td></tr>'
+		.'<td>'.$this->t['categoryviewed'].' x</td></tr>'
 		.'</table>';
 	}	
 
 // MOST VIEWED			
-if ($this->tmpl['displaymostviewedcatstat']) {
+if ($this->t['displaymostviewedcatstat']) {
 	
 	echo '<h4>'.JText::_('COM_PHOCAGALLERY_MOST_VIEWED_IMG_CAT').'</h4>';
 		
-	if (!empty($this->tmpl['mostviewedimg'])) {
-		foreach($this->tmpl['mostviewedimg'] as $key => $value) {
+	if (!empty($this->t['mostviewedimg'])) {
+		foreach($this->t['mostviewedimg'] as $key => $value) {
 			
 			$extImage = PhocaGalleryImage::isExtImage($value->extid);
 			if ($extImage) {
-				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $this->tmpl['picasa_correct_width_m'], $this->tmpl['picasa_correct_height_m']);
+				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $this->t['picasa_correct_width_m'], $this->t['picasa_correct_height_m']);
 			}
 				
 			?>
@@ -50,7 +50,7 @@ if ($this->tmpl['displaymostviewedcatstat']) {
 					<div class="pg-box2">
 						<div class="pg-box3"><?php
 						
-							if ($this->tmpl['detail_window'] == 14) {
+							if ($this->t['detail_window'] == 14) {
 								echo '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 							}
 						
@@ -61,7 +61,7 @@ if ($this->tmpl['displaymostviewedcatstat']) {
 							// e.g. shadowbox shadowbox[PhocaGallery] --> shadowbox[PhocaGallery3]
 							$options3 = str_replace('[PhocaGallery]', '[PhocaGallery3]', $value->button->options);
 							
-							echo PhocaGalleryRenderFront::renderAAttributeStat($this->tmpl['detail_window'], $options3, '',$this->tmpl['highslideonclick'], $this->tmpl['highslideonclick2'], '', $this->category->alias, 'mv');
+							echo PhocaGalleryRenderFront::renderAAttributeStat($this->t['detail_window'], $options3, '',$this->t['highslideonclick'], $this->t['highslideonclick2'], '', $this->category->alias, 'mv');
 							
 							
 							if (isset($value->datasize)) {
@@ -70,14 +70,14 @@ if ($this->tmpl['displaymostviewedcatstat']) {
 				
 							echo ' >';
 							if ($extImage) {
-								echo JHtml::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
+								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
 							} else {
-								echo JHtml::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail"));
+								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail"));
 							}
 							?></a><?php
 							
-							if ($this->tmpl['detail_window'] == 14) {
-								if ($this->tmpl['photoswipe_display_caption'] == 1) {
+							if ($this->t['detail_window'] == 14) {
+								if ($this->t['photoswipe_display_caption'] == 1) {
 									echo '<figcaption itemprop="caption description">'. $value->title.'</figcaption>';
 								}
 								echo '</figure>';
@@ -89,20 +89,20 @@ if ($this->tmpl['displaymostviewedcatstat']) {
 			// subfolder
 			if ($value->type == 1) {
 				if ($value->display_name == 1 || $value->display_name == 2) {
-					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->tmpl['charlengthname'], '...').'</div>';
+					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->t['charlengthname'], '...').'</div>';
 				}
 			}
 			// image
 			if ($value->type == 2) {
 				if ($value->display_name == 1) {
-					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->tmpl['charlengthname'], '...').'</div>';
+					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->t['charlengthname'], '...').'</div>';
 				}
 				if ($value->display_name == 2) {
 					echo '<div class="pg-name">&nbsp;</div>';
 				}
 			}
 			echo '<div class="detail" style="margin-top:2px;text-align:left">';
-			//echo JHtml::_('image', 'media/com_phocagallery/images/icon-viewed.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
+			//echo Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-viewed.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
 			echo PhocaGalleryRenderFront::renderIcon('viewed', 'media/com_phocagallery/images/icon-viewed.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
 			echo '&nbsp;&nbsp; '.$value->hits.' x';
 			echo '</div>';
@@ -115,18 +115,18 @@ if ($this->tmpl['displaymostviewedcatstat']) {
 } // END MOST VIEWED
 
 // LAST ADDED	
-if ($this->tmpl['displaylastaddedcatstat']) {		
+if ($this->t['displaylastaddedcatstat']) {		
 
 	
 	echo '<h4>'.JText::_('COM_PHOCAGALLERY_LAST_ADDED_IMG_CAT').'</h4>';
 		
-	if (!empty($this->tmpl['lastaddedimg'])) {
+	if (!empty($this->t['lastaddedimg'])) {
 		
-		foreach($this->tmpl['lastaddedimg'] as $key => $value) {
+		foreach($this->t['lastaddedimg'] as $key => $value) {
 			
 			$extImage = PhocaGalleryImage::isExtImage($value->extid);
 			if ($extImage) {
-				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $this->tmpl['picasa_correct_width_m'], $this->tmpl['picasa_correct_height_m']);
+				$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($value->extw, $value->exth, $this->t['picasa_correct_width_m'], $this->t['picasa_correct_height_m']);
 			}
 				
 			?><div class="pg-cv-box pg-cv-box-stat">
@@ -134,7 +134,7 @@ if ($this->tmpl['displaylastaddedcatstat']) {
 					<div class="pg-box2">
 						<div class="pg-box3"><?php
 						
-							if ($this->tmpl['detail_window'] == 14) {
+							if ($this->t['detail_window'] == 14) {
 								echo '<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 							}
 						
@@ -145,7 +145,7 @@ if ($this->tmpl['displaylastaddedcatstat']) {
 							// e.g. shadowbox shadowbox[PhocaGallery] --> shadowbox[PhocaGallery3]
 							$options4 = str_replace('[PhocaGallery]', '[PhocaGallery4]', $value->button->options);
 							
-							echo PhocaGalleryRenderFront::renderAAttributeStat($this->tmpl['detail_window'], $options4, '', $this->tmpl['highslideonclick'], $this->tmpl['highslideonclick2'], '', $this->category->alias, 'la');
+							echo PhocaGalleryRenderFront::renderAAttributeStat($this->t['detail_window'], $options4, '', $this->t['highslideonclick'], $this->t['highslideonclick2'], '', $this->category->alias, 'la');
 							
 							if (isset($value->datasize)) {
 								echo ' '. $value->datasize;
@@ -153,14 +153,14 @@ if ($this->tmpl['displaylastaddedcatstat']) {
 							
 							echo ' >';
 							if ($extImage) {
-								echo JHtml::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
+								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'class' => 'pg-image', 'itemprop' => "thumbnail"));
 							} else {
-								echo JHtml::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail") );
+								echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $value->linkthumbnailpath, $value->altvalue, array('class' => 'pg-image', 'itemprop' => "thumbnail") );
 							}
 							?></a><?php
 							
-							if ($this->tmpl['detail_window'] == 14) {
-								if ($this->tmpl['photoswipe_display_caption'] == 1) {
+							if ($this->t['detail_window'] == 14) {
+								if ($this->t['photoswipe_display_caption'] == 1) {
 									echo '<figcaption itemprop="caption description">'. $value->title.'</figcaption>';
 								}
 								echo '</figure>';
@@ -172,13 +172,13 @@ if ($this->tmpl['displaylastaddedcatstat']) {
 			// subfolder
 			if ($value->type == 1) {
 				if ($value->display_name == 1 || $value->display_name == 2) {
-					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->tmpl['charlengthname'], '...').'</div>';
+					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->t['charlengthname'], '...').'</div>';
 				}
 			}
 			// image
 			if ($value->type == 2) {
 				if ($value->display_name == 1) {
-					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->tmpl['charlengthname'], '...').'</div>';
+					echo '<div class="pg-name">'.PhocaGalleryText::wordDelete($value->title, $this->t['charlengthname'], '...').'</div>';
 				}
 				if ($value->display_name == 2) {
 					echo '<div class="pg-name">&nbsp;</div>';
@@ -186,7 +186,7 @@ if ($this->tmpl['displaylastaddedcatstat']) {
 			}
 
 			echo '<div class="detail" style="margin-top:2px;text-align:left">';		
-			//echo JHtml::_('image', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
+			//echo Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
 			echo PhocaGalleryRenderFront::renderIcon('calendar', 'media/com_phocagallery/images/icon-date.png', JText::_('COM_PHOCAGALLERY_IMAGE_DETAIL'));
 			echo '&nbsp;&nbsp; '.JHtml::Date($value->date, "d. m. Y");
 			echo '</div>';

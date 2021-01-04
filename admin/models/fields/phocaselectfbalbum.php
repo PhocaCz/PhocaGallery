@@ -50,7 +50,7 @@ class JFormFieldPhocaSelectFbAlbum extends JFormField
 		$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';*/
 		
-		JHtml::_('jquery.framework');
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectfbalbum';
 
 		// Build the script.
@@ -90,7 +90,7 @@ class JFormFieldPhocaSelectFbAlbum extends JFormField
 		
 		$html[] = '</div>'. "\n";		
 		
-		$html[] = JHtml::_(
+		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(

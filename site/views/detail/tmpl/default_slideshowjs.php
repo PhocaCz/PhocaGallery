@@ -11,17 +11,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 $document			= JFactory::getDocument();
-//$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jquery/jquery-1.6.4.min.js');
-JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
-$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/fadeslideshow/fadeslideshow.js');
+//$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jquery/jquery-1.6.4.min.js');
+Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
+$document->addScript(JURI::base(true).'/media/com_phocagallery/js/fadeslideshow/fadeslideshow.js');
 
-if($this->tmpl['responsive'] == 1) {
+if($this->t['responsive'] == 1) {
 	$iW = '\'100%\'';
 	$iH = '\'100%\''; // DOES NOT WORK IN FADESLIDESHOW
-	//$iH = $this->tmpl['largeheight'];
+	//$iH = $this->t['largeheight'];
 } else {
-	$iW = $this->tmpl['largewidth'];
-	$iH = $this->tmpl['largeheight'];
+	$iW = $this->t['largewidth'];
+	$iH = $this->t['largeheight'];
 }
 
 ?><script type="text/javascript">
@@ -34,10 +34,10 @@ var phocagallery=new fadeSlideShow({
 	wrapperid: "phocaGallerySlideshowC",
 	dimensions: [<?php echo $iW; ?>, <?php echo $iH; ?>],
 	imagearray: [<?php echo $this->item->slideshowfiles ;?>],
-	displaymode: {type:'auto', pause: <?php echo $this->tmpl['slideshow_pause'] ?>, cycles:0, wraparound:false, randomize: <?php echo $this->tmpl['slideshowrandom'] ?>},
+	displaymode: {type:'auto', pause: <?php echo $this->t['slideshow_pause'] ?>, cycles:0, wraparound:false, randomize: <?php echo $this->t['slideshowrandom'] ?>},
 	persist: false,
-	fadeduration: <?php echo $this->tmpl['slideshow_delay'] ?>,
-	descreveal: "<?php echo $this->tmpl['slideshow_description'] ?>",
+	fadeduration: <?php echo $this->t['slideshow_delay'] ?>,
+	descreveal: "<?php echo $this->t['slideshow_description'] ?>",
 	togglerid: "",
 })
 </script>

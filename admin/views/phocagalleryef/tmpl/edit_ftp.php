@@ -14,8 +14,8 @@ defined('_JEXEC') or die;
 
 	<?php echo JText::_('COM_PHOCAGALLERY_FTP_DESC'); ?>
 
-	<?php if ($this->ftp instanceof Exception): ?>
-		<p class="error"><?php echo JText::_($this->ftp->message); ?></p>
+	<?php if ($this->t['ftp'] instanceof Exception): ?>
+		<p class="error"><?php echo JText::_($this->t['ftp']->message); ?></p>
 	<?php endif; ?>
 
 	<table class="adminform">

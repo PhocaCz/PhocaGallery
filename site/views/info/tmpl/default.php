@@ -10,8 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-if ($this->tmpl['backbutton'] != '') {
-	echo $this->tmpl['backbutton'];
+if ($this->t['backbutton'] != '') {
+	echo $this->t['backbutton'];
 }
 echo '<div id="phoca-exif" class="pg-info-view'.$this->params->get( 'pageclass_sfx' ).'">'
 .'<h1 class="phocaexif">'.JText::_('COM_PHOCAGALLERY_EXIF_INFO').':</h1>'
@@ -19,6 +19,6 @@ echo '<div id="phoca-exif" class="pg-info-view'.$this->params->get( 'pageclass_s
 .$this->infooutput
 .'</table>'
 .'</div>';
-if ($this->tmpl['detailwindow'] == 7) {
-    echo PhocaGalleryUtils::getInfo();
+if ($this->t['detailwindow'] == 7) {
+    echo PhocaGalleryUtils::getExtInfo();
 }

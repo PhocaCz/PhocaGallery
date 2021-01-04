@@ -12,9 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 echo "\n\n";
 echo '<div id="phocagallery-categories-detail">'."\n";
 	
-for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
+for ($i = 0; $i < $this->t['countcategories']; $i++) {
 	
-	echo '<div style="width:'.$this->tmpl['categoriesboxwidth'].';" class="pg-cats-box-float2">'."\n";
+	echo '<div style="width:'.$this->t['categoriesboxwidth'].';" class="pg-cats-box-float2">'."\n";
 
 	/*echo '<fieldset>'
 		.' <legend>'
@@ -26,17 +26,17 @@ for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
 		
 	echo ' </legend>';*/
 	
-	echo '<div class="pg-cat-img-detail '.$this->tmpl['class_suffix'].'">'."\n"
+	echo '<div class="pg-cat-img-detail '.$this->t['class_suffix'].'">'."\n"
 		.'<div class="pg-cat-img-detail-box">'."\n"
 		.' <table border="0" cellpadding="0" cellspacing="0">'."\n"
 		.'  <tr>'
 		.'   <td style="text-align:center;vertical-align:middle;"><a href="'.$this->categories[$i]->link.'">';
 	
 	if (isset($this->categories[$i]->extpic) && $this->categories[$i]->extpic) {
-		$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($this->categories[$i]->extw, $this->categories[$i]->exth, $this->tmpl['picasa_correct_width'], $this->tmpl['picasa_correct_height']);
-		echo JHtml::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;', '-',$this->categories[$i]->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'style' => ''));
+		$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($this->categories[$i]->extw, $this->categories[$i]->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
+		echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;', '-',$this->categories[$i]->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'style' => ''));
 	} else {
-		echo JHtml::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;','-',$this->categories[$i]->title),array('style' => ''));
+		echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;','-',$this->categories[$i]->title),array('style' => ''));
 	}
 
 	echo '</a></td>'
@@ -45,7 +45,7 @@ for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
 		.'</div>'."\n";
 	
 	
-	echo '<div style="margin-right:5px;margin-left:'.$this->tmpl['imagewidth'].'px;">'."\n";
+	echo '<div style="margin-right:5px;margin-left:'.$this->t['imagewidth'].'px;">'."\n";
 	
 	echo '<div class="pg-field-table2"><a href="'.$this->categories[$i]->link.'" class="category'.$this->params->get( 'pageclass_sfx' ).'">'.$this->categories[$i]->title_self.'</a> ';
 		

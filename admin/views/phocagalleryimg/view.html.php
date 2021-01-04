@@ -16,21 +16,25 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 	protected $state;
 	protected $item;
 	protected $form;
-	protected $tmpl;
-	
-	
+	protected $t;
+	protected $r;
+
+
 	public function display($tpl = null) {
-		
+
 		$this->state	= $this->get('State');
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+		$this->t	= PhocaGalleryUtils::setVars();
+		$this->r	= new PhocaGalleryRenderAdminview();
+
+
 		$params = JComponentHelper::getParams('com_phocagallery');
-		
-		$this->tmpl['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
-		$this->tmpl['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->tmpl['enablethumbcreation']);
-		
+
+		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
+		$this->t['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->t['enablethumbcreation']);
+
 		if ($this->item->extlink1 != '') {
 			$extLink = PhocaGalleryRenderAdmin::renderExternalLink($this->item->extlink1);
 			$this->form->setValue('extlink1link', '', $extLink[0]);
@@ -49,10 +53,10 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 		$this->addToolbar();
 		parent::display($tpl);
 	}
-	
-	
+
+
 	protected function addToolbar() {
-		
+
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryimgs.php';
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$bar 		= JToolbar::getInstance('toolbar');
@@ -71,7 +75,7 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 			JToolbarHelper ::apply('phocagalleryimg.apply', 'JToolbar_APPLY');
 			JToolbarHelper ::save('phocagalleryimg.save', 'JToolbar_SAVE');
 			JToolbarHelper ::addNew('phocagalleryimg.save2new', 'JToolbar_SAVE_AND_NEW');
-		
+
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {

@@ -16,27 +16,31 @@ class PhocaGalleryCpViewPhocagalleryF extends JViewLegacy
 	protected $field;
 	protected $fce;
 	protected $t;
-	
+	protected $r;
+
 	public function display($tpl = null) {
 
 		$params = JComponentHelper::getParams( 'com_phocagallery' );
 		$app 	= JFactory::getApplication();
 		$app->allowCache(false);
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
-		
+
+		$this->t	= PhocaGalleryUtils::setVars('f');
+		$this->r	= new PhocaGalleryRenderAdminview();
+
+
 		$document	= JFactory::getDocument();
-		//$document->addCustomTag(PhocaGalleryRenderAdmin::renderIeCssLink(1));
+
 
 		$path 			= PhocaGalleryPath::getPath();
-		
+
 		$this->field	= JFactory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFolder_'.$this->field;
-		
+
 		/*$this->assignRef('session', JFactory::getSession());
 		$this->assign('path_orig_rel', $path->image_rel);
 		$this->assignRef('folders', $this->get('folders'));
 		$this->assignRef('state', $this->get('state'));*/
-		
+
 		$this->t['session'] = JFactory::getSession();
 		$this->t['path_orig_rel'] = $path->image_rel;
 		$this->t['folders'] = $this->get('folders');

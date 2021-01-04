@@ -50,6 +50,7 @@
 	box-shadow:1px 1px 2px 1px rgba(120, 120, 120, 0.5), inset 0px 0px 7px 7px rgba(240, 240, 240, 0.2);
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
+	background: #fff;
 }
 
 .pg-cv-box:hover {
@@ -142,10 +143,14 @@
 
 /* Phoca Gallery Popup Windows - Detail View */
 .pg-dv-desc {
-	height: 16px;
+	/*height: 16px;*/
 	color: #333;
 	font-size: small;
 }
+.pg-dv-desc.popup {
+	height: 16px;
+}
+
 .pg-dv-desc-lighbox {
 	color: #fff;
 	background: #000;
@@ -197,7 +202,8 @@ dt h3 {
 	text-align:right;
 	margin:0px;
 	padding:0px;
-	margin-top: 2px
+	margin-top: 2px;
+	margin-bottom: 5px;
 }
 
 /* Phoca Overlib */
@@ -275,4 +281,33 @@ dt h3 {
 	font-weight: bold;
 	font-size: large;
 }
+
+
+.ph-icon-view {color: #112d4e;}
+.ph-icon-download {color: #378137;}
+.ph-icon-geo {color: #378137;}
+.ph-icon-camera {color: #112d4e;}
+.ph-icon-comment {color: #112d4e;}
+.ph-icon-comment-a {color: #112d4e;}
+.ph-icon-comment-fb {color: #112d4e;}
+.ph-icon-cart {color: #3f72af;}
+.ph-icon-extlink1 {color: #378137;}
+.ph-icon-extlinkk2 {color:#378137;}
+.ph-icon-trash {color: #CC1020;}
+.ph-icon-publish {color: #378137;}
+.ph-icon-unpublish {color: #CC1020;}
+.ph-icon-viewed {color:#112d4e;}
+.ph-icon-calendar {color: #e23e57;}
+.ph-icon-vote {color:#ffc314;}
+.ph-icon-statistics {color:#e23e57;}
+.ph-icon-category {color: #996633;}
+.ph-icon-subcategory {color: #996633;}
+.ph-icon-upload {color: #112d4e;}
+.ph-icon-upload-ytb {color: #CC1020;}
+.ph-icon-upload-multiple {color: #ff9a00;}
+.ph-icon-upload-java {color: #e23e57;}
+.ph-icon-user {color: #378137;}
+.ph-icon-minus-sign {color: #CC1020;}
+.ph-icon-feed {color: #ff9a00;}
+
 

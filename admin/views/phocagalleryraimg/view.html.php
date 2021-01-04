@@ -10,55 +10,64 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
- 
+
 class PhocaGalleryCpViewPhocaGalleryRaImg extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
 	protected $state;
-	
+	protected $r;
+	protected $t;
+	public $filterForm;
+	public $activeFilters;
+
 
 	function display($tpl = null) {
-		
+
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
-		
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t			= PhocaGalleryUtils::setVars('raimg');
+
+
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
-		
+
 		$this->addToolbar();
 		parent::display($tpl);
-		
+
 	}
-		
+
 
 	function addToolbar() {
-	
+
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryraimg.php';
-	
+
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryRaImgHelper::getActions($state->get('filter.category_id'));
-	
+
 		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_IMAGE_RATING' ), 'star' );
-		
+
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		/*$bar = JToolbar::getInstance( 'toolbar' );
 		$dhtml = '<a href="index.php?option=com_phocagallery" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);*/
-		
+
 		if ($canDo->get('core.delete')) {
 			JToolbarHelper ::deleteList(  JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryraimg.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 		JToolbarHelper ::divider();
 		JToolbarHelper ::help( 'screen.phocagallery', true );
 	}
-	
+
 	protected function getSortFields() {
 		return array(
 			'category_title' => JText::_('COM_PHOCAGALLERY_CATEGORY'),

@@ -168,7 +168,7 @@ class PhocagalleryModelUser extends JModelLegacy
 
 	function _buildContentWhereSubCat($userId) {
 		$app	= JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_state','filter_state_subcat','',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_published','filter_published_subcat','',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_catid','filter_catid_subcat',0,'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_order','filter_order_subcat','a.ordering','cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_subcat.'.filter_order_Dir','filter_order_Dir_subcat',	'', 'word' );
@@ -191,10 +191,10 @@ class PhocagalleryModelUser extends JModelLegacy
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}
@@ -204,7 +204,7 @@ class PhocagalleryModelUser extends JModelLegacy
 
 	function _buildContentWhereImage($userId) {
 		$app	= JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context_image.'.filter_state','filter_state_image','','word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context_image.'.filter_published','filter_published_image','','word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_image.'.filter_catid','filter_catid_image',0,'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_image.'.filter_order','filter_order_image','a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_image.'.filter_order_Dir','filter_order_Dir_image','', 'word' );
@@ -223,10 +223,10 @@ class PhocagalleryModelUser extends JModelLegacy
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}

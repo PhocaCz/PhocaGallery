@@ -21,7 +21,10 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 	protected $pagination;
 	protected $state;
 	protected $button;
-	protected $tmpl;
+	protected $t;
+	protected $r;
+	public $filterForm;
+	public $activeFilters;
 	//public $_context 	= 'com_phocagallery.phocagalleryimg';
 
 	function display($tpl = null) {
@@ -30,6 +33,11 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		$this->r = new PhocaGalleryRenderAdminViews();
+		$this->t			= PhocaGalleryUtils::setVars('img');
 
 		// Preprocess the list of items to find ordering divisions.
 		foreach ($this->items as &$item) {
@@ -40,16 +48,16 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		$this->processImages();
 
 
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
+
 		$document	= JFactory::getDocument();
-		//$document->addCustomTag(PhocaGalleryRenderAdmin::renderIeCssLink(1));
+
 
 
 		$params 	= JComponentHelper::getParams('com_phocagallery');
 
 
-		$this->tmpl['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
-		$this->tmpl['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->tmpl['enablethumbcreation']);
+		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
+		$this->t['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->t['enablethumbcreation']);
 
 
 
@@ -58,7 +66,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 		$db		    = JFactory::getDBO();*/
 
-		$this->tmpl['notapproved'] 	=  $this->get( 'NotApprovedImage' );
+		$this->t['notapproved'] 	=  $this->get( 'NotApprovedImage' );
 
 		// Button
 		/*
@@ -135,7 +143,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
-			JHtml::_('bootstrap.renderModal', 'collapseModal');
+			Joomla\CMS\HTML\HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
 			$title = JText::_('JToolbar_BATCH');
 			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>

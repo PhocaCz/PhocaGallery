@@ -36,9 +36,9 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 		$access				= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
 		if ($detailWindow == 7) {
-			$tmplCom = '';
+			$tCom = '';
 		} else {
-			$tmplCom = '&tmpl=component';
+			$tCom = '&tmpl=component';
 		}
 
 		$post['imgid'] 		= (int)$imgid;
@@ -86,8 +86,8 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 		// we send infor about already rated via get and this get will be worked in view (detail - default.php) - vote=1
 		$msg = '';
 
-		//$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$catIdAlias.'&id='.$imgIdAlias.$tmplCom.'&vote=1&Itemid='. $Itemid, false), $msg );
-		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$catIdAlias.'&id='.$imgIdAlias.$tmplCom.'&vote=1&Itemid='. $Itemid, false) );
+		//$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$catIdAlias.'&id='.$imgIdAlias.$tCom.'&vote=1&Itemid='. $Itemid, false), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$catIdAlias.'&id='.$imgIdAlias.$tCom.'&vote=1&Itemid='. $Itemid, false) );
 	}
 }
 ?>

@@ -129,6 +129,7 @@ class PhocaGalleryYoutube
 
 			$o 	= json_decode($json);
 
+
 			if (!empty($o) && isset($o->error->message)) {
 				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA') . '('.strip_tags($o->error->message).')';
 				return false;

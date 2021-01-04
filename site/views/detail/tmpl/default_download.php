@@ -12,18 +12,18 @@
 defined('_JEXEC') or die('Restricted access');
 
 $title			= $this->item->filename;
-$imgLink		= JHtml::_( 'image', 'images/phocagallery/'. $this->item->filenameno, '');
+$imgLink		= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'images/phocagallery/'. $this->item->filenameno, '');
 
 $extImage = PhocaGalleryImage::isExtImage($this->item->extid);
 if ($extImage) {
 	$title		= $this->item->title;
-	$imgLink	= JHtml::_( 'image', $this->item->exto, '');
+	$imgLink	= Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->item->exto, '');
 }
 
-if ($this->tmpl['backbutton'] != '') {
-	echo $this->tmpl['backbutton'];
+if ($this->t['backbutton'] != '') {
+	echo $this->t['backbutton'];
 
-	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->tmpl['boxlargewidth'].'px;height:'.$this->tmpl['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink . '</div>';
+	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink . '</div>';
 	echo '<div id="download-msg-nopopup"><div>'
 		.'<table width="360">'
 		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
@@ -38,7 +38,7 @@ if ($this->tmpl['backbutton'] != '') {
 
 } else {
 
-	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->tmpl['boxlargewidth'].'px;height:'.$this->tmpl['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
+	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
 	echo '<div id="download-msg"><div>'
 		.'<table width="360">'
 		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
@@ -46,7 +46,7 @@ if ($this->tmpl['backbutton'] != '') {
 		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_SIZE') . ': </td><td>'.$this->item->filesize.'</td></tr>'
 		.'<tr><td colspan="2" align="left"><small>' . JText::_('COM_PHOCAGALLERY_DOWNLOAD_IMAGE') . '</small></td></tr>';
 
-		switch($this->tmpl['detailwindow']) {
+		switch($this->t['detailwindow']) {
 			case 3:
 			case 4:
 			case 5:
@@ -57,7 +57,7 @@ if ($this->tmpl['backbutton'] != '') {
 			break;
 
 			default:
-				echo '<tr><td>&nbsp;</td><td align="right">'.str_replace("%onclickclose%", $this->tmpl['detailwindowclose'], $this->item->closetext).'</td></tr>';
+				echo '<tr><td>&nbsp;</td><td align="right">'.str_replace("%onclickclose%", $this->t['detailwindowclose'], $this->item->closetext).'</td></tr>';
 			break;
 		}
 
@@ -65,7 +65,7 @@ if ($this->tmpl['backbutton'] != '') {
 	echo '</div></div></div>';
 }
 echo '<div id="phocaGallerySlideshowC" style="display:none"></div>';//because of loaded slideshow js
-if ($this->tmpl['detailwindow'] == 7) {
-    echo PhocaGalleryUtils::getInfo();
+if ($this->t['detailwindow'] == 7) {
+    echo PhocaGalleryUtils::getExtInfo();
 }
 ?>

@@ -11,48 +11,48 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-echo '<div id="phocagallery-upload">'.$this->tmpl['iepx'];
+echo '<div id="phocagallery-upload">'.$this->t['iepx'];
 
-if ($this->tmpl['displayupload'] == 1) {
-	if ($this->tmpl['categorypublished'] == 0) {
+if ($this->t['displayupload'] == 1) {
+	if ($this->t['categorypublished'] == 0) {
 		echo '<p>'.JText::_('COM_PHOCAGALLERY_YOUR_MAIN_CATEGORY_IS_UNPUBLISHED').'</p>';
-	} else if ($this->tmpl['task'] == 'editimg' && $this->tmpl['imageedit']) {
+	} else if ($this->t['task'] == 'editimg' && $this->t['imageedit']) {
 
 ?><h4><?php echo JText::_('COM_PHOCAGALLERY_EDIT'); ?></h4>
-<form action="<?php echo htmlspecialchars($this->tmpl['action']);?>" name="phocagalleryuploadform" id="phocagallery-upload-form" method="post" >
+<form action="<?php echo htmlspecialchars($this->t['action']);?>" name="phocagalleryuploadform" id="phocagallery-upload-form" method="post" >
 <table>
 	<tr>
 		<td><?php echo JText::_('COM_PHOCAGALLERY_TITLE');?>:</td>
-		<td><input type="text" id="imagename" name="imagename" maxlength="255" class="comment-input" value="<?php echo $this->tmpl['imageedit']->title ?>" /></td>
+		<td><input type="text" id="imagename" name="imagename" maxlength="255" class="comment-input" value="<?php echo $this->t['imageedit']->title ?>" /></td>
 	</tr>
 
 	<tr>
 		<td><?php echo JText::_( 'COM_PHOCAGALLERY_DESCRIPTION' ); ?>:</td>
-		<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload();" cols="30" rows="10" class="comment-input"><?php echo $this->tmpl['imageedit']->description; ?></textarea></td>
+		<td><textarea id="phocagallery-upload-description" name="phocagalleryuploaddescription" onkeyup="countCharsUpload();" cols="30" rows="10" class="comment-input"><?php echo $this->t['imageedit']->description; ?></textarea></td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->tmpl['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
+		<td><?php echo JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN');?> <input name="phocagalleryuploadcountin" value="0" readonly="readonly" class="comment-input2" /> <?php echo JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_DESCRIPTION');?> <input name="phocagalleryuploadcountleft" value="<?php echo $this->t['maxcreatecatchar'];?>" readonly="readonly" class="comment-input2" />
 		</td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><input type="button" onclick="window.location='<?php echo JRoute::_($this->tmpl['pp'].$this->tmpl['psi']);?>'" id="phocagalleryimagecancel" value="<?php echo JText::_('COM_PHOCAGALLERY_CANCEL'); ?>"/> <input type="submit" onclick="return(checkCreateImageForm());" id="phocagalleryimagesubmit" value="<?php echo JText::_('COM_PHOCAGALLERY_EDIT'); ?>"/></td>
+		<td align="right"><input type="button" onclick="window.location='<?php echo JRoute::_($this->t['pp'].$this->t['psi']);?>'" id="phocagalleryimagecancel" value="<?php echo JText::_('COM_PHOCAGALLERY_CANCEL'); ?>"/> <input type="submit" onclick="return(checkCreateImageForm());" id="phocagalleryimagesubmit" value="<?php echo JText::_('COM_PHOCAGALLERY_EDIT'); ?>"/></td>
 	</tr>
 </table>
 
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 <input type="hidden" name="task" value="editimage"/>
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="view" value="user"/>
-<input type="hidden" name="tab" value="<?php echo $this->tmpl['currenttab']['images'];?>" />
-<input type="hidden" name="limitstartsubcat" value="<?php echo $this->tmpl['subcategorypagination']->limitstart;?>" />
-<input type="hidden" name="limitstartimage" value="<?php echo $this->tmpl['imagepagination']->limitstart;?>" />
+<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['images'];?>" />
+<input type="hidden" name="limitstartsubcat" value="<?php echo $this->t['subcategorypagination']->limitstart;?>" />
+<input type="hidden" name="limitstartimage" value="<?php echo $this->t['imagepagination']->limitstart;?>" />
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
-<input type="hidden" name="id" value="<?php echo $this->tmpl['imageedit']->id ?>"/>
-<input type="hidden" name="parentcategoryid" value="<?php echo $this->tmpl['parentcategoryid'] ?>"/>
+<input type="hidden" name="id" value="<?php echo $this->t['imageedit']->id ?>"/>
+<input type="hidden" name="parentcategoryid" value="<?php echo $this->t['parentcategoryid'] ?>"/>
 <input type="hidden" name="filter_order_image" value="<?php echo $this->listsimage['order']; ?>" />
 <input type="hidden" name="filter_order_Dir_image" value="" />
 </form>
@@ -61,7 +61,7 @@ if ($this->tmpl['displayupload'] == 1) {
 
 
 ?><div style="float:left" class="filter-search btn-group pull-left" ><h4><?php echo JText::_( 'COM_PHOCAGALLERY_IMAGES' ); ?></h4>
-<form action="<?php echo htmlspecialchars($this->tmpl['action']);?>" method="post" name="phocagalleryimageform" id="phocagalleryimageform">
+<form action="<?php echo htmlspecialchars($this->t['action']);?>" method="post" name="phocagalleryimageform" id="phocagalleryimageform">
 
 
 		<?php /* <td align="left" width="100%"><?php echo JText::_( 'COM_PHOCAGALLERY_FILTER' ); ?>:
@@ -76,8 +76,8 @@ if ($this->tmpl['displayupload'] == 1) {
 		<input type="text" name="phocagalleryimagesearch" id="phocagalleryimagesearch" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listsimage['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
 
 		<div class="btn-group pull-left hidden-phone">
-		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><i class="icon-search  glyphicon glyphicon-search"></i></button>
-		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagalleryimagesearch').value='';document.getElementById(\'phocagalleryimageform\').submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><i class="icon-remove  glyphicon glyphicon-remove"></i></button>
+		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('search', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_SEARCH')) ?></button>
+		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagalleryimagesearch').value='';document.getElementById(\'phocagalleryimageform\').submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('remove', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_CLEAR')) ?></button>
 		</div>
 
 		</div><div style="float:right">
@@ -98,9 +98,9 @@ if ($this->tmpl['displayupload'] == 1) {
 	<th width="80" nowrap="nowrap" align="center">
 
 	<?php echo PhocaGalleryGrid::sort(   'COM_PHOCAGALLERY_ORDER', 'a.ordering', $this->listsimage['order_Dir'], $this->listsimage['order'],'image', 'asc', '', 'phocagalleryimageform', '_image' );
-	//$image = '<img src="'.JURI::base(true).'/'.$this->tmpl['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
+	//$image = '<img src="'.JURI::base(true).'/'.$this->t['pi'].'icon-filesave.png'.'" width="16" height="16" border="0" alt="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'" />';
 
-	$image = PhocaGalleryRenderFront::renderIcon('save', $this->tmpl['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
+	$image = PhocaGalleryRenderFront::renderIcon('save', $this->t['pi'].'icon-filesave.png', JText::_('COM_PHOCAGALLERY_SAVE_ORDER'));
 
 	$task = 'saveordersubcat';
 	$href = '<a href="javascript:saveorderimage()" title="'.JText::_( 'COM_PHOCAGALLERY_SAVE_ORDER' ).'"> '.$image.'</a>';
@@ -115,25 +115,25 @@ if ($this->tmpl['displayupload'] == 1) {
 <tbody><?php
 $k 		= 0;
 $i 		= 0;
-$n 		= count( $this->tmpl['imageitems'] );
-$rows 	= &$this->tmpl['imageitems'];
+$n 		= count( $this->t['imageitems'] );
+$rows 	= &$this->t['imageitems'];
 
 if (is_array($rows)) {
 	foreach ($rows as $row) {
-		$linkEdit 	= JRoute::_( $this->tmpl['pp'].'&task=editimg&id='. $row->slug.$this->tmpl['psi'] );
+		$linkEdit 	= JRoute::_( $this->t['pp'].'&task=editimg&id='. $row->slug.$this->t['psi'] );
 
 	?><tr class="<?php echo "row$k"; ?>">
 	<td>
 		<input type="hidden" id="cb<?php echo $k ?>" name="cid[]" value="<?php echo $row->id ?>" />
 		<?php
-		echo $this->tmpl['imagepagination']->getRowOffset( $i );?>
+		echo $this->t['imagepagination']->getRowOffset( $i );?>
 	</td>
 	<td align="center" valign="middle">
 	<?php
 	$row->linkthumbnailpath = PhocaGalleryImageFront::displayCategoryImageOrNoImage($row->filename, 'small');
 	$imageRes	= PhocaGalleryImage::getRealImageSize($row->filename, 'small');
 	$correctImageRes = PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
-	//echo JHtml::_( 'image', $row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())),'', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+	//echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())),'', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 	echo '<img src="'.JURI::root().$row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
 
 	?>
@@ -145,15 +145,15 @@ if (is_array($rows)) {
 	// Publish Unpublish
 	echo '<td align="center">';
 	if ($row->published == 1) {
-		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=unpublishimage'. $this->tmpl['psi']).'">';
-		//echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_UNPUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=unpublishimage'. $this->t['psi']).'">';
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
+		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_UNPUBLISH'))
 		.'</a>';
 	}
 	if ($row->published == 0) {
-		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_PUBLISH').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=publishimage'.$this->tmpl['psi']).'">';
-		//echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		echo ' <a title="'.JText::_('COM_PHOCAGALLERY_PUBLISH').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=publishimage'.$this->t['psi']).'">';
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
+		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_PUBLISH'))
 		.'</a>';
 	}
 	echo '</td>';
@@ -176,35 +176,35 @@ if (is_array($rows)) {
 	// - - - - - - - - - - - - - - - - - - - - - -
 
 	if ($rightDisplayDelete) {
-		echo ' <a onclick="return confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS').'\')" title="'.JText::_('COM_PHOCAGALLERY_DELETE').'" href="'. JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=removeimage'.$this->tmpl['psi'] ).'">';
-		//echo JHtml::_('image',  $this->tmpl['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
-		echo PhocaGalleryRenderFront::renderIcon('trash', $this->tmpl['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE') )
+		echo ' <a onclick="return confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS').'\')" title="'.JText::_('COM_PHOCAGALLERY_DELETE').'" href="'. JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=removeimage'.$this->t['psi'] ).'">';
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image',  $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE'))
+		echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCAGALLERY_DELETE') )
 		.'</a>';
 	} else {
-		//echo JHTML::_('image', $this->tmpl['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'));
-		echo PhocaGalleryRenderFront::renderIcon('trash', $this->tmpl['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'),'ph-icon-disabled');
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'));
+		echo PhocaGalleryRenderFront::renderIcon('trash', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCAGALLERY_DELETE'),'ph-icon-disabled');
 	}
 	echo '</td>';
 
 	// Approved
 	echo '<td align="center">';
 	if ($row->approved == 1) {
-		//echo JHtml::_('image', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('publish', $this->tmpl['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
+		echo PhocaGalleryRenderFront::renderIcon('publish', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCAGALLERY_APPROVED'));
 	} else {
-		//echo JHtml::_('image', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
-		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->tmpl['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		//echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
+		echo PhocaGalleryRenderFront::renderIcon('unpublish', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCAGALLERY_NOT_APPROVED'));
 	}
 	echo '</td>';
 
-	$linkUp 	= JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=orderupimage'.$this->tmpl['psi']);
-	$linkDown 	= JRoute::_($this->tmpl['pp'].'&id='.$row->slug.'&task=orderdownimage'.$this->tmpl['psi']);
+	$linkUp 	= JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=orderupimage'.$this->t['psi']);
+	$linkDown 	= JRoute::_($this->t['pp'].'&id='.$row->slug.'&task=orderdownimage'.$this->t['psi']);
 
 	echo '<td class="order" align="right">'
-	.'<span>'. $this->tmpl['imagepagination']->orderUpIcon( $i, ($row->catid == @$this->tmpl['imageitems'][$i-1]->catid), $linkUp, 'COM_PHOCAGALLERY_MOVE_UP', $this->tmpl['imageordering']).'</span> '
-	.'<span>'. $this->tmpl['imagepagination']->orderDownIcon( $i, $n, ($row->catid == @$this->tmpl['imageitems'][$i+1]->catid), $linkDown, 'COM_PHOCAGALLERY_MOVE_UP', $this->tmpl['imageordering'] ).'</span> ';
+	.'<span>'. $this->t['imagepagination']->orderUpIcon( $i, ($row->catid == @$this->t['imageitems'][$i-1]->catid), $linkUp, 'COM_PHOCAGALLERY_MOVE_UP', $this->t['imageordering']).'</span> '
+	.'<span>'. $this->t['imagepagination']->orderDownIcon( $i, $n, ($row->catid == @$this->t['imageitems'][$i+1]->catid), $linkDown, 'COM_PHOCAGALLERY_MOVE_UP', $this->t['imageordering'] ).'</span> ';
 
-	$disabled = $this->tmpl['imageordering'] ?  '' : 'disabled="disabled"';
+	$disabled = $this->t['imageordering'] ?  '' : 'disabled="disabled"';
 	echo '<input type="text" name="order[]" size="5" value="'. $row->ordering.'" '. $disabled.' class="inputbox input-mini" style="text-align: center" />';
 	echo '</td>';
 
@@ -221,18 +221,18 @@ if (is_array($rows)) {
 	<tr>
 	<td colspan="9" class="footer"><?php
 
-$this->tmpl['imagepagination']->setTab($this->tmpl['currenttab']['images']);
-if (count($this->tmpl['imageitems'])) {
+$this->t['imagepagination']->setTab($this->t['currenttab']['images']);
+if (count($this->t['imageitems'])) {
 	echo '<div class="pagination pg-center">';
 	echo '<div class="pg-inline">'
 		.JText::_('COM_PHOCAGALLERY_DISPLAY_NUM') .'&nbsp;'
-		.$this->tmpl['imagepagination']->getLimitBox()
+		.$this->t['imagepagination']->getLimitBox()
 		.'</div>';
 	echo '<div style="margin:0 10px 0 10px;display:inline;" class="sectiontablefooter'.$this->params->get( 'pageclass_sfx' ).'" >'
-		.$this->tmpl['imagepagination']->getPagesLinks()
+		.$this->t['imagepagination']->getPagesLinks()
 		.'</div>'
 		.'<div style="margin:0 10px 0 10px;display:inline;" class="pagecounter">'
-		.$this->tmpl['imagepagination']->getPagesCounter()
+		.$this->t['imagepagination']->getPagesCounter()
 		.'</div>';
 	echo '</div>';
 }
@@ -243,16 +243,16 @@ if (count($this->tmpl['imageitems'])) {
 </table>
 
 
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value=""/>
 <input type="hidden" name="view" value="user"/>
-<input type="hidden" name="tab" value="<?php echo $this->tmpl['currenttab']['images'];?>" />
-<input type="hidden" name="limitstartsubcat" value="<?php echo $this->tmpl['subcategorypagination']->limitstart;?>" />
-<input type="hidden" name="limitstartimage" value="<?php echo $this->tmpl['imagepagination']->limitstart;?>" />
+<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['images'];?>" />
+<input type="hidden" name="limitstartsubcat" value="<?php echo $this->t['subcategorypagination']->limitstart;?>" />
+<input type="hidden" name="limitstartimage" value="<?php echo $this->t['imagepagination']->limitstart;?>" />
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId ?>"/>
-<input type="hidden" name="catid" value="<?php echo $this->tmpl['catidimage'] ?>"/>
+<input type="hidden" name="catid" value="<?php echo $this->t['catidimage'] ?>"/>
 <input type="hidden" name="filter_order_image" value="<?php echo $this->listsimage['order']; ?>" />
 <input type="hidden" name="filter_order_Dir_image" value="" />
 
@@ -261,22 +261,22 @@ if (count($this->tmpl['imageitems'])) {
 <?php
 
 
-	if ((int)$this->tmpl['displayupload'] == 1) {
+	if ((int)$this->t['displayupload'] == 1) {
 		echo '<h4>'. JText::_('COM_PHOCAGALLERY_SINGLE_FILE_UPLOAD').'</h4>';
 		echo $this->loadTemplate('upload');
 	}
 
-	if ((int)$this->tmpl['ytbupload'] > 0) {
+	if ((int)$this->t['ytbupload'] > 0) {
 		echo '<h4>'. JText::_('COM_PHOCAGALLERY_YTB_UPLOAD').'</h4>';
 		echo $this->loadTemplate('ytbupload');
 	}
 
-	if((int)$this->tmpl['enablemultiple']  == 1) {
+	if((int)$this->t['enablemultiple']  == 1) {
 		echo '<h4>'. JText::_('COM_PHOCAGALLERY_MULTPLE_FILE_UPLOAD').'</h4>';
 		echo $this->loadTemplate('multipleupload');
 	}
 
-	if($this->tmpl['enablejava'] == 1) {
+	if($this->t['enablejava'] == 1) {
 		echo '<h4>'. JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD').'</h4>';
 		echo $this->loadTemplate('javaupload');
 	}

@@ -43,7 +43,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$script[] 	= '	}';
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));*/
 		
-		JHtml::_('jquery.framework');
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
 		
 		JFactory::getDocument()->addScriptDeclaration('
 			function phocaSelectFileName_' . $this->id . '(name) {
@@ -58,7 +58,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '">'
 			. '<span class="icon-list icon-white"></span> '
 			. JText::_('COM_PHOCAGALLERY_FORM_SELECT_FILENAME') . '</a></span>';
-		$html[] = JHtml::_(
+		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(

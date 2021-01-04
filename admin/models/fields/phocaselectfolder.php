@@ -36,7 +36,7 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		$script[] = '	}';*/
 		
 		
-		JHtml::_('jquery.framework');
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectfolder';
 
 		// Build the script.
@@ -85,7 +85,7 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		
 		$html[] = '</div>'. "\n";		
 		
-		$html[] = JHtml::_(
+		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(

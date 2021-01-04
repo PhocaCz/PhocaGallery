@@ -10,13 +10,137 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 class PhocaGalleryRenderAdminViews
 {
-	public function __construct(){}
+
+	public $view 			= '';
+	public $option			= '';
+	public $compatible		= false;
+	public $sidebar 		= true;
+
+	public function __construct(){
+
+		$app				= Factory::getApplication();
+		$version 			= new \Joomla\CMS\Version();
+		$this->compatible 	= $version->isCompatible('4.0.0-alpha');
+		$this->view			= $app->input->get('view');
+		$this->option		= $app->input->get('option');
+		$this->sidebar 		= $app->getTemplate(true)->params->get('menu', 1) ? true : false;
+
+		switch($this->view) {
+
+
+			case 'phocagalleryc':
+			case 'phocagalleryco':
+			case 'phocagallerycoimg':
+			case 'phocagalleryd':
+			case 'phocagalleryef':
+			case 'phocagalleryf':
+			case 'phocagalleryfb':
+			case 'phocagalleryimg':
+			case 'phocagallerytag':
+
+				Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+				if (!$this->compatible) {
+					Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+				}
+
+			break;
+
+			case 'phocagallerylinks':
+			case 'phocagallerylinkimg':
+			case 'phocagallerylinkcats':
+
+				Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
+				Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+				if (!$this->compatible) {
+					Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+				}
+			break;
+
+			case 'phocagallerycs':
+			case 'phocagallerycos':
+			case 'phocagallerycoimgs':
+			case 'phocaemailsubscribers':
+			case 'phocaemaillists':
+			case 'phocagalleryefs':
+			case 'phocagalleryfbs':
+			case 'phocagalleryimgs':
+			case 'phocagallerytags':
+			case 'phocagalleryusers':
+				case 'phocagalleryra':
+			case 'phocagalleryraimg':
+
+			default:
+
+				Joomla\CMS\HTML\HTMLHelper::_('bootstrap.tooltip');
+				Joomla\CMS\HTML\HTMLHelper::_('behavior.multiselect');
+				Joomla\CMS\HTML\HTMLHelper::_('dropdown.init');
+				if (!$this->compatible) {
+					Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+				}
+
+			break;
+		}
+
+		// CP View
+		//if ($this->view == null) {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duotone/joomla-fonts.css', array('version' => 'auto'));
+		//}
+
+		HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
+
+		if ($this->compatible) {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/4.css', array('version' => 'auto'));
+		} else {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/3.css', array('version' => 'auto'));
+		}
+	}
+
+	public function startMainContainer() {
+
+		$o = array();
+
+		if ($this->compatible) {
+
+			// Joomla! 4
+
+			$o[] = '<div class="row">';
+			if ($this->sidebar) {
+
+				$o[] = '<div id="j-main-container" class="col-md-12">';
+			} else {
+
+				$o[] = '<div id="j-sidebar-container" class="col-md-2">'.JHtmlSidebar::render().'</div>';
+				$o[] = '<div id="j-main-container" class="col-md-10">';
+			}
+
+
+		} else {
+			$o[] = '<div id="j-sidebar-container" class="span2">'.JHtmlSidebar::render().'</div>';
+			$o[] = '<div id="j-main-container" class="span10">';
+		}
+
+		return implode("\n", $o);
+	}
+
+	public function endMainContainer() {
+		$o = array();
+
+		$o[] = '</div>';
+		if ($this->compatible) {
+			$o[] = '</div>';
+		}
+		return implode("\n", $o);
+	}
+
 
 	public function jsJorderTable($listOrder) {
-		return '<script type="text/javascript">' . "\n"
-		.'Joomla.orderTable = function() {' . "\n"
+
+		$js = 'Joomla.orderTable = function() {' . "\n"
 		.'  table = document.getElementById("sortTable");' . "\n"
 		.'  direction = document.getElementById("directionTable");' . "\n"
 		.'  order = table.options[table.selectedIndex].value;' . "\n"
@@ -26,9 +150,8 @@ class PhocaGalleryRenderAdminViews
 		.'    dirn = direction.options[direction.selectedIndex].value;' . "\n"
 		.'  }' . "\n"
 		.'  Joomla.tableOrdering(order, dirn, \'\');' . "\n"
-		.'}' . "\n"
-		.'</script>' . "\n";
-		return "";
+		.'}' . "\n";
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
@@ -39,32 +162,42 @@ class PhocaGalleryRenderAdminViews
 		return '</form>'."\n".'</div>'."\n";
 	}
 
-	public function startFilter($txtFilter = ''){
-		$o = '<div id="j-sidebar-container" class="span2">'."\n". JHtmlSidebar::render()."\n";
-
-		if ($txtFilter != '') {
-
-
-
-			$o .= '<hr />'."\n" . '<div class="filter-select ">'."\n"
-			. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
-		} else {
-			$o .= '<div>';
-
-		}
-
-		return $o;
-	}
-
-	public function endFilter() {
-		return '</div>' . "\n" . '</div>' . "\n";
-	}
-
 	public function selectFilterPublished($txtSp, $state) {
 		return '<div class="btn-group pull-right ph-select-status">'. "\n"
 		.'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
-		. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', Joomla\CMS\HTML\HTMLHelper::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
+		.'</select></div>'. "\n";
+	}
+
+	public function selectFilterActived($txtSp, $state) {
+
+
+		switch($state) {
+			case '0':
+				$aS = '';
+				$nS = 'selected';
+				$n = '';
+
+			break;
+			case '1':
+				$aS = 'selected';
+				$nS = '';
+				$n = '';
+			break;
+			default:
+				$aS = '';
+				$nS = '';
+				$n = 'selected';
+			break;
+		}
+
+		return '<div class="btn-group pull-right ph-select-status">'. "\n"
+		.'<select name="filter_actived" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="" '.$n.'>- '.JText::_($txtSp).' -</option>'
+		. '<option value="0" '.$nS.'>'.JText::_('COM_PHOCAEMAIL_NOT_ACTIVE').'</option>'
+		. '<option value="1" '.$aS.'>'.JText::_('COM_PHOCAEMAIL_ACTIVE').'</option>'
+		//. Joomla\CMS\HTML\HTMLHelper::_('select.options', Joomla\CMS\HTML\HTMLHelper::_('jgrid.publishedOptions', array()), 'value', 'text', $state, true)
 		.'</select></div>'. "\n";
 	}
 
@@ -72,7 +205,7 @@ class PhocaGalleryRenderAdminViews
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
-		. JHtml::_('select.options', $typeList, 'value', 'text', $type, true)
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', $typeList, 'value', 'text', $type, true)
 		.'</select></div>'. "\n";
 	}
 
@@ -80,7 +213,7 @@ class PhocaGalleryRenderAdminViews
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $state)
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', Joomla\CMS\HTML\HTMLHelper::_('contentlanguage.existing', true, true), 'value', 'text', $state)
 		.'</select></div>'. "\n";
 	}
 
@@ -88,7 +221,7 @@ class PhocaGalleryRenderAdminViews
 		return '<div class="btn-group pull-right ">'. "\n"
 		.'<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', $categoryList, 'value', 'text', $state)
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', $categoryList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
 	}
 
@@ -98,29 +231,8 @@ class PhocaGalleryRenderAdminViews
 		'<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_level" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', $levelList, 'value', 'text', $state)
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', $levelList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
-	}
-
-	public function startMainContainer() {
-		return '<div id="j-main-container" class="span10">'. "\n";
-	}
-
-	public function endMainContainer() {
-		return '</div>'. "\n";
-	}
-
-	public function startFilterBar($id = 0) {
-		if ((int)$id > 0) {
-			return '<div id="filter-bar'.$id.'" class="btn-toolbar ph-btn-toolbar-'.$id.'">'. "\n";
-		} else {
-			return '<div id="filter-bar'.$id.'" class="btn-toolbar">'. "\n";
-		}
-
-	}
-
-	public function endFilterBar() {
-		return '</div>' . "\n" . '<div class="clearfix"> </div>'. "\n";
 	}
 
 	public function inputFilterSearch($txtSl, $txtSd, $state) {
@@ -131,8 +243,16 @@ class PhocaGalleryRenderAdminViews
 		.'</div>'. "\n";
 	}
 
+	/*public function inputFilterSearchClear($txtFs, $txtFc) {
+		return '<div class="btn-group pull-left hidden-phone">'. "\n"
+		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
+		.'<button class="btn tip hasTooltip" type="button" onclick="document.id(\'filter_search\').value=\'\';this.form.submit();"'
+		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
+		.'</div>'. "\n";
+	}*/
+
 	public function inputFilterSearchClear($txtFs, $txtFc) {
-		return '<div class="btn-group pull-left">'. "\n"
+		return '<div class="btn-group pull-left hidden-phone">'. "\n"
 		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
 		.'<button class="btn tip hasTooltip" type="button" onclick="document.getElementById(\'filter_search\').value=\'\';this.form.submit();"'
 		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
@@ -140,18 +260,16 @@ class PhocaGalleryRenderAdminViews
 	}
 
 	public function inputFilterSearchLimit($txtSl, $paginationLimitBox) {
-
-		return '<div class="btn-group pull-right">'. "\n"
+		return '<div class="btn-group pull-right hidden-phone">'. "\n"
 		.'<label for="limit" class="element-invisible">'.JText::_($txtSl).'</label>'. "\n"
 		.$paginationLimitBox ."\n" . '</div>'. "\n";
-
 	}
 
 	public function selectFilterDirection($txtOd, $txtOasc, $txtOdesc, $listDirn) {
 		$ascDir = $descDir = '';
 		if ($listDirn == 'asc') {$ascDir = 'selected="selected"';}
 		if ($listDirn == 'desc') {$descDir = 'selected="selected"';}
-		return '<div class="btn-group pull-right">'. "\n"
+		return '<div class="btn-group pull-right hidden-phone">'. "\n"
 		.'<label for="directionTable" class="element-invisible">' .JText::_('JFIELD_ORDERING_DESC').'</label>'. "\n"
 		.'<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">'. "\n"
 		.'<option value="">' .JText::_('JFIELD_ORDERING_DESC').'</option>'. "\n"
@@ -166,7 +284,7 @@ class PhocaGalleryRenderAdminViews
 		.'<label for="sortTable" class="element-invisible">'.JText::_($txtSb).'</label>'. "\n"
 		.'<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">'. "\n"
 		.'<option value="">'.JText::_($txtSb).'</option>'. "\n"
-		. JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder). "\n"
+		. Joomla\CMS\HTML\HTMLHelper::_('select.options', $sortFields, 'value', 'text', $listOrder). "\n"
 		.'</select>'. "\n"
 		.'</div>'. "\n";
 	}
@@ -191,9 +309,22 @@ class PhocaGalleryRenderAdminViews
 	}
 
 	public function thOrdering($txtHo, $listDirn, $listOrder ) {
-		return '<th class="nowrap center ph-ordering">'. "\n"
-		. JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', $txtHo). "\n"
+		return '<th class="nowrap center hidden-phone ph-ordering">'. "\n"
+		. Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', $txtHo). "\n"
 		. '</th>';
+	}
+
+	public function thOrderingXML($txtHo, $listDirn, $listOrder, $prefix = 'a', $empty = false ) {
+
+		if ($empty) {
+			return '<th class="nowrap center text-center ph-ordering"></th>'. "\n";
+		}
+
+		return '<th class="nowrap center text-center ph-ordering">'. "\n"
+		. Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', '', strip_tags($prefix).'.ordering', $listDirn, $listOrder, null, 'asc', $txtHo, 'icon-menu-2'). "\n"
+		. '</th>';
+		//Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_IN_STOCK', 'a.stock', $listDirn, $listOrder ).'</th>'."\n";
+
 	}
 
 	public function thCheck($txtCh) {
@@ -204,7 +335,7 @@ class PhocaGalleryRenderAdminViews
 
 	public function tdOrder($canChange, $saveOrder, $orderkey, $ordering = 0){
 
-		$o = '<td class="order nowrap center">'. "\n";
+		$o = '<td class="order nowrap center hidden-phone">'. "\n";
 		if ($canChange) {
 			$disableClassName = '';
 			$disabledLabel    = '';
@@ -223,7 +354,7 @@ class PhocaGalleryRenderAdminViews
 	}
 
 	public function tdRating($ratingAvg) {
-		$o = '<td class="small">';
+		$o = '<td class="small hidden-phone">';
 		$voteAvg 		= round(((float)$ratingAvg / 0.5)) * 0.5;
 		$voteAvgWidth	= 16 * $voteAvg;
 		$o .= '<ul class="star-rating-small">'
@@ -240,7 +371,7 @@ class PhocaGalleryRenderAdminViews
 
 	public function tdLanguage($lang, $langTitle, $langTitleE ) {
 
-		$o = '<td class="small nowrap">';
+		$o = '<td class="small nowrap hidden-phone">';
 		if ($lang == '*') {
 			$o .= JText::_('JALL');
 		} else {
@@ -254,14 +385,34 @@ class PhocaGalleryRenderAdminViews
 		return $o;
 	}
 
+	/*public function formInputs($listOrder, $originalOrders) {
+
+		return '<input type="hidden" name="task" value="" />'. "\n"
+		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
+		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
+		.'<input type="hidden" name="filter_order_Dir" value="" />'. "\n"
+		. Joomla\CMS\HTML\HTMLHelper::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
+	}*/
+
 	public function formInputs($listOrder, $listDirn, $originalOrders) {
 
 		return '<input type="hidden" name="task" value="" />'. "\n"
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
-		. JHtml::_('form.token'). "\n"
-		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
+		. Joomla\CMS\HTML\HTMLHelper::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
+	}
+
+	public function formInputsXml($listOrder, $listDirn, $originalOrders) {
+
+		return '<input type="hidden" name="task" value="" />'. "\n"
+		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
+		//.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
+		//.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
+		. Joomla\CMS\HTML\HTMLHelper::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
 	}
 
 	public function td($value, $class = '') {
@@ -273,64 +424,6 @@ class PhocaGalleryRenderAdminViews
 	}
 
 
-	public function tdImage($item, $button, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
-		$o = '<td class="'.$class.'">'. "\n";
-		$o .= '<div class="pg-msnr-container"><div class="phocagallery-box-file">'. "\n"
-			.' <center>'. "\n"
-			.'  <div class="phocagallery-box-file-first">'. "\n"
-			.'   <div class="phocagallery-box-file-second">'. "\n"
-			.'    <div class="phocagallery-box-file-third">'. "\n"
-			.'     <center>'. "\n";
-
-		if ($avatarAbs != '' && $avatarRel != '') {
-			// AVATAR
-			if (JFile::exists($avatarAbs.$item->avatar)){
-				$o .= '<a class="'. $button->methodname.'"'
-				//.' title="'. $button->text.'"'
-				.' href="'.JURI::root().$avatarRel.$item->avatar.'" '
-				//.' rel="'. $button->options.'"'
-				. ' >'
-				.'<img src="'.JURI::root().$avatarRel.$item->avatar.'?imagesid='.md5(uniqid(time())).'" alt="'.JText::_($txtE).'" />'
-				.'</a>';
-			} else {
-				$o .= JHTML::_( 'image', '/media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
-			}
-		} else {
-			// PICASA
-			if (isset($item->extid) && $item->extid !='') {
-
-				$resW				= explode(',', $item->extw);
-				$resH				= explode(',', $item->exth);
-				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($resW[2], $resH[2], 50, 50);
-				$imgLink			= $item->extl;
-
-				//$o .= '<a class="'. $button->modalname.'" title="'.$button->text.'" href="'. $imgLink .'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. $imgLink .'" >'
-				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
-				.'</a>'. "\n";
-			} else if (isset ($item->fileoriginalexist) && $item->fileoriginalexist == 1) {
-
-				$imageRes			= PhocaGalleryImage::getRealImageSize($item->filename, 'small');
-				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
-				$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
-
-				//$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JURI::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. JURI::root(). $imgLink->rel.'"  >'
-				. '<img src="'.JURI::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" itemprop="thumbnail" />'
-				.'</a>'. "\n";
-			} else {
-				$o .= JHTML::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
-			}
-		}
-		$o .= '     </center>'. "\n"
-			.'    </div>'. "\n"
-			.'   </div>'. "\n"
-			.'  </div>'. "\n"
-			.' </center>'. "\n"
-			.'</div></div>'. "\n";
-		$o .=  '</td>'. "\n";
-		return $o;
-	}
 
 
 	public function tdPublishDownUp ($publishUp, $publishDown, $langPref) {
@@ -359,27 +452,224 @@ class PhocaGalleryRenderAdminViews
 		$times = '';
 		if (isset($publishUp)) {
 			if ($publishUp == $nullDate) {
-				$times .= JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
+				$times .= "\n". JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
 			} else {
-				$times .= JText::_( $langPref . '_START') .": ". $publish_up->format("D, d M Y H:i:s");
+				$times .= "\n". JText::_( $langPref . '_START') .": ". $publish_up->format("D, d M Y H:i:s");
 			}
 		}
 		if (isset($publishDown)) {
 			if ($publishDown == $nullDate) {
-				$times .= "<br />". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
+				$times .= "\n". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
 			} else {
-				$times .= "<br />". JText::_( $langPref . '_FINISH') .": ". $publish_down->format("D, d M Y H:i:s");
+				$times .= "\n". JText::_( $langPref . '_FINISH') .": ". $publish_down->format("D, d M Y H:i:s");
 			}
 		}
 
 		if ( $times ) {
 			$o .= '<td align="center">'
-				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).'::'. $times.'">'
+				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).': '. $times.'">'
 				.'<a href="javascript:void(0);" >'. $text.'</a></span>'
 				.'</td>'. "\n";
 		} else {
 			$o .= '<td></td>'. "\n";
 		}
+		return $o;
+	}
+
+	public function saveOrder($t, $listDirn) {
+
+		$saveOrderingUrl = 'index.php?option=' . $t['o'] . '&task=' . $t['tasks'] . '.saveOrderAjax&tmpl=component&' . JSession::getFormToken() . '=1';
+		if ($this->compatible) {
+			HTMLHelper::_('draggablelist.draggable');
+		} else {
+			Joomla\CMS\HTML\HTMLHelper::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+		}
+
+		return $saveOrderingUrl;
+	}
+
+	public function firstColumnHeader($listDirn, $listOrder) {
+		if ($this->compatible) {
+			return '<th class="w-1 text-center ph-check">'. HTMLHelper::_('grid.checkall').'</td>';
+		} else {
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+		}
+	}
+
+	public function secondColumnHeader($listDirn, $listOrder) {
+		if ($this->compatible) {
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+		} else {
+			return $this->thCheck('JGLOBAL_CHECK_ALL');
+		}
+	}
+
+	public function startTblBody($saveOrder, $saveOrderingUrl, $listDirn) {
+
+		$o = array();
+
+		if ($this->compatible) {
+			$o[] = '<tbody';
+			if ($saveOrder){
+				$o[] = ' class="js-draggable" data-url="'. $saveOrderingUrl.'" data-direction="'. strtolower($listDirn).'" data-nested="true"';
+			}
+			$o[] = '>';
+
+		} else {
+			$o[] = '<tbody>'. "\n";
+		}
+
+		return implode("", $o);
+	}
+
+	public function endTblBody() {
+		return '</tbody>'. "\n";
+	}
+
+	public function startTr($i, $catid = 0){
+		$iD = $i % 2;
+		if ($this->compatible) {
+			return '<tr class="row'.$iD.'" data-dragable-group="'. $catid.'">'. "\n";
+		} else {
+
+			return '<tr class="row'.$iD.'" sortable-group-id="'.$catid.'" >'. "\n";
+		}
+	}
+
+	public function endTr() {
+		return '</tr>'."\n";
+	}
+
+	public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering) {
+		if ($this->compatible) {
+			return $this->td( HTMLHelper::_('grid.id', $i, $itemId), 'text-center');
+		} else {
+			return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering);
+		}
+	}
+
+	public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering) {
+
+		if ($this->compatible) {
+
+			$o = array();
+			$o[] = '<td class="text-center d-none d-md-table-cell">';
+
+			$iconClass = '';
+			if (!$canChange) {
+				$iconClass = ' inactive';
+			} else if (!$saveOrder) {
+				$iconClass = ' inactive" title="' . JText::_('JORDERINGDISABLED');
+			}
+
+			$o[] = '<span class="sortable-handler'. $iconClass.'"><span class="fas fa-ellipsis-v" aria-hidden="true"></span></span>';
+
+			if ($canChange && $saveOrder) {
+				$o[] = '<input type="text" name="order[]" size="5" value="' . $ordering . '" class="width-20 text-area-order hidden">';
+			}
+
+			$o[] = '</td>';
+
+			return implode("", $o);
+
+		} else {
+			return $this->td(Joomla\CMS\HTML\HTMLHelper::_('grid.id', $i, $itemId), "small ");
+		}
+	}
+
+
+	public function startFilter($txtFilter = ''){
+		$o = '<div id="j-sidebar-container" class="span2">'."\n". JHtmlSidebar::render()."\n";
+
+		if ($txtFilter != '') {
+
+
+
+			$o .= '<hr />'."\n" . '<div class="filter-select ">'."\n"
+			. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+		} else {
+			$o .= '<div>';
+
+		}
+
+		return $o;
+	}
+
+	public function endFilter() {
+		return '</div>' . "\n" . '</div>' . "\n";
+	}
+
+	public function startFilterBar($id = 0) {
+		if ((int)$id > 0) {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar ph-btn-toolbar-'.$id.'">'. "\n";
+		} else {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar">'. "\n";
+		}
+
+	}
+
+	public function endFilterBar() {
+		return '</div>' . "\n" . '<div class="clearfix"> </div>'. "\n";
+	}
+
+
+
+	public function tdImage($item, $button, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
+		$o = '<td class="'.$class.'">'. "\n";
+		$o .= '<div class="pg-msnr-container"><div class="phocagallery-box-file">'. "\n"
+			.' <center>'. "\n"
+			.'  <div class="phocagallery-box-file-first">'. "\n"
+			.'   <div class="phocagallery-box-file-second">'. "\n"
+			.'    <div class="phocagallery-box-file-third">'. "\n"
+			.'     <center>'. "\n";
+
+		if ($avatarAbs != '' && $avatarRel != '') {
+			// AVATAR
+			if (JFile::exists($avatarAbs.$item->avatar)){
+				$o .= '<a class="'. $button->methodname.'"'
+				//.' title="'. $button->text.'"'
+				.' href="'.JURI::root().$avatarRel.$item->avatar.'" '
+				//.' rel="'. $button->options.'"'
+				. ' >'
+				.'<img src="'.JURI::root().$avatarRel.$item->avatar.'?imagesid='.md5(uniqid(time())).'" alt="'.JText::_($txtE).'" />'
+				.'</a>';
+			} else {
+				$o .= Joomla\CMS\HTML\HTMLHelper::_( 'image', '/media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+			}
+		} else {
+			// PICASA
+			if (isset($item->extid) && $item->extid !='') {
+
+				$resW				= explode(',', $item->extw);
+				$resH				= explode(',', $item->exth);
+				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($resW[2], $resH[2], 50, 50);
+				$imgLink			= $item->extl;
+
+				//$o .= '<a class="'. $button->modalname.'" title="'.$button->text.'" href="'. $imgLink .'" rel="'. $button->options.'" >'
+				$o .= '<a class="'. $button->methodname.'"  href="'. $imgLink .'" >'
+				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
+				.'</a>'. "\n";
+			} else if (isset ($item->fileoriginalexist) && $item->fileoriginalexist == 1) {
+
+				$imageRes			= PhocaGalleryImage::getRealImageSize($item->filename, 'small');
+				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
+				$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
+
+				//$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JURI::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
+				$o .= '<a class="'. $button->methodname.'"  href="'. JURI::root(). $imgLink->rel.'"  >'
+				. '<img src="'.JURI::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" itemprop="thumbnail" />'
+				.'</a>'. "\n";
+			} else {
+				$o .= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+			}
+		}
+		$o .= '     </center>'. "\n"
+			.'    </div>'. "\n"
+			.'   </div>'. "\n"
+			.'  </div>'. "\n"
+			.' </center>'. "\n"
+			.'</div></div>'. "\n";
+		$o .=  '</td>'. "\n";
 		return $o;
 	}
 }

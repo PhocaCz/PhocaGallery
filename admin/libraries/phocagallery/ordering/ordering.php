@@ -148,7 +148,7 @@ class PhocaGalleryOrdering
 			break;
 		}
 
-		$html 	= JHTML::_('select.genericlist',  $typeOrdering, $ordering, 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+		$html 	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $typeOrdering, $ordering, 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		
 		return $html;
 	}

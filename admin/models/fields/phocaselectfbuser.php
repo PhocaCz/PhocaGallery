@@ -49,9 +49,9 @@ class JFormFieldPhocaSelectFbUser extends JFormField
 		
 		
 		
-		array_unshift($items, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCAGALLERY_SELECT_FB_USER').' -', 'value', 'text'));
+		array_unshift($items, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCAGALLERY_SELECT_FB_USER').' -', 'value', 'text'));
 		
-		return JHTML::_('select.genericlist',  $items,  $this->name, 'class="inputbox" onchange="'.$js.'"', 'value', 'text', $this->value, $this->id );
+		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $items,  $this->name, 'class="inputbox" onchange="'.$js.'"', 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

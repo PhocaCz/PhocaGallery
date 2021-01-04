@@ -22,41 +22,41 @@ echo '<div id="pg-icons">';
 echo PhocaGalleryRenderFront::renderFeedIcon('categories');
 echo '</div>';
 
-if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == '') {
+if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
 	echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
-	
-	
+
+
 	$id		= uniqid();
 	$map	= new PhocaGalleryRenderMaposm($id);
 
-	
+
 	$map->loadAPI();
 	$map->loadCoordinatesJS();
-	
 
-	
+
+
 	echo '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>';
 	echo '<div align="center" style="margin:0;padding:0;margin-top:10px;">';
 
 	$cmw = '';
-	if ((int)$this->tmplGeo['categoriesmapwidth'] > 0) {
-		$cmw = 'width:'.$this->tmplGeo['categoriesmapwidth'].'px;';
+	if ((int)$this->tGeo['categoriesmapwidth'] > 0) {
+		$cmw = 'width:'.$this->tGeo['categoriesmapwidth'].'px;';
 	}
-	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0;padding:0;'. $cmw. 'height:'.$this->tmplGeo['categoriesmapheight'].'px">';
+	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0;padding:0;'. $cmw. 'height:'.$this->tGeo['categoriesmapheight'].'px">';
 	echo '</div></div>';
 
-		
-	$map->createMap($this->tmplGeo['categorieslat'], $this->tmplGeo['categorieslng'], $this->tmplGeo['categorieszoom']);
-	
+
+	$map->createMap($this->tGeo['categorieslat'], $this->tGeo['categorieslng'], $this->tGeo['categorieszoom']);
+
 	$map->setMapType();
-	
+
 
 	// Markers
 	jimport('joomla.filter.output');
 	if (isset($this->categories) && !empty($this->categories)) {
-	
-		
+
+
 		foreach ($this->categories as $category) {
 
 			if ((isset($category->longitude) && $category->longitude != '' && $category->longitude != 0)
@@ -67,18 +67,18 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 				}
 				$extCategory = PhocaGalleryImage::isExtImage($category->extid);
 				if ($extCategory) {
-					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->tmpl['picasa_correct_width'], $this->tmpl['picasa_correct_height']);
-					$imgLink = JHtml::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
+					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 				} else {
-					$imgLink = JHtml::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
+					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
 				}
-				
+
 				$minWidth = 110;
 				if (file_exists(JPATH_SITE . '/'. $category->linkthumbnailpath)) {
 					$size = getimagesize(JPATH_SITE . '/'. $category->linkthumbnailpath);
 					$minWidth = $size[0] + 10;
 				}
-				
+
 				$text = '<div style="text-align:left; min-width: '.$minWidth.'px">'
 				.'<table border="0" cellspacing="5" cellpadding="5">'
 				.'<tr>'
@@ -94,17 +94,17 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 				//echo $iconOutput['js'];
 				 $map->setMarker($category->id, $category->geotitle, $category->description,$category->latitude, $category->longitude, $text );
 
-				
+
 			}
 		}
 	}
 
 
-	
+
 	$map->renderFullScreenControl();
 	//$map->renderCurrentPosition();
 	//$map->renderSearch('', 'topleft');
-	
+
 	// Get Lat and Lng TO (first marker)
 	$lat = $lng = 0;
 	$mId = '';
@@ -124,12 +124,12 @@ if ($this->tmplGeo['categorieslng'] == '' || $this->tmplGeo['categorieslat'] == 
 	$map->renderRouting(0,0,$lat,$lng, $mId, $markerIconOptions);
 	$map->renderEasyPrint();
 	$map->renderMap();
-		
+
 }
 
 
 echo '<div>&nbsp;</div>';
-echo PhocaGalleryUtils::getInfo();
+echo PhocaGalleryUtils::getExtInfo();
 
 echo '</div>';
 ?>

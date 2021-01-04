@@ -19,12 +19,12 @@ class JFormFieldPhocaSelectMap extends JFormField
 	{
 		// Initialize variables.
 		$html = array();
-		
+
 		// Initialize some field attributes.
 		$attr = $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
 		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
-		
-		
+
+
 		if ($this->id == 'jform_latitude') {
 			// One link for latitude, longitude, zoom
 			$lat	= $this->form->getValue('latitude');
@@ -34,16 +34,16 @@ class JFormFieldPhocaSelectMap extends JFormField
 			if ($lat != '') { $suffix .= '&amp;lat='.$lat;}
 			if ($lng != '') { $suffix .= '&amp;lng='.$lng;}
 			if ($zoom != '') { $suffix .= '&amp;zoom='.$zoom;}
-			
+
 			$link = 'index.php?option=com_phocagallery&amp;view=phocagalleryg&amp;tmpl=component&amp;field='.$this->id. $suffix;
-		
-	
-			JHtml::_('jquery.framework');
-			
+
+
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+
 		}
-		
+
 		$idA	= 'pgselectmap';
-		
+
 		// Initialize JavaScript field attributes.
 		$onchange = (string) $this->element['onchange'];
 
@@ -54,7 +54,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 		$script[] = '		'.$onchange;
 		//$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';*/
-		
+
 		// Build the script.
 		$script = array();
 		$script[] = '	function phocaSelectMap_'.$this->id.'(title) {';
@@ -63,7 +63,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 		//$script[] = '		SqueezeBox.close();';
 		//$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
 		$script[] = '	}';
-		
+
 		// Hide Info box on start
 		if ($this->id == 'jform_latitude') {
 			$script[] = ' jQuery(document).ready(function() {';
@@ -75,11 +75,11 @@ class JFormFieldPhocaSelectMap extends JFormField
 
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-		
 
-		
+
+
 		if ($this->id == 'jform_latitude') {
-			
+
 			/*$html[] = '<div class="input-append">';
 			$html[] = '<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' . ' '.$attr.' />';
 			$html[] = '<a class="modal_'.$this->id.' btn" title="'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'"'
@@ -87,17 +87,17 @@ class JFormFieldPhocaSelectMap extends JFormField
 					.' rel="{handler: \'iframe\', size: {x: 560, y: 470}}">'
 					. JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'</a>';
 			$html[] = '</div>'. "\n";*/
-			
-			
+
+
 			$html[] = '<div class="input-append">';
 			$html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
 				. ' value="' . $this->value . '"' . $attr . ' />';
 			$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '">'
 				. '<span class="icon-list icon-white"></span> '
 				. JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '</a></span>';
-			$html[] = '</div>'. "\n";		
-			
-			$html[] = JHtml::_(
+			$html[] = '</div>'. "\n";
+
+			$html[] = Joomla\CMS\HTML\HTMLHelper::_(
 				'bootstrap.renderModal',
 				$idA,
 				array(

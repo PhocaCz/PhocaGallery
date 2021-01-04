@@ -25,7 +25,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 		parent::__construct();
 
 		$app	= JFactory::getApplication();
-		
+
 		// Get the pagination request variables
 		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $this->_context.'.limitstart', 'limitstart',	0, 'int' );
@@ -36,17 +36,17 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 	}
 
 	function getData() {
-		
+
 		if (empty($this->_data)) {
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		
+
 		if (!empty($this->_data)) {
-			foreach ($this->_data as $key => $value) {	
+			foreach ($this->_data as $key => $value) {
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 				//Let the user know that the file doesn't exists
-				
+
 				if (!JFile::exists($fileOriginal)) {
 					$this->_data[$key]->filename = JText::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 					$this->_data[$key]->fileoriginalexist = 0;
@@ -54,13 +54,13 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 					//Create thumbnails small, medium, large
 					$refresh_url 	= 'index.php?option=com_phocagallery&view=phocagalleryimgs';
 					$fileThumb 		= PhocaGalleryFileThumbnail::getOrCreateThumbnail($value->filename, $refresh_url, 1, 1, 1);
-					
+
 					$this->_data[$key]->linkthumbnailpath 	= $fileThumb['thumb_name_s_no_rel'];
-					$this->_data[$key]->fileoriginalexist = 1;	
+					$this->_data[$key]->fileoriginalexist = 1;
 				}
 			}
 		}
-		
+
 		return $this->_data;
 	}
 
@@ -79,7 +79,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 		}
 		return $this->_pagination;
 	}
-	
+
 
 	function _buildQuery() {
 		$where		= $this->_buildContentWhere();
@@ -94,7 +94,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 			. $orderby;
 		return $query;
 	}
-	
+
 
 
 	function _buildContentOrderBy() {
@@ -112,7 +112,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 
 	function _buildContentWhere() {
 		$app	= JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state',	'',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
@@ -125,17 +125,17 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 		$where[] = 'a.approved = 1';
 		$where[] = 'cc.published = 1';
 		$where[] = 'cc.approved = 1';
-		
+
 		if ($filter_catid > 0) {
 			$where[] = 'a.catid = '.(int) $filter_catid;
 		}
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}

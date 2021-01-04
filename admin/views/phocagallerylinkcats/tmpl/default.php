@@ -9,30 +9,30 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
-?>
-<script type="text/javascript">
+//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+
+$js = '
 function insertLink() {
 	var imagecategories = document.getElementById("imagecategories").value;
-	if (imagecategories != '') {
+	if (imagecategories != \'\') {
 		imagecategories = "|imagecategories="+imagecategories;
 	}
 	var imagecategoriessize = document.getElementById("imagecategoriessize").value;
-	if (imagecategoriessize != '') {
+	if (imagecategoriessize != \'\') {
 		imagecategoriessize = "|imagecategoriessize="+imagecategoriessize;
 	}
-	
-	var hideCategoriesOutput = '';
+
+	var hideCategoriesOutput = \'\';
 	hidecategories = getSelectedData();
 
-	if (hidecategories != '') {
+	if (hidecategories != \'\') {
 		hideCategoriesOutput = "|hidecategories="+hidecategories;
 	}
 
 	var tag = "{phocagallery view=categories"+imagecategories+imagecategoriessize+hideCategoriesOutput+"}";
 
-	window.parent.jInsertEditorText(tag, '<?php echo $this->tmpl['ename']; ?>');
-	//window.parent.document.getElementById('sbox-window').close();
+	window.parent.jInsertEditorText(tag, \''. $this->t['ename'].'\');
+	//window.parent.document.getElementById(\'sbox-window\').close();
 	window.parent.SqueezeBox.close();
 	return false;
 }
@@ -40,18 +40,20 @@ function insertLink() {
 function getSelectedData(array) {
 	var selected = new Array();
 	var dataSelect = document.forms["adminFormLink"].elements["hidecategories"];
-	
+
 	for(j = 0; j < dataSelect.options.length; j++){
 		if (dataSelect.options[j].selected) {
 			selected.push(dataSelect.options[j].value); }
 	}
-	if (array != 'true') {
+	if (array != \'true\') {
 		return selected.toString();
 	} else {
 		return selected;
-	} 
-}
-</script>
+	}
+}';
+
+JFactory::getDocument()->addScriptDeclaration($js);
+?>
 <div id="phocagallery-links">
 <fieldset class="adminform">
 <legend><?php echo JText::_( 'COM_PHOCAGALLERY_CATEGORIES' ); ?></legend>
@@ -89,8 +91,8 @@ function getSelectedData(array) {
 			</select>
 		</td>
 	</tr>
-	
-	
+
+
 	<tr >
 		<td class="key" align="right">
 			<label for="hidecategories">
@@ -101,7 +103,7 @@ function getSelectedData(array) {
 		<?php echo $this->categoriesoutput;?>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary" onclick="insertLink();"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
@@ -110,5 +112,5 @@ function getSelectedData(array) {
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
 </div>

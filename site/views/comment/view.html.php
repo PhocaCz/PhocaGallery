@@ -18,7 +18,7 @@ phocagalleryimport( 'phocagallery.facebook.fbsystem');
 class PhocaGalleryViewComment extends JViewLegacy
 {
 
-	public $tmpl;
+	public $t;
 	protected $params;
 
 	function display($tpl = null) {
@@ -29,7 +29,7 @@ class PhocaGalleryViewComment extends JViewLegacy
 		$user 			= JFactory::getUser();
 		$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
 		$this->itemId	= $app->input->get('Itemid', 0, 'int');
-		$this->tmpl['icon_path']	= 'media/com_phocagallery/images/';
+		$this->t['icon_path']	= 'media/com_phocagallery/images/';
 
 
 
@@ -40,52 +40,52 @@ class PhocaGalleryViewComment extends JViewLegacy
 		// PLUGIN WINDOW - we get information from plugin
 		$get = array();
 		$get['comment']			= $app->input->get( 'comment', '', 'string' );
-		$this->tmpl['id']		= $app->input->get('id', 0, 'int');
-		$this->tmpl['catid'] 	= $app->input->get('catid', '', 'string');
+		$this->t['id']		= $app->input->get('id', 0, 'int');
+		$this->t['catid'] 	= $app->input->get('catid', '', 'string');
 
-		$this->tmpl['maxcommentchar']			= $this->params->get( 'max_comment_char', 1000 );
-		$this->tmpl['displaycommentimg']		= $this->params->get( 'display_comment_img', 0 );
-		$this->tmpl['detailwindowbackgroundcolor']= $this->params->get( 'detail_window_background_color', '#ffffff' );
-		$this->tmpl['commentwidth']				= $this->params->get( 'comment_width', 500 );
-		$this->tmpl['enable_multibox']			= $this->params->get( 'enable_multibox', 0);
-		$this->tmpl['multibox_comments_width']		= $this->params->get( 'multibox_comments_width', 300 );
-		$this->tmpl['externalcommentsystem'] 	= $this->params->get( 'external_comment_system', 0 );
-		$this->tmpl['gallerymetakey'] 			= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 			= $this->params->get( 'gallery_metadesc', '' );
-		$this->tmpl['altvalue']		 			= $this->params->get( 'alt_value', 1 );
-		$this->tmpl['largewidth'] 				= $this->params->get( 'large_image_width', 640 );
-		$this->tmpl['largeheight'] 				= $this->params->get( 'large_image_height', 480 );
-		$this->tmpl['picasa_correct_width_l']	= (int)$this->params->get( 'large_image_width', 640 );
-		$this->tmpl['picasa_correct_height_l']	= (int)$this->params->get( 'large_image_height', 480 );
+		$this->t['maxcommentchar']			= $this->params->get( 'max_comment_char', 1000 );
+		$this->t['displaycommentimg']		= $this->params->get( 'display_comment_img', 0 );
+		$this->t['detailwindowbackgroundcolor']= $this->params->get( 'detail_window_background_color', '#ffffff' );
+		$this->t['commentwidth']				= $this->params->get( 'comment_width', 500 );
+		$this->t['enable_multibox']			= $this->params->get( 'enable_multibox', 0);
+		$this->t['multibox_comments_width']		= $this->params->get( 'multibox_comments_width', 300 );
+		$this->t['externalcommentsystem'] 	= $this->params->get( 'external_comment_system', 0 );
+		$this->t['gallerymetakey'] 			= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 			= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['altvalue']		 			= $this->params->get( 'alt_value', 1 );
+		$this->t['largewidth'] 				= $this->params->get( 'large_image_width', 640 );
+		$this->t['largeheight'] 				= $this->params->get( 'large_image_height', 480 );
+		$this->t['picasa_correct_width_l']	= (int)$this->params->get( 'large_image_width', 640 );
+		$this->t['picasa_correct_height_l']	= (int)$this->params->get( 'large_image_height', 480 );
 
 		$paramsFb = PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
-		$this->tmpl['fb_comment_app_id']		= isset($paramsFb['fb_comment_app_id']) ? $paramsFb['fb_comment_app_id'] : '';
-		$this->tmpl['fb_comment_width']			= isset($paramsFb['fb_comment_width']) ? $paramsFb['fb_comment_width'] : 550;
-		$this->tmpl['fb_comment_lang'] 			= isset($paramsFb['fb_comment_lang']) ? $paramsFb['fb_comment_lang'] : 'en_US';
-		$this->tmpl['fb_comment_count'] 		= isset($paramsFb['fb_comment_count']) ? $paramsFb['fb_comment_count'] : '';
-		$this->tmpl['display_comment_nopup']	= $this->params->get( 'display_comment_nopup', 0);
-		$this->tmpl['enablecustomcss']			= $this->params->get( 'enable_custom_css', 0);
-		$this->tmpl['customcss']				= $this->params->get( 'custom_css', '');
+		$this->t['fb_comment_app_id']		= isset($paramsFb['fb_comment_app_id']) ? $paramsFb['fb_comment_app_id'] : '';
+		$this->t['fb_comment_width']			= isset($paramsFb['fb_comment_width']) ? $paramsFb['fb_comment_width'] : 550;
+		$this->t['fb_comment_lang'] 			= isset($paramsFb['fb_comment_lang']) ? $paramsFb['fb_comment_lang'] : 'en_US';
+		$this->t['fb_comment_count'] 		= isset($paramsFb['fb_comment_count']) ? $paramsFb['fb_comment_count'] : '';
+		$this->t['display_comment_nopup']	= $this->params->get( 'display_comment_nopup', 0);
+		$this->t['enablecustomcss']			= $this->params->get( 'enable_custom_css', 0);
+		$this->t['customcss']				= $this->params->get( 'custom_css', '');
 
 		// Multibox
-		if ($this->tmpl['enable_multibox'] == 1) {
-			$this->tmpl['commentwidth'] = (int)$this->tmpl['multibox_comments_width'] - 70;//padding - margin
+		if ($this->t['enable_multibox'] == 1) {
+			$this->t['commentwidth'] = (int)$this->t['multibox_comments_width'] - 70;//padding - margin
 		}
 		$get['commentsi']						= $app->input->get( 'commentsi', '', 'int' );
-		$this->tmpl['enable_multibox_iframe'] 	= 0;
+		$this->t['enable_multibox_iframe'] 	= 0;
 		if ($get['commentsi'] == 1) {
 			// Seems we are in iframe
-			$this->tmpl['enable_multibox_iframe'] = 1;
+			$this->t['enable_multibox_iframe'] = 1;
 		}
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
 
-		if ($this->tmpl['gallerymetakey'] != '') {
-			$document->setMetaData('keywords', $this->tmpl['gallerymetakey']);
+		if ($this->t['gallerymetakey'] != '') {
+			$document->setMetaData('keywords', $this->t['gallerymetakey']);
 		}
-		if ($this->tmpl['gallerymetadesc'] != '') {
-			$document->setMetaData('description', $this->tmpl['gallerymetadesc']);
+		if ($this->t['gallerymetadesc'] != '') {
+			$document->setMetaData('description', $this->t['gallerymetadesc']);
 		}
 
 
@@ -101,25 +101,25 @@ class PhocaGalleryViewComment extends JViewLegacy
 
 
 		// Only registered (VOTES + COMMENTS)
-		$this->tmpl['not_registered'] 	= true;
-		$this->tmpl['name']		= '';
+		$this->t['not_registered'] 	= true;
+		$this->t['name']		= '';
 		if ($access) {
-			$this->tmpl['not_registered'] 	= false;
-			$this->tmpl['name']		= $user->name;
+			$this->t['not_registered'] 	= false;
+			$this->t['name']		= $user->name;
 		}
 
 		$document->addScript(JURI::base(true).'/media/com_phocagallery/js/comments.js');
-		$document->addCustomTag(PhocaGalleryRenderFront::renderCommentJS((int)$this->tmpl['maxcommentchar']));
+		$document->addCustomTag(PhocaGalleryRenderFront::renderCommentJS((int)$this->t['maxcommentchar']));
 
-		$this->tmpl['already_commented'] = PhocaGalleryCommentImage::checkUserComment( (int)$this->tmpl['id'], (int)$user->id );
-		$commentItem					= PhocaGalleryCommentImage::displayComment( (int)$this->tmpl['id'] );
+		$this->t['already_commented'] = PhocaGalleryCommentImage::checkUserComment( (int)$this->t['id'], (int)$user->id );
+		$commentItem					= PhocaGalleryCommentImage::displayComment( (int)$this->t['id'] );
 
 
 
 
 		// PARAMS - Display Description in Detail window - set the font color
-		$this->tmpl['detailwindowbackgroundcolor']	= $this->params->get( 'detail_window_background_color', '#ffffff' );
-		$this->tmpl['detailwindow']			 		= $this->params->get( 'detail_window', 0 );
+		$this->t['detailwindowbackgroundcolor']	= $this->params->get( 'detail_window_background_color', '#ffffff' );
+		$this->t['detailwindow']			 		= $this->params->get( 'detail_window', 0 );
 		$description_lightbox_font_color 			= $this->params->get( 'description_lightbox_font_color', '#ffffff' );
 
 		$description_lightbox_bg_color 				= $this->params->get( 'description_lightbox_bg_color', '#000000' );
@@ -127,19 +127,19 @@ class PhocaGalleryViewComment extends JViewLegacy
 
 		// NO SCROLLBAR IN DETAIL WINDOW
 		$document->addCustomTag( "<style type=\"text/css\"> \n"
-			." html,body, .contentpane{background:".$this->tmpl['detailwindowbackgroundcolor'].";text-align:left;} \n"
-			." center, table {background:".$this->tmpl['detailwindowbackgroundcolor'].";} \n"
+			." html,body, .contentpane{background:".$this->t['detailwindowbackgroundcolor'].";text-align:left;} \n"
+			." center, table {background:".$this->t['detailwindowbackgroundcolor'].";} \n"
 			." #sbox-window {background-color:#fff;padding:5px} \n"
 			." </style> \n");
 
 		$model	= $this->getModel();
 		$item	= $model->getData();
 
-		$this->tmpl['imgtitle']	=	$item->title;
+		$this->t['imgtitle']	=	$item->title;
 
 		// Back button
-		$this->tmpl['backbutton'] = '';
-		if ($this->tmpl['detailwindow'] == 7 || $this->tmpl['display_comment_nopup']) {
+		$this->t['backbutton'] = '';
+		if ($this->t['detailwindow'] == 7 || $this->t['display_comment_nopup']) {
 
 			// Display Image
 			// Access check - don't display the image if you have no access to this image (if user add own url)
@@ -150,14 +150,14 @@ class PhocaGalleryViewComment extends JViewLegacy
 			}
 
 			if ($rightDisplay == 0) {
-				$this->tmpl['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($this->tmpl['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$this->t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
+				$app->redirect(JRoute::_($this->t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - - - - - -
 
 			phocagalleryimport('phocagallery.image.image');
-			$this->tmpl['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->tmpl['catid'].'&Itemid='. $this->itemId).'"'
+			$this->t['backbutton'] = '<div><a href="'.JRoute::_('index.php?option=com_phocagallery&view=category&id='. $this->t['catid'].'&Itemid='. $this->itemId).'"'
 				.' title="'.JText::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', JText::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 
@@ -165,7 +165,7 @@ class PhocaGalleryViewComment extends JViewLegacy
 			$item->filenameno		= $item->filename;
 			$item->filename			= PhocaGalleryFile::getTitleFromFile($item->filename, 1);
 			$item->filesize			= PhocaGalleryFile::getFileSize($item->filenameno);
-			$altValue				= PhocaGalleryRenderFront::getAltValue($this->tmpl['altvalue'], $item->title, $item->description, $item->metadesc);
+			$altValue				= PhocaGalleryRenderFront::getAltValue($this->t['altvalue'], $item->title, $item->description, $item->metadesc);
 			$item->altvalue			= $altValue;
 			$realImageSize			= '';
 			$extImage = PhocaGalleryImage::isExtImage($item->extid);
@@ -178,22 +178,22 @@ class PhocaGalleryViewComment extends JViewLegacy
 					$extw 		= explode(',',$item->extw);
 					$item->extw	= $extw[0];
 				}
-				$correctImageRes 		= PhocaGalleryPicasa::correctSizeWithRate($item->extw, $item->exth, $this->tmpl['picasa_correct_width_l'], $this->tmpl['picasa_correct_height_l']);
-				$item->linkimage		= JHtml::_( 'image', $item->extl, $item->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+				$correctImageRes 		= PhocaGalleryPicasa::correctSizeWithRate($item->extw, $item->exth, $this->t['picasa_correct_width_l'], $this->t['picasa_correct_height_l']);
+				$item->linkimage		= Joomla\CMS\HTML\HTMLHelper::_( 'image', $item->extl, $item->altvalue, array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 				$item->realimagewidth 	= $correctImageRes['width'];
 				$item->realimageheight	= $correctImageRes['height'];
 
 			} else {
 				$item->linkthumbnailpath	= PhocaGalleryImageFront::displayCategoryImageOrNoImage($item->filenameno, 'large');
-				$item->linkimage			= JHtml::_( 'image', $item->linkthumbnailpath, $item->altvalue);
+				$item->linkimage			= Joomla\CMS\HTML\HTMLHelper::_( 'image', $item->linkthumbnailpath, $item->altvalue);
 				$realImageSize 				= PhocaGalleryImage::getRealImageSize ($item->filenameno);
 				$item->imagesize			= PhocaGalleryImage::getImageSize($item->filenameno, 1);
 				if (isset($realImageSize['w']) && isset($realImageSize['h'])) {
 					$item->realimagewidth		= $realImageSize['w'];
 					$item->realimageheight		= $realImageSize['h'];
 				} else {
-					$item->realimagewidth	 	= $this->tmpl['largewidth'];
-					$item->realimageheight		= $this->tmpl['largeheight'];
+					$item->realimagewidth	 	= $this->t['largewidth'];
+					$item->realimageheight		= $this->t['largeheight'];
 				}
 			}
 
@@ -202,7 +202,7 @@ class PhocaGalleryViewComment extends JViewLegacy
 
 		// ACTION
 		$this->assignRef( 'item', $item );
-		$this->tmpl['action']	= $uri->toString();
+		$this->t['action']	= $uri->toString();
 		$this->assignRef( 'commentitem',$commentItem);
 		$this->_prepareDocument($item);
 		parent::display($tpl);
@@ -216,8 +216,8 @@ class PhocaGalleryViewComment extends JViewLegacy
 		//$this->params		= $app->getParams();
 		$title 		= null;
 
-		$this->tmpl['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
-		$this->tmpl['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
+		$this->t['gallerymetakey'] 		= $this->params->get( 'gallery_metakey', '' );
+		$this->t['gallerymetadesc'] 		= $this->params->get( 'gallery_metadesc', '' );
 
 
 		$menu = $menus->getActive();
@@ -251,16 +251,16 @@ class PhocaGalleryViewComment extends JViewLegacy
 
 		if ($item->metadesc != '') {
 			$this->document->setDescription($item->metadesc);
-		} else if ($this->tmpl['gallerymetadesc'] != '') {
-			$this->document->setDescription($this->tmpl['gallerymetadesc']);
+		} else if ($this->t['gallerymetadesc'] != '') {
+			$this->document->setDescription($this->t['gallerymetadesc']);
 		} else if ($this->params->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->params->get('menu-meta_description', ''));
 		}
 
 		if ($item->metakey != '') {
 			$this->document->setMetadata('keywords', $item->metakey);
-		} else if ($this->tmpl['gallerymetakey'] != '') {
-			$this->document->setMetadata('keywords', $this->tmpl['gallerymetakey']);
+		} else if ($this->t['gallerymetakey'] != '') {
+			$this->document->setMetadata('keywords', $this->t['gallerymetakey']);
 		} else if ($this->params->get('menu-meta_keywords', '')) {
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords', ''));
 		}

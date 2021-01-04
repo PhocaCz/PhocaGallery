@@ -17,46 +17,51 @@ class PhocaGalleryCpViewPhocaGalleryEf extends JViewLegacy
 	protected $item;
 	protected $form;
 	protected $state;
+	protected $t;
+	protected $r;
 
 	/**
 	 * Display the view
 	 */
 	public function display($tpl = null)
 	{
-		JHTML::stylesheet('media/com_phocagallery/css/administrator/phocagallery.css' );
-		
+
+
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
-		$this->ftp		= JClientHelper::setCredentialsFromRequest('ftp');
-		$this->tmpl		= new StdClass;
+		$this->t['ftp']		= JClientHelper::setCredentialsFromRequest('ftp');
+		$this->t		= new StdClass;
 		$model 			= $this->getModel();
-		
+
+		$this->t	= PhocaGalleryUtils::setVars('ef');
+		$this->r	= new PhocaGalleryRenderAdminview();
+
 		// Set CSS for codemirror
 		JFactory::getApplication()->setUserState('editor.source.syntax', 'css');
-		
-		
+
+
 		// New or edit
 		if (!$this->form->getValue('id') || $this->form->getValue('id') == 0) {
 			$this->form->setValue('source', null, '');
 			$this->form->setValue('type', null, 2);
-			$this->tmpl->suffixtype = JText::_('COM_PHOCAGALERY_WILL_BE_CREATED_FROM_TITLE');
-		
+			$this->t['suffixtype'] = JText::_('COM_PHOCAGALERY_WILL_BE_CREATED_FROM_TITLE');
+
 		} else {
 			$this->source	= $model->getSource($this->form->getValue('id'), $this->form->getValue('filename'), $this->form->getValue('type'));
 			$this->form->setValue('source', null, $this->source->source);
-			$this->tmpl->suffixtype = '';
+			$this->t['suffixtype'] = '';
 		}
-		
+
 		// Only help input form field - to display Main instead of 1 and Custom instead of 2
-		if ($this->form->getValue('type') == 1) { 
+		if ($this->form->getValue('type') == 1) {
 			$this->form->setValue('typeoutput', null, JText::_('COM_PHOCAGALLERY_MAIN_CSS'));
 		} else {
 			$this->form->setValue('typeoutput', null, JText::_('COM_PHOCAGALLERY_CUSTOM_CSS'));
 		}
-		
-		
-		
+
+
+
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
@@ -67,7 +72,7 @@ class PhocaGalleryCpViewPhocaGalleryEf extends JViewLegacy
 	}
 
 	protected function addToolbar() {
-		
+
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryefs.php';
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$bar 		= JToolbar::getInstance('toolbar');

@@ -25,7 +25,7 @@ class JFormFieldPhocaHead extends JFormField
 		$image 		= '';
 		
 		if ($phocaImage != ''){
-			$image 	= JHTML::_('image', 'media/com_phocagallery/images/administrator/'. $phocaImage, '' );
+			$image 	= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/administrator/'. $phocaImage, '' );
 		}
 		
 		if ($this->element['default']) {

@@ -14,18 +14,18 @@ jimport('joomla.html.pagination');
 class PhocaGalleryPaginationUserSubCat extends JPagination
 {
 	var $_tabId;
-	
+
 	public function setTab($tabId) {
 		$this->_tabId = (string)$tabId;
 	}
-	
+
 	public function _buildDataObject()
 	{
 		$tabLink = '';
 		if ((string)$this->_tabId > 0) {
 			$tabLink = '&tab='.(string)$this->_tabId;
 		}
-		
+
 		// Initialize variables
 		$data = new stdClass();
 
@@ -83,7 +83,7 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 		}
 		return $data;
 	}
-	
+
 	public function getLimitBox()
 	{
 		$app	= JFactory::getApplication();
@@ -93,29 +93,29 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 
 		// Make the option list
 		for ($i = 5; $i <= 30; $i += 5) {
-			$limits[] = JHTML::_('select.option', "$i");
+			$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', "$i");
 		}
-		$limits[] = JHTML::_('select.option', '50');
-		$limits[] = JHTML::_('select.option', '100');
-		$limits[] = JHTML::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '50');
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '100');
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = JHTML::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1"  onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitsubcat', 'class="inputbox input-mini" size="1"  onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}
-	
-	
+
+
 	public function orderUpIcon($i, $condition = true, $task = '#', $alt = 'COM_PHOCAGALLERY_MOVE_UP', $enabled = true, $checkbox = 'cb') {
-		
-		
+
+
 		$alt = JText::_($alt);
-		
+
 
 		$html = '&nbsp;';
 		if (($i > 0 || ($i + $this->limitstart > 0)) && $condition)
@@ -134,7 +134,7 @@ class PhocaGalleryPaginationUserSubCat extends JPagination
 
 
 	public function orderDownIcon($i, $n, $condition = true, $task = '#', $alt = 'COM_PHOCAGALLERY_MOVE_DOWN', $enabled = true, $checkbox = 'cb'){
-	
+
 		$alt = JText::_($alt);
 
 		$html = '&nbsp;';

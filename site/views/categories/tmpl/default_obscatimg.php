@@ -10,29 +10,29 @@
  */
 defined('_JEXEC') or die('Restricted access');
 echo "\n\n";
-for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
-	if ( (int)$this->tmpl['categoriescolumns'] == 1 ) {
+for ($i = 0; $i < $this->t['countcategories']; $i++) {
+	if ( (int)$this->t['categoriescolumns'] == 1 ) {
 		echo '<table border="0">'."\n";
 	} else {
 		$float = 0;
-		foreach ($this->tmpl['begin'] as $k => $v) {
+		foreach ($this->t['begin'] as $k => $v) {
 			if ($i == $v) {
 				$float = 1;
 			}
 		}
 		if ($float == 1) {		
-			echo '<div style="'.$this->tmpl['fixedwidthstyle1'].'" class="pg-cats-box-float"><table>'."\n";
+			echo '<div style="'.$this->t['fixedwidthstyle1'].'" class="pg-cats-box-float"><table>'."\n";
 		}
 	}
 
 	echo '<tr>'."\n";		
-	echo '<td align="center" valign="middle" style="'.$this->tmpl['imagebg'].';text-align:center;"><div class="pg-imgbg"><a href="'.$this->categories[$i]->link.'">';
+	echo '<td align="center" valign="middle" style="'.$this->t['imagebg'].';text-align:center;"><div class="pg-imgbg"><a href="'.$this->categories[$i]->link.'">';
 
 	if (isset($this->categories[$i]->extpic) && $this->categories[$i]->extpic) {
-		$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($this->categories[$i]->extw, $this->categories[$i]->exth, $this->tmpl['picasa_correct_width'], $this->tmpl['picasa_correct_height']);
-		echo JHtml::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;', '-',$this->categories[$i]->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'style' => ''));
+		$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($this->categories[$i]->extw, $this->categories[$i]->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
+		echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;', '-',$this->categories[$i]->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height'], 'style' => ''));
 	} else {
-		echo JHtml::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;','-',$this->categories[$i]->title),array('style' => ''));
+		echo Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->categories[$i]->linkthumbnailpath, str_replace('&raquo;','-',$this->categories[$i]->title),array('style' => ''));
 	}
 	
 	echo '</a></div></td>';
@@ -43,14 +43,14 @@ for ($i = 0; $i < $this->tmpl['countcategories']; $i++) {
 	echo '</td>';
 	echo '</tr>'."\n";
 	
-	if ( (int)$this->tmpl['categoriescolumns'] == 1 ) {
+	if ( (int)$this->t['categoriescolumns'] == 1 ) {
 		echo '</table>'."\n";
 	} else {
-		if ($i == $this->tmpl['endfloat']) {
+		if ($i == $this->t['endfloat']) {
 			echo '</table></div><div style="clear:both"></div>'."\n";
 		} else {
 			$float = 0;
-			foreach ($this->tmpl['end'] as $k => $v)
+			foreach ($this->t['end'] as $k => $v)
 			{
 				if ($i == $v) {
 					$float = 1;

@@ -132,7 +132,7 @@ class PhocaGalleryRenderDetailWindow
 			case 3:
 
 			// SHADOWBOX (Image Only)
-			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$this->b1->set('methodname', 'shadowbox-button');
 			$this->b1->set('options', "shadowbox[PhocaGallery".$this->extension."];options={slideshowDelay:".$this->sbSlideshowDelay."}");
@@ -163,8 +163,8 @@ class PhocaGalleryRenderDetailWindow
 			}
 
 			/*if ( $libraries['pg-group-shadowbox']->value == 0 ) {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.css');
-				$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.js');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.css');
+				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.js');
 				$document->addCustomTag('<script type="text/javascript">
 					Shadowbox.init({
 					'.$sbSettingsO.'
@@ -179,8 +179,8 @@ class PhocaGalleryRenderDetailWindow
 					$sbPause = 'var SBpauseOnStart = "false";';
 				}
 
-                $document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.css');
-                $document->addScript(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.js');
+                $document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.css');
+                $document->addScript(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.js');
                 $document->addCustomTag('<script type="text/javascript">
                     '.$sbPause.'
                     Shadowbox.init({
@@ -196,7 +196,7 @@ class PhocaGalleryRenderDetailWindow
 
 			case 13:
 			// SHADOWBOX
-			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$this->b1->set('methodname', 'shadowbox-button');
 			$this->b1->set('options', "shadowbox;width=".$this->popupWidth.";height=".$this->popupHeight.";options={gallery:'PhocaGallery'}");
@@ -212,8 +212,8 @@ class PhocaGalleryRenderDetailWindow
 				$sbSettingsO = strip_tags($this->sbSettings);
 			}
 			if ( $libraries['pg-group-shadowbox']->value == 0 ) {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.css');
-				$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/shadowbox/shadowbox.js');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.css');
+				$document->addScript(JURI::base(true).'/media/com_phocagallery/js/shadowbox/shadowbox.js');
 				$document->addCustomTag('<script type="text/javascript">
 					Shadowbox.init({
 						'.$sbSettingsO.'
@@ -229,13 +229,13 @@ class PhocaGalleryRenderDetailWindow
 			$this->b2->methodname 	= &$this->b1->methodname;
 			$this->b3->methodname 	= &$this->b1->methodname;
 
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/highslide/highslide-full.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/highslide/mobile.js');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/highslide/highslide.css');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/highslide/highslide-full.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/highslide/mobile.js');
+			$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/highslide/highslide.css');
 
 			if ( $libraries['pg-group-highslide']->value == 0 ) {
 				$document->addCustomTag( self::renderHighslideJSAll());
-				$document->addCustomTag('<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="'.JURI::base(true).'/components/com_phocagallery/assets/highslide/highslide-ie6.css" /><![endif]-->');
+				$document->addCustomTag('<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="'.JURI::base(true).'/media/com_phocagallery/js/highslide/highslide-ie6.css" /><![endif]-->');
 				$library->setLibrary('pg-group-highslide', 1);
 			}
 
@@ -267,25 +267,25 @@ class PhocaGalleryRenderDetailWindow
 			$this->b3->set('optionsrating', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
 
 
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jak/jak_compressed.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jak/lightbox_compressed.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jak/jak_slideshow.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jak/window_compressed.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/jak/interpolator_compressed.js');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/jak/lightbox-slideshow.css');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jak/jak_compressed.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jak/lightbox_compressed.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jak/jak_slideshow.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jak/window_compressed.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jak/interpolator_compressed.js');
+			$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/jak/lightbox-slideshow.css');
 
 			$lHeight 		= 472 + (int)$this->jakDescHeight;
 			$lcHeight		= 10 + (int)$this->jakDescHeight;
 
 			$customJakTag	= '';
 			if ($this->jakOrientation == 'horizontal') {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/jak/lightbox-horizontal.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/jak/lightbox-horizontal.css');
 			} else if ($this->jakOrientation == 'vertical'){
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/jak/lightbox-vertical.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/jak/lightbox-vertical.css');
 				$customJakTag .= '.lightBox {height: '.$lHeight.'px;}'
 							    .'.lightBox .image-browser-caption { height: '.$lcHeight.'px;}';
 			} else  {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/jak/lightbox-vertical.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/jak/lightbox-vertical.css');
 				$customJakTag .= '.lightBox {height: '.$lHeight.'px;width:800px;}'
 							.'.lightBox .image-browser-caption { height: '.$lcHeight.'px;}'
 							.'.lightBox .image-browser-thumbs { display:none;}'
@@ -329,8 +329,8 @@ class PhocaGalleryRenderDetailWindow
 			case 8:
 
 			//First load mootools, then jquery and set noConflict
-			//JHtml::_('behavior.framework', false);// Load it here to be sure, it is loaded before jquery
-			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+			//Joomla\CMS\HTML\HTMLHelper::_('behavior.framework', false);// Load it here to be sure, it is loaded before jquery
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$this->b1->set('methodname', 'slimbox');
 			$this->b2->methodname 		= &$this->b1->methodname;
@@ -340,8 +340,8 @@ class PhocaGalleryRenderDetailWindow
 			$this->b3->set('options', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
 			$this->b3->set('optionsrating', "{handler: 'iframe', size: {x: ".$this->popupWidth.", y: ".$this->popupHeight."}, overlayOpacity: ".$this->mbOverlayOpacity."}");
 
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/slimbox/js/slimbox2.js');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/slimbox/css/slimbox2.css');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/slimbox/js/slimbox2.js');
+			$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/slimbox/css/slimbox2.css');
 
 			break;
 
@@ -350,8 +350,8 @@ class PhocaGalleryRenderDetailWindow
 			// BOXPLUS (BOXPLUS + BOXPLUS (IMAGE ONLY))
 
 			//First load mootools, then jquery and set noConflict
-			//JHtml::_('behavior.framework', false);// Load it here to be sure, it is loaded before jquery
-			//JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
+			//Joomla\CMS\HTML\HTMLHelper::_('behavior.framework', false);// Load it here to be sure, it is loaded before jquery
+			//Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$language = JFactory::getLanguage();
 
@@ -364,24 +364,24 @@ class PhocaGalleryRenderDetailWindow
 			$this->b3->set('optionsrating', "phocagallerycboxpluso".$this->extension);
 
 			//if ($crossdomain) {
-			//	$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/boxplus/jsonp.mootools.js');
+			//	$document->addScript(JURI::base(true).'/media/com_phocagallery/js/boxplus/jsonp.mootools.js');
 			//}
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/boxplus/boxplus.js');
-			$document->addScript(JURI::base(true).'/components/com_phocagallery/assets/boxplus/boxplus.lang.js?lang='.$language->getTag());
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/boxplus/boxplus.js');
+			$document->addScript(JURI::base(true).'/media/com_phocagallery/js/boxplus/boxplus.lang.js?lang='.$language->getTag());
 
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.css');
+			$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.css');
 			if ($language->isRTL()) {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.rtl.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.rtl.css');
 			}
 
 
 
-			$document->addCustomTag('<!--[if lt IE 9]><link rel="stylesheet" href="'.JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.ie8.css" type="text/css" /><![endif]-->');
-			$document->addCustomTag('<!--[if lt IE 8]><link rel="stylesheet" href="'.JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.ie7.css" type="text/css" /><![endif]-->');
-			$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.'.$this->bpTheme.'.css', 'text/css', null, array('title'=>'boxplus-'.$this->bpTheme));
+			$document->addCustomTag('<!--[if lt IE 9]><link rel="stylesheet" href="'.JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.ie8.css" type="text/css" /><![endif]-->');
+			$document->addCustomTag('<!--[if lt IE 8]><link rel="stylesheet" href="'.JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.ie7.css" type="text/css" /><![endif]-->');
+			$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.'.$this->bpTheme.'.css', 'text/css', null, array('title'=>'boxplus-'.$this->bpTheme));
 
-			if (file_exists(JPATH_BASE.'/components/com_phocagallery/assets/js/boxplus/css/boxplus.'.$this->bpTheme)) {  // use IE-specific stylesheet only if it exists
-				$this->addCustomTag('<!--[if lt IE 9]><link rel="stylesheet" href="'.JURI::base(true).'/components/com_phocagallery/assets/boxplus/css/boxplus.'.$this->bpTheme.'.ie8.css" type="text/css" title="boxplus-'.$this->bpTheme.'" /><![endif]-->');
+			if (file_exists(JPATH_BASE.'/media/com_phocagallery/js/js/boxplus/css/boxplus.'.$this->bpTheme)) {  // use IE-specific stylesheet only if it exists
+				$this->addCustomTag('<!--[if lt IE 9]><link rel="stylesheet" href="'.JURI::base(true).'/media/com_phocagallery/js/boxplus/css/boxplus.'.$this->bpTheme.'.ie8.css" type="text/css" title="boxplus-'.$this->bpTheme.'" /><![endif]-->');
 			}
 
 			$document->addScriptDeclaration('window.addEvent("domready", function () {');
@@ -413,14 +413,14 @@ class PhocaGalleryRenderDetailWindow
 			case 12:
 
 
-			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$this->b1->set('methodname', 'magnific');
 			$this->b2->set('methodname', 'magnific2');
 			$this->b3->set('methodname', 'magnific3');
 
-			$document->addScript($path.'/components/com_phocagallery/assets/magnific/jquery.magnific-popup.min.js');
-			$document->addStyleSheet($path.'/components/com_phocagallery/assets/magnific/magnific-popup.css');
+			$document->addScript($path.'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
+			$document->addStyleSheet($path.'/media/com_phocagallery/js/magnific/magnific-popup.css');
 
 			$mT = array();
 			$mT[] = 'tLoading: \''.JText::_('COM_PHOCAGALLERY_LOADING').'\';';
@@ -532,7 +532,7 @@ class PhocaGalleryRenderDetailWindow
 
 			case 14:
 			// PHOTOSWIPE
-			JHtml::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);// Load it here because of own nonConflict method (nonconflict is set below)
 
 			$this->b1->set('methodname', 'photoswipe-button');
 			$this->b1->set('options', ' itemprop="contentUrl"');
@@ -569,9 +569,9 @@ class PhocaGalleryRenderDetailWindow
 */
 
 			if ( $libraries['pg-group-photoswipe']->value == 0 ) {
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe.css');
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/default-skin/default-skin.css');
-				$document->addStyleSheet(JURI::base(true).'/components/com_phocagallery/assets/photoswipe/css/photoswipe-style.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+				$document->addStyleSheet(JURI::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
 			}
 
 			// LoadPhotoSwipeBottom must be loaded at the end of document
@@ -598,7 +598,7 @@ class PhocaGalleryRenderDetailWindow
 	public function renderHighslideJSAll() {
 		$o = '<script type="text/javascript">'
 		.'//<![CDATA[' ."\n"
-		.' hs.graphicsDir = \''.JURI::base(true).'/components/com_phocagallery/assets/highslide/graphics/\';'
+		.' hs.graphicsDir = \''.JURI::base(true).'/media/com_phocagallery/js/highslide/graphics/\';'
 		.'//]]>'."\n"
 		.'</script>'."\n";
 		return $o;
@@ -758,7 +758,7 @@ class PhocaGalleryRenderDetailWindow
 		.'galleryClassName: \'lightBox\','
 		.'zIndex: 1000,'
 		.'useShadow: true,'
-		.'imagePath: \''.JURI::base(true).'/components/com_phocagallery/assets/jak/img/shadow-\','
+		.'imagePath: \''.JURI::base(true).'/media/com_phocagallery/js/jak/img/shadow-\','
 		.'usePageShader: true,'
 		.'components: {';
 
@@ -884,13 +884,13 @@ class PhocaGalleryRenderDetailWindow
 
 </div>';
 
-$o .=   '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe.min.js"></script>'. "\n"
-		.'<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
+$o .=   '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
+		.'<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
 
 if ($photoswipe_slide_effect == 1) {
-	$o .= '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
+	$o .= '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
 } else {
-	$o .= '<script src="'.JURI::base(true).'/components/com_phocagallery/assets/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+	$o .= '<script src="'.JURI::base(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
 }
 
 		return $o;

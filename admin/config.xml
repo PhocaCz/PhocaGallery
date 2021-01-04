@@ -84,7 +84,7 @@
 
 <field name="char_cat_length_name" default="9" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_DESC"/>
 
-<field name="categories_mosaic_images" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_MOSAIC_EFECT_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_MOSAIC_EFECT_CATEGORIES_DESC">
+<field name="categories_mosaic_images" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_MOSAIC_EFFECT_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_MOSAIC_EFFECT_CATEGORIES_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
@@ -655,9 +655,10 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-<field name="bootstrap_icons" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_BOOTSTRAP3_ICONS_LABEL" description="COM_PHOCAGALLERY_FIELD_BOOTSTRAP3_ICONS_DESC">
-	<option value="1">COM_PHOCAGALLERY_YES</option>
-	<option value="0">COM_PHOCAGALLERY_NO</option>
+<field name="bootstrap_icons" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_ICONS_LABEL" description="COM_PHOCAGALLERY_FIELD_ICONS_DESC">
+	<option value="1">COM_PHOCAGALLERY_BOOTSTRAP3</option>
+	<option value="2">COM_PHOCAGALLERY_FONTAWESOME5</option>
+	<option value="0">COM_PHOCAGALLERY_IMAGES</option>
 </field>
 
 <field name="equal_heights" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_EQUAL_HEIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_EQUAL_HEIGHTS_DESC">
@@ -892,11 +893,11 @@
 </field>
 
 <field name="multiple_upload_method" type="list" default="4" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_UPLOAD_METHOD_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_UPLOAD_METHOD_DESC">
-	<option value="1">COM_PHOCAGALLERY_FLASH_UPLOADER</option>
+	<!--<option value="1">COM_PHOCAGALLERY_FLASH_UPLOADER</option>
 	<option value="2">COM_PHOCAGALLERY_GEARS_UPLOADER</option>
-	<option value="3">COM_PHOCAGALLERY_SILVERLIGHT_UPLOADER</option>
+	<option value="3">COM_PHOCAGALLERY_SILVERLIGHT_UPLOADER</option>-->
 	<option value="4">COM_PHOCAGALLERY_HTML5_UPLOADER</option>
-	<option value="5">COM_PHOCAGALLERY_BROWSERPLUS_UPLOADER</option>
+	<!--<option value="5">COM_PHOCAGALLERY_BROWSERPLUS_UPLOADER</option>-->
 	<option value="6">COM_PHOCAGALLERY_HTML4_UPLOADER</option>
 </field>
 

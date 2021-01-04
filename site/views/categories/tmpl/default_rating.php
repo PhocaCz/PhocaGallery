@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Rating
 
-if ($this->tmpl['display_rating'] == 1) {
+if ($this->t['display_rating'] == 1) {
 	$votesCount = $votesAverage = $votesWidth = 0;
 	if (!empty($this->cv->ratingcount)) {
 		$votesCount = $this->cv->ratingcount;

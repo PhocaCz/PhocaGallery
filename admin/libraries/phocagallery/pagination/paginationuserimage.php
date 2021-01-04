@@ -93,19 +93,19 @@ class PhocaGalleryPaginationUserImage extends JPagination
 
 		// Make the option list
 		for ($i = 5; $i <= 30; $i += 5) {
-			$limits[] = JHTML::_('select.option', "$i");
+			$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', "$i");
 		}
-		$limits[] = JHTML::_('select.option', '50');
-		$limits[] = JHTML::_('select.option', '100');
-		$limits[] = JHTML::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '50');
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '100');
+		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', JText::_('COM_PHOCAGALLERY_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = JHTML::_('select.genericlist',  $limits, 'limitimage', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitimage', 'class="inputbox input-mini" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limitimage', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limitimage', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

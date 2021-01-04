@@ -20,14 +20,14 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 
 	protected	$option 		= 'com_phocagallery';
 	public 		$context		= 'com_phocagallery.phocagalleryusers';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'username', 'ua.username',
-				
+
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'category_id', 'category_id',
@@ -43,8 +43,8 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = null, $direction = null)
+
+	protected function populateState($ordering = 'ua.username', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -56,8 +56,8 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 */
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 /*
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
@@ -70,34 +70,34 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('ua.username', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		//$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
-		
+		$id	.= ':'.$this->getState('filter.published');
+
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 		/*
 		$query = ' SELECT a.*, us.name AS username, u.name AS editor, c.countcid, i.countiid'
 			. ' FROM #__phocagallery_user AS a '
-		
+
 			   . ' LEFT JOIN #__users AS us ON us.id = a.userid '
 			   . ' LEFT JOIN #__users AS u ON u.id = a.checked_out '
-			
+
 			. ' LEFT JOIN (SELECT  c.owner_id, c.id, count(*) AS countcid'
 			. ' FROM #__phocagallery_categories AS c'
 			. ' GROUP BY c.owner_id) AS c '
 			. ' ON a.userid = c.owner_id'
-			
+
 			. ' LEFT JOIN (SELECT i.catid, uc.userid AS uid, count(i.id) AS countiid'
 			. ' FROM #__phocagallery AS i'
 			. ' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = i.catid'
@@ -107,7 +107,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 			. ' GROUP BY uc.userid'
 			. ' ) AS i '
 			. ' ON i.uid = c.owner_id'
-			
+
 			. $where
 			. $orderby;
 		*/
@@ -131,22 +131,22 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		// Join over the users for the checked out user.
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		$query->join('LEFT', '#__users AS ua ON ua.id=a.userid');
-		
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		$query->select('c.countcid');
 		/*$query->join('LEFT', '(SELECT  c.owner_id, c.id, count(*) AS countcid'
 			. ' FROM #__phocagallery_categories AS c'
 			. ' GROUP BY c.owner_id, c.id) AS c '
 			. ' ON a.userid = c.owner_id ');*/
-			
+
 		$query->join('LEFT', '(SELECT  c.owner_id,count(c.id) AS countcid'
 			. ' FROM #__phocagallery_categories AS c'
 			. ' GROUP BY c.owner_id) AS c '
 			. ' ON a.userid = c.owner_id ');
-			
-		$query->select('i.countiid');	
+
+		$query->select('i.countiid');
 		/*$query->join('LEFT', '(SELECT i.catid, uc.userid AS uid, count(i.id) AS countiid'
 			. ' FROM #__phocagallery AS i'
 			. ' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = i.catid'
@@ -154,7 +154,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 			. ' GROUP BY uc.userid, i.catid'
 			. ' ) AS i '
 			. ' ON i.uid = c.owner_id');*/
-			
+
 		$query->join('LEFT', '(SELECT uc.userid AS uid, count(i.id) AS countiid'
 			. ' FROM #__phocagallery AS i'
 			. ' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = i.catid'
@@ -175,7 +175,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -202,7 +202,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 				$query->where('( ua.name LIKE '.$search.' OR ua.username LIKE '.$search.')');
 			}
 		}
-		
+
 		$query->group('ua.id, a.id, l.title, ua.username, ua.name, uc.name, c.countcid, i.countiid, a.ordering, a.avatar, a.published, a.approved');
 
 		// Add the list ordering clause.
@@ -216,8 +216,8 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
 	}
-	
-	
+
+
 	function getOwnerMainCategory($userId) {
 
 		$query = 'SELECT cc.*'
@@ -226,7 +226,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 			//. ' AND cc.id <> '.(int)$categoryId // Check other categories
 			. ' AND cc.owner_id > 0' // Ignore -1
 			. ' AND cc.parent_id = 0';
-		
+
 		$this->_db->setQuery( $query );
 		$ownerMainCategoryId = $this->_db->loadObject();
 		if (isset($ownerMainCategoryId->id)) {
@@ -234,7 +234,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		}
 		return false;
 	}
-	
+
 	function getCountUserSubCat($userId) {
 		$query = 'SELECT count(cc.id) AS countid'
 			. ' FROM #__phocagallery_categories AS cc'
@@ -248,7 +248,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		}
 		return 0;
 	}
-	
+
 	function getCountUserImage($userId) {
 		$query = 'SELECT count(a.id) AS count'
 			. ' FROM #__phocagallery AS a'
