@@ -24,6 +24,88 @@ Phoca Gallery is an efficient image gallery extension for Joomla! CMS.
 
 [Documentation](https://www.phoca.cz/documentation/category/2-phoca-gallery-component)
 
+- [Features](https://www.phoca.cz/documents/2-phoca-gallery-component/2-features)
+
+- [Phoca Gallery Concepts and Glossary](https://www.phoca.cz/documents/2-phoca-gallery-component/219-phoca-gallery-concepts-and-glossary)
+
+- [Quick Start Guide](https://www.phoca.cz/documents/2-phoca-gallery-component/21-quick-start-guide)
+
+- [Installation](https://www.phoca.cz/documents/2-phoca-gallery-component/4-installation)
+
+- [Installation Problem Solving](https://www.phoca.cz/documents/2-phoca-gallery-component/203-installation-problem-solving)
+
+- [Upgrading Phoca Gallery](https://www.phoca.cz/documents/2-phoca-gallery-component/13-upgrading-phoca-gallery)
+
+- [Uploading Images](https://www.phoca.cz/documents/2-phoca-gallery-component/6-uploading-images)
+
+- [Creating and editing Categories](https://www.phoca.cz/documents/2-phoca-gallery-component/218-creating-and-editing-categories)
+
+- [Adding Images](https://www.phoca.cz/documents/2-phoca-gallery-component/7-adding-images)
+
+- [Multiple adding images, categories and subcategories](https://www.phoca.cz/documents/2-phoca-gallery-component/8-multiple-adding-images-categories-and-subcategories)
+
+- [Creating Thumbnails and Problem solving](https://www.phoca.cz/documents/2-phoca-gallery-component/9-creating-thumbnails-and-problem-solving)
+
+- [Creating Menu Link](https://www.phoca.cz/documents/2-phoca-gallery-component/10-creating-menu-link)
+
+- [Global Configuration (Parameters - component in menu item)](https://www.phoca.cz/documents/2-phoca-gallery-component/11-global-configuration-parameters-component-in-menu-item)
+
+- [Options (Parameters)](https://www.phoca.cz/documents/2-phoca-gallery-component/494-options-parameters)
+
+- [Phoca Gallery Options (Parameters - since Joomla! 3)](https://www.phoca.cz/documents/2-phoca-gallery-component/678-options-parameters-since-joomla-3)
+
+- [Relationship between the parameters](https://www.phoca.cz/documents/2-phoca-gallery-component/701-relationship-between-the-parameters)
+
+- [Guide to resize thumbnails](https://www.phoca.cz/documents/2-phoca-gallery-component/12-global-configuration-thumbnails-modal-box-popup-window-resizing)
+
+- [Themes](https://www.phoca.cz/documents/2-phoca-gallery-component/16-themes)
+
+- [User Control Panel - Frontend User Upload](https://www.phoca.cz/documents/2-phoca-gallery-component/20-user-upload)
+
+- [Frontend Upload - Default Settings Of Category Access Rights](https://www.phoca.cz/documents/2-phoca-gallery-component/892-frontend-upload-default-settings-of-category-access-rights)
+
+- [Geotagging](https://www.phoca.cz/documents/2-phoca-gallery-component/71-geotagging)
+
+- [Watermark](https://www.phoca.cz/documents/2-phoca-gallery-component/19-watermark)
+
+- [FAQ](https://www.phoca.cz/documents/2-phoca-gallery-component/24-faq)
+
+- [Tips](https://www.phoca.cz/documents/2-phoca-gallery-component/511-tips)
+
+- [RTL - displaying thumbnails](https://www.phoca.cz/documents/2-phoca-gallery-component/78-rtl-displaying-thumbnails)
+
+- [Moving your Phoca Gallery from one site to another](https://www.phoca.cz/documents/2-phoca-gallery-component/92-moving-your-phoca-gallery-from-one-site-to-another)
+
+- [Creating Phoca Gallery Theme](https://www.phoca.cz/documents/2-phoca-gallery-component/106-creating-phoca-gallery-theme)
+
+- [Permissions Change since version 2.5.2](https://www.phoca.cz/documents/2-phoca-gallery-component/286-permissions-change-since-version-252)
+
+- [Creating FLV Video Gallery](https://www.phoca.cz/documents/2-phoca-gallery-component/290-creating-flv-video-gallery)
+
+- [Styling Background Image](https://www.phoca.cz/documents/2-phoca-gallery-component/317-styling-background-image)
+
+- [YouTube Videos](https://www.phoca.cz/documents/2-phoca-gallery-component/18-youtube-videos)
+
+- [Displaying imgur albums with help of Phoca Gallery](https://www.phoca.cz/documents/2-phoca-gallery-component/1010-displaying-imgur-albums-with-help-of-phoca-gallery)
+
+- [Displaying Google Picasa Web Albums (or Google Plus or Google Photos)](https://www.phoca.cz/documents/2-phoca-gallery-component/321-displaying-google-picasa-web-albums-or-google-plus-or-google-photos)
+
+- [Displaying Facebook Albums](https://www.phoca.cz/documents/2-phoca-gallery-component/443-displaying-facebook-albums)
+
+- [Simple Caddy Integration](https://www.phoca.cz/documents/2-phoca-gallery-component/359-simple-caddy-integration)
+
+- [Adding Facebook Comments in Phoca Gallery](https://www.phoca.cz/documents/2-phoca-gallery-component/391-adding-facebook-comments-in-phoca-gallery)
+
+- [Cannot find Joomla XML setup file](https://www.phoca.cz/documents/2-phoca-gallery-component/438-cannot-find-joomla-xml-setup-file)
+
+- [Multibox](https://www.phoca.cz/documents/2-phoca-gallery-component/627-multibox)
+
+- [CSS - Styling Phoca Gallery](https://www.phoca.cz/documents/2-phoca-gallery-component/634-css-styling-phoca-gallery)
+
+- [Displaying images like on Phoca Joomla! 3 Demo site](https://www.phoca.cz/documents/2-phoca-gallery-component/876-displaying-images-like-on-phoca-joomla-3-demo-site)
+
+- [Cooliris and Cooliris 3D Wall (PicLens)](https://www.phoca.cz/documents/2-phoca-gallery-component/17-cooliris-and-cooliris-3d-wall-piclens)
+
 
 
 

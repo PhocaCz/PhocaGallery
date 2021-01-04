@@ -55,21 +55,21 @@
 
 	<administration>
 
-		<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu.png" alt="COM_PHOCAGALLERY" link="option=com_phocagallery">COM_PHOCAGALLERY</menu>
+		<menu img="class:cp" alt="COM_PHOCAGALLERY" link="option=com_phocagallery">COM_PHOCAGALLERY</menu>
 
 			<submenu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-control-panel.png" alt="COM_PHOCAGALLERY_CONTROLPANEL" view="phocagallerycp" link="option=com_phocagallery">COM_PHOCAGALLERY_CONTROLPANEL</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-gal.png" alt="COM_PHOCAGALLERY_IMAGES" view="phocagalleryimgs" link="option=com_phocagallery&amp;view=phocagalleryimgs">COM_PHOCAGALLERY_IMAGES</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-cat.png" alt="COM_PHOCAGALLERY_CATEGORIES" view="phocagallerycs" link="option=com_phocagallery&amp;view=phocagallerycs">COM_PHOCAGALLERY_CATEGORIES</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-theme.png" alt="COM_PHOCAGALLERY_THEMES" view="phocagalleryt" link="option=com_phocagallery&amp;view=phocagalleryt">COM_PHOCAGALLERY_THEMES</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-vote.png" alt="COM_PHOCAGALLERY_CATEGORYRATING" view="phocagalleryra" link="option=com_phocagallery&amp;view=phocagalleryra">COM_PHOCAGALLERY_CATEGORYRATING</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-vote-img.png" alt="COM_PHOCAGALLERY_IMAGERATING" view="phocagalleryraimg" link="option=com_phocagallery&amp;view=phocagalleryraimg">COM_PHOCAGALLERY_IMAGERATING</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-comment.png" alt="COM_PHOCAGALLERY_CATEGORYCOMMENTS" view="phocagallerycos" link="option=com_phocagallery&amp;view=phocagallerycos">COM_PHOCAGALLERY_CATEGORYCOMMENTS</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-comment-img.png" alt="COM_PHOCAGALLERY_IMAGECOMMENTS" view="phocagallerycoimgs" link="option=com_phocagallery&amp;view=phocagallerycoimgs">COM_PHOCAGALLERY_IMAGECOMMENTS</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-users.png" alt="COM_PHOCAGALLERY_USERS" view="phocagalleryusers" link="option=com_phocagallery&amp;view=phocagalleryusers">COM_PHOCAGALLERY_USERS</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-tags.png" alt="COM_PHOCAGALLERY_TAGS" view="phocagallerytags" link="option=com_phocagallery&amp;view=phocagallerytags">COM_PHOCAGALLERY_TAGS</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-styles.png" alt="COM_PHOCAGALLERY_STYLES" view="phocagalleryefs" link="option=com_phocagallery&amp;view=phocagalleryefs">COM_PHOCAGALLERY_STYLES</menu>
-				<menu img="media/com_phocagallery/images/administrator/icon-16-pg-menu-info.png" alt="COM_PHOCAGALLERY_INFO" view="phocagalleryin" link="option=com_phocagallery&amp;view=phocagalleryin">COM_PHOCAGALLERY_INFO</menu>
+				<menu img="class:cp" alt="COM_PHOCAGALLERY_CONTROLPANEL" view="phocagallerycp" link="option=com_phocagallery">COM_PHOCAGALLERY_CONTROLPANEL</menu>
+				<menu img="class:images" alt="COM_PHOCAGALLERY_IMAGES" view="phocagalleryimgs" link="option=com_phocagallery&amp;view=phocagalleryimgs">COM_PHOCAGALLERY_IMAGES</menu>
+				<menu img="class:categories" alt="COM_PHOCAGALLERY_CATEGORIES" view="phocagallerycs" link="option=com_phocagallery&amp;view=phocagallerycs">COM_PHOCAGALLERY_CATEGORIES</menu>
+				<menu img="class:themes" alt="COM_PHOCAGALLERY_THEMES" view="phocagalleryt" link="option=com_phocagallery&amp;view=phocagalleryt">COM_PHOCAGALLERY_THEMES</menu>
+				<menu img="class:rate-categories" alt="COM_PHOCAGALLERY_CATEGORYRATING" view="phocagalleryra" link="option=com_phocagallery&amp;view=phocagalleryra">COM_PHOCAGALLERY_CATEGORYRATING</menu>
+				<menu img="class:rate-images" alt="COM_PHOCAGALLERY_IMAGERATING" view="phocagalleryraimg" link="option=com_phocagallery&amp;view=phocagalleryraimg">COM_PHOCAGALLERY_IMAGERATING</menu>
+				<menu img="class:comment-categories" alt="COM_PHOCAGALLERY_CATEGORYCOMMENTS" view="phocagallerycos" link="option=com_phocagallery&amp;view=phocagallerycos">COM_PHOCAGALLERY_CATEGORYCOMMENTS</menu>
+				<menu img="class:comment-images" alt="COM_PHOCAGALLERY_IMAGECOMMENTS" view="phocagallerycoimgs" link="option=com_phocagallery&amp;view=phocagallerycoimgs">COM_PHOCAGALLERY_IMAGECOMMENTS</menu>
+				<menu img="class:users" alt="COM_PHOCAGALLERY_USERS" view="phocagalleryusers" link="option=com_phocagallery&amp;view=phocagalleryusers">COM_PHOCAGALLERY_USERS</menu>
+				<menu img="class:tags" alt="COM_PHOCAGALLERY_TAGS" view="phocagallerytags" link="option=com_phocagallery&amp;view=phocagallerytags">COM_PHOCAGALLERY_TAGS</menu>
+				<menu img="class:styles" alt="COM_PHOCAGALLERY_STYLES" view="phocagalleryefs" link="option=com_phocagallery&amp;view=phocagalleryefs">COM_PHOCAGALLERY_STYLES</menu>
+				<menu img="class:info" alt="COM_PHOCAGALLERY_INFO" view="phocagalleryin" link="option=com_phocagallery&amp;view=phocagalleryin">COM_PHOCAGALLERY_INFO</menu>
 			</submenu>
 
 		<files folder="admin">
