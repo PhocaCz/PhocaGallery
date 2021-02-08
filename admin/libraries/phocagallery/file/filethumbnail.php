@@ -504,7 +504,7 @@ class PhocaGalleryFileThumbnail
 		}
 	}
 
-	public static function createFileThumbnail($fileOriginal, $fileThumbnail, $size, $frontUpload=0, &$errorMsg) {
+	public static function createFileThumbnail($fileOriginal, $fileThumbnail, $size, $frontUpload=0, &$errorMsg = '') {
 
 		$paramsC 					= JComponentHelper::getParams('com_phocagallery');
 		$enable_thumb_creation 		= $paramsC->get( 'enable_thumb_creation', 1);

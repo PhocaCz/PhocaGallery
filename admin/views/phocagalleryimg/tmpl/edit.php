@@ -54,9 +54,9 @@ Joomla.submitbutton = function(task){
 
 JFactory::getDocument()->addScriptDeclaration(
 
-'Joomla.submitbutton = function(task) {
+'Joomla.submitbutton = function(task) { 
 	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
-		alert("'. $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED')).'");
+		alert("'. JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED', true).'");
 	} else if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
 		Joomla.submitform(task, document.getElementById("adminForm"));
 	} else {

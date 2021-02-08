@@ -1810,7 +1810,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 	}
 
-	protected function storeImage($dataImg = array(), $catid, $type = 'picasa') {
+	protected function storeImage($dataImg = array(), $catid = 0, $type = 'picasa') {
 
 		if (count( $dataImg )) {
 

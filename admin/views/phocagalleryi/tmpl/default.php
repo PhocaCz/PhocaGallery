@@ -56,7 +56,9 @@ if ($this->t['displaytabs'] > 0) {
 	$activeTab = '';
 	if (isset($this->t['tab']) && $this->t['tab'] != '') {
 	    $activeTab = $this->t['tab'];
-    }
+    } else  {
+		$activeTab = 'multipleupload';
+	}
 
 	echo $r->startTabs($activeTab);
 

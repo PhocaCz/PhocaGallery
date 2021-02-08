@@ -348,7 +348,7 @@ class PhocaGalleryRenderDetailButton
 	/*
 	* Get Slideshow  - 1. data for javascript, 2. data for displaying buttons
 	*/
-	public function getJsSlideshow($catid, $id, $slideshow = 0, $catidSlug, $idSlug) {
+	public function getJsSlideshow($catid, $id, $slideshow = 0, $catidSlug = '', $idSlug = '') {
 
 		jimport('joomla.filesystem.file');
 		phocagalleryimport('phocagallery.file.filethumbnail');

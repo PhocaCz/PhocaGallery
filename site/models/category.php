@@ -60,7 +60,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 	/*
 	 * IMAGES
 	 */
-	function getData( $rightDisplayDelete = 0, $tagId) {
+	function getData( $rightDisplayDelete = 0, $tagId = 0) {
 		if (empty($this->_data)) {
 
 			$query = $this->_buildQuery($rightDisplayDelete, $tagId);
@@ -69,7 +69,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		return $this->_data;
 	 }
 
-	function getTotal($rightDisplayDelete = 0, $tagId) {
+	function getTotal($rightDisplayDelete = 0, $tagId = 0) {
 		if (empty($this->_total)) {
 			$query = $this->_buildQuery($rightDisplayDelete, $tagId, 1);
 			$this->_total = $this->_getListCount($query);
@@ -77,7 +77,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		return $this->_total;
 	}
 
-	function getPagination($rightDisplayDelete = 0, $tagId) {
+	function getPagination($rightDisplayDelete = 0, $tagId = 0) {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new PhocaGalleryPaginationCategory( $this->getTotal($rightDisplayDelete, $tagId), $this->getState('limitstart'), $this->getState('limit') );

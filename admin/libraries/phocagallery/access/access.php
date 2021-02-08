@@ -47,7 +47,7 @@ class PhocaGalleryAccess
 	 * @return boolean 1 or 0
 	 */
 
-	public static function getUserRight($rightType = 'accessuserid', $rightUsers, $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {
+	public static function getUserRight($rightType = 'accessuserid', $rightUsers = array(), $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {
 		$user = JFactory::getUser();
 		// we can get the variables here, not before function call
 		$userAID = $user->getAuthorisedViewLevels();

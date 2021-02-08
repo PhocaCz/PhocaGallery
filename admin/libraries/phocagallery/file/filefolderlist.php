@@ -18,7 +18,7 @@ setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryFileFolderList
 {
-	public static function getList($small = 0, $medium = 0, $large = 0, $refreshUrl) {
+	public static function getList($small = 0, $medium = 0, $large = 0, $refreshUrl = '') {
 		static $list;
 
 		$params				= JComponentHelper::getParams( 'com_phocagallery' );

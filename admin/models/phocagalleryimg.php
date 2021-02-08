@@ -417,7 +417,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		return true;
 	}
 
-	function recreate($cid = array(), &$message) {
+	function recreate($cid = array(), &$message = '') {
 
 		if (count( $cid )) {
 			\Joomla\Utilities\ArrayHelper::toInteger($cid);

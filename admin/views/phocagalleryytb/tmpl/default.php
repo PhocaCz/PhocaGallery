@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 JFactory::getDocument()->addScriptDeclaration(
 'function importYtb(task) {
 	if (document.getElementById("ytblink").value == "") {
-		alert("'. $this->escape(JText::_("COM_PHOCAGALLERY_YTB_LINK_NOT_SET")).'");
+		alert("'. JText::_("COM_PHOCAGALLERY_YTB_LINK_NOT_SET", true).'");
 	} else {
 		Joomla.submitform(task, document.getElementById("phocagalleryytb-form"));
 	}

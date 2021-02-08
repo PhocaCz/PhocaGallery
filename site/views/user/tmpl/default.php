@@ -17,7 +17,7 @@ $document->addScriptDeclaration(
 'jQuery(document).ready(function(){
 	jQuery(\'.phfileuploadcheckcat\').click(function(){
 	if( !jQuery(\'#filter_catid_image\').val() || jQuery(\'#filter_catid_image\').val() == 0) { 
-		alert(\''.JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY').'\'); return false;
+		alert(\''.JText::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY', true).'\'); return false;
 	} else {
 		return true;
 	}

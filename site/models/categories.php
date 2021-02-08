@@ -19,23 +19,23 @@ class PhocagalleryModelCategories extends JModelLegacy
 	private $_ordering		= null;
 
 	function __construct() {
-		
+
 		parent::__construct();
 		$app 				= JFactory::getApplication();
-		$config 			= JFactory::getConfig();		
+		$config 			= JFactory::getConfig();
 		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
 		$default_pagination	= $paramsC->get( 'default_pagination_categories', '0' );
 		$category_ordering	= $paramsC->get( 'category_ordering', 1 );
 		$context			= $this->_context.'.';
-	
+
 		// Get the pagination r equest variables
 		$this->setState('limit', $app->getUserStateFromRequest($context .'limit', 'limit', $default_pagination, 'int'));
 		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
-		
+
 		$this->setState('filter.language',$app->getLanguageFilter());
-		
+
 		$this->setState('catordering', $app->getUserStateFromRequest($context .'catordering', 'catordering', $category_ordering, 'int'));
 		// Get the filter r equest variables
 		//$this->setState('filter_order', J Request::get Cmd('filter_order', 'ordering'));
@@ -51,7 +51,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 			// Order Categories to tree
 			$text = ''; // test is tree name e.g. Category >> Subcategory
 			$tree = array();
-			
+
 			$this->_data = $this->_categoryTree($this->_data, $tree, 0, $text, -1);
 			return $this->_data;
 		}
@@ -63,7 +63,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 	function getTotal() {
 		return $this->_total;
 	}
-	
+
 	function setTotal($total) {
 		$this->_total = (int)$total;
 	}
@@ -78,40 +78,40 @@ class PhocagalleryModelCategories extends JModelLegacy
 		}
 		return $this->_pagination;
 	}
-	
+
 	function getOrdering() {
 		if(empty($this->_ordering)) {
 			$this->_ordering = PhocaGalleryOrdering::renderOrderingFront($this->getState('catordering'), 2);
 		}
 		return $this->_ordering;
 	}
-	
+
 	function _buildQuery() {
-		
+
 		$app = JFactory::getApplication();
-		
+
 		$user	= JFactory::getUser();
 		$gid	= $user->get('aid', 0);
-		
+
 		// Filter by language
 		$whereLang = '';
 		if ($this->getState('filter.language')) {
 			$whereLang =  ' AND cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
-		
+
 		// Params
 		$params	= $app->getParams();
 		$display_subcategories	= $params->get( 'display_subcategories', 1 );
 		//$show_empty_categories= $params->get( 'display_empty_categories', 0 );
 		//$hide_categories 		= $params->get( 'hide_categories', '' );
 		$catOrdering		= PhocaGalleryOrdering::getOrderingString($this->getState('catordering'), 2);
-		
+
 		// Display or hide subcategories in CATEGORIES VIEW
 		$hideSubCatSql = '';
 		if ((int)$display_subcategories != 1) {
 			$hideSubCatSql = ' AND cc.parent_id = 0';
 		}
-		
+
 		// Get all categories which should be hidden
 		/*$hideCatArray	= explode( ',', trim( $hide_categories ) );
 		$hideCatSql		= '';
@@ -120,7 +120,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 				$hideCatSql .= ' AND cc.id != '. (int) trim($value) .' ';
 			}
 		}*/
-		
+
 		//Display or hide empty categories
 		/*	$emptyCat = '';
 		if ($show_empty_categories != 1) {
@@ -128,7 +128,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 		}*/
 		phocagalleryimport('phocagallery.ordering.ordering');
 		//$categoryOrdering = PhocaGalleryOrdering::getOrderingString($category_ordering, 2);
-		
+
 		$query = 'SELECT cc.*, a.catid, COUNT(a.id) AS numlinks, u.username AS username, r.count AS ratingcount, r.average AS ratingaverage, uc.avatar AS avatar, uc.approved AS avatarapproved, uc.published AS avatarpublished, min(a.filename) as filename, min(a.extm) as extm, min(a.exts) as exts, min(a.exth) as exth, min(a.extw) as extw,'
 		. ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as slug'
 		. ' FROM #__phocagallery_categories AS cc'
@@ -147,22 +147,22 @@ class PhocagalleryModelCategories extends JModelLegacy
 		. ' GROUP BY cc.id, cc.parent_id, cc.owner_id, cc.image_id, cc.title, cc.name, cc.alias, cc.image, cc.section, cc.image_position, cc.description, cc.date, cc.published, cc.approved, cc.checked_out, cc.checked_out_time, cc.editor, cc.ordering, cc.access, cc.count, cc.hits, cc.accessuserid, cc.deleteuserid, cc.uploaduserid, cc.userfolder, cc.latitude, cc.longitude, cc.zoom, cc.geotitle, cc.extid, cc.exta, cc.extu, cc.extauth, cc.extfbuid, cc.extfbcatid, cc.params, cc.metakey, cc.metadesc, cc.metadata, cc.language, a.catid, u.username, r.count, r.average, uc.avatar, uc.approved, uc.published'
 		//. ' ORDER BY cc.'.$categoryOrdering;
 		.$catOrdering['output'];
-	
-	
+
+
 		return $query;
 	}
-	
+
 	/*
 	 * Create category tree
 	 */
-	function _categoryTree( $data, $tree, $id = 0, $text='', $currentId) {		
+	function _categoryTree( $data, $tree, $id = 0, $text='', $currentId = 0) {
 
-		foreach ($data as $key) {	
+		foreach ($data as $key) {
 			$show_text =  $text . $key->title;
-			
+
 			static $iCT = 0;// All displayed items
-	
-			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {	
+
+			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {
 
 				$tree[$iCT] 					= new JObject();
 				$tree[$iCT]->id 				= $key->id;
@@ -211,14 +211,14 @@ class PhocagalleryModelCategories extends JModelLegacy
 				$tree[$iCT]->extw				= $key->extw;
 				$tree[$iCT]->exth				= $key->exth;
 				$tree[$iCT]->date 				= $key->date;
-				
+
 				$tree[$iCT]->linkthumbnailpath	= '';
 				$iCT++;
-				
-				$tree = $this->_categoryTree($data, $tree, $key->id, $show_text . " &raquo; ", $currentId );	
-			}	
+
+				$tree = $this->_categoryTree($data, $tree, $key->id, $show_text . " &raquo; ", $currentId );
+			}
 		}
-		
+
 		return($tree);
 	}
 }

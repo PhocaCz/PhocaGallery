@@ -22,6 +22,7 @@ class PhocaGalleryCpViewPhocaGallerycp extends JViewLegacy
 
 		$i = ' icon-';
 		$d = 'duotone ';
+		
 
 		$this->views= array(
 		'imgs'		=> array($this->t['l'] . '_IMAGES', $d.$i.'pictures', '#dd5500'),

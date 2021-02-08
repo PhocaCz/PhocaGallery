@@ -25,10 +25,9 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 		$this->state	= $this->get('State');
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
-		
-		$this->t	= PhocaGalleryUtils::setVars();
-		$this->r	= new PhocaGalleryRenderAdminview();
 
+		$this->t	= PhocaGalleryUtils::setVars('img');
+		$this->r	= new PhocaGalleryRenderAdminview();
 
 		$params = JComponentHelper::getParams('com_phocagallery');
 

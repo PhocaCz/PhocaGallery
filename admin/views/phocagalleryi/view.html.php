@@ -76,6 +76,7 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		$this->t['tab'] 			= JFactory::getApplication()->input->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 
+
 		// UPLOAD
 		$this->t['currenttab']['upload'] = $this->t['displaytabs'];
 		$this->t['displaytabs']++;

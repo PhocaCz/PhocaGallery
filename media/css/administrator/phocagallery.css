@@ -64,7 +64,7 @@
 .ph-icon-inside.thumbnail {
 	width: 100px;
 	height: 100px;
-	-webkit-border-radius: 0px;  
+	-webkit-border-radius: 0px;
     border-radius: 0px;
 	background: #fdfdfd;
 }
@@ -425,7 +425,7 @@ div.icon-48-users {
 
 
 #phocagallery-upload,
-#phocagallery-javaupload, 
+#phocagallery-javaupload,
 #phocagallery-multipleupload {
 	margin-top:0px;/*IE bug*/
 	margin-bottom:15px;
@@ -437,7 +437,7 @@ div.icon-48-users {
 #phocagallery-multipleupload a img{
 	border: 0px;
 }
- 
+
 #phocagallery-upload fieldset,
 #phocagallery-javaupload fieldset,
 #phocagallery-multipleupload fieldset {
@@ -445,7 +445,7 @@ div.icon-48-users {
 	padding:10px;
 	margin:5px;
 }
- 
+
 #phocagallery-upload legend,
 #phocagallery-javaupload legend,
 #phocagallery-multipleupload legend{
@@ -475,7 +475,7 @@ dl.tabs {
 	float: left;
 	margin: 10px 0 -1px 0;
 	z-index: 50;
-	
+
 }
 
 dl.tabs dt {
@@ -487,7 +487,7 @@ dl.tabs dt {
 	margin-left: 3px;
 	background: #f0f0f0;
 	color: #666;
-	
+
 }
 
 dl.tabs dt.open {
@@ -495,7 +495,7 @@ dl.tabs dt.open {
 	border-bottom: 1px solid #ffffff;
 	z-index: 100;
 	color: #000;
-	
+
 }
 
 div.current {
@@ -503,7 +503,7 @@ div.current {
 	border: 1px solid #ccc;
 	padding: 10px 10px;
 	background: #ffffff;
-	
+
 }
 
 div.current dd {
@@ -674,15 +674,15 @@ div.current dd {
 
 
 a .pg-button {
-	display: 			inline-block; 
+	display: 			inline-block;
 	padding:			5px 10px;
-	font-size: 			13px;   
+	font-size: 			13px;
 	text-decoration: 	none;
 	box-shadow: 		0 1px 2px rgba(0,0,0,0.6);
 	-moz-box-shadow: 	0 1px 2px rgba(0,0,0,0.6);
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.6);
 	border-radius: 			5px;
-	-moz-border-radius: 	5px; 
+	-moz-border-radius: 	5px;
 	-webkit-border-radius: 	5px;
 	border-bottom: 		1px solid rgba(0,0,0,0.25);
 	position: 			relative;
@@ -790,7 +790,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 .ph-cp-item-icon {
 	background: #fff;
 	border-radius: 5px;
-	
+
 	width: 7rem;
 	height: 7rem;
 	text-align: center;
@@ -798,7 +798,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	
+
 	border: 0;
 	background-image: linear-gradient(-45deg,#ffffff,#ffffff);
     box-shadow: 1px 2px 1px 0 rgba(0,0,0,.15);
@@ -849,7 +849,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 }
 
 .ph-cp-item-title {
-	
+
 	display:block;
 	font-size: 0.95em;
 	margin: 0 auto;
@@ -882,7 +882,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	font-family: 'JoomlaFont' !important;
 }
 
-.ph-cp-item [class^="icon-"], 
+.ph-cp-item [class^="icon-"],
 .ph-cp-item [class*=" icon-"] {
     display: inline;
     width: auto;
@@ -916,7 +916,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	text-align: center;
 }
 
-.ph-cp-item [class^="icon-"].phi-fs-s, 
+.ph-cp-item [class^="icon-"].phi-fs-s,
 .ph-cp-item [class*=" icon-"].phi-fs-s {
 	font-size: 1rem;
 	width: 1rem;
@@ -925,7 +925,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	margin: auto;
 }
 
-.ph-cp-item [class^="icon-"].phi-fs-m, 
+.ph-cp-item [class^="icon-"].phi-fs-m,
 .ph-cp-item [class*=" icon-"].phi-fs-m {
 	font-size: 1.4rem;
 	width: 1.4rem;
@@ -933,7 +933,7 @@ div.editor-border /*, div.CodeMirror-wrapping */ {
 	display: inline-block;
 	margin: auto;
 }
-.ph-cp-item [class^="icon-"].phi-fs-l, 
+.ph-cp-item [class^="icon-"].phi-fs-l,
 .ph-cp-item [class*=" icon-"].phi-fs-l {
 	font-size: 3.6rem;
 	width: 3.6rem;
@@ -993,9 +993,9 @@ ul.plupload_filelist li.plupload_file_name {
 	width: 35%;
 }
 ul.plupload_filelist li .plupload_file_name:before {
-	font-family: 'Glyphicons Halflings';
+	font-family: 'JoomlaFont' !important;
 	color: #d0d0d0;
-    content: "\e022";
+    content: "\13b2a";
 	float: left;
 	margin: 0px 5px 5px 0px;
 	padding-bottom: 2px;
@@ -1019,9 +1019,9 @@ li.plupload_droptext {
 }
 
 li.plupload_droptext:before {
-	font-family: 'Glyphicons Halflings';
+	font-family: 'JoomlaFont' !important;
 	color: #d0d0d0;
-    content: "\e022 ";
+    content: "\13b2a";
 	font-size: 200%;
 	text-align: center;
 	margin: 0px auto;
@@ -1082,7 +1082,7 @@ li.plupload_droptext:before {
 	text-align: center;
 	background-image: linear-gradient(-45deg,#ffffff,#ffffff);
     box-shadow: 1px 2px 1px 0 rgba(0,0,0,.15);
-	
+
 
 }
 
