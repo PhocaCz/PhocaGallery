@@ -89,8 +89,8 @@ class PhocaGalleryFileUpload
 				// parts uploaded by the new file - so this is why we are using temp file in Chunk method
 				$stream 				= JFactory::getStream();// Chunk Files
 				$tempFolder				= 'pgpluploadtmpfolder/';
-				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.$file['name']);
-				$filepathImgTemp 		= JPath::clean($path->image_abs.$folder.$tempFolder.$file['name']);
+				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.strtolower($file['name']));
+				$filepathImgTemp 		= JPath::clean($path->image_abs.$folder.$tempFolder.strtolower($file['name']));
 				$filepathFolderFinal 	= JPath::clean($path->image_abs.$folder);
 				$filepathFolderTemp 	= JPath::clean($path->image_abs.$folder.$tempFolder);
 				$maxFileAge 			= 60 * 60; // Temp file age in seconds
@@ -260,7 +260,7 @@ class PhocaGalleryFileUpload
 			} else {
 				// No Chunk Method
 
-				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.$file['name']);
+				$filepathImgFinal 		= JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 				$filepathFolderFinal 	= JPath::clean($path->image_abs.$folder);
 
 
@@ -355,7 +355,7 @@ class PhocaGalleryFileUpload
 
 		// All HTTP header will be overwritten with js message
 		if (isset($file['name'])) {
-			$filepath = JPath::clean($path->image_abs.$folder.$file['name']);
+			$filepath = JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 
 			if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg, $frontEnd )) {
 
@@ -496,7 +496,7 @@ class PhocaGalleryFileUpload
 			}
 
 			if (isset($file['name'])) {
-				$filepath = JPath::clean($path->image_abs.$folder.$file['name']);
+				$filepath = JPath::clean($path->image_abs.$folder.strtolower($file['name']));
 
 				if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg, $frontEnd  )) {
 					exit( 'ERROR: '.JText::_($errUploadMsg));
