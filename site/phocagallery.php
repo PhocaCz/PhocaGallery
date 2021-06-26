@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
-
+require_once JPATH_ADMINISTRATOR . '/components/com_phocagallery/libraries/autoloadPhoca.php';
 // Require the base controller
 require_once( JPATH_COMPONENT.'/controller.php' );
 phocagalleryimport('phocagallery.utils.settings');

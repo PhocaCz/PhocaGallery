@@ -76,7 +76,7 @@ if ($this->t['displayupload'] == 1) {
 		<input type="text" name="phocagalleryimagesearch" id="phocagalleryimagesearch" placeholder="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" value="<?php echo $this->listsimage['search'];?>" title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>" /></div>
 
 		<div class="btn-group pull-left hidden-phone">
-		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('search', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_SEARCH')) ?></button>
+		<button class="btn tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCAGALLERY_SEARCH' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('search', $this->t['pi'].'icon-search.png', JText::_('COM_PHOCAGALLERY_SEARCH')) ?></button>
 		<button class="btn tip hasTooltip" type="button" onclick="document.getElementById('phocagalleryimagesearch').value='';document.getElementById(\'phocagalleryimageform\').submit();" title="<?php echo JText::_( 'COM_PHOCAGALLERY_CLEAR' ); ?>"><?php echo PhocaGalleryRenderFront::renderIcon('remove', $this->t['pi'].'icon-remove.png', JText::_('COM_PHOCAGALLERY_CLEAR')) ?></button>
 		</div>
 

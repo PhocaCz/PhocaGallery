@@ -2101,7 +2101,7 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		if ( $this->t['detail_window'] == 6 ) {
 			$document->addCustomTag('<script type="text/javascript">'
 			. 'var dataJakJs = ['
-			. implode($this->t['jakdatajs'], ',')
+			. implode(',', $this->t['jakdatajs'])
 			. ']'
 			. '</script>');
 		}
@@ -2244,6 +2244,8 @@ class PhocaGalleryViewCategory extends JViewLegacy
 		}
 
 		$title = $this->params->get('page_title', '');
+		
+
 
 
 		if (empty($title)) {

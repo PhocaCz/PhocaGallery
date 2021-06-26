@@ -10,6 +10,9 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+// Frontend editor - button plugin
+require_once JPATH_ADMINISTRATOR . '/components/com_phocagallery/libraries/autoloadPhoca.php';
+
 use Joomla\CMS\Session\Session;
 use Phoca\Render\Adminviews;
 use Joomla\CMS\Factory;

@@ -767,6 +767,8 @@ class PhocaGalleryRenderFront
         $bootstrap_icons = $paramsC->get('bootstrap_icons', 0);
 
         if ($bootstrap_icons == 0) {
+
+
             return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
         }
 

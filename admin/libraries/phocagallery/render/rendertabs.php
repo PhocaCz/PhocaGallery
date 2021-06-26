@@ -46,6 +46,7 @@ class PhocaGalleryRenderTabs
         $o[] = '<ul class="phTabsUl">';
         if (!empty($items)) {
             $i = 0;
+
             foreach ($items as $k => $v) {
 
                 $activeO = '';
@@ -55,7 +56,9 @@ class PhocaGalleryRenderTabs
                     $activeO = ' active';
 
                 }
+
                 $o[] = '<li class="phTabsLi"><a class="phTabsA phTabsHeader' . $activeO . '" id="phTabId' . $this->id . 'Item' . $v['id'] . '">' . PhocaGalleryRenderFront::renderIcon($v['icon'], 'media/com_phocagallery/images/icon-' . $v['image'] . '.png', '') . '&nbsp;' . $v['title'] . '</a></li>';
+
                 $i++;
             }
         }
