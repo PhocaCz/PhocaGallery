@@ -7,7 +7,7 @@
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.5.0Beta2</version>
+	<version> 4.5.0Beta2 </version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>
