@@ -9,10 +9,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 use Joomla\String\StringHelper;
 phocagalleryimport('phocagallery.render.renderadminviews');
-class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
+class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 {
 	var $_context 	= 'com_phocagallery.phocagallerylinkimg';
 	protected $r;
@@ -21,27 +27,26 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 	protected $user;
 	protected $items;
 	protected $request_url;
-	protected $lists;		  
+	protected $lists;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$this->r = new PhocaGalleryRenderAdminViews();
-		$this->t = PhocaGalleryUtils::setVars('linkimg');			   
+		$this->t = PhocaGalleryUtils::setVars('linkimg');
 		//Frontend Changes
 		$tUri = '';
-		$jsLink = JURI::base(true);
+		$jsLink = Uri::base(true);
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 			phocagalleryimport('phocagallery.render.renderadmin');
 			phocagalleryimport('phocagallery.file.filethumbnail');
-			$jsLink = JURI::base(true).'/administrator';
+			$jsLink = Uri::base(true).'/administrator';
 		}
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		$db		    = JFactory::getDBO();
-		//JHTML::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
-		//JHTML::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
-		//$document->addScript(JURI::root(true) .'/media/com_phocagallery/js/jcp/picker.js');
+		$document	= Factory::getDocument();
+		$db		    = Factory::getDBO();
+		//JHtml::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
+		//JHtml::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
+		//$document->addScript(JUri::root(true) .'/media/com_phocagallery/js/jcp/picker.js');
 
 		$eName				= $app->input->get('e_name', '', 'cmd');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -50,7 +55,7 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 
 
 
-		$params = JComponentHelper::getParams('com_phocagallery') ;
+		$params = ComponentHelper::getParams('com_phocagallery') ;
 
 		//Filter
 
@@ -67,13 +72,13 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 		$this->t['pagination'] 	=  $this->get( 'Pagination' );
 
 		// build list of categories
-		$javascript 	= 'class="inputbox" size="1" onchange="Joomla.submitform( );"';
+		$javascript 	= 'class="form-control" size="1" onchange="Joomla.submitform( );"';
 
 		// get list of categories for dropdown filter
 		$filter = '';
 
 		// build list of categories
-		$javascript 	= 'class="inputbox" size="1" onchange="Joomla.submitform( );"';
+		$javascript 	= 'class="form-control" size="1" onchange="Joomla.submitform( );"';
 
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
 		. ' FROM #__phocagallery_categories AS a'
@@ -85,13 +90,13 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 
 		$tree = array();
 		$text = '';
-		$tree = PhocaGalleryCategory::CategoryTreeOption($phocagallerys, $tree, 0, $text, -1);
-		array_unshift($tree, Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', '- '.JText::_('COM_PHOCAGALLERY_SELECT_CATEGORY').' -', 'value', 'text'));
-		$this->lists['catid'] = Joomla\CMS\HTML\HTMLHelper::_( 'select.genericlist', $tree, 'filter_catid',  $javascript , 'value', 'text', $filter_catid );
+		$tree = PhocaGalleryCategoryhtml::CategoryTreeOption($phocagallerys, $tree, 0, $text, -1);
+		array_unshift($tree, HTMLHelper::_('select.option', '0', '- '.Text::_('COM_PHOCAGALLERY_SELECT_CATEGORY').' -', 'value', 'text'));
+		$this->lists['catid'] = HTMLHelper::_( 'select.genericlist', $tree, 'filter_catid',  $javascript , 'value', 'text', $filter_catid );
 		//-----------------------------------------------------------------------
 
 		// state filter
-		$this->lists['state']		= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published );
+		$this->lists['state']		= HTMLHelper::_('grid.state',  $filter_published );
 
 		// table ordering
 		$this->lists['order_Dir'] = $filter_order_Dir;
@@ -100,7 +105,7 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 		// search filter
 		$this->lists['search']	= $search;
 
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->request_url = $uri->toString();
 		/*$this->assignRef('tmpl',		$t);
 		$this->assignRef('button',		$button);
@@ -138,25 +143,25 @@ class phocaGalleryViewphocaGalleryLinkImg extends JViewLegacy
 					$itemsCount = $itemsStart = array();
 				}
 
-				$this->lists['limitstartparam'] = Joomla\CMS\HTML\HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  '' , 'value', 'text', '' );
-				$this->lists['limitcountparam'] = Joomla\CMS\HTML\HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  '' , 'value', 'text', '' );
-				
+				$this->lists['limitstartparam'] = HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  '' , 'value', 'text', '' );
+				$this->lists['limitcountparam'] = HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  '' , 'value', 'text', '' );
+
 				parent::display('images');
 			break;
 
 			case 3:
-				
+
 				parent::display('switchimage');
 			break;
 
 			case 4:
-				
+
 				parent::display('slideshow');
 			break;
 
 			case 1:
 			default:
-				
+
 				parent::display($tpl);
 			break;
 

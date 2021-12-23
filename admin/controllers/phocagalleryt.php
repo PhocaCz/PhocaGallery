@@ -10,10 +10,15 @@
  */
  
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Client\ClientHelper;
 jimport('joomla.application.component.controllerform');
 jimport('joomla.client.helper');
 
-class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
+class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 {
 	protected	$option 		= 'com_phocagallery';
 	
@@ -26,23 +31,23 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	}
 
 	function displayeditcss() {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));		
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));		
 		$fileid = $this->input->get('fileid');
 		$fileid = urldecode(base64_decode($fileid));
 		$model		= $this->getModel();
 		echo $model->getFileContent($fileid);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 	
 	function themeinstall() {
 
-		JSession::checkToken() or die( 'Invalid Token' );
+		Session::checkToken() or die( 'Invalid Token' );
 		//$post	= JFactory::getApplication()->input->get('post');
 		
 		$post = array();
-		$post['theme_component']	= JFactory::getApplication()->input->get('theme_component', array(), 'raw');
-		$post['theme_categories']	= JFactory::getApplication()->input->get('theme_categories', array(), 'raw');
-		$post['theme_category']		= JFactory::getApplication()->input->get('theme_category', array(), 'raw');
+		$post['theme_component']	= Factory::getApplication()->input->get('theme_component', array(), 'raw');
+		$post['theme_categories']	= Factory::getApplication()->input->get('theme_categories', array(), 'raw');
+		$post['theme_category']		= Factory::getApplication()->input->get('theme_category', array(), 'raw');
 		$theme = array();
 		
 		if (isset($post['theme_component'])) {
@@ -60,17 +65,17 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 		
 		if (!empty($theme)) {
 		
-			$ftp = JClientHelper::setCredentialsFromRequest('ftp');
+			$ftp = ClientHelper::setCredentialsFromRequest('ftp');
 		
 			$model	= $this->getModel( 'phocagalleryt' );
 
 			if ($model->install($theme)) {
-				$cache = JFactory::getCache('mod_menu');
+				$cache = Factory::getCache('mod_menu');
 				$cache->clean();
-				$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_THEME_INSTALLED');
+				$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_THEME_INSTALLED');
 			}
 		} else {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_THEME_APPLICATION_AREA');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_THEME_APPLICATION_AREA');
 		}
 		
 		$this->setRedirect( 'index.php?option=com_phocagallery&view=phocagalleryt', $msg );
@@ -81,17 +86,17 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	}
 	
 	function bgimagesmall() {
-		JSession::checkToken() or die( 'Invalid Token' );
+		Session::checkToken() or die( 'Invalid Token' );
 		
 		//$post				= JFactory::getApplication()->input->get('post');
 		$post = array();
-		$post['siw'] = JFactory::getApplication()->input->files->get( 'siw');
-		$post['sih'] = JFactory::getApplication()->input->files->get( 'sih');
-		$post['ssbgc'] = JFactory::getApplication()->input->files->get( 'ssbgc');
-		$post['sibgc'] = JFactory::getApplication()->input->files->get( 'sibgc');
-		$post['sibrdc'] = JFactory::getApplication()->input->files->get( 'sibrdc');
-		$post['siec'] = JFactory::getApplication()->input->files->get( 'siec');
-		$post['sie'] = JFactory::getApplication()->input->files->get( 'sie');
+		$post['siw'] = Factory::getApplication()->input->files->get( 'siw');
+		$post['sih'] = Factory::getApplication()->input->files->get( 'sih');
+		$post['ssbgc'] = Factory::getApplication()->input->files->get( 'ssbgc');
+		$post['sibgc'] = Factory::getApplication()->input->files->get( 'sibgc');
+		$post['sibrdc'] = Factory::getApplication()->input->files->get( 'sibrdc');
+		$post['siec'] = Factory::getApplication()->input->files->get( 'siec');
+		$post['sie'] = Factory::getApplication()->input->files->get( 'sie');
 		
 		$data['image']	= 'shadow3';
 		$data['iw']		= $post['siw'];
@@ -107,9 +112,9 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 		$bgImage = PhocaGalleryImageBgImage::createBgImage($data, $errorMsg);
 	
 		if ($bgImage) {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
 		} else {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_BG_IMAGE');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_BG_IMAGE');
 			if($errorMsg != '') {
 				$msg .= '<br />' . $errorMsg;
 			}
@@ -121,16 +126,16 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 	}
 	
 	function bgimagemedium() {
-		JSession::checkToken() or die( 'Invalid Token' );
+		Session::checkToken() or die( 'Invalid Token' );
 		//$post				= JFactory::getApplication()->input->get('post');
 		$post = array();
-		$post['miw'] = JFactory::getApplication()->input->files->get( 'miw');
-		$post['mih'] = JFactory::getApplication()->input->files->get( 'mih');
-		$post['msbgc'] = JFactory::getApplication()->input->files->get( 'msbgc');
-		$post['mibgc'] = JFactory::getApplication()->input->files->get( 'mibgc');
-		$post['mibrdc'] = JFactory::getApplication()->input->files->get( 'mibrdc');
-		$post['miec'] = JFactory::getApplication()->input->files->get( 'miec');
-		$post['mie'] = JFactory::getApplication()->input->files->get( 'mie');
+		$post['miw'] = Factory::getApplication()->input->files->get( 'miw');
+		$post['mih'] = Factory::getApplication()->input->files->get( 'mih');
+		$post['msbgc'] = Factory::getApplication()->input->files->get( 'msbgc');
+		$post['mibgc'] = Factory::getApplication()->input->files->get( 'mibgc');
+		$post['mibrdc'] = Factory::getApplication()->input->files->get( 'mibrdc');
+		$post['miec'] = Factory::getApplication()->input->files->get( 'miec');
+		$post['mie'] = Factory::getApplication()->input->files->get( 'mie');
 		
 		$data['image']	= 'shadow1';
 		$data['iw']		= $post['miw'];
@@ -146,9 +151,9 @@ class PhocaGalleryCpControllerPhocaGalleryT extends JControllerForm
 		$bgImage = PhocaGalleryImageBgImage::createBgImage($data, $errorMsg);
 	
 		if ($bgImage) {
-			$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
+			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
 		} else {
-			$msg = JText::_('COM_PHOCAGALLERY_ERROR_BG_IMAGE');
+			$msg = Text::_('COM_PHOCAGALLERY_ERROR_BG_IMAGE');
 			if($errorMsg != '') {
 				$msg .= '<br />' . $errorMsg;
 			}

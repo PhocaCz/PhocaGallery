@@ -8,15 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 $task		= 'phocagalleryraimg';
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
 $OPT		= strtoupper($option);
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -29,7 +33,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
-
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($option, $task, 'adminForm');
@@ -51,7 +55,7 @@ echo $r->selectFilterCategory(PhocaGalleryCategory::options($option), 'JOPTION_S
 echo $r->endFilterBar();
 
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -60,11 +64,11 @@ echo $r->startTblHeader();
 echo $r->firstColumnHeader($listDirn, $listOrder);
 echo $r->secondColumnHeader($listDirn, $listOrder);
 
-echo '<th class="ph-user">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-image">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', 		$OPT.'_IMAGE', 'image_title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-parentcattitle">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $OPT.'_CATEGORY', 'category_title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-rating">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'a.rating', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-user">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-image">'.HTMLHelper::_('searchtools.sort', 		$OPT.'_IMAGE', 'image_title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-parentcattitle">'.HTMLHelper::_('searchtools.sort', $OPT.'_CATEGORY', 'category_title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-rating">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'a.rating', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
@@ -78,9 +82,9 @@ if (is_array($this->items)) {
 		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			$j++;
 
-$linkCat	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int) $item->category_id );
+$linkCat	= Route::_( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $option);
-$linkImg	= JRoute::_( 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='. $item->image_id );
+$linkImg	= Route::_( 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='. $item->image_id );
 $canEditImg	= $user->authorise('core.edit', $option);
 
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
@@ -92,13 +96,13 @@ if ($item->ratingusername) {$usrU = $usrU . ' ('.$item->ratingusername.')';}
 echo $r->td($usrU, "small");
 
 if ($canEditImg) {
-	$catI = '<a href="'. JRoute::_($linkImg).'">'. $this->escape($item->image_title).'</a>';
+	$catI = '<a href="'. Route::_($linkImg).'">'. $this->escape($item->image_title).'</a>';
 } else {
 	$catI = $this->escape($item->image_title);
 }
 echo $r->td($catI, "small");
 if ($canEditCat) {
-	$catO = '<a href="'. JRoute::_($linkCat).'">'. $this->escape($item->category_title).'</a>';
+	$catO = '<a href="'. Route::_($linkCat).'">'. $this->escape($item->category_title).'</a>';
 } else {
 	$catO = $this->escape($item->category_title);
 }

@@ -9,16 +9,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
-class PhocaGalleryViewCooliris3DWall extends JViewLegacy
+class PhocaGalleryViewCooliris3DWall extends HtmlView
 {
 	public $t;
 	protected $params;
 
 	function display($tpl = null) {
 
-		$app				= JFactory::getApplication();
-		$document			= JFactory::getDocument();
+		$app				= Factory::getApplication();
+		$document			= Factory::getDocument();
 		$uri 				= \Joomla\CMS\Uri\Uri::getInstance();
 		$menus				= $app->getMenu();
 		$menu				= $menus->getActive();
@@ -40,9 +44,9 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 		$idCategory									= $app->input->get('id', 0, 'int');
 
 		// CSS
-		JHtml::stylesheet('media/com_phocagallery/css/phocagallery.css' );
+		HTMLHelper::stylesheet('media/com_phocagallery/css/phocagallery.css' );
 		if ($this->t['enablecustomcss'] == 1) {
-			JHtml::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
+			HTMLHelper::stylesheet('media/com_phocagallery/css/phocagallerycustom.css' );
 			PhocaGalleryRenderFront::displayCustomCSS($this->t['customcss']);
 		}
 
@@ -53,26 +57,26 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 			/*if (!empty ($category->image)) {
 				$attribs['align'] = '"'.$category->image_position.'"';
 				$attribs['hspace'] = '"6"';
-				$this->t['image'] = Joomla\CMS\HTML\HTMLHelper::_('image', 'images/stories/'.$category->image, '', $attribs);
+				$this->t['image'] = HTMLHelper::_('image', 'images/stories/'.$category->image, '', $attribs);
 			}*/
 
 			$this->_addBreadCrumbs($category, isset($menu->query['id']) ? $menu->query['id'] : 0, $display_cat_name_breadcrumbs);
 
 			// ASIGN
 			$this->t['display_category']		= 1;
-			$this->assignRef( 'tmpl',		$this->t);
-			$this->assignRef( 'category',	$category);
-			$this->assignRef( 'params' ,	$this->params);
+			$this->tmpl =		$this->t;
+			$this->category =	$category;
+			//$this->params = 	$this->params;
 		} else {
 			$this->t['display_category']		= 0;
-			$this->assignRef( 'tmpl',		$this->t);
+			$this->tmpl =		$this->t;
 		}
 			parent::display($tpl);
 	}
 
 	protected function _prepareDocument($category) {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway 	= $app->getPathway();
 		//$this->params		= $app->getParams();
@@ -86,14 +90,14 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
+			$title = Text::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
 			if ($this->t['display_cat_name_title'] == 1 && isset($this->category->title) && $this->category->title != '') {
 				$title = $title .' - ' .  $this->category->title;
@@ -105,7 +109,7 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 				$title = $title .' - ' .  $this->category->title;
 			}
 
-			$title = JText::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
+			$title = Text::sprintf('JPAGETITLE', $title, htmlspecialchars_decode($app->get('sitename')));
 		}
 
 		$this->document->setTitle($title);
@@ -151,7 +155,7 @@ class PhocaGalleryViewCooliris3DWall extends JViewLegacy
 	 * @return string Breadcrumbs
 	 */
 	function _addBreadCrumbs($category, $rootId, $displayStyle) {
-	    $app	= JFactory::getApplication();
+	    $app	= Factory::getApplication();
 
 	    $pathway 		= $app->getPathway();
 		$pathWayItems 	= $pathway->getPathWay();

@@ -10,12 +10,15 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.modellist');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport( 'phocagallery.file.filefolder' );
 
-class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
+class PhocaGalleryCpModelPhocaGalleryUsers extends ListModel
 {
 
 	protected	$option 		= 'com_phocagallery';
@@ -47,7 +50,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 	protected function populateState($ordering = 'ua.username', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -66,7 +69,7 @@ class PhocaGalleryCpModelPhocaGalleryUsers extends JModelList
 		$this->setState('filter.language', $language);
 */
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 		$this->setState('params', $params);
 
 		// List state information.

@@ -9,9 +9,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 jimport( 'joomla.application.component.view');
 
-class PhocaGalleryCpViewPhocaGalleryD extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryD extends HtmlView
 {
 	protected $file;
 	

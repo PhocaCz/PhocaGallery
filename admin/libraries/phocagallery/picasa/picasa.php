@@ -9,6 +9,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 phocagalleryimport('phocagallery.utils.utils');
 
 class PhocaGalleryPicasa
@@ -19,11 +23,11 @@ class PhocaGalleryPicasa
 		// If small and medium can be taken from $thumbSize, take it from here as these images can be cropped
 		$thumbSize 	= array(32, 48, 64, 72, 104, 144, 150, 160);
 		$imgMax		= array(94, 110, 128, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 		$crop 		= $paramsC->get( 'crop_thumbnail', 5 );
 		$output		= array();
 		$outputS	= $outputM	= $outputL	=	$outputLargeSize = '';
@@ -157,15 +161,15 @@ class PhocaGalleryPicasa
 		echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-en" lang="en-en" dir="ltr" >'. "\n";
 		echo '<head>'. "\n";
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'. "\n\n";
-		echo '<title>'.JText::_( 'COM_PHOCAGALLERY_PICASA_LOADING_DATA').'</title>'. "\n";
-		echo '<link rel="stylesheet" href="'.JURI::root(true).'/media/com_phocagallery/css/administrator/phocagallery.css" type="text/css" />';
+		echo '<title>'.Text::_( 'COM_PHOCAGALLERY_PICASA_LOADING_DATA').'</title>'. "\n";
+		echo '<link rel="stylesheet" href="'.Uri::root(true).'/media/com_phocagallery/css/administrator/phocagallery.css" type="text/css" />';
 
 		echo '</head>'. "\n";
 		echo '<body>'. "\n";
 
-		echo '<div style="text-align:right;padding:10px"><a style="font-family: sans-serif, Arial;font-weight:bold;color:#fc0000;font-size:14px;" href="index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int)$id.'">' .JText::_( 'COM_PHOCAGALLERY_STOP_LOADING_PICASA_IMAGES' ).'</a></div>';
+		echo '<div style="text-align:right;padding:10px"><a style="font-family: sans-serif, Arial;font-weight:bold;color:#fc0000;font-size:14px;" href="index.php?option=com_phocagallery&task=phocagalleryc.edit&id='.(int)$id.'">' .Text::_( 'COM_PHOCAGALLERY_STOP_LOADING_PICASA_IMAGES' ).'</a></div>';
 
-		echo '<div id="loading-ext-img-processp" style="font-family: sans-serif, Arial;font-weight:normal;color:#666;font-size:14px;padding:10px"><div class="loading"><div><center>'. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', JText::_('COM_PHOCAGALLERY_LOADING') ) .'</center></div><div>&nbsp;</div><div><center>'.JText::_('COM_PHOCAGALLERY_PICASA_LOADING_DATA').'</center></div>';
+		echo '<div id="loading-ext-img-processp" style="font-family: sans-serif, Arial;font-weight:normal;color:#666;font-size:14px;padding:10px"><div class="loading"><div><center>'. HTMLHelper::_('image', 'media/com_phocagallery/images/administrator/icon-loading.gif', Text::_('COM_PHOCAGALLERY_LOADING') ) .'</center></div><div>&nbsp;</div><div><center>'.Text::_('COM_PHOCAGALLERY_PICASA_LOADING_DATA').'</center></div>';
 
 		echo $countInfo;
 		echo '</div></div>';
@@ -181,7 +185,7 @@ class PhocaGalleryPicasa
 		$data	= '';
 
 		if(!function_exists("curl_init")){
-			$errorMsg .= JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_CURL');
+			$errorMsg .= Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_CURL');
 			$curl = 0;
 		}
 
@@ -189,7 +193,7 @@ class PhocaGalleryPicasa
 			if ($errorMsg != '') {
 				$errorMsg .= '<br />';
 			}
-			$errorMsg .= JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_FOPEN');
+			$errorMsg .= Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_FOPEN');
 			$fopen = 0;
 		}
 
@@ -215,12 +219,12 @@ class PhocaGalleryPicasa
 			}
 			switch ($type) {
 				case 'album':
-					$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
+					$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
 				break;
 
 				case 'user':
 				Default:
-					$errorMsg .= JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
+					$errorMsg .= Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
 				break;
 
 			}

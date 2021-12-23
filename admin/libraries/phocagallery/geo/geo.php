@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Filesystem\File;
 
 class PhocaGalleryGeo
 {
@@ -47,7 +48,7 @@ class PhocaGalleryGeo
 	if (!function_exists('exif_read_data')) {
 		return array('latitude' => 0, 'longitude' => 0);
 	} else {
-		if (strtolower(JFile::getExt($fileOriginal)) != 'jpg') {
+		if (strtolower(File::getExt($fileOriginal)) != 'jpg') {
 			return array('latitude' => 0, 'longitude' => 0);
 		}
 		

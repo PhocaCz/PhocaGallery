@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Object\CMSObject;
 jimport('joomla.application.component.model');
 
-class PhocagalleryModelCategories extends JModelLegacy
+class PhocagalleryModelCategories extends BaseDatabaseModel
 {
 	var $_data 				= null;
 	var $_total 			= null;
@@ -21,9 +25,9 @@ class PhocagalleryModelCategories extends JModelLegacy
 	function __construct() {
 
 		parent::__construct();
-		$app 				= JFactory::getApplication();
-		$config 			= JFactory::getConfig();
-		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
+		$app 				= Factory::getApplication();
+		$config 			= Factory::getConfig();
+		$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
 		$default_pagination	= $paramsC->get( 'default_pagination_categories', '0' );
 		$category_ordering	= $paramsC->get( 'category_ordering', 1 );
 		$context			= $this->_context.'.';
@@ -43,7 +47,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 	}
 
 	function getData() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if (empty($this->_data)) {
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList( $query );// We need all data because of tree
@@ -88,9 +92,9 @@ class PhocagalleryModelCategories extends JModelLegacy
 
 	function _buildQuery() {
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 		$gid	= $user->get('aid', 0);
 
 		// Filter by language
@@ -164,7 +168,7 @@ class PhocagalleryModelCategories extends JModelLegacy
 
 			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {
 
-				$tree[$iCT] 					= new JObject();
+				$tree[$iCT] 					= new CMSObject();
 				$tree[$iCT]->id 				= $key->id;
 				$tree[$iCT]->title 				= $show_text;
 				$tree[$iCT]->title_self 		= $key->title;

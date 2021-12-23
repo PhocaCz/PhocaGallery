@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
-class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
+class phocaGalleryCpViewphocaGalleryLinkCats extends HtmlView
 {
 
 	protected $r;
@@ -19,18 +23,18 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 	protected $categoriesoutput;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$this->r = new PhocaGalleryRenderAdminViews();
 		$this->t = PhocaGalleryUtils::setVars('link');
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 			phocagalleryimport('phocagallery.render.renderadmin');
 		}
 
-		
+
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -38,7 +42,7 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 
 
 		// Category Tree
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
 		. ' FROM #__phocagallery_categories AS a'
 	//	. ' WHERE a.published = 1' You can hide not published and not authorized categories too
@@ -49,7 +53,7 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 
 		$tree = array();
 		$text = '';
-		$tree = PhocaGalleryCategory::CategoryTreeOption($categories, $tree, 0, $text, -1);
+		$tree = PhocaGalleryCategoryhtml::CategoryTreeOption($categories, $tree, 0, $text, -1);
 		//-----------------------------------------------------------------------
 
 		// Multiple
@@ -57,12 +61,12 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends JViewLegacy
 		$attribs	= ' ';
 		$attribs	.= ' size="5"';
 		//$attribs	.= 'class="'.$v.'"';
-		$attribs	.= ' class="inputbox"';
+		$attribs	.= ' class="form-control"';
 		$attribs	.= ' multiple="multiple"';
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$this->categoriesoutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$this->categoriesoutput = HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
 
 

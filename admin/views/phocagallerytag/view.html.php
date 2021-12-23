@@ -9,9 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 
-class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryTag extends HtmlView
 {
 	protected $state;
 	protected $item;
@@ -25,7 +30,7 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 
-		$this->t	= PhocaGalleryUtils::setVars();
+		$this->t	= PhocaGalleryUtils::setVars('tag');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 
@@ -36,9 +41,9 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagallerytags.php';
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$canDo		= PhocaGalleryTagsHelper::getActions($this->state->get('filter.tag_id'), $this->item->id);
@@ -46,25 +51,25 @@ class PhocaGalleryCpViewPhocaGalleryTag extends JViewLegacy
 
 
 
-		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_TAG' ).': <small><small>[ ' . $text.' ]</small></small>' , 'tags.png');
+		$text = $isNew ? Text::_( 'COM_PHOCAGALLERY_NEW' ) : Text::_('COM_PHOCAGALLERY_EDIT');
+		ToolbarHelper::title(   Text::_( 'COM_PHOCAGALLERY_TAG' ).': <small><small>[ ' . $text.' ]</small></small>' , 'tags.png');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolbarHelper ::apply('phocagallerytag.apply', 'JToolbar_APPLY');
-			JToolbarHelper ::save('phocagallerytag.save', 'JToolbar_SAVE');
-			JToolbarHelper ::addNew('phocagallerytag.save2new', 'JToolbar_SAVE_AND_NEW');
+			ToolbarHelper::apply('phocagallerytag.apply', 'JToolbar_APPLY');
+			ToolbarHelper::save('phocagallerytag.save', 'JToolbar_SAVE');
+			ToolbarHelper::addNew('phocagallerytag.save2new', 'JToolbar_SAVE_AND_NEW');
 		}
 
 		if (empty($this->item->id))  {
-			JToolbarHelper ::cancel('phocagallerytag.cancel', 'JToolbar_CANCEL');
+			ToolbarHelper::cancel('phocagallerytag.cancel', 'JToolbar_CANCEL');
 		}
 		else {
-			JToolbarHelper ::cancel('phocagallerytag.cancel', 'JToolbar_CLOSE');
+			ToolbarHelper::cancel('phocagallerytag.cancel', 'JToolbar_CLOSE');
 		}
 
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 }
 ?>

@@ -9,12 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaGalleryTagHelper
 {
 	public function getTags($fileId, $select = 0) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 
 		if ($select == 1) {
 			$query = 'SELECT r.tagid';
@@ -41,7 +43,7 @@ class PhocaGalleryTagHelper
 
 
 		if ((int)$fileId > 0) {
-			$db =JFactory::getDBO();
+			$db =Factory::getDBO();
 			$query = ' DELETE '
 					.' FROM #__phocagallery_tags_ref'
 					. ' WHERE fileid = '. (int)$fileId;
@@ -80,7 +82,7 @@ class PhocaGalleryTagHelper
 
 	public function getAllTagsSelectBox($name, $id, $activeArray, $javascript = NULL, $order = 'id' ) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocagallery_tags AS a'
 				. ' ORDER BY '. $order;
@@ -93,7 +95,7 @@ class PhocaGalleryTagHelper
 
 		$tags = $db->loadObjectList();
 
-		$tagsO = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tags, $name, 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
+		$tagsO = HTMLHelper::_('select.genericlist', $tags, $name, 'class="form-control" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
 
 		return $tagsO;
 	}

@@ -9,19 +9,23 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_phocagallery')) {
-	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 404);
+if (!Factory::getUser()->authorise('core.manage', 'com_phocagallery')) {
+	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 404);
 }
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
 
-require JPATH_ADMINISTRATOR . '/components/com_phocagallery/libraries/autoloadPhoca.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_phocagallery/libraries/autoloadPhoca.php';
 require_once( JPATH_COMPONENT.'/controller.php' );
 phocagalleryimport('phocagallery.utils.settings');
 phocagalleryimport('phocagallery.utils.utils');
 phocagalleryimport('phocagallery.utils.exception');
+phocagalleryimport('phocagallery.category.category');
 phocagalleryimport('phocagallery.path.path');
 phocagalleryimport('phocagallery.file.file');
 phocagalleryimport('phocagallery.file.filethumbnail');
@@ -32,6 +36,7 @@ phocagalleryimport('phocagallery.render.renderadminviews');
 phocagalleryimport('phocagallery.text.text');
 phocagalleryimport('phocagallery.render.renderprocess');
 //phocagalleryimport('phocagallery.html.grid');
+phocagalleryimport('phocagallery.html.categoryhtml');
 phocagalleryimport('phocagallery.html.jgrid');
 phocagalleryimport('phocagallery.html.category');
 phocagalleryimport('phocagallery.html.batch');
@@ -40,9 +45,9 @@ phocagalleryimport('phocagallery.access.access');
 
 jimport('joomla.application.component.controller');
 
-$controller	= JControllerLegacy::getInstance('PhocaGalleryCp');
+$controller	= BaseController::getInstance('PhocaGalleryCp');
 
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute(Factory::getApplication()->input->get('task'));
 
 $controller->redirect();
 

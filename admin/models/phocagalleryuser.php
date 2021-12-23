@@ -9,9 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\ApplicationHelper;
 jimport('joomla.application.component.modeladmin');
 
-class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryUser extends AdminModel
 {
 
 	protected	$option 		= 'com_phocagallery';
@@ -20,7 +26,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		/*if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocagallery.phocagalleryuser');
@@ -31,7 +37,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		/*if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_phocagallery.phocagalleryuser');
@@ -42,12 +48,12 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 
 	public function getTable($type = 'PhocaGalleryUser', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocagallery.phocagalleryuser', 'phocagalleryuser', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -58,7 +64,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryuser.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryuser.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -79,13 +85,13 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 	function approve(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$dispatcher	= JDispatcher::getInstance();
-		$user		= JFactory::getUser();
+		//$dispatcher	= JDispatcher::getInstance();
+		$user		= Factory::getUser();
 		$table		= $this->getTable('phocagalleryuser');
 		$pks		= (array) $pks;
 
 		// Include the content plugins for the change of state event.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Access checks.
 		foreach ($pks as $i => $pk) {
@@ -93,7 +99,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
+					throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
 				}
 			}
 		}
@@ -126,7 +132,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 
 	function __construct() {
 		parent::__construct();
-		$array = JFactory::getApplication()->input->get('cid',  0, '', 'array');
+		$array = Factory::getApplication()->input->get('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
 	}
 
@@ -146,10 +152,11 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 				. ' SET avatar = ""'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
-			if(!$this->_db->query()) {
+			$this->_db->execute();
+			/*if(!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 				return false;
-			}
+			}*/
 		}
 		return true;
 	}
@@ -163,19 +170,22 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 			. ' SET approved = 1';
 			//. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
 		$this->_db->setQuery( $query );
+		$this->_db->execute();
 
-		if (!$this->_db->query()) {
+		/*if (!$this->_db->query()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}
+		}*/
 
 		$query = 'UPDATE #__phocagallery_categories'
 			. ' SET approved = 1';
 		$this->_db->setQuery( $query );
+		$this->_db->execute();
+		/*
 		if (!$this->_db->query()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}
+		}*/
 
 		return true;
 	}
@@ -183,14 +193,14 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -199,7 +209,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery_user');
 				$max = $db->loadResult();
 

@@ -7,10 +7,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport( 'phocagallery.render.renderinfo' );
 
-class PhocaGalleryCpViewPhocaGallerycp extends JViewLegacy
+class PhocaGalleryCpViewPhocaGallerycp extends HtmlView
 {
 	protected $t;
 	protected $r;
@@ -41,8 +46,8 @@ class PhocaGalleryCpViewPhocaGallerycp extends JViewLegacy
 
 
 
-		JHTML::stylesheet( $this->t['s'] );
-		////Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+		HTMLHelper::stylesheet( $this->t['s'] );
+		////JHtml::_('behavior.tooltip');
 		$this->t['version'] = PhocaGalleryRenderInfo::getPhocaVersion();
 
 		$this->addToolbar();
@@ -54,19 +59,19 @@ class PhocaGalleryCpViewPhocaGallerycp extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryCpHelper::getActions();
-		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_PG_CONTROL_PANEL' ), 'home-2 cpanel' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAGALLERY_PG_CONTROL_PANEL' ), 'home-2 cpanel' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocagallery" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'</a>';
+		$bar = Toolbar::getInstance( 'toolbar' );
+		$dhtml = '<a href="index.php?option=com_phocagallery" class="btn btn-small"><i class="icon-home-2" title="'.Text::_('COM_PHOCAGALLERY_CONTROL_PANEL').'"></i> '.Text::_('COM_PHOCAGALLERY_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper ::preferences('com_phocagallery');
-			JToolbarHelper ::divider();
+			ToolbarHelper::preferences('com_phocagallery');
+			ToolbarHelper::divider();
 		}
 
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 }
 ?>

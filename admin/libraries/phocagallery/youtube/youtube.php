@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.filesystem.file' );
 
 class PhocaGalleryYoutube
@@ -96,14 +99,14 @@ class PhocaGalleryYoutube
 
 
 		if(!function_exists("curl_init")){
-			$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_NOT_LOADED_CURL');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_NOT_LOADED_CURL');
 			return false;
 		} else if ($ytbCode == '') {
-			$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_URL_NOT_CORRECT');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_URL_NOT_CORRECT');
 			return false;
 		} else {
 
-			$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+			$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 			$key 		= $paramsC->get( 'youtube_api_key', '' );
 			$ssl 		= $paramsC->get( 'youtube_api_ssl', 1 );
 
@@ -131,7 +134,7 @@ class PhocaGalleryYoutube
 
 
 			if (!empty($o) && isset($o->error->message)) {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA') . '('.strip_tags($o->error->message).')';
+				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA') . '('.strip_tags($o->error->message).')';
 				return false;
 			} else if (!empty($o) && isset($o->items[0]->snippet)) {
 				$oS = $o->items[0]->snippet;
@@ -177,21 +180,21 @@ class PhocaGalleryYoutube
 
 
 				if ($img != '') {
-					if (JFile::exists(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
+					if (File::exists(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
 						//$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
 						//return false;
 						//Overwrite the images
 
 					}
 
-					if (!JFile::write(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
-						$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
+					if (!File::write(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
+						$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 						return false;
 					}
 				}
 
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_IMPORTING_DATA');
 				return false;
 			}
 
@@ -232,13 +235,13 @@ class PhocaGalleryYoutube
 
 			$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
 
-			if (JFile::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
+			if (File::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
+				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
 				return false;
 			}
 
-            if (!JFile::write(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
+            if (!File::write(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
+				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 				return false;
 			}*/
 		}

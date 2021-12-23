@@ -9,21 +9,27 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaColorText extends JFormField
+class JFormFieldPhocaColorText extends FormField
 {
 	protected $type 		= 'PhocaColorText';
 	protected $phocaParams 	= null;
 
 	protected function getInput() {
 
-		$document		= JFactory::getDocument();
-		$option 		= JFactory::getApplication()->input->getCmd('option');
+		$document		= Factory::getDocument();
+		$option 		= Factory::getApplication()->input->getCmd('option');
 		$globalValue 	= $this->_getPhocaParams( $this->element['name'] );
 
-		JHTML::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
-		$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jcp/picker.js');
+		HTMLHelper::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
+		$document->addScript(Uri::base(true).'/media/com_phocagallery/js/jcp/picker.js');
 
 		// Initialize some field attributes.
 		$size		= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
@@ -51,7 +57,7 @@ class JFormFieldPhocaColorText extends JFormField
 		// Color Picker
 		$nameCP = str_replace('[', '_', $this->name);
 		$nameCP = str_replace(']', '', $nameCP);
-		$html .= '<span style="margin-left:10px" class="btn" onclick="openPicker(\''.$nameCP.'\')"  >' . JText::_('COM_PHOCAGALLERY_PICK_COLOR') . '</span>';
+		$html .= '<span style="margin-left:10px" class="btn" onclick="openPicker(\''.$nameCP.'\')"  >' . Text::_('COM_PHOCAGALLERY_PICK_COLOR') . '</span>';
 
 		// MENU - Display the global value
 		if ($option == "com_menus") {
@@ -70,7 +76,7 @@ class JFormFieldPhocaColorText extends JFormField
 	protected function _setPhocaParams(){
 
 		$component 			= 'com_phocagallery';
-		$paramsC			= JComponentHelper::getParams($component) ;
+		$paramsC			= ComponentHelper::getParams($component) ;
 		$this->phocaParams	= $paramsC;
 	}
 

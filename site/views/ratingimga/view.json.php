@@ -9,24 +9,29 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport( 'joomla.application.component.view');
 phocagalleryimport( 'phocagallery.rate.rateimage');
 
-class PhocaGalleryViewRatingImgA extends JViewLegacy
+class PhocaGalleryViewRatingImgA extends HtmlView
 {
 
 	function display($tpl = null){
 
-		if (!JSession::checkToken('request')) {
+		if (!Session::checkToken('request')) {
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('JINVALID_TOKEN')
+				'error' => Text::_('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
 			return;
 		}
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params			= $app->getParams();
 
 
@@ -38,7 +43,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 		$small			= $app->input->get( 'small', 1,  'string'  );//small or large rating icons
 
 
-		$paramsC 		= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 		= ComponentHelper::getParams('com_phocagallery');
 		$param['display_rating_img'] = $paramsC->get( 'display_rating_img', 0 );
 
 		// Check if rating is enabled - if not then user should not be able to rate or to see updated reating
@@ -56,7 +61,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 
 		} else if ($task == 'rate') {
 
-			$user 		= JFactory::getUser();
+			$user 		= Factory::getUser();
 			//$view 		= J Request::get Var( 'view', '', 'get', '', J REQUEST_NOTRIM  );
 			//$Itemid		= J Request::get Var( 'Itemid', 0, '', 'int');
 
@@ -70,7 +75,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 
 
 			if ($format != 'json') {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_WRONG_RATING') ;
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_WRONG_RATING') ;
 				$response = array(
 					'status' => '0',
 					'error' => $msg);
@@ -79,7 +84,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 			}
 
 			if ((int)$post['imgid'] < 1) {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS');
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS');
 				$response = array(
 					'status' => '0',
 					'error' => $msg);
@@ -93,7 +98,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 
 			// User has already rated this category
 			if ($checkUserVote) {
-				$msg = JText::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
+				$msg = Text::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
 				$response = array(
 					'status' => '0',
 					'error' => '',
@@ -103,7 +108,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 			} else {
 				if ((int)$post['rating']  < 1 || (int)$post['rating'] > 5) {
 
-					$msg = JText::_('COM_PHOCAGALLERY_ERROR_WRONG_RATING');
+					$msg = Text::_('COM_PHOCAGALLERY_ERROR_WRONG_RATING');
 					$response = array(
 					'status' => '0',
 					'error' => $msg);
@@ -113,14 +118,14 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 
 				if ($access > 0 && $user->id > 0) {
 					if(!$model->rate($post)) {
-						$msg = JText::_('COM_PHOCAGALLERY_ERROR_RATING_IMG');
+						$msg = Text::_('COM_PHOCAGALLERY_ERROR_RATING_IMG');
 						$response = array(
 						'status' => '0',
 						'error' => $msg);
 						echo json_encode($response);
 						return;
 					} else {
-						$msg = JText::_('COM_PHOCAGALLERY_SUCCESS_RATING_IMAGE');
+						$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_RATING_IMAGE');
 						$msg = '';// No changing of the box, no message, only change the rating
 						$response = array(
 						'status' => '1',
@@ -130,7 +135,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 						return;
 					}
 				} else {
-					$msg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+					$msg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 						$response = array(
 						'status' => '0',
 						'error' => $msg);
@@ -139,7 +144,7 @@ class PhocaGalleryViewRatingImgA extends JViewLegacy
 				}
 			}
 		} else {
-			$msg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$msg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 			$response = array(
 			'status' => '0',
 			'error' => $msg);

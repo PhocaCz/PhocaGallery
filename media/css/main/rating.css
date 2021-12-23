@@ -1,4 +1,9 @@
 /* Voting - style by http://www.jluvip.com/works/css/starvote/index2-1.html*/
+
+.pg-rate-box {
+  float:left;
+}
+
 #phocagallery ul.star-rating li,
 #phocagallery-pane ul.star-rating li,
 #phocagallery ul.star-rating-small li{
@@ -17,7 +22,8 @@
   width: 110px;
   height: 22px;
   position: relative;
-  background: url(../../images/icon-voting.png) top left repeat-x;
+  /*background: url(../../images/icon-voting.png) top left repeat-x;*/
+  background: url(../../images/star-voting.svg) top left repeat-x;
 }
 #phocagallery .star-rating li,
 #phocagallery-pane .star-rating li,
@@ -44,7 +50,8 @@
 #phocagallery .star-rating li a:hover,
 #phocagallery-pane .star-rating li a:hover,
 .star-rating li a:hover{
-  background: url(../../images/icon-voting.png) left center;
+  /*background: url(../../images/icon-voting.png) left center;*/
+  background: url(../../images/star-voting.svg) left center;
   z-index: 2;
   left: 0px;
 }
@@ -101,7 +108,8 @@
 #phocagallery .star-rating li.current-rating,
 #phocagallery-pane .star-rating li.current-rating,
 .star-rating li.current-rating{
-  background: url(../../images/icon-voting.png) left bottom;
+  /*background: url(../../images/icon-voting.png) left bottom;*/
+  background: url(../../images/star-voting.svg) left bottom;
   position: absolute;
   height: 22px;
   /*width:77px;*/
@@ -121,7 +129,8 @@
   width: 80px;
   height: 16px;
   position: relative;
-  background: url(../../images/icon-voting-small.png) top left repeat-x;
+  /*background: url(../../images/icon-voting-small.png) top left repeat-x;*/
+  background: url(../../images/star-voting-small.svg) top left repeat-x;
 }
 #phocagallery .star-rating-small li,
 .star-rating-small li{
@@ -146,7 +155,8 @@
 }
 #phocagallery .star-rating-small li a:hover,
 .star-rating-small li a:hover{
-  background: url(../../images/icon-voting-small.png) left center;
+  /*background: url(../../images/icon-voting-small.png) left center;*/
+  background: url(../../images/star-voting-small.svg) left center;
   z-index: 2;
   left: 0px;
 }
@@ -192,7 +202,8 @@
 }
 #phocagallery .star-rating-small li.current-rating,
 .star-rating-small li.current-rating{
-  background: url(../../images/icon-voting-small.png) left bottom;
+  /*background: url(../../images/icon-voting-small.png) left bottom;*/
+  background: url(../../images/star-voting-small.svg) left bottom;
   position: absolute;
   height: 16px;
   /*width:77px;*/

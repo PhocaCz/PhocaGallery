@@ -9,6 +9,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.filesystem.folder' ); 
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.path.path');
@@ -24,7 +26,7 @@ class PhocaGalleryImageBgImage
 {
 	public static function createBgImage($data, &$errorMsg) {
 	
-		$params 		= JComponentHelper::getParams('com_phocagallery') ;
+		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
@@ -33,7 +35,7 @@ class PhocaGalleryImageBgImage
 		
 		$fileIn 	= $fileOut = $path->image_abs_front. $data['image'] .'.'. $formatIcon;
 	
-		if ($fileIn !== '' && JFile::exists($fileIn)) {
+		if ($fileIn !== '' && File::exists($fileIn)) {
 		
 			$memory 			= 8;
 			$memoryLimitChanged = 0;
@@ -178,7 +180,7 @@ class PhocaGalleryImageBgImage
 						$imgJPEGToWrite = ob_get_contents();
 						ob_end_clean();
 						
-						if(!JFile::write( $fileOut, $imgJPEGToWrite)) {
+						if(!File::write( $fileOut, $imgJPEGToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
 						}
@@ -206,7 +208,7 @@ class PhocaGalleryImageBgImage
 						$imgPNGToWrite = ob_get_contents();
 						ob_end_clean();
 						
-						if(!JFile::write( $fileOut, $imgPNGToWrite)) {
+						if(!File::write( $fileOut, $imgPNGToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
 						}
@@ -234,7 +236,7 @@ class PhocaGalleryImageBgImage
 						$imgGIFToWrite = ob_get_contents();
 						ob_end_clean();
 						
-						if(!JFile::write( $fileOut, $imgGIFToWrite)) {
+						if(!File::write( $fileOut, $imgGIFToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
 						}
@@ -262,7 +264,7 @@ class PhocaGalleryImageBgImage
 						$imgWEBPToWrite = ob_get_contents();
 						ob_end_clean();
 						
-						if(!JFile::write( $fileOut, $imgWEBPToWrite)) {
+						if(!File::write( $fileOut, $imgWEBPToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
 						}

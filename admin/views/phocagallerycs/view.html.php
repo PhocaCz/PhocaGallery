@@ -8,10 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Object\CMSObject;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport( 'phocagallery.rate.ratecategory' );
 
-class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryCs extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -78,7 +87,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 			// a) wee need to get parent categories - but only for creating tree
 			// b) but we don't want to display them - so in model we load it moreover but now we need to remove again + we need to limit pagination
 
-			$app = JFactory::getApplication('administrator');
+			$app = Factory::getApplication('administrator');
 			$search = $app->getUserStateFromRequest('com_phocagallery.phocagalleryimgs.filter.search', 'filter_search');
 
 			if ($search != '') {
@@ -95,7 +104,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 
 			// Correct the pagination
 			$c = count($this->items);
-			$this->pagination = new JPagination($c, $this->pagination->limitstart, $this->pagination->limit);
+			$this->pagination = new Pagination($c, $this->pagination->limitstart, $this->pagination->limit);
 			// END PHOCAEDIT */
 		}
 
@@ -109,7 +118,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 		$this->t['notapproved'] 	= $this->get( 'NotApprovedCategory' );
 
 
-		$params 	= JComponentHelper::getParams('com_phocagallery');
+		$params 	= ComponentHelper::getParams('com_phocagallery');
 
 		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
 		$this->t['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->t['enablethumbcreation']);
@@ -125,41 +134,46 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryCsHelper::getActions($state->get('filter.category_id'));
-		$user  = JFactory::getUser();
-		$bar = JToolbar::getInstance('toolbar');
+		$user  = Factory::getUser();
+		$bar = Toolbar::getInstance('toolbar');
 
-		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_CATEGORIES' ), 'folder' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAGALLERY_CATEGORIES' ), 'folder' );
 		if ($canDo->get('core.create')) {
-			JToolbarHelper ::addNew('phocagalleryc.add','JToolbar_NEW');
+			ToolbarHelper::addNew('phocagalleryc.add','JToolbar_NEW');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper ::editList('phocagalleryc.edit','JToolbar_EDIT');
+			ToolbarHelper::editList('phocagalleryc.edit','JToolbar_EDIT');
 		}
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper ::divider();
-			JToolbarHelper ::custom('phocagallerycs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
-			JToolbarHelper ::custom('phocagallerycs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
-			JToolbarHelper ::custom( 'phocagallerycs.approve', 'approve.png', '', 'COM_PHOCAGALLERY_APPROVE' , true);
-			JToolbarHelper ::custom( 'phocagallerycs.disapprove', 'disapprove.png', '',  'COM_PHOCAGALLERY_NOT_APPROVE' , true);
-			JToolbarHelper ::custom('phocagallerycs.cooliris', 'cooliris.png', '',  'COM_PHOCAGALLERY_COOLIRIS' , true);
+			ToolbarHelper::divider();
+			ToolbarHelper::custom('phocagallerycs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			ToolbarHelper::custom('phocagallerycs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
+			ToolbarHelper::custom( 'phocagallerycs.approve', 'approve.png', '', 'COM_PHOCAGALLERY_APPROVE' , true);
+			ToolbarHelper::custom( 'phocagallerycs.disapprove', 'disapprove.png', '',  'COM_PHOCAGALLERY_NOT_APPROVE' , true);
+			ToolbarHelper::custom('phocagallerycs.cooliris', 'cooliris.png', '',  'COM_PHOCAGALLERY_COOLIRIS' , true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper ::deleteList( JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagallerycs.delete', 'COM_PHOCAGALLERY_DELETE');
+			ToolbarHelper::deleteList( Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagallerycs.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
-			Joomla\CMS\HTML\HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
-			$title = JText::_('JToolbar_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+			//HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
+			$title = Text::_('JToolbar_BATCH');
+
+
+			$dhtml = '<joomla-toolbar-button id="toolbar-batch" list-selection>';
+			$dhtml .= "<button data-bs-toggle=\"modal\" data-bs-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
+			$dhtml .= '</joomla-toolbar-button>';
+
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 
@@ -169,6 +183,9 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 		$countItemsInCat 	= 0;// Ordering
 		$level 				= $level + 1;
 		$parentsTreeString	= $id . ' '. $parentsTreeString;
+
+
+
 
 		// Limit the level of tree
 		if (!$maxLevel || ($maxLevel && $level < $maxLevel)) {
@@ -180,7 +197,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 				if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {
 
 
-					$tree[$iCT] 					= new JObject();
+					$tree[$iCT] 					= new CMSObject();
 
 
 
@@ -245,6 +262,7 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 
 					$iCT++;
 
+
 					$tree = $this->processTree($data, $tree, $key->id, $show_text . " - ", $currentId, $level, $parentsTreeString, $maxLevel);
 
 					$countItemsInCat++;
@@ -252,21 +270,22 @@ class PhocaGalleryCpViewPhocaGalleryCs extends JViewLegacy
 
 			}
 		}
+
 		return($tree);
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
-			'a.title' 		=> JText::_('COM_PHOCAGALLERY_TITLE'),
-			'a.published' 	=> JText::_('COM_PHOCAGALLERY_PUBLISHED'),
-			'a.approved' 	=> JText::_('COM_PHOCAGALLERY_APPROVED'),
-			'parent_title' 	=> JText::_('COM_PHOCAGALLERY_PARENT_CATEGORY'),
-			'a.owner' 		=> JText::_('COM_PHOCAGALLERY_OWNER'),
-			'ratingavg' 	=> JText::_('COM_PHOCAGALLERY_RATING'),
-			'a.hits' 		=> JText::_('COM_PHOCAGALLERY_HITS'),
-			'language' 		=> JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('JGRID_HEADING_ORDERING'),
+			'a.title' 		=> Text::_('COM_PHOCAGALLERY_TITLE'),
+			'a.published' 	=> Text::_('COM_PHOCAGALLERY_PUBLISHED'),
+			'a.approved' 	=> Text::_('COM_PHOCAGALLERY_APPROVED'),
+			'parent_title' 	=> Text::_('COM_PHOCAGALLERY_PARENT_CATEGORY'),
+			'a.owner' 		=> Text::_('COM_PHOCAGALLERY_OWNER'),
+			'ratingavg' 	=> Text::_('COM_PHOCAGALLERY_RATING'),
+			'a.hits' 		=> Text::_('COM_PHOCAGALLERY_HITS'),
+			'language' 		=> Text::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

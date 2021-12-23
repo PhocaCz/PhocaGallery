@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $r = $this->r;
 echo '<div class="ph-item-list-box ph-item-list-box-admin">';
@@ -23,7 +25,7 @@ if (count($this->images) > 0 || count($this->folders) > 0) {
         echo $this->loadTemplate('image');
 	}
 } else {
-    echo '<div class="ph-item-list-box-head">'.JText::_( 'COM_PHOCAGALLERY_THERE_IS_NO_IMAGE' ).'</div>';
+    echo '<div class="ph-item-list-box-head">'.Text::_( 'COM_PHOCAGALLERY_THERE_IS_NO_IMAGE' ).'</div>';
 }
 
 echo '</div>';
@@ -35,20 +37,20 @@ if ($this->t['displaytabs'] > 0) {
 
 	/*echo '<ul class="nav nav-tabs" id="configTabs">';
 
-	$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD');
+	$label = HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_UPLOAD');
 	echo '<li><a href="#upload" data-toggle="tab">'.$label.'</a></li>';
 
 	if((int)$this->t['enablemultiple']  >= 0) {
-		$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
+		$label = HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
 		echo '<li><a href="#multipleupload" data-toggle="tab">'.$label.'</a></li>';
 	}
 
 	if($this->t['enablejava'] >= 0) {
 
-		$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD');
+		$label = HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_JAVA_UPLOAD');
 		echo '<li><a href="#javaupload" data-toggle="tab">'.$label.'</a></li>';
 	}
-	$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-folder.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_CREATE_FOLDER');
+	$label = HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-folder.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_CREATE_FOLDER');
 	echo '<li><a href="#createfolder" data-toggle="tab">'.$label.'</a></li>';
 
 	echo '</ul>';*/
@@ -63,14 +65,14 @@ if ($this->t['displaytabs'] > 0) {
 	echo $r->startTabs($activeTab);
 
 	$tabs = array();
-	$tabs['multipleupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
-	$tabs['upload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bd duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD');
+	$tabs['multipleupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bl duotone icon-upload"></i></span>' . '&nbsp;'.Text::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD');
+	$tabs['upload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bd duotone icon-upload"></i></span>' . '&nbsp;'.Text::_('COM_PHOCAGALLERY_UPLOAD');
 
 	if (!empty($this->t['javaupload'])) {
-	    $tabs['javaupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-rl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD');
+	    $tabs['javaupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-rl duotone icon-upload"></i></span>' . '&nbsp;'.Text::_('COM_PHOCAGALLERY_JAVA_UPLOAD');
     }
 
-	$tabs['createfolder'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-brd duotone icon-folder"></i></span>' . '&nbsp;'.JText::_('COM_PHOCAGALLERY_CREATE_FOLDER');
+	$tabs['createfolder'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-brd duotone icon-folder"></i></span>' . '&nbsp;'.Text::_('COM_PHOCAGALLERY_CREATE_FOLDER');
 
 
 
@@ -107,30 +109,30 @@ if ($this->t['displaytabs'] > 0) {
 if ($this->t['displaytabs'] > 0) {
 	echo '<div id="phocagallery-pane">';
 	//$pane =& J Pane::getInstance('Tabs', array('startOffset'=> $this->t['tab']));
-	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.start', 'config-tabs-com_phocagallery-i', array('useCookie'=>1, 'startOffset'=> $this->t['tab']));
+	echo HTMLHelper::_('tabs.start', 'config-tabs-com_phocagallery-i', array('useCookie'=>1, 'startOffset'=> $this->t['tab']));
 	//echo $pane->startPane( 'pane' );
 
-	//echo $pane->startPanel( Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD'), 'upload' );
-	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD'), 'upload' );
+	//echo $pane->startPanel( JHtml::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_UPLOAD'), 'upload' );
+	echo HTMLHelper::_('tabs.panel', HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_UPLOAD'), 'upload' );
 	echo $this->loadTemplate('upload');
 	//echo $pane->endPanel();
 
 	if((int)$this->t['enablemultiple']  >= 0) {
-		//echo $pane->startPanel( Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD'), 'multipleupload' );
-		echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD'), 'multipleupload' );
+		//echo $pane->startPanel( JHtml::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD'), 'multipleupload' );
+		echo HTMLHelper::_('tabs.panel', HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-multiple.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_MULTIPLE_UPLOAD'), 'multipleupload' );
 		echo $this->loadTemplate('multipleupload');
 		//echo $pane->endPanel();
 	}
 
 	if($this->t['enablejava'] >= 0) {
-		//echo $pane->startPanel( Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'javaupload' );
-		echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'javaupload' );
+		//echo $pane->startPanel( JHtml::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.JText::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'javaupload' );
+		echo HTMLHelper::_('tabs.panel', HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/icon-16-upload-java.png','') . '&nbsp;'.Text::_('COM_PHOCAGALLERY_JAVA_UPLOAD'), 'javaupload' );
 		echo $this->loadTemplate('javaupload');
 		//echo $pane->endPanel();
 	}
 
 	//echo $pane->endPane();
-	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.end');
+	echo HTMLHelper::_('tabs.end');
 	echo '</div>';// end phocagallery-pane
 }
 */

@@ -9,12 +9,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 class PhocaGalleryFileUploadFront
 {
 	public static function getSizeAllOriginalImages($fileSize, $userId) {		
 		
-		$db 			=JFactory::getDBO();
+		$db 			=Factory::getDBO();
 		$allFileSize	= 0;
 		$query = 'SELECT SUM(a.imgorigsize) AS sumimgorigsize'
 				.' FROM #__phocagallery AS a'

@@ -9,11 +9,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 class PhocaGalleryCommentCategory
 {
 	public static function checkUserComment($catid, $userid) {
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT co.id AS id'
 			    .' FROM #__phocagallery_comments AS co'
 			    .' WHERE co.catid = '. (int)$catid 
@@ -30,7 +31,7 @@ class PhocaGalleryCommentCategory
 	
 	public static function displayComment($catid) {
 	
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT co.id AS id, co.title AS title, co.comment AS comment, co.date AS date, u.name AS name, u.username AS username'
 			    .' FROM #__phocagallery_comments AS co'
 				.' LEFT JOIN #__users AS u ON u.id = co.userid '

@@ -11,10 +11,12 @@
 
 
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.controlleradmin');
 
 
-class PhocaGalleryCpControllerPhocaGalleryCos extends JControllerAdmin
+class PhocaGalleryCpControllerPhocaGalleryCos extends AdminController
 {
 	protected	$option 		= 'com_phocagallery';
 
@@ -32,7 +34,7 @@ class PhocaGalleryCpControllerPhocaGalleryCos extends JControllerAdmin
 		$model = $this->getModel();
 		$return = $model->saveorder($pks, $order);
 		if ($return) { echo "1";}
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }
 ?>

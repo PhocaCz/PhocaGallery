@@ -9,12 +9,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 class PhocaGalleryRateCategory
 {
 	public static function updateVoteStatistics( $catid ) {
 		
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		
 		// Get AVG and COUNT
 		$query = 'SELECT COUNT(vs.id) AS count, AVG(vs.rating) AS average'
@@ -72,7 +73,7 @@ class PhocaGalleryRateCategory
 	
 	public static function getVotesStatistics($id) {
 	
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT vs.count AS count, vs.average AS average'
 				.' FROM #__phocagallery_votes_statistics AS vs'
 			    .' WHERE vs.catid = '.(int) $id;
@@ -84,7 +85,7 @@ class PhocaGalleryRateCategory
 	
 	public static function checkUserVote($catid, $userid) {
 		
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT v.id AS id'
 			    .' FROM #__phocagallery_votes AS v'
 			    .' WHERE v.catid = '. (int)$catid 

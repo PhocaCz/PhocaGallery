@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 phocagalleryimport('phocagallery.render.rendermap');
 
 
@@ -23,7 +25,7 @@ echo PhocaGalleryRenderFront::renderFeedIcon('categories');
 echo '</div>';
 
 if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
-	echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
+	echo '<p>' . Text::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
 
 
@@ -68,9 +70,9 @@ if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
 				$extCategory = PhocaGalleryImage::isExtImage($category->extid);
 				if ($extCategory) {
 					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
-					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+					$imgLink = HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 				} else {
-					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
+					$imgLink = HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
 				}
 
 				$minWidth = 110;

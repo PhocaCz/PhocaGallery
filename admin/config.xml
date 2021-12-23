@@ -2,7 +2,7 @@
 <!-- last head 28 spacer 10-->
 <config>
 	<fields addfieldpath="/administrator/components/com_phocagallery/models/fields">
-		<fieldset name="categories" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
+		<fieldset class="options-form" name="categories" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORIES_VIEW_LABEL">
 
 <field name="phocahead1" type="phocahead" phocaimage="icon-param-csv.png" default="COM_PHOCAGALLERY_CONFIG_CATEGORIES_VIEW_SETTINGS_LABEL" label="" description=""/>
 
@@ -66,23 +66,23 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="hide_categories" type="phocatextarea" rows="2" cols="26" default="" label="COM_PHOCAGALLERY_FIELD_HIDE_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_HIDE_CATEGORIES_DESC"/>
+<field name="hide_categories" type="textarea" rows="2" cols="26" default="" label="COM_PHOCAGALLERY_FIELD_HIDE_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_HIDE_CATEGORIES_DESC"/>
 
-<field name="show_categories" type="phocatextarea" rows="2" cols="26" default="" label="COM_PHOCAGALLERY_FIELD_SHOW_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_SHOW_CATEGORIES_DESC"/>
+<field name="show_categories" type="textarea" rows="2" cols="26" default="" label="COM_PHOCAGALLERY_FIELD_SHOW_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_SHOW_CATEGORIES_DESC"/>
 
-<field name="default_pagination_categories" default="0" size="18" type="phocatext" label="COM_PHOCAGALLERY_FIELD_DEFAULT_VALUE_PAGINATION_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORIES_DESC"/>
+<field name="default_pagination_categories" default="0" size="18" type="text" label="COM_PHOCAGALLERY_FIELD_DEFAULT_VALUE_PAGINATION_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORIES_DESC"/>
 
-<field name="pagination_categories" default="5,10,15,20,50" size="18" type="phocatext" label="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORIES_DESC"/>
-
-<field name="categories_box_space" default="0" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_SPACE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_SPACE_DESC"/>
-
+<field name="pagination_categories" default="5,10,15,20,50" size="18" type="text" label="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORIES_DESC"/>
+<!--
+<field name="categories_box_space" default="0" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_SPACE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_SPACE_DESC"/>
+-->
 <field name="display_cat_desc_box" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_DISPLAY_CAT_DESCRIPTION_IN_BOX_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_CAT_DESCRIPTION_IN_BOX_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="2">COM_PHOCAGALLERY_YESHTML</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="char_cat_length_name" default="9" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_DESC"/>
+<!--<field name="char_cat_length_name" default="9" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_CHAR_CAT_LENGTH_NAME_DESC"/>
 
 <field name="categories_mosaic_images" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_MOSAIC_EFFECT_CATEGORIES_LABEL" description="COM_PHOCAGALLERY_FIELD_MOSAIC_EFFECT_CATEGORIES_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
@@ -105,14 +105,14 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
 
-	<field name="categories_box_width" default="33%" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_WIDTH_DESC"/>
+	<field name="categories_box_width" default="33%" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_BOX_WIDTH_DESC"/>
 
-	<field name="categories_columns" default="1" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_NUMBER_COLUMNS_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_COLUMNS_DESC"/>
+	<field name="categories_columns" default="1" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_NUMBER_COLUMNS_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_COLUMNS_DESC"/>
 
 
-
+-->
 	</fieldset>
-	<fieldset name="category" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
+	<fieldset class="options-form" name="category" label="COM_PHOCAGALLERY_CONFIG_HEAD_CATEGORY_VIEW_LABEL">
 
 
 
@@ -135,9 +135,9 @@
 	<option value="16">COM_PHOCAGALLERY_HITS_DESC</option>
 </field>
 
-<field name="display_new" default="0" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_DISPLAY_NEW_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_NEW_ICON_DESC" />
+<field name="display_new" default="0" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_DISPLAY_NEW_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_NEW_ICON_DESC" />
 
-<field name="display_hot" default="0" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_DISPLAY_HOT_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_HOT_ICON_DESC" />
+<field name="display_hot" default="0" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_DISPLAY_HOT_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_HOT_ICON_DESC" />
 
 <field name="display_name" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_DISPLAY_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_HIDE_NAME_DESC">
 	<option value="0">COM_PHOCAGALLERY_HIDE</option>
@@ -157,9 +157,9 @@
 </field>
 
 
-<field name="char_length_name" default="15" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CHAR_LENGTH_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_CHAR_LENGTH_NAME_DESC"/>
+<!--<field name="char_length_name" default="15" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_CHAR_LENGTH_NAME_LABEL" description="COM_PHOCAGALLERY_FIELD_CHAR_LENGTH_NAME_DESC"/>
 
-<field name="category_box_space" default="0" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORY_BOX_SPACE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_BOX_SPACE_DESC"/>
+<field name="category_box_space" default="0" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORY_BOX_SPACE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_BOX_SPACE_DESC"/>-->
 
 <field name="display_categories_sub" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_DISPLAY_CATEGORIES_SUB_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_CATEGORIES_SUB_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
@@ -195,15 +195,15 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-<field name="default_pagination_category" default="20" size="18" type="phocatext" label="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORY_DESC"/>
-<field name="pagination_category" default="5,10,15,20,50" size="18" type="phocatext" label="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORY_DESC"/>
+<field name="default_pagination_category" default="20" size="18" type="text" label="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_Default_VALUE_PAGINATION_CATEGORY_DESC"/>
+<field name="pagination_category" default="5,10,15,20,50" size="18" type="text" label="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_PAGINATION_CATEGORY_DESC"/>
 
 <field name="display_img_desc_box" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_DISPLAY_IMG_DESCRIPTION_IN_BOX_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_IMG_DESCRIPTION_IN_BOX_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="2">COM_PHOCAGALLERY_YESHTML</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+<!--
 <field name="diff_thumb_height" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_DIFF_THUMB_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_DIFF_THUMB_HEIGHT_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="2">COM_PHOCAGALLERY_YES_MASONRY</option>
@@ -214,7 +214,7 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="2">COM_PHOCAGALLERY_YES_FIT_WIDTH</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
-</field>
+</field>-->
 
 
 <field name="phocahead3" type="phocahead" phocaimage="icon-param-cscv.png" default="COM_PHOCAGALLERY_CONFIG_CATEGORY_VIEW_SETTINGS_CV_LABEL" label="" description="" />
@@ -255,7 +255,7 @@
 <field name="piclens_image" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_COOLIRIS_IMAGE_DESC">
 	<option value="0">COM_PHOCAGALLERY_ORIGINAL_IMAGE</option>
 	<option value="1">COM_PHOCAGALLERY_THUMBNAIL_IMAGE</option>
-</field> -->
+</field>
 
 <field name="phocahead13" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_SWITCH_SETTINGS_LABEL" label="" description=""/>
 
@@ -263,8 +263,8 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-<field name="switch_width" default="640" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_WIDTH_DESC"/>
-<field name="switch_height" default="480" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_HEIGHT_DESC"/>
+<field name="switch_width" default="640" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_WIDTH_DESC"/>
+<field name="switch_height" default="480" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_SWITCH_IMAGE_HEIGHT_DESC"/>
 <field name="switch_fixed_size" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_SWITCH_FIXED_SIZE_LABEL" description="COM_PHOCAGALLERY_FIELD_SWITCH_FIXED_SIZE_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
@@ -292,8 +292,8 @@
 <option value="4">1/4</option>
 </field>
 
-<field name="overlib_attributes" type="phocatextarea" rows="2" cols="26" default="BELOW, RIGHT, CSSCLASS, TEXTFONTCLASS, 'fontPhocaClass', FGCLASS, 'fgPhocaClass', BGCLASS, 'bgPhocaClass', CAPTIONFONTCLASS,'capfontPhocaClass', CLOSEFONTCLASS, 'capfontclosePhocaClass'" label="COM_PHOCAGALLERY_FIELD_OVERLIB_ATTRIBUTES_LABEL" description="COM_PHOCAGALLERY_FIELD_OVERLIB_ATTRIBUTES_DESC"/>
-
+<field name="overlib_attributes" type="textarea" rows="2" cols="26" default="BELOW, RIGHT, CSSCLASS, TEXTFONTCLASS, 'fontPhocaClass', FGCLASS, 'fgPhocaClass', BGCLASS, 'bgPhocaClass', CAPTIONFONTCLASS,'capfontPhocaClass', CLOSEFONTCLASS, 'capfontclosePhocaClass'" label="COM_PHOCAGALLERY_FIELD_OVERLIB_ATTRIBUTES_LABEL" description="COM_PHOCAGALLERY_FIELD_OVERLIB_ATTRIBUTES_DESC"/>
+-->
 <field name="phocahead17" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_STATISTICS_SETTINGS_LABEL" label="" description=""/>
 
 <field name="display_category_statistics" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_DISPLAY_STATISTICS_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_STATISTICS_DESC">
@@ -308,12 +308,12 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
-<field name="count_lastadded_cat_stat" default="3" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_NUMBER_LAST_ADDED_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_LAST_ADDED_DESC"/>
+<field name="count_lastadded_cat_stat" default="3" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_NUMBER_LAST_ADDED_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_LAST_ADDED_DESC"/>
 <field name="display_mostviewed_cat_stat" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_DISPLAY_MOST_VIEWED_CATEGORY_STATISTICS_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_MOST_VIEWED_CATEGORY_STATISTICS_DESC">
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
-<field name="count_mostviewed_cat_stat" default="3" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_NUMBER_MOST_VIEWED_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_MOST_VIEWED_DESC"/>
+<field name="count_mostviewed_cat_stat" default="3" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_NUMBER_MOST_VIEWED_LABEL" description="COM_PHOCAGALLERY_FIELD_NUMBER_MOST_VIEWED_DESC"/>
 
 <field name="phocahead18" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_INFO_SETTINGS_LABEL" label="" description=""/>
 
@@ -322,35 +322,25 @@
 	<option value="1">COM_PHOCAGALLERY_SHOW</option>
 </field>
 
-<field name="exif_information" type="phocatextarea" rows="2" cols="26" default="FILE.FileName,FILE.FileDateTime,FILE.FileSize,FILE.MimeType,COMPUTED_Height,COMPUTED_Width,COMPUTED_IsColor,COMPUTED_ApertureFNumber,IFD0.Make,IFD0.Model,IFD0.Orientation,IFD0.XResolution,IFD0.YResolution,IFD0.ResolutionUnit,IFD0.Software,IFD0.DateTime,IFD0.Exif_IFD_Pointer,IFD0.GPS_IFD_Pointer,EXIF.ExposureTime,EXIF.FNumber,EXIF.ExposureProgram,EXIF.ISOSpeedRatings,EXIF.ExifVersion,EXIF.DateTimeOriginal,EXIF.DateTimeDigitized,EXIF.ShutterSpeedValue,EXIF.ApertureValue,EXIF.ExposureBiasValue,EXIF.MaxApertureValue,EXIF.MeteringMode,EXIF.LightSource,EXIF.Flash,EXIF.FocalLength,EXIF.SubSecTimeOriginal,EXIF.SubSecTimeDigitized,EXIF.ColorSpace,EXIF.ExifImageWidth,EXIF.ExifImageLength,EXIF.SensingMethod,EXIF.CustomRendered,EXIF.ExposureMode,EXIF.WhiteBalance,EXIF.DigitalZoomRatio,EXIF.FocalLengthIn35mmFilm,EXIF.SceneCaptureType,EXIF.GainControl,EXIF.Contrast,EXIF.Saturation,EXIF.Sharpness,EXIF.SubjectDistanceRange,GPS.GPSLatitudeRef,GPS.GPSLatitude,GPS.GPSLongitudeRef,GPS.GPSLongitude,GPS.GPSAltitudeRef,GPS.GPSAltitude,GPS.GPSTimeStamp,GPS.GPSStatus,GPS.GPSMapDatum,GPS.GPSDateStamp" label="COM_PHOCAGALLERY_FIELD_EXIF_INFO_LABEL" description="COM_PHOCAGALLERY_FIELD_EXIF_INFO_DESC"/>
+<field name="exif_information" type="textarea" rows="2" cols="26" default="FILE.FileName,FILE.FileDateTime,FILE.FileSize,FILE.MimeType,COMPUTED_Height,COMPUTED_Width,COMPUTED_IsColor,COMPUTED_ApertureFNumber,IFD0.Make,IFD0.Model,IFD0.Orientation,IFD0.XResolution,IFD0.YResolution,IFD0.ResolutionUnit,IFD0.Software,IFD0.DateTime,IFD0.Exif_IFD_Pointer,IFD0.GPS_IFD_Pointer,EXIF.ExposureTime,EXIF.FNumber,EXIF.ExposureProgram,EXIF.ISOSpeedRatings,EXIF.ExifVersion,EXIF.DateTimeOriginal,EXIF.DateTimeDigitized,EXIF.ShutterSpeedValue,EXIF.ApertureValue,EXIF.ExposureBiasValue,EXIF.MaxApertureValue,EXIF.MeteringMode,EXIF.LightSource,EXIF.Flash,EXIF.FocalLength,EXIF.SubSecTimeOriginal,EXIF.SubSecTimeDigitized,EXIF.ColorSpace,EXIF.ExifImageWidth,EXIF.ExifImageLength,EXIF.SensingMethod,EXIF.CustomRendered,EXIF.ExposureMode,EXIF.WhiteBalance,EXIF.DigitalZoomRatio,EXIF.FocalLengthIn35mmFilm,EXIF.SceneCaptureType,EXIF.GainControl,EXIF.Contrast,EXIF.Saturation,EXIF.Sharpness,EXIF.SubjectDistanceRange,GPS.GPSLatitudeRef,GPS.GPSLatitude,GPS.GPSLongitudeRef,GPS.GPSLongitude,GPS.GPSAltitudeRef,GPS.GPSAltitude,GPS.GPSTimeStamp,GPS.GPSStatus,GPS.GPSMapDatum,GPS.GPSDateStamp" label="COM_PHOCAGALLERY_FIELD_EXIF_INFO_LABEL" description="COM_PHOCAGALLERY_FIELD_EXIF_INFO_DESC"/>
 
 	</fieldset>
 
 
 
 
-	<fieldset name="detail" label="COM_PHOCAGALLERY_CONFIG_HEAD_DETAIL_VIEW_LABEL">
+	<fieldset class="options-form" name="detail" label="COM_PHOCAGALLERY_CONFIG_HEAD_DETAIL_VIEW_LABEL">
 
 <field name="phocahead4" type="phocahead" phocaimage="icon-param-dv.png" default="COM_PHOCAGALLERY_CONFIG_DETAIL_VIEW_LABEL" label="" description="" />
-<field name="detail_window" type="list" default="12" label="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_LABEL" description="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_DESC_DESC">
-	<option value="1">COM_PHOCAGALLERY_STANDARD_POPUP_WINDOW</option>
-	<option value="0">COM_PHOCAGALLERY_MODAL_POPUP_BOX</option>
-	<option value="2">COM_PHOCAGALLERY_MODAL_POPUP_BOX_IMAGE_ONLY</option>
-	<option value="13">COM_PHOCAGALLERY_SHADOWBOX</option>
-	<option value="3">COM_PHOCAGALLERY_SHADOWBOX_IMAGE_ONLY</option>
-	<option value="4">COM_PHOCAGALLERY_HIGHSLIDE</option>
-	<option value="5">COM_PHOCAGALLERY_HIGHSLIDE_IMAGE_ONLY</option>
-	<option value="6">COM_PHOCAGALLERY_JAK_LIGHTBOX</option>
+<field name="detail_window" type="list" default="14" label="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_LABEL" description="COM_PHOCAGALLERY_FIELD_DETAIL_WINDOW_DESC_DESC">
+	<option value="0">COM_PHOCAGALLERY_BOOTSTRAP_MODAL_POPUP_WINDOW</option>
+    <option value="1">COM_PHOCAGALLERY_STANDARD_POPUP_WINDOW</option>
 	<option value="7">COM_PHOCAGALLERY_NO_POPUP</option>
-	<option value="8">COM_PHOCAGALLERY_SLIMBOX</option>
-	<option value="9">COM_PHOCAGALLERY_BOXPLUS</option>
-	<option value="10">COM_PHOCAGALLERY_BOXPLUS_IMAGE_ONLY</option>
-	<option value="11">COM_PHOCAGALLERY_MAGNIFIC</option>
-	<option value="12">COM_PHOCAGALLERY_MAGNIFIC_IMAGE_ONLY</option>
+    <option value="12">COM_PHOCAGALLERY_MAGNIFIC</option>
 	<option value="14">COM_PHOCAGALLERY_PHOTOSWIPE</option>
 </field>
 
-
+<!--
 <field name="phocahead30" type="phocahead" default="COM_PHOCAGALLERY_FIELD_MODAL_BOX_LABEL" label="" description="" />
 
 <field name="modal_box_overlay_opacity" default="0.3"  type="list" label="COM_PHOCAGALLERY_FIELD_MODAL_BOX_OVERLAY_OPACITY_LABEL" description="COM_PHOCAGALLERY_FIELD_MODAL_BOX_OVERLAY_OPACITY_DESC">
@@ -387,7 +377,7 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
 
-<field name="sb_settings" type="phocatextarea" label="COM_PHOCAGALLERY_FIELD_SHADOWBOX_SETTINGS_LABEL" description="COM_PHOCAGALLERY_FIELD_SHADOWBOX_SETTINGS_DESC" rows="2" cols="26" default="overlayColor: '#000',overlayOpacity:0.5,resizeDuration:0.35,displayCounter:true,displayNav:true"/>
+<field name="sb_settings" type="textarea" label="COM_PHOCAGALLERY_FIELD_SHADOWBOX_SETTINGS_LABEL" description="COM_PHOCAGALLERY_FIELD_SHADOWBOX_SETTINGS_DESC" rows="2" cols="26" default="overlayColor: '#000',overlayOpacity:0.5,resizeDuration:0.35,displayCounter:true,displayNav:true"/>
 
 
 
@@ -464,7 +454,7 @@
 	<option value="3">COM_PHOCAGALLERY_TITLE_AND_DESCRIPTION</option>
 	<option value="0">COM_PHOCAGALLERY_NONE</option>
 </field>
-<field name="jak_description_height" default="10" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_JAK_LIGHTBOX_DESCRIPTION_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_JAK_LIGHTBOX_DESCRIPTION_HEIGHT_DESC"/>
+<field name="jak_description_height" default="10" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_JAK_LIGHTBOX_DESCRIPTION_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_JAK_LIGHTBOX_DESCRIPTION_HEIGHT_DESC"/>
 
 
 <field name="phocahead34" type="phocahead" default="COM_PHOCAGALLERY_BOXPLUS" label="" description="" />
@@ -537,23 +527,23 @@
 	<option value="8">COM_PHOCAGALLERY_THBUMNAILS</option>
 </field>
 
-<field name="multibox_width" default="980" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_WIDTH_DESC"/>
-<field name="multibox_height" default="560" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_HEIGHT_DESC"/>
+<field name="multibox_width" default="980" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_WIDTH_DESC"/>
+<field name="multibox_height" default="560" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_HEIGHT_DESC"/>
 
-<field name="multibox_map_width" default="280" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_WIDTH_DESC"/>
-<field name="multibox_map_height" default="300" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_HEIGHT_DESC"/>
+<field name="multibox_map_width" default="280" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_WIDTH_DESC"/>
+<field name="multibox_map_height" default="300" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_MAP_HEIGHT_DESC"/>
 
-<field name="multibox_thubms_box_width" default="300" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_BOX_WIDTH_DESC"/>
-<field name="multibox_thubms_count" default="4" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_COUNT_DESC"/>
+<field name="multibox_thubms_box_width" default="300" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_BOX_WIDTH_DESC"/>
+<field name="multibox_thubms_count" default="4" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_THUBMS_COUNT_DESC"/>
 
-<field name="multibox_comments_width" default="300" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_WIDTH_DESC"/>
-<field name="multibox_comments_height" default="600" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_HEIGHT_DESC"/>
+<field name="multibox_comments_width" default="300" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_WIDTH_DESC"/>
+<field name="multibox_comments_height" default="600" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_COMMENTS_HEIGHT_DESC"/>
 
 <field name="multibox_fixed_cols" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_MULTIBOX_FIXED_COLS_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIBOX_FIXED_COLS_DESC">
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
-
+-->
 
 <field name="phocahead39" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_PHOTOSWIPE_SETTINGS_LABEL" label="" description=""/>
 
@@ -599,7 +589,7 @@
 		<option value="1">COM_PHOCAGALLERY_YES</option>
 	</field>
 
-
+<!--
 <field name="phocahead38" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_SLIDESHOW_SETTINGS_LABEL" label="" description=""/>
 
 <field name="slideshow_delay" type="list" default="3000" label="COM_PHOCAGALLERY_FIELD_SLIDESHOW_DELAY_LABEL" description="COM_PHOCAGALLERY_FIELD_SLIDESHOW_DELAY_DESC">
@@ -632,10 +622,10 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+    -->
 
 	</fieldset>
-	<fieldset name="general" label="COM_PHOCAGALLERY_CONFIG_GENERAL_SETTINGS_LABEL">
+	<fieldset class="options-form" name="general" label="COM_PHOCAGALLERY_CONFIG_GENERAL_SETTINGS_LABEL">
 
 	<field name="youtube_api_key" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_KEY_DESC"/>
 	<field name="youtube_api_ssl" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_LABEL" description="COM_PHOCAGALLERY_FIELD_YOUTUBE_API_SSL_ENABLED_DESC">
@@ -643,7 +633,9 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="phocagallery_width" default=""  type="phocatext" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_DESC_DESC"/>
+<!--
+
+<field name="phocagallery_width" default=""  type="text" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_WIDTH_DESC_DESC"/>
 <field name="phocagallery_center" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_LABEL" description="COM_PHOCAGALLERY_FIELD_PHOCA_GALLERY_CENTER_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES_CATEGORY_VIEW</option>
 	<option value="2">COM_PHOCAGALLERY_YES_CATEGORIES_VIEW</option>
@@ -670,10 +662,10 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
+-->
 
-
-<field name="gallery_metadesc" type="phocatextarea" label="COM_PHOCAGALLERY_FIELD_METADESC_LABEL" description="COM_PHOCAGALLERY_FIELD_METADESC_DESC" rows="2" cols="26" default=""/>
-<field name="gallery_metakey" type="phocatextarea" label="COM_PHOCAGALLERY_FIELD_METAKEY_LABEL" description="COM_PHOCAGALLERY_FIELD_METAKEY_DESC" rows="2" cols="26" default=""/>
+<field name="gallery_metadesc" type="textarea" label="COM_PHOCAGALLERY_FIELD_METADESC_LABEL" description="COM_PHOCAGALLERY_FIELD_METADESC_DESC" rows="2" cols="26" default=""/>
+<field name="gallery_metakey" type="textarea" label="COM_PHOCAGALLERY_FIELD_METAKEY_LABEL" description="COM_PHOCAGALLERY_FIELD_METAKEY_DESC" rows="2" cols="26" default=""/>
 
 <field name="alt_value" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_ALTVALUE_LABEL" description="COM_PHOCAGALLERY_FIELD_ALTVALUE_DESC">
 	<option value="0">COM_PHOCAGALLERY_EMPTY</option>
@@ -709,14 +701,14 @@
 	<option value="2">COM_PHOCAGALLERY_YES_CATEGORIES_VIEW</option>
 	<option value="3">COM_PHOCAGALLERY_YES_CATEGORY_VIEW</option>
 </field>
-<field name="feed_cat_ids" default="" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_FEED_CAT_IDS_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_CAT_IDS_DESC"/>
+<field name="feed_cat_ids" default="" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_FEED_CAT_IDS_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_CAT_IDS_DESC"/>
 <field name="feed_img_ordering" type="list" default="6" label="COM_PHOCAGALLERY_FIELD_FEED_IMG_ORDERING_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_IMG_ORDERING_DESC">
 	<option value="5">COM_PHOCAGALLERY_DATE_ASC</option>
 	<option value="6">COM_PHOCAGALLERY_DATE_DESC</option>
 </field>
-<field name="feed_img_count" default="5" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_FEED_IMG_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_IMG_COUNT_DESC"/>
-<field name="feed_title" default="" size="20" type="phocatext" label="COM_PHOCAGALLERY_FIELD_FEED_TITLE_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_TITLE_DESC"/>
-
+<field name="feed_img_count" default="5" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_FEED_IMG_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_IMG_COUNT_DESC"/>
+<field name="feed_title" default="" size="20" type="text" label="COM_PHOCAGALLERY_FIELD_FEED_TITLE_LABEL" description="COM_PHOCAGALLERY_FIELD_FEED_TITLE_DESC"/>
+<!--
 <field name="enable_picasa_loading" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_ENABLE_PICASA_LOADING_IMG_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_PICASA_LOADING_IMG_DESC">
 <option value="0">COM_PHOCAGALLERY_NO</option>
 <option value="1">COM_PHOCAGALLERY_YES</option>
@@ -728,7 +720,7 @@
 <option value="50">50</option>
 <option value="100">100</option>
 </field>
-<!--
+
 <field name="enable_facebook_loading" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_ENABLE_FACEBOOK_LOADING_IMG_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_FACEBOOK_LOADING_IMG_DESC">
 <option value="0">COM_PHOCAGALLERY_NO</option>
 <option value="1">COM_PHOCAGALLERY_YES</option>
@@ -787,11 +779,11 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="categories_lng" default="" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_LONGITUDE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_LONGITUDE_DESC"/>
-<field name="categories_lat" default="" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_LATITUDE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_LATITUDE_DESC"/>
-<field name="categories_zoom" default="2" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_GEOTAGGING_ZOOM_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_GEOTAGGING_ZOOM_DESC"/>
-<field name="categories_map_width" default="" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_WIDTH_DESC"/>
-<field name="categories_map_height" default="500" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_HEIGHT_DESC"/>
+<field name="categories_lng" default="" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_LONGITUDE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_LONGITUDE_DESC"/>
+<field name="categories_lat" default="" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_LATITUDE_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_LATITUDE_DESC"/>
+<field name="categories_zoom" default="2" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_GEOTAGGING_ZOOM_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_GEOTAGGING_ZOOM_DESC"/>
+<field name="categories_map_width" default="" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_WIDTH_DESC"/>
+<field name="categories_map_height" default="500" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_MAP_HEIGHT_DESC"/>
 
 
 
@@ -808,8 +800,8 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="category_map_width" default="" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_WIDTH_DESC"/>
-<field name="category_map_height" default="400" size="10" type="phocatext" label="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_HEIGHT_DESC"/>
+<field name="category_map_width" default="" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_WIDTH_DESC"/>
+<field name="category_map_height" default="400" size="10" type="text" label="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_MAP_HEIGHT_DESC"/>
 
 
 
@@ -821,19 +813,19 @@
 </field>
 
 
-
+<!--
 <field name="phocahead27" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_VIRTUEMART_SETTINGS_LABEL" label="" description=""/>
 
 <field name="display_icon_vm" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_DISPLAY_VM_LINK_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_VM_LINK_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+-->
 
 	</fieldset>
-	<fieldset name="users" label="COM_PHOCAGALLERY_CONFIG_HEAD_USERS_LABEL">
+	<fieldset class="options-form" name="users" label="COM_PHOCAGALLERY_CONFIG_HEAD_USERS_LABEL">
 
-<field name="registered_access_level" type="phocaaccesslevel" label="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" >
+<field name="registered_access_level" type="phocaaccesslevel" class="form-control" label="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCAGALLERY_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" >
 
 </field>
 
@@ -865,8 +857,8 @@
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
 
-<field name="user_subcat_count" default="5" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MAX_SUBCAT_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_MAX_SUBCAT_COUNT_DESC"/>
-<field name="max_create_cat_char" default="1000" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_CATEGORY_DESCRIPTION_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_CATEGORY_DESCRIPTION_CHARACTERS_DESC"/>
+<field name="user_subcat_count" default="5" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_MAX_SUBCAT_COUNT_LABEL" description="COM_PHOCAGALLERY_FIELD_MAX_SUBCAT_COUNT_DESC"/>
+<field name="max_create_cat_char" default="1000" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_CATEGORY_DESCRIPTION_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_CATEGORY_DESCRIPTION_CHARACTERS_DESC"/>
 
 <field name="user_ucp_lang" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_USER_UCP_LANG_LABEL" description="COM_PHOCAGALLERY_FIELD_USER_UCP_LANG_DESC">
 	<option value="1">COM_PHOCAGALLERY_ALL</option>
@@ -880,11 +872,11 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-<field name="max_upload_char" default="1000" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_UPLOAD_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_UPLOAD_CHARACTERS_DESC"/>
-<field name="upload_maxsize" type="phocatext" size="20" default="3145728" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_UPLOAD_FILE_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_UPLOAD_FILE_DESC"/>
-<field name="upload_maxres_width" type="phocatext" size="20" default="3072" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_WIDTH_DESC"/>
-<field name="upload_maxres_height" type="phocatext" size="20" default="2304" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_HEIGHT_DESC"/>
-<field name="user_images_max_size" type="phocatext" size="20" default="20971520" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_USER_IMAGES_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_USER_IMAGES_DESC"/>
+<field name="max_upload_char" default="1000" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_UPLOAD_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_UPLOAD_CHARACTERS_DESC"/>
+<field name="upload_maxsize" type="text" size="20" default="3145728" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_UPLOAD_FILE_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_UPLOAD_FILE_DESC"/>
+<field name="upload_maxres_width" type="text" size="20" default="3072" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_WIDTH_DESC"/>
+<field name="upload_maxres_height" type="text" size="20" default="2304" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_RES_UPLOAD_HEIGHT_DESC"/>
+<field name="user_images_max_size" type="text" size="20" default="20971520" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_USER_IMAGES_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_SIZE_USER_IMAGES_DESC"/>
 
 <field name="enable_multiple" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_UPLOAD_ENABLE_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_UPLOAD_ENABLE_LABEL">
 	<option value="-1">COM_PHOCAGALLERY_DISABLE_MULTIPLE_UPLOAD</option>
@@ -907,20 +899,20 @@
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
 
-<field name="multiple_resize_width" type="phocatext" size="20" default="-1" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_WIDTH_DESC"/>
-<field name="multiple_resize_height" type="phocatext" size="20" default="-1" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_HEIGHT_DESC"/>
+<field name="multiple_resize_width" type="text" size="20" default="-1" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_WIDTH_DESC"/>
+<field name="multiple_resize_height" type="text" size="20" default="-1" label="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MULTIPLE_RESIZE_HEIGHT_DESC"/>
 
 
-
+<!--
 <field name="enable_java" type="list" default="-1" label="COM_PHOCAGALLERY_FIELD_ENABLE_JAVA_UPLOADER_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_JAVA_UPLOADER_DESC">
 	<option value="-1">COM_PHOCAGALLERY_DISABLE_JAVA_UPLOAD</option>
 	<option value="0">COM_PHOCAGALLERY_ENABLE_JAVA_UPLOAD_ONLY_ADMIN</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
 
-<field name="java_box_width" type="phocatext" size="20" default="480" label="COM_PHOCAGALLERY_FIELD_JAVA_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_JAVA_BOX_WIDTH_DESC"/>
-<field name="java_box_height" type="phocatext" size="20" default="480" label="COM_PHOCAGALLERY_FIELD_JAVA_BOX_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_JAVA_BOX_HEIGHT_DESC"/>
-
+<field name="java_box_width" type="text" size="20" default="480" label="COM_PHOCAGALLERY_FIELD_JAVA_BOX_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_JAVA_BOX_WIDTH_DESC"/>
+<field name="java_box_height" type="text" size="20" default="480" label="COM_PHOCAGALLERY_FIELD_JAVA_BOX_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_JAVA_BOX_HEIGHT_DESC"/>
+-->
 <field name="youtube_upload" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_ENABLE_YOUTUBE_UPLOAD_LABEL" description="COM_PHOCAGALLERY_FIELD_ENABLE_YOUTUBE_UPLOAD_DESC">
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
@@ -928,9 +920,9 @@
 </field>
 
 
-<field name="default_access" default="1" type="accesslevel" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_DESC" class="inputbox" size="1" />
+<field name="default_access" default="1" type="accesslevel" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_DESC" class="form-control" size="1" />
 
-<field name="default_accessuserid" default="" type="phocausers" multiple="1" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" class="inputbox" size="1" />
+<field name="default_accessuserid" default="0" type="phocausers" multiple="1" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" class="form-control" size="1" />
 
 <field name="phocahead10" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_RATING_SETTINGS_LABEL" label="" description=""/>
 
@@ -959,14 +951,14 @@
 	<option value="2">COM_PHOCAGALLERY_YES_CATEGORY_VIEW</option>
 	<option value="3">COM_PHOCAGALLERY_YES_CATEGORY_DETAIL_VIEW</option>
 </field>
-<field name="comment_width" default="500" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_COMMENT_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_COMMENT_WIDTH_DESC"/>
-<field name="max_comment_char" default="1000" size="6" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_COMMENT_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_COMMENT_CHARACTERS_DESC"/>
+<field name="comment_width" default="500" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_COMMENT_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_COMMENT_WIDTH_DESC"/>
+<field name="max_comment_char" default="1000" size="6" type="text" label="COM_PHOCAGALLERY_FIELD_MAXIMUM_COMMENT_CHARACTERS_LABEL" description="COM_PHOCAGALLERY_FIELD_MAXIMUM_COMMENT_CHARACTERS_DESC"/>
 
 <field name="display_comment_nopup" type="list" default="0" label="COM_PHOCAGALLERY_DISPLAY_COMMENTS_NO_POPUP_LABEL" description="COM_PHOCAGALLERY_DISPLAY_COMMENTS_NO_POPUP_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
-
+<!--
 <field name="external_comment_system" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_EXTERNAL_COMMENT_SYSTEM_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_COMMENT_SYSTEM_DESC">
 	<option value="0">COM_PHOCAGALLERY_NONE</option>
 	<option value="1">COM_PHOCAGALLERY_JCOMMENTS</option>
@@ -974,11 +966,11 @@
 </field>
 
 <field name="fb_comment_user_id" default="" size="18" type="phocaselectfbuser" label="COM_PHOCAGALLERY_FIELD_FB_USER_LABEL" description="COM_PHOCAGALLERY_FIELD_FB_USER_DESC" />
-
+-->
 
 	</fieldset>
 
-	<fieldset name="thumbnails" label="COM_PHOCAGALLERY_CONFIG_HEAD_THUMBNAIL_SETTINGS_LABEL">
+	<fieldset class="options-form" name="thumbnails" label="COM_PHOCAGALLERY_CONFIG_HEAD_THUMBNAIL_SETTINGS_LABEL">
 
 
 <field name="phocahead20" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_THUMBNAIL_GENERATION_SETTINGS_LABEL" label="" description=""/>
@@ -1014,9 +1006,9 @@
 	<option value="7">COM_PHOCAGALLERY_ALL</option>
 </field>
 
-<field name="additional_thumbnail_margin" type="phocatext" size="3" default="0" label="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_LABEL" description="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_DESC"/>
+<field name="additional_thumbnail_margin" type="text" size="3" default="0" label="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_LABEL" description="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_DESC"/>
 
-<field name="jpeg_quality" type="phocatext" size="3" default="85" label="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_LABEL" description="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_DESC"/>
+<field name="jpeg_quality" type="text" size="3" default="85" label="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_LABEL" description="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_DESC"/>
 
 <field name="exif_rotate" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_EXIF_ROTATE_LABEL" description="COM_PHOCAGALLERY_FIELD_EXIF_ROTATE_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
@@ -1027,18 +1019,18 @@
 
 <field name="phocahead23" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_IMG_WINDOWS_SIZE_SETTINGS_LABEL" label="" description=""/>
 
-<field name="large_image_width" default="640" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_WIDTH_DESC"/>
-<field name="large_image_height" default="480" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_HEIGHT_DESC"/>
+<field name="large_image_width" default="640" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_WIDTH_DESC"/>
+<field name="large_image_height" default="480" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_LARGE_IMAGE_HEIGHT_DESC"/>
 
-<field name="medium_image_width" default="100" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_WIDTH_DESC"/>
-<field name="medium_image_height" default="100" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_HEIGHT_DESC"/>
+<field name="medium_image_width" default="256" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_WIDTH_DESC"/>
+<field name="medium_image_height" default="192" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_MEDIUM_IMAGE_HEIGHT_DESC"/>
 
-<field name="small_image_width" default="50" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_WIDTH_DESC"/>
-<field name="small_image_height" default="50" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_HEIGHT_DESC"/>
+<field name="small_image_width" default="50" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_WIDTH_DESC"/>
+<field name="small_image_height" default="50" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_SMALL_IMAGE_HEIGHT_DESC"/>
 
 
-<field name="front_modal_box_width" default="680" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_WIDTH_DESC"/>
-<field name="front_modal_box_height" default="560" size="4" type="phocatext" label="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_HEIGHT_DESC"/>
+<field name="front_modal_box_width" default="680" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_WIDTH_LABEL" description="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_WIDTH_DESC"/>
+<field name="front_modal_box_height" default="560" size="4" type="text" label="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_FRONT_DETAIL_WINDOW_HEIGHT_DESC"/>
 
 
 <field name="phocahead15" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_WATERMARK_SETTINGS_LABEL" label="" description=""/>
@@ -1080,7 +1072,7 @@
 
 
 
-	<fieldset
+	<fieldset class="options-form"
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC"

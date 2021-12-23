@@ -45,3 +45,10 @@
 	color: #fff !important;
 
 }
+
+.com_phocagallery .table > :not(caption) > * > * {
+    padding: 0.75rem 0.25rem;
+}
+.com_phocagallery .ph-multiple-table > :not(caption) > * > * {
+	padding: 0.15rem 0.25rem;
+}

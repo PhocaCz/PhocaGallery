@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 if (is_file( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/phocagallery/facebook/base_facebook.php') &&
 is_file( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/phocagallery/facebook/facebook.php')) {
 	if (class_exists('FacebookApiException') && class_exists('Facebook')) {
@@ -47,7 +50,7 @@ class PhocaGalleryFb
 	
 		$facebook 	= self::getAppInstance($appid, $appsid);
 		
-		$fbLogout = JFactory::getApplication()->input->get('fblogout', 0, '', 'int');
+		$fbLogout = Factory::getApplication()->input->get('fblogout', 0, '', 'int');
 		if($fbLogout == 1) {
 			$facebook->destroySession();
 		}
@@ -72,7 +75,7 @@ class PhocaGalleryFb
 		  }
 		}
 
-		$uri = JURI::getInstance();
+		$uri = Uri::getInstance();
 		// login or logout url will be needed depending on current user state.
 		if ($u) {
 			$uid = $facebook->getUser();
@@ -83,7 +86,7 @@ class PhocaGalleryFb
 			$output['html'] = '<div><img src="https://graph.facebook.com/'.  $uid .'/picture" /></div>';
 			$output['html'] .= '<div>'. $u['name'].'</div>';
 			//$output['html'] .= '<div><a href="'. $logoutUrl .'"><img src="http://static.ak.fbcdn.net/rsrc.php/z2Y31/hash/cxrz4k7j.gif" /></a></div>';
-			$output['html'] .= '<div><a href="'. $logoutUrl .'"><span class="btn btn-primary">'.JText::_('COM_PHOCAGALLERY_FB_LOGOUT').'</span></a></div><p>&nbsp;</p>';
+			$output['html'] .= '<div><a href="'. $logoutUrl .'"><span class="btn btn-primary">'.Text::_('COM_PHOCAGALLERY_FB_LOGOUT').'</span></a></div><p>&nbsp;</p>';
 			
 			/*
 			$script = array();
@@ -95,8 +98,8 @@ class PhocaGalleryFb
 			$script[] = '}';
 
 			// Add the script to the document head.
-			JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-			$uri = JURI::getInstance();
+			Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
+			$uri = Uri::getInstance();
 			$loginUrl = $facebook->getLoginUrl(array('req_perms' => 'user_photos,user_groups,offline_access,publish_stream', 'cancel_url' => $uri->toString(), 'next' => $uri->toString()));
 			
 			$output['log']	= 0;
@@ -115,7 +118,7 @@ class PhocaGalleryFb
 			$loginUrl = $facebook->getLoginUrl(array('req_perms' => 'user_photos,manage_pages,publish_actions', 'scope' => 'user_photos,manage_pages,publish_actions', 'cancel_url' => $uri->toString(), 'next' => $uri->toString()));
 			
 			$output['log']	= 0;
-			$output['html'] = '<div><a href="'. $loginUrl .'"><span class="btn btn-primary">'.JText::_('COM_PHOCAGALLERY_FB_LOGIN').'</span></a></div><p>&nbsp;</p>';
+			$output['html'] = '<div><a href="'. $loginUrl .'"><span class="btn btn-primary">'.Text::_('COM_PHOCAGALLERY_FB_LOGIN').'</span></a></div><p>&nbsp;</p>';
 			//$output['html'] = '<div><a href="'. $loginUrl .'"><img src="http://static.ak.fbcdn.net/rsrc.php/zB6N8/hash/4li2k73z.gif" /></a></div>';
 	
 		}

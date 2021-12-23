@@ -9,6 +9,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.filesystem.folder' ); 
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.render.renderprocess');
@@ -19,7 +23,7 @@ register_shutdown_function(function(){
 	$error = error_get_last();
 	if(null !== $error) {
 		if (isset($error['type']) && $error['type'] == 1) {
-			$app		= JFactory::getApplication();
+			$app		= Factory::getApplication();
 			$app->redirect('index.php?option=com_phocagallery&view=phocagalleryfe&error=1');
 			exit;
 		}
@@ -30,7 +34,7 @@ class PhocaGalleryImageRotate
 {
 	public static function rotateImage($thumbName, $size, $angle=90, &$errorMsg) {
 	
-		$params 		= JComponentHelper::getParams('com_phocagallery') ;
+		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
@@ -261,7 +265,7 @@ class PhocaGalleryImageRotate
 							$imgJPEGToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgJPEGToWrite)) {
+							if(!File::write( $fileOut, $imgJPEGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -289,7 +293,7 @@ class PhocaGalleryImageRotate
 							$imgPNGToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgPNGToWrite)) {
+							if(!File::write( $fileOut, $imgPNGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -317,7 +321,7 @@ class PhocaGalleryImageRotate
 							$imgGIFToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgGIFToWrite)) {
+							if(!File::write( $fileOut, $imgGIFToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -345,7 +349,7 @@ class PhocaGalleryImageRotate
 							$imgWEBPToWrite = ob_get_contents();
 							ob_end_clean();
 							
-							if(!JFile::write( $fileOut, $imgWEBPToWrite)) {
+							if(!File::write( $fileOut, $imgWEBPToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -376,7 +380,7 @@ class PhocaGalleryImageRotate
 				}
 	            return true; // Success
 	        } else {
-				$errorMsg = PhocaGalleryUtils::setMessage($errorMsg, JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_PROCESS'));
+				$errorMsg = PhocaGalleryUtils::setMessage($errorMsg, Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_PROCESS'));
 				return false;
 			}
 			
@@ -385,7 +389,7 @@ class PhocaGalleryImageRotate
 				ini_set('memory_limit', $memoryString);
 			}
 	    }
-		$errorMsg = JText::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');
+		$errorMsg = Text::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');
 		return false;
 	}
 	

@@ -9,6 +9,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 if ($this->t['backbutton'] != '' && $this->t['enable_multibox_iframe'] != 1) {
 	echo $this->t['backbutton'];
 }
@@ -18,9 +21,9 @@ if (($this->t['detailwindow'] == 7 || $this->t['display_comment_nopup'] == 1) &&
 }
 
 if ($this->t['externalcommentsystem'] == 1) {
-	if (JComponentHelper::isEnabled('com_jcomments', true)) {
+	if (ComponentHelper::isEnabled('com_jcomments', true)) {
 		include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
-		echo JComments::showComments($this->item->id, 'com_phocagallery_images', JText::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
+		echo JComments::showComments($this->item->id, 'com_phocagallery_images', Text::_('COM_PHOCAGALLERY_IMAGE') .' '. $this->item->title);
 	}
 } else if($this->t['externalcommentsystem'] == 2) {
 
@@ -34,7 +37,7 @@ if ($this->t['externalcommentsystem'] == 1) {
 
 	echo '<div style="margin:10px">';
 	if ($this->t['fb_comment_app_id'] == '') {
-		echo JText::_('COM_PHOCAGALLERY_ERROR_FB_APP_ID_EMPTY');
+		echo Text::_('COM_PHOCAGALLERY_ERROR_FB_APP_ID_EMPTY');
 	} else {
 
 		$cCount = '';
@@ -67,17 +70,17 @@ if ($this->t['externalcommentsystem'] == 1) {
 
 } else {
 
-	if (!empty($this->commentitem)){
-		//$userImage	= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/icon-user.png', '');
+	if (!empty($this->t['commentitem'])){
+		//$userImage	= JHtml::_( 'image', 'media/com_phocagallery/images/icon-user.png', '');
 		$userImage	= PhocaGalleryRenderFront::renderIcon('user', 'media/com_phocagallery/images/icon-user.png', '');
 		$smileys = PhocaGalleryComment::getSmileys();
 
-		foreach ($this->commentitem as $itemValue) {
-			$date		= Joomla\CMS\HTML\HTMLHelper::_('date',  $itemValue->date, JText::_('DATE_FORMAT_LC2') );
+		foreach ($this->t['commentitem'] as $itemValue) {
+			$date		= HTMLHelper::_('date',  $itemValue->date, Text::_('DATE_FORMAT_LC2') );
 			$comment	= $itemValue->comment;
 			$comment 	= PhocaGalleryComment::bbCodeReplace($comment);
 			foreach ($smileys as $smileyKey => $smileyValue) {
-				$comment = str_replace($smileyKey, Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/'.$smileyValue .'.png',''), $comment);
+				$comment = str_replace($smileyKey, HTMLHelper::_( 'image', 'media/com_phocagallery/images/'.$smileyValue .'.png',''), $comment);
 			}
 
 			echo '<blockquote><h4>'.$userImage.'&nbsp;'.$itemValue->name.'</h4>'
@@ -87,58 +90,58 @@ if ($this->t['externalcommentsystem'] == 1) {
 		}
 	}
 
-	echo '<h4>'.JText::_('COM_PHOCAGALLERY_ADD_COMMENT').'</h4>';
+	echo '<h4>'.Text::_('COM_PHOCAGALLERY_ADD_COMMENT').'</h4>';
 
 	if ($this->t['already_commented']) {
-		echo '<p>'.JText::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED').'</p>';
+		echo '<p>'.Text::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED').'</p>';
 	} else if ($this->t['not_registered']) {
-		echo '<p>'.JText::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_SUBMIT_COMMENT').'</p>';
+		echo '<p>'.Text::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_SUBMIT_COMMENT').'</p>';
 	} else {
 		echo '<form action="'.htmlspecialchars($this->t['action']).'" name="phocagallerycommentsform" id="phocagallery-comments-form" method="post" >'
 			.'<table>'
 			.'<tr>'
-			.'<td>'.JText::_('COM_PHOCAGALLERY_NAME').':</td>'
+			.'<td>'.Text::_('COM_PHOCAGALLERY_NAME').':</td>'
 			.'<td>'.$this->t['name'].'</td>'
 			.'</tr>';
 
 		echo '<tr>'
-			.'<td>'.JText::_('COM_PHOCAGALLERY_TITLE').':</td>'
+			.'<td>'.Text::_('COM_PHOCAGALLERY_TITLE').':</td>'
 			.'<td><input type="text" name="phocagallerycommentstitle" id="phocagallery-comments-title" value="" maxlength="255" class="comment-input" /></td>'
 			.'</tr>';
 
 		echo '<tr>'
 			.'<td>&nbsp;</td>'
 			.'<td>'
-			.'<a href="#" onclick="pasteTag(\'b\', true); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('bold', $this->t['icon_path'].'icon-b.png', JText::_('COM_PHOCAGALLERY_BOLD'))
+			.'<a href="#" onclick="pgPasteTag(\'b\', true); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('bold', $this->t['icon_path'].'icon-b.png', Text::_('COM_PHOCAGALLERY_BOLD'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteTag(\'i\', true); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('italic', $this->t['icon_path'].'icon-i.png', JText::_('COM_PHOCAGALLERY_ITALIC'))
+			.'<a href="#" onclick="pgPasteTag(\'i\', true); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('italic', $this->t['icon_path'].'icon-i.png', Text::_('COM_PHOCAGALLERY_ITALIC'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteTag(\'u\', true); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('underline', $this->t['icon_path'].'icon-u.png', JText::_('COM_PHOCAGALLERY_UNDERLINE'))
+			.'<a href="#" onclick="pgPasteTag(\'u\', true); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('underline', $this->t['icon_path'].'icon-u.png', Text::_('COM_PHOCAGALLERY_UNDERLINE'))
 			.'</a>&nbsp;&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':)\'); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('smile', $this->t['icon_path'].'icon-s-smile.png', JText::_('COM_PHOCAGALLERY_SMILE'))
+			.'<a href="#" onclick="pgPasteSmiley(\':)\'); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('smile', $this->t['icon_path'].'icon-s-smile.png', Text::_('COM_PHOCAGALLERY_SMILE'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':lol:\'); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('lol', $this->t['icon_path'].'icon-s-lol.png', JText::_('COM_PHOCAGALLERY_LOL'))
+			.'<a href="#" onclick="pgPasteSmiley(\':lol:\'); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('lol', $this->t['icon_path'].'icon-s-lol.png', Text::_('COM_PHOCAGALLERY_LOL'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':(\'); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('sad', $this->t['icon_path'].'icon-s-sad.png', JText::_('COM_PHOCAGALLERY_SAD'))
+			.'<a href="#" onclick="pgPasteSmiley(\':(\'); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('sad', $this->t['icon_path'].'icon-s-sad.png', Text::_('COM_PHOCAGALLERY_SAD'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':?\'); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('confused', $this->t['icon_path'].'icon-s-confused.png', JText::_('COM_PHOCAGALLERY_CONFUSED'))
+			.'<a href="#" onclick="pgPasteSmiley(\':?\'); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('confused', $this->t['icon_path'].'icon-s-confused.png', Text::_('COM_PHOCAGALLERY_CONFUSED'))
 			.'</a>&nbsp;'
 
-			.'<a href="#" onclick="pasteSmiley(\':wink:\'); return false;">'
-			. PhocaGalleryRenderFront::renderIcon('wink', $this->t['icon_path'].'icon-s-wink.png', JText::_('COM_PHOCAGALLERY_WINK'))
+			.'<a href="#" onclick="pgPasteSmiley(\':wink:\'); return false;">'
+			. PhocaGalleryRenderFront::renderIcon('wink', $this->t['icon_path'].'icon-s-wink.png', Text::_('COM_PHOCAGALLERY_WINK'))
 			.'</a>&nbsp;'
 			.'</td>'
 			.'</tr>';
@@ -153,15 +156,15 @@ if ($this->t['externalcommentsystem'] == 1) {
 			echo '<tr>'
 				.'<td>&nbsp;</td>'
 				.'<td>'
-				. JText::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN').' <input name="phocagallerycommentscountin" value="0" readonly="readonly" class="comment-input2" /> '
-				. JText::_('COM_PHOCAGALLERY_AND_LEFT_FOR_COMMENT').' <input name="phocagallerycommentscountleft" value="'. $this->t['maxcommentchar'].'" readonly="readonly" class="comment-input2" />'
+				. Text::_('COM_PHOCAGALLERY_CHARACTERS_WRITTEN').' <input name="phocagallerycommentscountin" value="0" readonly="readonly" class="comment-input2" /> '
+				. Text::_('COM_PHOCAGALLERY_AND_LEFT_FOR_COMMENT').' <input name="phocagallerycommentscountleft" value="'. $this->t['maxcommentchar'].'" readonly="readonly" class="comment-input2" />'
 				.'</td>'
 				.'</tr>';
 
 			echo '<tr>'
 				.'<td>&nbsp;</td>'
 				.'<td align="right">'
-				.'<input type="submit" class="btn" id="phocagallerycommentssubmit" onclick="return(checkCommentsForm());" value="'. JText::_('COM_PHOCAGALLERY_SUBMIT_COMMENT').'"/>'
+				.'<input type="submit" class="btn" id="phocagallerycommentssubmit" onclick="return(checkCommentsForm());" value="'. Text::_('COM_PHOCAGALLERY_SUBMIT_COMMENT').'"/>'
 				.'</td>'
 				.'</tr>';
 
@@ -173,7 +176,7 @@ if ($this->t['externalcommentsystem'] == 1) {
 			echo '<input type="hidden" name="id" value="'. $this->t['id'].'" />';
 			echo '<input type="hidden" name="catid" value="'. $this->t['catid'].'" />';
 			echo '<input type="hidden" name="Itemid" value="'. $this->itemId .'" />';
-			echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' );
+			echo HTMLHelper::_( 'form.token' );
 			echo '</form>';
 		}
 }

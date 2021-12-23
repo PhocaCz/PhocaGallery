@@ -9,27 +9,34 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 jimport( 'joomla.application.component.view');
 phocagalleryimport('phocagallery.comment.comment');
 phocagalleryimport('phocagallery.comment.commentimage');
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.filesystem.folder' );
 
-class PhocaGalleryViewCommentImgA extends JViewLegacy
+class PhocaGalleryViewCommentImgA extends HtmlView
 {
 
 	function display($tpl = null){
 		
-		if (!JSession::checkToken('request')) {
+		if (!Session::checkToken('request')) {
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('JINVALID_TOKEN')
+				'error' => Text::_('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
 			return;
 		}
 	
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params	= $app->getParams();
 		
 		
@@ -40,13 +47,13 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 		$view 			= $app->input->get( 'view', '',  'string'  );
 		
 		
-		$paramsC 		= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 		= ComponentHelper::getParams('com_phocagallery');
 		$param['display_comment_img'] = $paramsC->get( 'display_comment_img', 0 );
 		
 		
 		if ($task == 'refreshcomment' && ((int)$param['display_comment_img'] == 2 || (int)$param['display_comment_img'] == 3)) {	
 		
-			$user 		= JFactory::getUser();
+			$user 		= Factory::getUser();
 			//$view 		= J Request::get Var( 'view', '', 'get', '', J REQUEST_NOTRIM  );
 			//$Itemid		= J Request::get Var( 'Itemid', 0, '', 'int');
 		
@@ -60,7 +67,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 
 			
 			if ($format != 'json') {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_WRONG_COMMENT') ;
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_WRONG_COMMENT') ;
 				$response = array(
 					'status' => '0',
 					'error' => $msg);
@@ -69,7 +76,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 			}
 			
 			if ((int)$post['imgid'] < 1) {
-				$msg = JText::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS');
+				$msg = Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS');
 				$response = array(
 					'status' => '0',
 					'error' => $msg);
@@ -84,7 +91,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 			
 			// User has already commented this category
 			if ($checkUserComment) {
-				$msg = JText::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED');
+				$msg = Text::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED');
 				$response = array(
 					'status' => '0',
 					'error' => '',
@@ -95,7 +102,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 				
 				if ($access > 0 && $user->id > 0) {
 					if(!$model->comment($post)) {
-						$msg = JText::_('COM_PHOCAGALLERY_ERROR_COMMENTING_IMAGE');
+						$msg = Text::_('COM_PHOCAGALLERY_ERROR_COMMENTING_IMAGE');
 						$response = array(
 						'status' => '0',
 						'error' => $msg);
@@ -111,12 +118,12 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 						if (isset($avatar->avatar) && $avatar->avatar != '') {
 							$pathAvatarAbs	= $this->t['path']->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar->avatar;
 							$pathAvatarRel	= $this->t['path']->avatar_rel . 'thumbs/phoca_thumb_s_'. $avatar->avatar;
-							if (JFile::exists($pathAvatarAbs)){
+							if (File::exists($pathAvatarAbs)){
 								$avSize = getimagesize($pathAvatarAbs);
 								$avRatio = $avSize[0]/$avSize[1];
 								$avHeight = 20;
 								$avWidth = 20 * $avRatio;
-								$img = '<img src="'.JURI::base().'/'.$pathAvatarRel.'" width="'.$avWidth.'" height="'.$avHeight.'" alt="" />';
+								$img = '<img src="'.Uri::base().'/'.$pathAvatarRel.'" width="'.$avWidth.'" height="'.$avHeight.'" alt="" />';
 							}
 						}
 						$o .= $img;
@@ -126,7 +133,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 						$o .= '</div>';
 						
 						
-						$msg = $o . '<br />' . JText::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
+						$msg = $o . '<br />' . Text::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
 						$response = array(
 						'status' => '1',
 						'error' => '',
@@ -135,7 +142,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 						return;
 					} 
 				} else {
-					$msg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+					$msg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 						$response = array(
 						'status' => '0',
 						'error' => $msg);
@@ -144,7 +151,7 @@ class PhocaGalleryViewCommentImgA extends JViewLegacy
 				}
 			}
 		} else {
-			$msg = JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
+			$msg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 			$response = array(
 			'status' => '0',
 			'error' => $msg);

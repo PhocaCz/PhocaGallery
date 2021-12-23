@@ -8,12 +8,23 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport('phocagallery.library.library');
 phocagalleryimport('phocagallery.render.renderdetailwindow');
 
 
-class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryImgs extends HtmlView
 {
 
 	protected $items;
@@ -49,11 +60,11 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
 
-		$params 	= JComponentHelper::getParams('com_phocagallery');
+		$params 	= ComponentHelper::getParams('com_phocagallery');
 
 
 		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
@@ -70,11 +81,11 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 		// Button
 		/*
-		$this->button = new JObject();
+		$this->button = new CMSObject();
 		$this->button->set('modal', true);
 		$this->button->set('methodname', 'modal-button');
 		//$this->button->set('link', $link);
-		$this->button->set('text', JText::_('COM_PHOCAGALLERY_DISPLAY_IMAGE_DETAIL'));
+		$this->button->set('text', Text::_('COM_PHOCAGALLERY_DISPLAY_IMAGE_DETAIL'));
 		//$this->button->set('name', 'image');
 		$this->button->set('modalname', 'modal_phocagalleryimgs');
 		$this->button->set('options', "{handler: 'image', size: {x: 200, y: 150}}");*/
@@ -87,7 +98,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 		$btn->popupHeight 	= '480';
 		$btn->backend		= 1;
 
-		$btn->setButtons(12, $libraries, $library);
+		$btn->setButtons(14, $libraries, $library);
 		$this->button = $btn->getB1();
 
 
@@ -105,23 +116,25 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryImgsHelper::getActions($state->get('filter.image_id'));
-		$user  = JFactory::getUser();
-		$bar = JToolbar::getInstance('toolbar');
-		JToolbarHelper ::title( JText::_('COM_PHOCAGALLERY_IMAGES'), 'image.png' );
+		$user  = Factory::getUser();
+		$bar = Toolbar::getInstance('toolbar');
+		ToolbarHelper::title( Text::_('COM_PHOCAGALLERY_IMAGES'), 'image.png' );
 		if ($canDo->get('core.create')) {
-			JToolbarHelper ::addNew( 'phocagalleryimg.add','JToolbar_NEW');
-			JToolbarHelper ::custom( 'phocagallerym.edit', 'multiple.png', '', 'COM_PHOCAGALLERY_MULTIPLE_ADD' , false);
+			ToolbarHelper::addNew( 'phocagalleryimg.add','JToolbar_NEW');
+			ToolbarHelper::custom( 'phocagallerym.edit', 'multiple.png', '', 'COM_PHOCAGALLERY_MULTIPLE_ADD' , false);
 		}
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper ::editList('phocagalleryimg.edit','JToolbar_EDIT');
+			ToolbarHelper::editList('phocagalleryimg.edit','JToolbar_EDIT');
 		}
 
 		if ($canDo->get('core.create')) {
 
 			/*
-			$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){submitbutton(\'phocagalleryimg.recreate\');}}" class="toolbar"><span class="icon-32-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_RECREATE').'</a>');*/
+			$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" class="toolbar"><span class="icon-32-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_RECREATE').'</a>');*/
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){submitbutton(\'phocagalleryimg.recreate\');}}" ><i class="icon-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'"></i> '.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'</button>';
+			$dhtml = '<joomla-toolbar-button id="toolbar-recreate-thumbnails" list-selection>';
+			$dhtml .= '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" ><i class="icon-recreate" title="'.Text::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'"></i> '.Text::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'</button>';
+			$dhtml .= '</joomla-toolbar-button>';
 			$bar->appendButton('Custom', $dhtml);
 
 		}
@@ -129,30 +142,38 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper ::divider();
-			JToolbarHelper ::custom('phocagalleryimgs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
-			JToolbarHelper ::custom('phocagalleryimgs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
-			JToolbarHelper ::custom( 'phocagalleryimgs.approve', 'approve.png', '',  'COM_PHOCAGALLERY_APPROVE' , true);
-			JToolbarHelper ::custom( 'phocagalleryimgs.disapprove', 'disapprove.png', '',  'COM_PHOCAGALLERY_NOT_APPROVE' , true);
+			ToolbarHelper::divider();
+			ToolbarHelper::custom('phocagalleryimgs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			ToolbarHelper::custom('phocagalleryimgs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
+			ToolbarHelper::custom( 'phocagalleryimgs.approve', 'approve.png', '',  'COM_PHOCAGALLERY_APPROVE' , true);
+			ToolbarHelper::custom( 'phocagalleryimgs.disapprove', 'disapprove.png', '',  'COM_PHOCAGALLERY_NOT_APPROVE' , true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper ::deleteList( JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryimgs.delete', 'COM_PHOCAGALLERY_DELETE');
+			ToolbarHelper::deleteList( Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryimgs.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
-			Joomla\CMS\HTML\HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
-			$title = JText::_('JToolbar_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+
+			//HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
+			$title = Text::_('JToolbar_BATCH');
+			$dhtml = '<joomla-toolbar-button id="toolbar-batch" list-selection>';
+			$dhtml .= "<button data-bs-toggle=\"modal\" data-bs-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
+			$dhtml .= '</joomla-toolbar-button>';
+
 			$bar->appendButton('Custom', $dhtml, 'batch');
+
+
+
+
 		}
 
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 
@@ -160,7 +181,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 		if (!empty($this->items)) {
 
-			$params							= JComponentHelper::getParams( 'com_phocagallery' );
+			$params							= ComponentHelper::getParams( 'com_phocagallery' );
 			$pagination_thumbnail_creation 	= $params->get( 'pagination_thumbnail_creation', 0 );
 			$clean_thumbnails 				= $params->get( 'clean_thumbnails', 0 );
 
@@ -192,7 +213,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 				foreach ($this->items_thumbnail as $key => $value) {
 					$fileOriginalThumb = PhocaGalleryFile::getFileOriginal($value->filename);
 					//Let the user know that the file doesn't exists and delete all thumbnails
-					if (JFile::exists($fileOriginalThumb)) {
+					if (File::exists($fileOriginalThumb)) {
 						$refreshUrlThumb = 'index.php?option=com_phocagallery&view=phocagalleryimgs';
 						$fileThumb = PhocaGalleryFileThumbnail::getOrCreateThumbnail( $value->filename, $refreshUrlThumb, 1, 1, 1);
 					}
@@ -207,8 +228,8 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 					$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 					//Let the user know that the file doesn't exists and delete all thumbnails
 
-					if (!JFile::exists($fileOriginal)) {
-						$this->items[$key]->filename = JText::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
+					if (!File::exists($fileOriginal)) {
+						$this->items[$key]->filename = Text::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 						$this->items[$key]->fileoriginalexist = 0;
 					} else {
 						//Create thumbnails small, medium, large
@@ -230,18 +251,18 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends JViewLegacy
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
-			'a.title' 		=> JText::_('COM_PHOCAGALLERY_TITLE'),
-			'a.filename'	=> JText::_('COM_PHOCAGALLERY_FILENAME'),
-			'a.published' 	=> JText::_('COM_PHOCAGALLERY_PUBLISHED'),
-			'a.approved' 	=> JText::_('COM_PHOCAGALLERY_APPROVED'),
-			'category_id' 	=> JText::_('COM_PHOCAGALLERY_CATEGORY'),
-			'category_owner_id'=> JText::_('COM_PHOCAGALLERY_OWNER'),
-			'uploadusername'=> JText::_('COM_PHOCAGALLERY_UPLOADED_BY'),
-			'ratingavg' 		=> JText::_('COM_PHOCAGALLERY_RATING'),
-			'a.hits' 		=> JText::_('COM_PHOCAGALLERY_HITS'),
-			'language' 		=> JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('JGRID_HEADING_ORDERING'),
+			'a.title' 		=> Text::_('COM_PHOCAGALLERY_TITLE'),
+			'a.filename'	=> Text::_('COM_PHOCAGALLERY_FILENAME'),
+			'a.published' 	=> Text::_('COM_PHOCAGALLERY_PUBLISHED'),
+			'a.approved' 	=> Text::_('COM_PHOCAGALLERY_APPROVED'),
+			'category_id' 	=> Text::_('COM_PHOCAGALLERY_CATEGORY'),
+			'category_owner_id'=> Text::_('COM_PHOCAGALLERY_OWNER'),
+			'uploadusername'=> Text::_('COM_PHOCAGALLERY_UPLOADED_BY'),
+			'ratingavg' 		=> Text::_('COM_PHOCAGALLERY_RATING'),
+			'a.hits' 		=> Text::_('COM_PHOCAGALLERY_HITS'),
+			'language' 		=> Text::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

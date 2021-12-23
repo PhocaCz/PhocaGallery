@@ -8,15 +8,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 $task		= 'phocagalleryc';
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
 $OPT		= strtoupper($option);
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -30,7 +35,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
-
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 echo '<div class="phoca-thumb-status">' . $this->t['enablethumbcreationstatus'] .'</div>';
@@ -43,11 +48,13 @@ echo $r->startForm($option, $tasks, 'adminForm');
 
 echo $r->startMainContainer();
 if (isset($this->t['notapproved']->count) && (int)$this->t['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($OPT.'_NOT_APPROVED_CATEGORY_IN_GALLERY').': '
-	.(int)$this->t['notapproved']->count.'</div>';
+
+
+	echo '<div class="alert alert-error alert-dismissible fade show" role="alert">'. Text::_('COM_PHOCAGALLERY_NOT_APPROVED_CATEGORY_IN_GALLERY').': '
+	.(int)$this->t['notapproved']->count.'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="'.Text::_('COM_PHOCAGALLERY_CLOSE').'"></button></div>';
 }
 if ($this->t['search']) {
-	echo '<div class="alert alert-message">' . JText::_('COM_PHOCAGALLERY_SEARCH_FILTER_IS_ACTIVE') .'</div>';
+	echo '<div class="alert alert-message">' . Text::_('COM_PHOCAGALLERY_SEARCH_FILTER_IS_ACTIVE') .'</div>';
 }
 
 /*echo $r->startFilterBar();
@@ -65,7 +72,7 @@ echo $r->selectFilterLevels('COM_PHOCAGALLERY_SELECT_MAX_LEVELS', $this->state->
 echo $r->endFilterBar();
 
 //echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -75,16 +82,16 @@ echo $r->firstColumnHeader($listDirn, $listOrder);
 echo $r->secondColumnHeader($listDirn, $listOrder);
 
 
-echo '<th class="ph-title">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-published">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-approved">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_APPROVED', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-parentcattitle">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $OPT.'_PARENT_CATEGORY', 'parentcat_title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-access">'.JTEXT::_($OPT.'_ACCESS').'</th>'."\n";
-echo '<th class="ph-owner">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_OWNER', 'a.owner_id', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-rating">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'ratingavg', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-hits">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_HITS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-language">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-title">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-published">'.HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-approved">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_APPROVED', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-parentcattitle">'.HTMLHelper::_('searchtools.sort', $OPT.'_PARENT_CATEGORY', 'parentcat_title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-access">'.Text::_($OPT.'_ACCESS').'</th>'."\n";
+echo '<th class="ph-owner">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_OWNER', 'a.owner_id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-rating">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_RATING', 'ratingavg', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-hits">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_HITS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-language">'.HTMLHelper::_('searchtools.sort',  	'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
@@ -107,8 +114,8 @@ $canCreate		= $user->authorise('core.create', $option);
 $canEdit		= $user->authorise('core.edit', $option);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
 $canChange		= $user->authorise('core.edit.state', $option) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit.(int) $item->id );
-$linkParent		= JRoute::_( $urlEdit.(int) $item->parent_id );
+$linkEdit 		= Route::_( $urlEdit.(int) $item->id );
+$linkParent		= Route::_( $urlEdit.(int) $item->parent_id );
 $canEditParent	= $user->authorise('core.edit', $option);
 
 $parentsStr = '';
@@ -119,25 +126,27 @@ if (!isset($item->level)) {
 	$item->level = 0;
 }
 
-echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0, (int)$item->id);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 $checkO = '';
 if ($item->checked_out) {
-	$checkO .= Joomla\CMS\HTML\HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
+	$checkO .= HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $tasks.'.', $canCheckin);
 }
 if ($canCreate || $canEdit) {
-	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
+	$checkO .= '<a href="'. Route::_($linkEdit).'">'. $this->escape($item->title).'</a>';
 } else {
 	$checkO .= $this->escape($item->title);
 }
-$checkO .= ' <span class="smallsub">(<span>'.JText::_($OPT.'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small");
-echo $r->td(Joomla\CMS\HTML\HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
+$checkO .= ' <span class="smallsub">(<span>'.Text::_($OPT.'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
+
+$indentation = $r->createIndentation($item->level);
+echo $r->td($indentation . $checkO, "small");
+echo $r->td(HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
 echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small");
 
 if ($canEditParent) {
-	$parentO = '<a href="'. JRoute::_($linkParent).'">'. $this->escape($item->parentcat_title).'</a>';
+	$parentO = '<a href="'. Route::_($linkParent).'">'. $this->escape($item->parentcat_title).'</a>';
 } else {
 	$parentO = $this->escape($item->parentcat_title);
 }

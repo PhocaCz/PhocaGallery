@@ -10,9 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 jimport('joomla.filter.input');
 
-class TablePhocaGalleryComments extends JTable
+class TablePhocaGalleryComments extends Table
 {
 	function __construct(& $db) {
 		parent::__construct('#__phocagallery_comments', 'id', $db);

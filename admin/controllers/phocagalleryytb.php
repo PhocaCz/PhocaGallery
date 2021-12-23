@@ -10,11 +10,16 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.application.component.controllerform');
 jimport('joomla.client.helper');
 phocagalleryimport('phocagallery.youtube.youtube');
 
-class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
+class PhocaGalleryCpControllerPhocaGalleryYtb extends FormController
 {
 	//protected	$option 		= 'com_phocagallery';
 	protected $context 	= 'com_phocagallery.phocagalleryytjjb';
@@ -26,20 +31,20 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 
 	function import() {
 
-		JSession::checkToken() or die( 'Invalid Token' );
-		$app = JFactory::getApplication();
+		Session::checkToken() or die( 'Invalid Token' );
+		$app = Factory::getApplication();
 		//$post	= JFactory::getApplication()->input->get('post');
 		//$ytb_link	= JFactory::getApplication()->input->get( 'ytb_link', '', 'post', 'string', J REQUEST_NOTRIM);
 		//$field		= JFactory::getApplication()->input->get( 'field', '', 'post', 'string', J REQUEST_NOTRIM);
-		$ytb_link	= JFactory::getApplication()->input->get( 'ytb_link', '',  'string' );
-		$field		= JFactory::getApplication()->input->get( 'field', '',  'string' );
-		$catid		= JFactory::getApplication()->input->get( 'catid', 0,  'int' );
+		$ytb_link	= Factory::getApplication()->input->get( 'ytb_link', '',  'string' );
+		$field		= Factory::getApplication()->input->get( 'field', '',  'string' );
+		$catid		= Factory::getApplication()->input->get( 'catid', 0,  'int' );
 
 		$errorYtbMsg = '';
 
 		$folder = '';
 		if ((int)$catid > 0) {
-			$db =JFactory::getDBO();
+			$db =Factory::getDBO();
 			$query = 'SELECT c.userfolder'
 			.' FROM #__phocagallery_categories AS c'
 			.' WHERE c.id = '.$db->Quote((int)$catid);
@@ -58,7 +63,7 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 				$folder = '';// No category folder - save to root
 			}
 		} else {
-			$errorYtbMsg .= JText::_('COM_PHOCAGALLERY_YTB_ERROR_NO_CATEGORY');
+			$errorYtbMsg .= Text::_('COM_PHOCAGALLERY_YTB_ERROR_NO_CATEGORY');
 		}
 
 		$ytb	= PhocaGalleryYoutube::importYtb($ytb_link, $folder, $errorYtbMsg);
@@ -74,14 +79,14 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 		$ytb['link']		= strip_tags($ytb_link);
 
 		if(!function_exists("curl_init")){
-			$errorMsg .= JText::_('COM_PHOCAGALLERY_YTB_NOT_LOADED_CURL');
+			$errorMsg .= Text::_('COM_PHOCAGALLERY_YTB_NOT_LOADED_CURL');
 		} else if ($ytb_code == '') {
-			$errorMsg .= JText::_('COM_PHOCAGALLERY_YTB_URL_NOT_CORRECT');
+			$errorMsg .= Text::_('COM_PHOCAGALLERY_YTB_URL_NOT_CORRECT');
 		} else {
 
 			$folder = '';
 			if ((int)$catid > 0) {
-				$db =JFactory::getDBO();
+				$db =Factory::getDBO();
 				$query = 'SELECT c.userfolder'
 				.' FROM #__phocagallery_categories AS c'
 				.' WHERE c.id = '.$db->Quote((int)$catid);
@@ -100,7 +105,7 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 					$folder = '';// No category folder - save to root
 				}
 			} else {
-				$errorMsg .= JText::_('COM_PHOCAGALLERY_YTB_ERROR_NO_CATEGORY');
+				$errorMsg .= Text::_('COM_PHOCAGALLERY_YTB_ERROR_NO_CATEGORY');
 			}
 
 			// Data
@@ -144,17 +149,17 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 
 			$ytb['filename']	= $folder.strip_tags($ytb_code).'.jpg';
 
-            if (!JFile::write(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
-				$errorMsg .= JText::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
+            if (!File::write(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
+				$errorMsg .= Text::_('COM_PHOCAGALLERY_YTB_ERROR_WRITE_IMAGE');
 			}
 		}*/
 
 		if ((bool)$ytb !== false) {
 
-			JFactory::getApplication()->input->set('ytb_title', $ytb['title']);
-			JFactory::getApplication()->input->set('ytb_desc', $ytb['desc']);
-			JFactory::getApplication()->input->set('ytb_filename', $ytb['filename']);
-			JFactory::getApplication()->input->set('ytb_link', $ytb['link']);
+			Factory::getApplication()->input->set('ytb_title', $ytb['title']);
+			Factory::getApplication()->input->set('ytb_desc', $ytb['desc']);
+			Factory::getApplication()->input->set('ytb_filename', $ytb['filename']);
+			Factory::getApplication()->input->set('ytb_link', $ytb['link']);
 		}
 
 		if ($errorYtbMsg != '') {
@@ -164,7 +169,7 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends JControllerForm
 			$app->enqueueMessage($errorYtbMsg, 'error');
 			$this->setRedirect( $redirect );
 		} else {
-			$msg 		= JText::_('COM_PHOCAGALLERY_YTB_SUCCESS_IMPORT');
+			$msg 		= Text::_('COM_PHOCAGALLERY_YTB_SUCCESS_IMPORT');
 			$import		= '&import=1';
 
 			$app->getUserStateFromRequest( $this->context.'.ytb_title', 'ytb_title', $ytb['title'], 'string' );

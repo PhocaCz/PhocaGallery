@@ -9,12 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.application.component.view');
 phocagalleryimport( 'phocagallery.facebook.fb' );
 phocagalleryimport( 'phocagallery.facebook.fbsystem' );
 
 
-class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryFb extends HtmlView
 {
 	protected $item;
 	protected $form;
@@ -49,26 +55,26 @@ class PhocaGalleryCpViewPhocaGalleryFb extends JViewLegacy
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryfbs.php';
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$bar 		= JToolbar::getInstance('toolbar');
-		$user		= JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= Toolbar::getInstance('toolbar');
+		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$canDo		= PhocaGalleryFbsHelper::getActions( $this->item->id);
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
-		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_FB_USER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'user');
+		$text = $isNew ? Text::_( 'COM_PHOCAGALLERY_NEW' ) : Text::_('COM_PHOCAGALLERY_EDIT');
+		ToolbarHelper::title(   Text::_( 'COM_PHOCAGALLERY_FB_USER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'user');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolbarHelper ::apply('phocagalleryfb.apply', 'JToolbar_APPLY');
-			JToolbarHelper ::save('phocagalleryfb.save', 'JToolbar_SAVE');
+			ToolbarHelper::apply('phocagalleryfb.apply', 'JToolbar_APPLY');
+			ToolbarHelper::save('phocagalleryfb.save', 'JToolbar_SAVE');
 		}
 
-		JToolbarHelper ::cancel('phocagalleryfb.cancel', 'JToolbar_CLOSE');
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::cancel('phocagalleryfb.cancel', 'JToolbar_CLOSE');
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 }

@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaGalleryRenderTabs
 {
@@ -20,9 +21,9 @@ class PhocaGalleryRenderTabs
     public function __construct() {
 
         $this->id = uniqid();
-        Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
-        Joomla\CMS\HTML\HTMLHelper::_('script', 'media/com_phocagallery/js/tabs/tabs.js', array('version' => 'auto'));
-        Joomla\CMS\HTML\HTMLHelper::_('stylesheet', 'media/com_phocagallery/js/tabs/tabs.css', array('version' => 'auto'));
+        HTMLHelper::_('jquery.framework', false);
+        HTMLHelper::_('script', 'media/com_phocagallery/js/tabs/tabs.js', array('version' => 'auto'));
+        HTMLHelper::_('stylesheet', 'media/com_phocagallery/js/tabs/tabs.css', array('version' => 'auto'));
     }
 
     public function setActiveTab($item) {
@@ -55,7 +56,10 @@ class PhocaGalleryRenderTabs
                     $activeO = ' active';
 
                 }
-                $o[] = '<li class="phTabsLi"><a class="phTabsA phTabsHeader' . $activeO . '" id="phTabId' . $this->id . 'Item' . $v['id'] . '">' . PhocaGalleryRenderFront::renderIcon($v['icon'], 'media/com_phocagallery/images/icon-' . $v['image'] . '.png', '') . '&nbsp;' . $v['title'] . '</a></li>';
+                $o[] = '<li class="phTabsLi"><a class="phTabsA phTabsHeader' . $activeO . '" id="phTabId' . $this->id . 'Item' . $v['id'] . '">'
+                        //. PhocaGalleryRenderFront::renderIcon($v['icon'], 'media/com_phocagallery/images/icon-' . $v['image'] . '.png', '')
+                        . '<svg class="ph-si ph-si-tab ph-si-'.$v['icon'].'"><use xlink:href="#ph-si-'.$v['icon'].'"></use></svg>'
+                        . '&nbsp;' . $v['title'] . '</a></li>';
                 $i++;
             }
         }

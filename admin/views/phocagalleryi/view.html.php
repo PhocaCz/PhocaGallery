@@ -9,6 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Object\CMSObject;
 jimport( 'joomla.client.helper' );
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.html.pane' );
@@ -16,7 +25,7 @@ phocagalleryimport( 'phocagallery.file.fileuploadmultiple' );
 phocagalleryimport( 'phocagallery.file.fileuploadsingle' );
 phocagalleryimport( 'phocagallery.file.fileuploadjava' );
 
-class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
+class PhocaGalleryCpViewPhocagalleryI extends HtmlView
 {
 	protected $field;
 	protected $fce;
@@ -30,7 +39,7 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$this->field	= JFactory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
 
 
@@ -39,9 +48,9 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		$this->folderstate	= $this->get('FolderState');
 		$this->images		= $this->get('Images');
 		$this->folders		= $this->get('Folders');
-		$this->session		= JFactory::getSession();
+		$this->session		= Factory::getSession();
 
-		$params 									= JComponentHelper::getParams('com_phocagallery');
+		$params 									= ComponentHelper::getParams('com_phocagallery');
 		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
 		$this->t['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->t['enablethumbcreation']);
 		$this->t['multipleuploadchunk']			= $params->get( 'multiple_upload_chunk', 0 );
@@ -73,7 +82,7 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		// - - - - - - - - - -
 		//TABS
 		// - - - - - - - - - -
-		$this->t['tab'] 			= JFactory::getApplication()->input->get('tab', '', '', 'string');
+		$this->t['tab'] 			= Factory::getApplication()->input->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 
 
@@ -100,9 +109,9 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		$sU->returnUrl				= 'index.php?option=com_phocagallery&view=phocagalleryi&tab=upload&tmpl=component&field='.$this->field.'&folder='. $this->currentFolder;
 		$sU->tab					= 'upload';
 		$this->t['su_output']	= $sU->getSingleUploadHTML();
-		$this->t['su_url']		= JURI::base().'index.php?option=com_phocagallery&task=phocagalleryu.upload&amp;'
+		$this->t['su_url']		= Uri::base().'index.php?option=com_phocagallery&task=phocagalleryu.upload&amp;'
 								  .$this->session->getName().'='.$this->session->getId().'&amp;'
-								  . JSession::getFormToken().'=1&amp;viewback=phocagalleryi&amp;field='.$this->field.'&amp;'
+								  . Session::getFormToken().'=1&amp;viewback=phocagalleryi&amp;field='.$this->field.'&amp;'
 								  .'folder='. $this->currentFolder.'&amp;tab=upload';
 
 
@@ -110,29 +119,29 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		// Multiple Upload
 		// - - - - - - - - - - -
 		// Get infos from multiple upload
-		$muFailed						= JFactory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded						= JFactory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$muFailed						= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
+		$muUploaded						= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 		if ($muUploaded > 0) {
-			$muUploadedMsg = JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded;
+			$muUploadedMsg = Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded;
 		}
 		if ($muFailed > 0) {
-			$muFailedMsg = JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed;
+			$muFailedMsg = Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed;
 		}
 		if ($muFailed > 0 && $muUploaded > 0) {
 			$this->t['mu_response_msg'] = '<div class="alert alert-info">'
 			.'<button type="button" class="close" data-dismiss="alert">&times;</button>'
-			.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
-			.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
+			.Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded .'<br />'
+			.Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 		} else if ($muFailed > 0 && $muUploaded == 0) {
-			$this->t['mu_response_msg'] = '<div class="alert alert-error">'
+			$this->t['mu_response_msg'] = '<div class="alert alert-error alert-danger">'
 			.'<button type="button" class="close" data-dismiss="alert">&times;</button>'
-			.JText::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
+			.Text::_('COM_PHOCAGALLERY_COUNT_NOT_UPLOADED_IMG'). ': ' . $muFailed.'</div>';
 		} else if ($muFailed == 0 && $muUploaded > 0){
 			$this->t['mu_response_msg'] = '<div class="alert alert-success">'
 			.'<button type="button" class="close" data-dismiss="alert">&times;</button>'
-			.JText::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded.'</div>';
+			.Text::_('COM_PHOCAGALLERY_COUNT_UPLOADED_IMG'). ': ' . $muUploaded.'</div>';
 		} else {
 			$this->t['mu_response_msg'] = '';
 		}
@@ -143,12 +152,12 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 			$mU						= new PhocaGalleryFileUploadMultiple();
 			$mU->frontEnd			= 0;
 			$mU->method				= $this->t['multipleuploadmethod'];
-			$mU->url				= JURI::base().'index.php?option=com_phocagallery&task=phocagalleryu.multipleupload&amp;'
+			$mU->url				= Uri::base().'index.php?option=com_phocagallery&task=phocagalleryu.multipleupload&amp;'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&tab=multipleupload&field='.$this->field.'&folder='. $this->currentFolder;
-			$mU->reload				= JURI::base().'index.php?option=com_phocagallery&view=phocagalleryi&tmpl=component&'
+									 . Session::getFormToken().'=1&tab=multipleupload&field='.$this->field.'&folder='. $this->currentFolder;
+			$mU->reload				= Uri::base().'index.php?option=com_phocagallery&view=phocagalleryi&tmpl=component&'
 									.$this->session->getName().'='.$this->session->getId().'&'
-									. JSession::getFormToken().'=1&tab=multipleupload&'
+									. Session::getFormToken().'=1&tab=multipleupload&'
 									.'field='.$this->field.'&folder='. $this->currentFolder;
 			$mU->maxFileSize		= PhocaGalleryFileUploadMultiple::getMultipleUploadSizeFormat($this->t['uploadmaxsize']);
 			$mU->chunkSize			= '1mb';
@@ -169,27 +178,27 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 			$jU->resizewidth			= $this->t['multipleresizewidth'];
 			$jU->resizeheight			= $this->t['multipleresizeheight'];
 			$jU->uploadmaxsize			= $this->t['uploadmaxsize'];
-			$jU->returnUrl				= JURI::base().'index.php?option=com_phocagallery&view=phocagalleryi&tmpl=component&tab=javaupload&'
+			$jU->returnUrl				= Uri::base().'index.php?option=com_phocagallery&view=phocagalleryi&tmpl=component&tab=javaupload&'
 										.'field='.$this->field.'&folder='. $this->currentFolder;
-			$jU->url					= JURI::base().'index.php?option=com_phocagallery&task=phocagalleryu.javaupload&amp;'
+			$jU->url					= Uri::base().'index.php?option=com_phocagallery&task=phocagalleryu.javaupload&amp;'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&amp;viewback=phocagalleryi&amp;tab=javaupload'
+									 . Session::getFormToken().'=1&amp;viewback=phocagalleryi&amp;tab=javaupload'
 									 .'&field='.$this->field.'&folder='. $this->currentFolder;
-			$jU->source 				= JURI::root(true).'/media/com_phocagallery/js/jupload/wjhk.jupload.jar';
+			$jU->source 				= Uri::root(true).'/media/com_phocagallery/js/jupload/wjhk.jupload.jar';
 			$this->t['ju_output']	= $jU->getJavaUploadHTML();
 
 		}
-		$this->t['ftp'] 			= !JClientHelper::hasCredentials('ftp');
+		$this->t['ftp'] 			= !ClientHelper::hasCredentials('ftp');
 
 		parent::display($tpl);
-		echo Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+		echo HTMLHelper::_('behavior.keepalive');
 	}
 
 	function setFolder($index = 0) {
 		if (isset($this->folders[$index])) {
 			$this->_tmp_folder = &$this->folders[$index];
 		} else {
-			$this->_tmp_folder = new JObject;
+			$this->_tmp_folder = new CMSObject;
 		}
 	}
 
@@ -197,7 +206,7 @@ class PhocaGalleryCpViewPhocagalleryI extends JViewLegacy
 		if (isset($this->images[$index])) {
 			$this->_tmp_img = &$this->images[$index];
 		} else {
-			$this->_tmp_img = new JObject;
+			$this->_tmp_img = new CMSObject;
 		}
 	}
 }

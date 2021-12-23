@@ -11,23 +11,30 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\Feed\FeedItem;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport( 'joomla.application.component.view');
 phocagalleryimport( 'phocagallery.ordering.ordering');
 phocagalleryimport( 'phocagallery.picasa.picasa');
 phocagalleryimport( 'phocagallery.facebook.fbsystem');
 
-class PhocaGalleryViewFeed extends JViewLegacy
+class PhocaGalleryViewFeed extends HtmlView
 {
 
 	function display($tpl = null) {
 
-		$app		= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
-		$db 		= JFactory::getDBO();
+		$db 		= Factory::getDBO();
 		$menu 		= $app->getMenu();
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		$params 	= $app->getParams();
 
 		// Specific category
@@ -36,10 +43,10 @@ class PhocaGalleryViewFeed extends JViewLegacy
 		$categories 		= $params->get( 'feed_cat_ids', '' );
 		$ordering			= $params->get( 'feed_img_ordering', 6 );
 		$imgCount			= $params->get( 'feed_img_count', 5 );
-		$feedTitle			= $params->get( 'feed_title', JText::_('COM_PHOCAGALLERY_GALLERY') );
+		$feedTitle			= $params->get( 'feed_title', Text::_('COM_PHOCAGALLERY_GALLERY') );
 
-		$t['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 100 );
-		$t['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 100 );
+		$t['picasa_correct_width_m']		= (int)$params->get( 'medium_image_width', 256 );
+		$t['picasa_correct_height_m']	= (int)$params->get( 'medium_image_height', 192 );
 
 		$document->setTitle($this->escape( html_entity_decode($feedTitle)));
 
@@ -81,7 +88,7 @@ class PhocaGalleryViewFeed extends JViewLegacy
 
 		foreach ($images as $keyI => $value) {
 
-			$item = new JFeedItem();
+			$item = new FeedItem();
 
 
 			$title 				= $this->escape( $value->title );
@@ -90,13 +97,13 @@ class PhocaGalleryViewFeed extends JViewLegacy
 
 			$link 				= PhocaGalleryRoute::getCategoryRoute($value->catid, $value->catalias);
 
-			$item->link 		= JRoute::_($link);
+			$item->link 		= Route::_($link);
 
 
 
 			// imgDate
 			$imgDate = '';
-			$imgDate = JHtml::Date($value->date, "Y-m-d h:m:s");
+			$imgDate = HTMLHelper::Date($value->date, "Y-m-d h:m:s");
 
 
 			if ($imgDate != '') {
@@ -113,11 +120,11 @@ class PhocaGalleryViewFeed extends JViewLegacy
 			}
 
 			// Trying to fix but in Joomla! method $this->_relToAbs - it cannot work with JRoute links :-(
-			$itemL = str_replace(JURI::base(true), '', $item->link);
+			$itemL = str_replace(Uri::base(true), '', $item->link);
 			if (substr($itemL, 0, 1) == '/') {
 				$itemL = substr_replace($itemL, '', 0, 1);
 			}
-			$itemL = JURI::base().$itemL;
+			$itemL = Uri::base().$itemL;
 			// Should really not happen
 			$itemLTmp 	= str_replace('http://', '', $itemL);
 			$pos 		= stripos($itemLTmp, '//');
@@ -134,7 +141,7 @@ class PhocaGalleryViewFeed extends JViewLegacy
 				$i = '<div><a href="'.$itemL.'"><img src="'.$imgLink .'" border="0" /></a></div>';
 			} else {
 				$imgLink 	= PhocaGalleryImageFront::displayCategoryImageOrNoImage($value->filename, 'medium');
-				$i = '<div><a href="'.$itemL.'"><img src="'. /*JURI::base(true) .*/ $imgLink.'" border="0" /></a></div>';
+				$i = '<div><a href="'.$itemL.'"><img src="'. /*JUri::base(true) .*/ $imgLink.'" border="0" /></a></div>';
 			}
 
 

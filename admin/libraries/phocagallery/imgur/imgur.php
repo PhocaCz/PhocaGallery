@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
 phocagalleryimport('phocagallery.utils.utils');
 
 class PhocaGalleryImgur
@@ -17,10 +18,10 @@ class PhocaGalleryImgur
 	public static function getSize() {
 
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
         $crop 		= $paramsC->get( 'crop_thumbnail', 5 );
 
 

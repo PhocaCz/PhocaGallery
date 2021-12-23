@@ -9,18 +9,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
 phocagalleryimport('phocagallery.render.renderadmin');
 
-class JFormFieldPhocaSelectFbUser extends JFormField
+class JFormFieldPhocaSelectFbUser extends FormField
 {
 	protected $type 		= 'PhocaSelectFbUser';
 
 	protected function getInput() {
 		
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.id AS value, '
@@ -49,9 +53,9 @@ class JFormFieldPhocaSelectFbUser extends JFormField
 		
 		
 		
-		array_unshift($items, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCAGALLERY_SELECT_FB_USER').' -', 'value', 'text'));
+		array_unshift($items, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCAGALLERY_SELECT_FB_USER').' -', 'value', 'text'));
 		
-		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $items,  $this->name, 'class="inputbox" onchange="'.$js.'"', 'value', 'text', $this->value, $this->id );
+		return HTMLHelper::_('select.genericlist',  $items,  $this->name, 'class="form-control" onchange="'.$js.'"', 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

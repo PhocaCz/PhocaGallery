@@ -10,8 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 if ($this->t['display_category']	== 0) {
-	echo JText::_('COM_PHOCAGALLERY_CATEGORY was not selected in parameters');
+	echo Text::_('COM_PHOCAGALLERY_CATEGORY was not selected in parameters');
 } else {
 
 echo '<div id="phocagallery" class="pg-cooliris3dwall-view-view'.$this->params->get( 'pageclass_sfx' ).'">'. "\n";
@@ -53,10 +55,10 @@ if ( $this->category->description != '' ) {
     <param name="allowScriptAccess" value="always" />
 	<param name="wmode" value="transparent" />
     <param name="flashvars"
-      value="feed=<?php echo JURI::root() . $this->t['path']->image_rel . (int)$this->category->id;?>.rss" />
+      value="feed=<?php echo Uri::root() . $this->t['path']->image_rel . (int)$this->category->id;?>.rss" />
     <embed type="application/x-shockwave-flash"
       src="http://apps.cooliris.com/embed/cooliris.swf"
-	  flashvars="feed=<?php echo JURI::root() . $this->t['path']->image_rel . (int)$this->category->id;?>.rss"
+	  flashvars="feed=<?php echo Uri::root() . $this->t['path']->image_rel . (int)$this->category->id;?>.rss"
       width="<?php echo $this->t['cooliris3d_wall_width'];?>"
       height="<?php echo $this->t['cooliris3d_wall_height'];?>"
       allowFullScreen="true"

@@ -11,12 +11,17 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Factory;
 
 // Include library dependencies
 jimport('joomla.filter.input');
 use Joomla\String\StringHelper;
 
-class TablePhocaGallery extends JTable
+class TablePhocaGallery extends Table
 {
 
 	function __construct(& $db) {
@@ -26,13 +31,13 @@ class TablePhocaGallery extends JTable
 	public function bind($array, $ignore = '')
 	{
 		if (isset($array['params']) && is_array($array['params'])) {
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['params']);
 			$array['params'] = (string)$registry;
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata'])) {
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string)$registry;
 		}
@@ -42,22 +47,22 @@ class TablePhocaGallery extends JTable
 	function check()
 	{
 		if (empty($this->title)) {
-			$this->setError(JText::_('COM_PHOCAGALLERY_WARNING_IMAGE_MUST_HAVE_TITLE'));
+			$this->setError(Text::_('COM_PHOCAGALLERY_WARNING_IMAGE_MUST_HAVE_TITLE'));
 			return false;
 		}
 
 		// Check for valid name.
 		if (trim($this->title) == '') {
-			$this->setError(JText::_('COM_PHOCAGALLERY_WARNING_PROVIDE_VALID_NAME'));
+			$this->setError(Text::_('COM_PHOCAGALLERY_WARNING_PROVIDE_VALID_NAME'));
 			return false;
 		}
 
 		if (empty($this->alias)) {
 			$this->alias = $this->title;
 		}
-		$this->alias = \JApplicationHelper::stringURLSafe($this->alias);
+		$this->alias =ApplicationHelper::stringURLSafe($this->alias);
 		if (trim(str_replace('-','',$this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+			$this->alias = Factory::getDate()->format("Y-m-d-H-i-s");
 		}
 
 	/*	// Check the publish down date is not earlier than publish up.
@@ -112,7 +117,7 @@ class TablePhocaGallery extends JTable
 			}
 			// Nothing to set publishing state on, return false.
 			else {
-				$this->setError(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+				$this->setError(Text::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
 				return false;
 			}
 		}
@@ -135,13 +140,14 @@ class TablePhocaGallery extends JTable
 			' WHERE ('.$where.')' .
 			$checkin
 		);
-		$this->_db->query();
+		$this->_db->execute();
+		//$this->_db->query();
 
 		// Check for a database error.
-		if ($this->_db->getErrorNum()) {
+		/*if ($this->_db->getErrorNum()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}
+		}*/
 
 		// If checkin is supported and all rows were adjusted, check them in.
 		if ($checkin && (count($pks) == $this->_db->getAffectedRows()))

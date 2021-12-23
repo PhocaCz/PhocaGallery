@@ -1602,7 +1602,7 @@ exports.formatDistance = formatDistance;
 exports.ringArea = ringArea;
 exports.absoluteArea = absoluteArea;
 exports.triangleArea = triangleArea;
-exports.distance = haversinDistance; // XXX why two implementations?
+exports.distance = haversinDistance; // why two implementations?
 
 function formatDistance(radians) {
   var km = radians * 6371;

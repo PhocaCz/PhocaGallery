@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectFbAlbum extends JFormField
+class JFormFieldPhocaSelectFbAlbum extends FormField
 {
 	public $type = 'phocaSelectFbAlbum';
 
@@ -50,7 +54,7 @@ class JFormFieldPhocaSelectFbAlbum extends JFormField
 		$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';*/
 		
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectfbalbum';
 
 		// Build the script.
@@ -67,16 +71,16 @@ class JFormFieldPhocaSelectFbAlbum extends JFormField
 		$script[] = '}';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 		
 
 		
 	/*	$html[] = '<div class="input-append">';
 		$html[] = '<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' .' '.$attr.' />';
-		$html[] = '<a id="pglinktoalbum" class="modal_'.$this->id.' btn" title="'.JText::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM').'"'
+		$html[] = '<a id="pglinktoalbum" class="modal_'.$this->id.' btn" title="'.Text::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM').'"'
 				.' href="'.($this->element['readonly'] ? '' : $link).'"'
 				.' rel="{handler: \'iframe\', size: {x: 650, y: 400}}">'
-				. JText::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM').'</a>';
+				. Text::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM').'</a>';
 		$html[] = '</div>'. "\n";*/
 		
 		
@@ -84,24 +88,24 @@ class JFormFieldPhocaSelectFbAlbum extends JFormField
 
 		$html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
 			. ' value="' . $this->value . '"' . $attr . ' />';
-		$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM') . '">'
+		$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . Text::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM') . '">'
 			. '<span class="icon-list icon-white"></span> '
-			. JText::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM') . '</a></span>';
+			. Text::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM') . '</a></span>';
 		
 		$html[] = '</div>'. "\n";		
 		
-		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+		$html[] = HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(
 				'url'    => $link,
-				'title'  => JText::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM'),
+				'title'  => Text::_('COM_PHOCAGALLERY_FB_SELECT_ALBUM'),
 				'width'  => '700px',
 				'height' => '400px',
 				'modalWidth' => '80',
 				'bodyHeight' => '70',
 				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-					. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+					. Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 			)
 		);
 		

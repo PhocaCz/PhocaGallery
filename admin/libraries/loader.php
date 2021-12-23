@@ -20,6 +20,8 @@ class PhocaGalleryLoader extends JLoader
 
 	public static function import($filePath, $base = null, $key = 'libraries.') {
 
+
+
 		$keyPath = $key ? $key . $filePath : $filePath;
 
 		if (!isset($paths[$keyPath])) {
@@ -37,7 +39,7 @@ class PhocaGalleryLoader extends JLoader
 					$className = ucfirst(array_pop( $parts )).ucfirst($className);
 					break;
 
-				Default :
+				default :
 					$className = ucfirst($className);
 					break;
 			}
@@ -47,13 +49,17 @@ class PhocaGalleryLoader extends JLoader
 			if (strpos($filePath, 'phocagallery') === 0) {
 				$className	= 'PhocaGallery'.$className;
 				$classes	= JLoader::register($className, $base. '/'. $path.'.php');
+
 				$rs			= isset($classes[strtolower($className)]);
+
+
 			} else {
 				// If it is not in the joomla namespace then we have no idea if
 				// it uses our pattern for class names/files so just include
 				// if the file exists or set it to false if not
 
 				$filename = $base. '/'. $path.'.php';
+
 				if (is_file($filename)) {
 					$rs   = (bool) include $filename;
 				} else {

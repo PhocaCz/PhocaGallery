@@ -9,9 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport( 'joomla.application.component.view' );
 
-class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryImg extends HtmlView
 {
 	protected $state;
 	protected $item;
@@ -29,7 +35,7 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 		$this->t	= PhocaGalleryUtils::setVars('img');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 
 		$this->t['enablethumbcreation']			= $params->get('enable_thumb_creation', 1 );
 		$this->t['enablethumbcreationstatus'] 	= PhocaGalleryRenderAdmin::renderThumbnailCreationStatus((int)$this->t['enablethumbcreation']);
@@ -57,38 +63,38 @@ class PhocaGalleryCpViewPhocaGalleryImg extends JViewLegacy
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagalleryimgs.php';
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$bar 		= JToolbar::getInstance('toolbar');
-		$user		= JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= Toolbar::getInstance('toolbar');
+		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$canDo		= PhocaGalleryImgsHelper::getActions($this->state->get('filter.image_id'), $this->item->id);
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
 
-		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_IMAGE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'image');
+		$text = $isNew ? Text::_( 'COM_PHOCAGALLERY_NEW' ) : Text::_('COM_PHOCAGALLERY_EDIT');
+		ToolbarHelper::title(   Text::_( 'COM_PHOCAGALLERY_IMAGE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'image');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolbarHelper ::apply('phocagalleryimg.apply', 'JToolbar_APPLY');
-			JToolbarHelper ::save('phocagalleryimg.save', 'JToolbar_SAVE');
-			JToolbarHelper ::addNew('phocagalleryimg.save2new', 'JToolbar_SAVE_AND_NEW');
+			ToolbarHelper::apply('phocagalleryimg.apply', 'JToolbar_APPLY');
+			ToolbarHelper::save('phocagalleryimg.save', 'JToolbar_SAVE');
+			ToolbarHelper::addNew('phocagalleryimg.save2new', 'JToolbar_SAVE_AND_NEW');
 
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {
-			//JToolbarHelper ::custom('phocagalleryc.save2copy', 'copy.png', 'copy_f2.png', 'JToolbar_SAVE_AS_COPY', false);
+			//JToolbarHelper::custom('phocagalleryc.save2copy', 'copy.png', 'copy_f2.png', 'JToolbar_SAVE_AS_COPY', false);
 		}
 		if (empty($this->item->id))  {
-			JToolbarHelper ::cancel('phocagalleryimg.cancel', 'JToolbar_CANCEL');
+			ToolbarHelper::cancel('phocagalleryimg.cancel', 'JToolbar_CANCEL');
 		}
 		else {
-			JToolbarHelper ::cancel('phocagalleryimg.cancel', 'JToolbar_CLOSE');
+			ToolbarHelper::cancel('phocagalleryimg.cancel', 'JToolbar_CLOSE');
 		}
 
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 }
 ?>

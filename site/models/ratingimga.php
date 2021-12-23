@@ -9,17 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
 
-class PhocaGalleryModelRatingImgA extends JModelLegacy
+class PhocaGalleryModelRatingImgA extends BaseDatabaseModel
 {
-	
+
 	function rate($data) {
 		$row = $this->getTable('phocagalleryimgvotes');
-		
+
 		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -33,20 +34,20 @@ class PhocaGalleryModelRatingImgA extends JModelLegacy
 		}
 
 		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
-		
+
 		// Update the Vote Statistics
 		if (!PhocaGalleryRateImage::updateVoteStatistics( $data['imgid'])) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

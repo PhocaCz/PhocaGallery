@@ -8,15 +8,25 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
+$document = Factory::getDocument();
+$document->addStyleSheet(Uri::root(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+$document->addStyleSheet(Uri::root(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+$document->addStyleSheet(Uri::root(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
 
 $task		= 'phocagalleryuser';
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $tasks		= $task . 's';
 $OPT		= strtoupper($option);
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -28,7 +38,7 @@ if ($saveOrder && !empty($this->items)) {
 }
 $sortFields = $this->getSortFields();
 
-
+echo $r->startHeader();
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($option, $tasks, 'adminForm');
@@ -50,7 +60,9 @@ echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('fi
 echo $r->endFilterBar();
 
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+
+echo '<div  id="pg-msnr-container" class="pg-photoswipe pg-msnr-container pg-category-items-box" itemscope itemtype="http://schema.org/ImageGallery">';
 
 echo $r->startTable('categoryList');
 
@@ -60,13 +72,13 @@ echo $r->firstColumnHeader($listDirn, $listOrder);
 echo $r->secondColumnHeader($listDirn, $listOrder);
 
 
-echo '<th class="ph-image">'.JText::_('COM_PHOCAGALLERY_AVATAR').'</th>'."\n";
-echo '<th class="ph-user">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-user">'.JText::_('COM_PHOCAGALLERY_CATEGORY_COUNT').'</th>'."\n";
-echo '<th class="ph-user">'.JText::_('COM_PHOCAGALLERY_IMAGE_COUNT').'</th>'."\n";
-echo '<th class="ph-published">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED_AVATAR', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-approved">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $OPT.'_APPROVED_AVATAR', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-image">'.Text::_('COM_PHOCAGALLERY_AVATAR').'</th>'."\n";
+echo '<th class="ph-user">'.HTMLHelper::_('searchtools.sort',  	$OPT.'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-user">'.Text::_('COM_PHOCAGALLERY_CATEGORY_COUNT').'</th>'."\n";
+echo '<th class="ph-user">'.Text::_('COM_PHOCAGALLERY_IMAGE_COUNT').'</th>'."\n";
+echo '<th class="ph-published">'.HTMLHelper::_('searchtools.sort',  $OPT.'_PUBLISHED_AVATAR', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-approved">'.HTMLHelper::_('searchtools.sort',  $OPT.'_APPROVED_AVATAR', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.HTMLHelper::_('searchtools.sort',  		$OPT.'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
@@ -86,7 +98,7 @@ $canChange		= $user->authorise('core.edit.state', $option) && $canCheckin;
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->tdImage($item, $this->button, 'COM_PHOCAGALLERY_ENLARGE_IMAGE', '', $this->t['avatarpathabs'], $this->t['avatarpathrel']);
+echo $r->tdImage($item, 'pg-photoswipe-button', 'COM_PHOCAGALLERY_ENLARGE_IMAGE', '', $this->t['avatarpathabs'], $this->t['avatarpathrel']);
 
 
 $usrO = $item->username;
@@ -99,7 +111,7 @@ echo $r->td($countCid, "small");
 if ($item->countiid) {$countIid = $item->countiid;} else {$countIid = '0';}
 echo $r->td($countIid, "small");
 
-echo $r->td(Joomla\CMS\HTML\HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
+echo $r->td(HTMLHelper::_('jgrid.published', $item->published, $i, $tasks.'.', $canChange), "small");
 echo $r->td(PhocaGalleryJGrid::approved( $item->approved, $i, $tasks.'.', $canChange), "small");
 
 echo $r->td($item->id, "small");
@@ -119,4 +131,7 @@ echo $r->endTable();
 echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
+
+// Modal window for images
+echo PhocaGalleryRenderDetailWindow::loadPhotoswipeBottom();
 ?>

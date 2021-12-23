@@ -9,6 +9,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /* Google Maps Version 3 */
 class PhocaGalleryRenderMap
@@ -25,7 +27,7 @@ class PhocaGalleryRenderMap
 
 	public function loadApi() {
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 		$key 		= $paramsC->get( 'maps_api_key', '' );
 		$ssl 		= $paramsC->get( 'maps_api_ssl', 1 );
 
@@ -228,7 +230,7 @@ class PhocaGalleryRenderMap
 		switch ($icon) {
 
 			case 1:
-				$imagePath = JURI::base(true).'/media/com_phocagallery/images/mapicons/yellow/';
+				$imagePath = Uri::base(true).'/media/com_phocagallery/images/mapicons/yellow/';
 				$js ='var phocaImage = new google.maps.MarkerImage(\''.$imagePath.'image.png\','."\n";
 				$js.='new google.maps.Size(26,30),'."\n";
 				$js.='new google.maps.Point(0,0),'."\n";

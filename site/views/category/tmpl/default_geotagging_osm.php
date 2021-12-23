@@ -9,13 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 phocagalleryimport('phocagallery.render.rendermaposm');
 
 
 
 $id		= uniqid();
 $map	= new PhocaGalleryRenderMaposm($id);
-echo '<noscript>'.JText::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
+echo '<noscript>'.Text::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
 echo '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>';
 echo '<div align="center" style="margin:0;padding:0;margin-top:10px;">';
 

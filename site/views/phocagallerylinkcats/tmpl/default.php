@@ -10,7 +10,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+//JHtml::_('behavior.tooltip');
 $js = '
 function insertLink() {
 	var imagecategories = document.getElementById("imagecategories").value;
@@ -56,38 +58,38 @@ JFactory::getDocument()->addScriptDeclaration($js);
 ?>
 <div id="phocagallery-links">
 <fieldset class="adminform">
-<legend><?php echo JText::_( 'COM_PHOCAGALLERY_CATEGORIES' ); ?></legend>
+<legend><?php echo Text::_( 'COM_PHOCAGALLERY_CATEGORIES' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 	<tr>
 		<td class="key" align="right" width="30%">
 			<label for="imagecategories">
-				<?php echo JText::_( 'COM_PHOCAGALLERY_DISPLAY_IMAGES' ); ?>
+				<?php echo Text::_( 'COM_PHOCAGALLERY_DISPLAY_IMAGES' ); ?>
 			</label>
 		</td>
 		<td width="70%">
 			<select name="imagecategories" id="imagecategories">
-			<option value="0" ><?php echo JText::_( 'COM_PHOCAGALLERY_NO' ); ?></option>
-			<option value="1" selected="selected"><?php echo JText::_( 'COM_PHOCAGALLERY_YES' ); ?></option>
+			<option value="0" ><?php echo Text::_( 'COM_PHOCAGALLERY_NO' ); ?></option>
+			<option value="1" selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_YES' ); ?></option>
 			</select>
 		</td>
 	</tr>
 	<tr >
 		<td class="key" align="right">
 			<label for="imagecategoriessize">
-				<?php echo JText::_( 'COM_PHOCAGALLERY_IMAGE_SIZE' ); ?>
+				<?php echo Text::_( 'COM_PHOCAGALLERY_IMAGE_SIZE' ); ?>
 			</label>
 		</td>
 		<td>
 			<select name="imagecategoriessize" id="imagecategoriessize">
-			<option value="0" selected="selected"><?php echo JText::_( 'COM_PHOCAGALLERY_SMALL' ); ?></option>
-			<option value="1"><?php echo JText::_( 'COM_PHOCAGALLERY_MEDIUM' ); ?></option>
-			<option value="2"><?php echo JText::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON' ); ?></option>
-			<option value="3"><?php echo JText::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON' ); ?></option>
-			<option value="4"><?php echo JText::_( 'COM_PHOCAGALLERY_SMALL_WITH_SHADOW' ); ?></option>
-			<option value="5"><?php echo JText::_( 'COM_PHOCAGALLERY_MEDIUM_WITH_SHADOW' ); ?></option>
-			<option value="6"><?php echo JText::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON_WITH_SHADOW' ); ?></option>
-			<option value="7"><?php echo JText::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON_WITH_SHADOW' ); ?></option>
+			<option value="0" selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL' ); ?></option>
+			<option value="1"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM' ); ?></option>
+			<option value="2"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON' ); ?></option>
+			<option value="3"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON' ); ?></option>
+			<option value="4"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_WITH_SHADOW' ); ?></option>
+			<option value="5"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_WITH_SHADOW' ); ?></option>
+			<option value="6"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON_WITH_SHADOW' ); ?></option>
+			<option value="7"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON_WITH_SHADOW' ); ?></option>
 			</select>
 		</td>
 	</tr>
@@ -96,7 +98,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 	<tr >
 		<td class="key" align="right">
 			<label for="hidecategories">
-				<?php echo JText::_( 'COM_PHOCAGALLERY_HIDE_CATEGORIES' ); ?>
+				<?php echo Text::_( 'COM_PHOCAGALLERY_HIDE_CATEGORIES' ); ?>
 			</label>
 		</td>
 		<td>
@@ -106,11 +108,11 @@ JFactory::getDocument()->addScriptDeclaration($js);
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary" onclick="insertLink();"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary" onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
 </div>

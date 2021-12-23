@@ -24,18 +24,23 @@ if (!function_exists('json_decode')) {
 }
 */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$app	= JFactory::getApplication();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+$app	= Factory::getApplication();
 $link	= 'index.php?option=com_phocagallery';
 if (!function_exists('curl_init')) {
-	$msg = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_CURL');
-	$app->redirect(JRoute::_($link, false), $msg, 'error');
+	$msg = Text::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_CURL');
+	$app->enqueueMessage($msg, 'error');
+	$app->redirect(Route::_($link, false));
 	exit;
 }
 
 
 if (!function_exists('json_decode')) {
-	$msg = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_JSON');
-	$app->redirect(JRoute::_($link, false), $msg);
+	$msg = Text::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_JSON');
+	$app->enqueueMessage($msg, 'error');
+	$app->redirect(Route::_($link, false));
 	exit;
 }
 
@@ -73,7 +78,7 @@ class FacebookApiException extends Exception
     } else {
       $msg = 'Unknown Error. Check getResult()';
     }
-	$app	= JFactory::getApplication();
+	$app	= Factory::getApplication();
     $link	= 'index.php?option=com_phocagallery';
 
 	$find 	= 'Error validating access token';
@@ -81,16 +86,17 @@ class FacebookApiException extends Exception
 	if ($found === false) {
 
 	} else {
-		$msg .= '<br /><br />' . JText::_('COM_PHOCAGALLERY_ERROR_FB_ACCESS_TOKEN');
+		$msg .= '<br /><br />' . Text::_('COM_PHOCAGALLERY_ERROR_FB_ACCESS_TOKEN');
 	}
 
-	$t = JFactory::getApplication()->input->get('tmpl', '', '', 'string');
+	$t = Factory::getApplication()->input->get('tmpl', '', '', 'string');
 	if ($t == 'component') {
-		echo JText::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
+		echo Text::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
 		exit;
 	} else {
-		$msg = JText::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
-		$app->redirect(JRoute::_($link, false), $msg, 'error');
+		$msg = Text::_('COM_PHOCAGALLERY_ERROR_FACEBOOK_API'). ': '.$msg.' ('.$code.')';
+		$app->enqueueMessage($msg, 'error');
+		$app->redirect(Route::_($link, false));
 		exit;
 	}
 

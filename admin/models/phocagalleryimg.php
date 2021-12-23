@@ -9,10 +9,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport('phocagallery.tag.tag');
 
-class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 {
 	protected	$option 		= 'com_phocagallery';
 	protected 	$text_prefix	= 'com_phocagallery';
@@ -20,7 +29,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocagallery.phocagalleryimg.'.(int) $record->catid);
@@ -31,7 +40,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_phocagallery.phocagalleryimg.'.(int) $record->catid);
@@ -42,12 +51,12 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 	public function getTable($type = 'PhocaGallery', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocagallery.phocagalleryimg', 'phocagalleryimg', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -60,7 +69,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 
 		// Check the session for previously entered form data.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 		$data = $app->getUserState('com_phocagallery.edit.phocagallery.data', array());
 
 		if (empty($data)) {
@@ -84,7 +93,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
 			if (isset($item->metadata)) {
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->metadata);
 				$item->metadata = $registry->toArray();
 			}
@@ -96,18 +105,18 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 		$table->hits 		= PhocaGalleryUtils::getIntFromString($table->hits);
 		$table->zoom 		= PhocaGalleryUtils::getIntFromString($table->zoom);
 		$table->pcproductid = PhocaGalleryUtils::getIntFromString($table->pcproductid);
 		$table->vmproductid = PhocaGalleryUtils::getIntFromString($table->vmproductid);
 
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias =ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -116,7 +125,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery WHERE catid = '.(int)$table->catid);
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
@@ -142,13 +151,13 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 	function approve(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$dispatcher	= JDispatcher::getInstance();
-		$user		= JFactory::getUser();
+		//$dispatcher	= JDispatcher::getInstance();
+		$user		= Factory::getUser();
 		$table		= $this->getTable('phocagallery');
 		$pks		= (array) $pks;
 
 		// Include the content plugins for the change of state event.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Access checks.
 		foreach ($pks as $i => $pk) {
@@ -156,7 +165,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
+					throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
 				}
 			}
 		}
@@ -181,7 +190,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 	function save($data) {
 
-		$params						= JComponentHelper::getParams( 'com_phocagallery' );
+		$params						= ComponentHelper::getParams( 'com_phocagallery' );
 		$clean_thumbnails 			= $params->get( 'clean_thumbnails', 0 );
 		$fileOriginalNotExist		= 0;
 
@@ -197,7 +206,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				//$this->setError('Original File does not exist');
 				//return false;
 				$fileOriginalNotExist = 1;
-				$errorMsg = JText::_('COM_PHOCAGALLERY_ORIGINAL_IMAGE_NOT_EXIST');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_ORIGINAL_IMAGE_NOT_EXIST');
 			}
 
 			$data['imgorigsize'] 	= PhocaGalleryFile::getFileSize($data['filename'], 0);
@@ -261,13 +270,13 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
+		//$dispatcher = JDispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
 		$isNew		= true;
 
 		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Load the row if saving an existing record.
 		if ($pk > 0) {
@@ -282,7 +291,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		}
 
 		if(intval($table->date) == 0) {
-			$table->date = JFactory::getDate()->toSql();
+			$table->date = Factory::getDate()->toSql();
 		}
 
 		// Prepare the row for saving
@@ -316,7 +325,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		}
 
 		// Clean the cache.
-		$cache = JFactory::getCache($this->option);
+		$cache = Factory::getCache($this->option);
 		$cache->clean();
 
 		// Trigger the onContentAfterSave event.
@@ -331,7 +340,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 		// = = = = = =
 
 
-		$task = JFactory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->input->get('task');
 		if (isset($table->$pkName)) {
 			$id = $table->$pkName;
 		}
@@ -345,7 +354,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 			//Get folder variables from Helper
 			//Create thumbnails small, medium, large
 			$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.thumbs';
-			$task = JFactory::getApplication()->input->get('task');
+			$task = Factory::getApplication()->input->get('task');
 			if (isset($table->$pkName) && $task == 'apply') {
 				$id = $table->$pkName;
 				$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='.(int)$id;
@@ -369,7 +378,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 
 	function delete(&$cid = array()) {
-		$params				= JComponentHelper::getParams( 'com_phocagallery' );
+		$params				= ComponentHelper::getParams( 'com_phocagallery' );
 		$clean_thumbnails 	= $params->get( 'clean_thumbnails', 0 );
 		$result 			= false;
 
@@ -389,10 +398,11 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 			$query = 'DELETE FROM #__phocagallery'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
-			if(!$this->_db->query()) {
+			$this->_db->execute();
+			/*if(!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 				return false;
-			}
+			}*/
 
 			// - - - - - - - - - - - - - -
 			// Delete thumbnails - medium and large, small from server
@@ -434,34 +444,34 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 					if (isset($value->extid) && ((int)$value->extid > 0)) {
 						// Picasa cannot be recreated
-						$message = JText::_('COM_PHOCAGALLERY_ERROR_EXT_IMG_NOT_RECREATE');
+						$message = Text::_('COM_PHOCAGALLERY_ERROR_EXT_IMG_NOT_RECREATE');
 						return false;
 					} else if (isset($value->filename) && $value->filename != '') {
 
 						$original	= PhocaGalleryFile::existsFileOriginal($value->filename);
 						if (!$original) {
 							// Original does not exist - cannot generate new thumbnail
-							$message = JText::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');
+							$message = Text::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');
 							return false;
 						}
 						// Delete old thumbnails
 						$deleteThubms = PhocaGalleryFileThumbnail::deleteFileThumbnail($value->filename, 1, 1, 1);
 					} else {
-						$message = JText::_('COM_PHOCAGALLERY_FILENAME_NOT_EXISTS');
+						$message = Text::_('COM_PHOCAGALLERY_FILENAME_NOT_EXISTS');
 						return false;
 					}
 					if (!$deleteThubms) {
-						$message = JText::_('COM_PHOCAGALLERY_ERROR_DELETE_THUMBNAIL');
+						$message = Text::_('COM_PHOCAGALLERY_ERROR_DELETE_THUMBNAIL');
 						return false;
 					}
 				}
 			} else {
-				$message = JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB');
+				$message = Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB');
 				return false;
 			}
 
 		} else {
-			$message = JText::_('COM_PHOCAGALLERY_ERROR_ITEM_NOT_SELECTED');
+			$message = Text::_('COM_PHOCAGALLERY_ERROR_ITEM_NOT_SELECTED');
 			return false;
 		}
 		return true;
@@ -491,10 +501,10 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 	public function disableThumbs() {
 
 		$component			=	'com_phocagallery';
-		$paramsC			= JComponentHelper::getParams($component) ;
+		$paramsC			= ComponentHelper::getParams($component) ;
 		$paramsC->set('enable_thumb_creation', 0);
 		$data['params'] 	= $paramsC->toArray();
-		$table 				= JTable::getInstance('extension');
+		$table 				= Table::getInstance('extension');
 		$idCom				= $table->find( array('element' => $component ));
 		$table->load($idCom);
 
@@ -557,10 +567,10 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 					return false;
 				}
 			}
-			$errorMsg = JText::_('COM_PHOCAGALLERY_FILENAME_NOT_EXISTS');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_FILENAME_NOT_EXISTS');
 			return false;
 		}
-		$errorMsg = JText::_('COM_PHOCAGALLERY_ERROR_ITEM_NOT_SELECTED');
+		$errorMsg = Text::_('COM_PHOCAGALLERY_ERROR_ITEM_NOT_SELECTED');
 		return false;
 	}
 
@@ -594,7 +604,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaGalleryC', 'Table');
+			$categoryTable = Table::getInstance('PhocaGalleryC', 'Table');
 
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
@@ -603,22 +613,22 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
 		}
 
 		if (empty($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -643,7 +653,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -718,7 +728,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaGalleryC', 'Table');
+			$categoryTable = Table::getInstance('PhocaGalleryC', 'Table');
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
@@ -726,27 +736,27 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
 		}
 
 		if (empty($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 			return false;
 		}
 
@@ -762,7 +772,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -802,7 +812,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 	public function publish(&$pks, $value = 1)
 	{
 		$dispatcher = J EventDispatcher::getInstance();
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
 
@@ -821,7 +831,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, ' ');
+					Log::add(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), Log::WARNING, ' ');
 
 					return false;
 				}

@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectFolder extends JFormField
+class JFormFieldPhocaSelectFolder extends FormField
 {
 	public $type = 'PhocaSelectFolder';
 
@@ -25,7 +29,7 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
 		$onchange = (string) $this->element['onchange'];
 		$required 	= ($v = $this->element['required']) ? ' required="required"' : '';
-	
+
 
 		// Build the script.
 	/*	$script = array();
@@ -34,9 +38,9 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		$script[] = '		'.$onchange;
 		$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';*/
-		
-		
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+
+
+		HTMLHelper::_('jquery.framework');
 		$idA		= 'pgselectfolder';
 
 		// Build the script.
@@ -44,12 +48,12 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		$script[] = '	function phocaSelectFolder_'.$this->id.'(title) {';
 		$script[] = '		document.getElementById("'.$this->id.'").value = title;';
 		$script[] = '		'.$onchange;
-		//$script[] = '		SqueezeBox.close();';
-		$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
+		$script[] = '		jQuery(\'#'.$idA.'\').modal(\'hide\');';
 		$script[] = '	}';
 
+
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 /*
 		$html[] = '<div class="fltlft">';
@@ -59,44 +63,44 @@ class JFormFieldPhocaSelectFolder extends JFormField
 		// Create the user select button.
 		$html[] = '<div class="button2-left">';
 		$html[] = '  <div class="blank">';
-		$html[] = '		<a class="modal_'.$this->id.'" title="'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'"' .
+		$html[] = '		<a class="modal_'.$this->id.'" title="'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'"' .
 							' href="'.($this->element['readonly'] ? '' : $link).'"' .
 							' rel="{handler: \'iframe\', size: {x: 650, y: 375}}">';
-		$html[] = '			'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'</a>';
+		$html[] = '			'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'</a>';
 		$html[] = '  </div>';
 		$html[] = '</div>';*/
-		
+
 	/*	$html[] = '<div class="input-append">';
 		$html[] = '<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' .' '.$attr.' />';
-		$html[] = '<a class="modal_'.$this->id.' btn" title="'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'"'
+		$html[] = '<a class="modal_'.$this->id.' btn" title="'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'"'
 				.' href="'.($this->element['readonly'] ? '' : $link).'"'
 				.' rel="{handler: \'iframe\', size: {x: 650, y: 400}}">'
-				. JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'</a>';
+				. Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER').'</a>';
 		$html[] = '</div>'. "\n";*/
-		
-		
-		$html[] = '<div class="input-append">';
 
-		$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
+
+		$html[] = '<div class="input-group input-append">';
+
+		$html[] = '<span class="input-group input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
 			. ' value="' . $this->value . '"' . $attr . ' />';
-		$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER') . '">'
+		$html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER') . '">'
 			. '<span class="icon-list icon-white"></span> '
-			. JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER') . '</a></span>';
-		
-		$html[] = '</div>'. "\n";		
-		
-		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+			. Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER') . '</a></span>';
+
+		$html[] = '</div>'. "\n";
+
+		$html[] = HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(
 				'url'    => $link,
-				'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER'),
+				'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_FOLDER'),
 				'width'  => '700px',
 				'height' => '400px',
 				'modalWidth' => '80',
 				'bodyHeight' => '70',
 				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-					. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+					. Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 			)
 		);
 

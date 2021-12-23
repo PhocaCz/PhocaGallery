@@ -9,10 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 jimport( 'joomla.application.component.view');
 
 
-class PhocaGalleryCpViewPhocagalleryYtb extends JViewLegacy
+class PhocaGalleryCpViewPhocagalleryYtb extends HtmlView
 {
 	protected $field;
 	protected $fce;
@@ -22,20 +25,20 @@ class PhocaGalleryCpViewPhocagalleryYtb extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$params = JComponentHelper::getParams( 'com_phocagallery' );
-		$app 	= JFactory::getApplication();
+		$params = ComponentHelper::getParams( 'com_phocagallery' );
+		$app 	= Factory::getApplication();
 		$app->allowCache(false);
 
 		$this->t	= PhocaGalleryUtils::setVars('ytb');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
-		$this->t['catid']		= JFactory::getApplication()->input->get( 'catid', 0, 'int' );
-		$this->t['field']		= JFactory::getApplication()->input->get( 'field', '', 'string');
-		$this->t['import']		= JFactory::getApplication()->input->get( 'import', 0, 'int' );
+		$this->t['catid']		= Factory::getApplication()->input->get( 'catid', 0, 'int' );
+		$this->t['field']		= Factory::getApplication()->input->get( 'field', '', 'string');
+		$this->t['import']		= Factory::getApplication()->input->get( 'import', 0, 'int' );
 
 
 

@@ -1,0 +1,342 @@
+/* Icons */
+.ph-si {
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0 0.25em;
+    fill: currentColor;
+}
+
+/* SVG ICONS */
+
+/*
+F94144
+F8961E
+90BE6D
+43AA8B
+
+66829A
+748DA3
+8197AB
+*/
+
+
+.ph-si-feed {color: #F8961E;}
+.ph-si-image {color: #fff; margin-bottom: 0.3em}
+.ph-si-tab.ph-si-image {color: #33739e;}
+.ph-si-category {color: #F9C74F; margin-bottom: 0.3em}
+.ph-si-star {color: #ffc93c;}
+.ph-si-comment {color: #333a9e;}
+.ph-si-upload {color: #0d6e35;}
+.ph-si-upload-multiple {color: #333a9e;}
+.ph-si-earth {color: #0d6e35;}
+.ph-si-stats {color: #F8961E;}
+.ph-si-ytb {color: #ff0000;}
+.ph-si-trash {color: #ff0000;}
+
+.ph-si-enabled {color: #0d6e35;}
+.ph-si-disabled {color: #ff0000;}
+
+.ph-si-category-top-category {color: #F9C74F; margin-bottom: 0.3em}
+.ph-si-category-top-back {color: #F3722C; margin-bottom: 0.3em}
+.ph-si-detail-top-back{color: #F3722C; margin-bottom: 0.3em; width: 3em;height:3em;}
+
+.ph-si-next-btn,
+.ph-si-prev-btn {color: #fff;margin-bottom:0.25em;}
+
+.ph-si-category-medium {color: #F9C74F; background: #f0f0f0;}
+
+.ph-si-back-medium {color: #b0b0b0; background: #f0f0f0;}
+.ph-si-lock-medium {color: #b0b0b0; background: #f0f0f0;}
+
+.pg-categories-items-box,
+.pg-category-items-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:flex-start;
+    /*justify-content: center;*/
+    align-items: flex-end;
+    align-content: flex-end;
+
+}
+
+
+@media only screen and (max-width: 768px) {
+    .pg-categories-items-box,
+    .pg-category-items-box  {
+        justify-content: center;
+    }
+}
+
+.pg-item-box,
+.pg-category-box {
+    /*display: flex;
+    flex-direction: column;
+    justify-content: flex-end;*/
+    border: 1px solid #f0f0f0;
+    margin: 0.5em;
+    position:relative;
+}
+
+.pg-item-box figure,
+.pg-category-box figure {
+    margin: 0;
+}
+
+.pg-item-box-info {
+    margin: 0;
+    padding: 0;
+}
+
+#phocagallery svg {
+    vertical-align: middle;
+}
+
+.pg-svg-box {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+.pg-svg-box svg {
+    padding: 2.5em;
+    margin: 0;
+}
+.pg-category-box-image svg,
+.pg-detail-item-image-box img,
+.pg-item-box-image img,
+.pg-item-box-image svg,
+.pg-category-box-image img{
+    border-radius: 3px;
+    box-shadow: rgba(50, 50, 93, 0.4) 0px 6px 12px -2px, rgba(0, 0, 0, 0.7) 0px 3px 7px -3px;
+}
+
+.pg-item-box-title,
+.pg-category-box-title {
+    position: absolute;
+    bottom: 0em;
+    left: 0em;
+    padding: 0.5em;
+    color: #fff;
+    font-weight: bold;
+    background: rgba(0,0,0,.5);
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    font-size: 115%;
+}
+
+/* Capitalize first letter of sentence */
+.pg-item-box-title a,
+.pg-category-box-title a{
+    display: inline-block;
+}
+.pg-item-box-title a:first-letter,
+.pg-category-box-title a:first-letter{
+    text-transform: capitalize;
+}
+
+
+.pg-item-box-title a,
+.pg-category-box-title a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.pg-categories-box-rating,
+.pg-category-box-rating {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+
+}
+
+
+.pg-item-box-icons-box {
+    position: absolute;
+    bottom: 3em;
+    right: 0em;
+    padding: 0.5em;
+}
+
+.pg-item-box-icons-box svg.ph-si {
+    color:#fff;
+    background: rgba(0,0,0,.5);
+    border-radius: 50%;
+    padding: 0.3em;
+    margin: 0;
+}
+
+
+.pg-item-box-stats-value {
+    float:right;
+    margin-right: 0.2em;
+}
+
+.pg-category-box-label-box {
+    position: absolute;
+    top: 0.2em;
+    left: 0.2em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.pg-category-box-label-new {
+    background:#2f66b9;
+    float: left;
+    padding: 0.1em 0.5em;
+    margin: 0.2em;
+    border-radius: 2px;
+}
+.pg-category-box-label-hot {
+    background: #e02121;
+    float:left;
+    padding: 0.1em 0.5em;
+    margin: 0.2em;
+    border-radius: 2px;
+}
+
+.pg-category-box-count {
+    font-size: small;
+    color: #d0d0d0;
+}
+
+.pg-category-box-title a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.pg-category-box-description {
+  position:absolute;
+  top: 0.2em;
+  left: 0.2em;
+}
+
+.ph-si-tab {
+	width: 1.1em;
+	height: 1.1em;
+}
+
+.pg-detail-item-image-box {
+    text-align: center;
+}
+
+#pgCategoryModal .modal-dialog {
+    height: 90%;
+    max-width: 70%;
+}
+#pgCategoryModal .modal-content {
+    height: 100%;
+}
+
+#pgCategoryModalLabel {
+    text-transform: capitalize;
+}
+
+
+/* Pagination */
+.com_phocagallery .form-select {
+    width: auto;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.com_phocagallery .pagination {
+    align-items: center;
+    justify-content:flex-end;
+}
+
+/* Loading */
+
+/* Loading */
+.ph-lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 0px;
+  }
+
+
+.ph-loading-text {
+    text-align: center;
+}
+.ph-loading-text .ph-lds-ellipsis {
+    height: 50px;
+}  
+.ph-loading-hidden {
+    display: none;
+}
+
+.ph-lds-ellipsis div {
+position: absolute;
+top: 33px;
+width: 13px;
+height: 13px;
+border-radius: 50%;
+background: #129ED9;
+animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.ph-lds-ellipsis div:nth-child(1) {
+left: 8px;
+animation: ph-lds-ellipsis1 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(2) {
+left: 8px;
+animation: ph-lds-ellipsis2 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(3) {
+left: 32px;
+animation: ph-lds-ellipsis2 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(4) {
+left: 56px;
+animation: ph-lds-ellipsis3 0.6s infinite;
+}
+@keyframes ph-lds-ellipsis1 {
+0% {
+    transform: scale(0);
+}
+100% {
+    transform: scale(1);
+}
+}
+@keyframes ph-lds-ellipsis3 {
+0% {
+    transform: scale(1);
+}
+100% {
+    transform: scale(0);
+}
+}
+@keyframes ph-lds-ellipsis2 {
+0% {
+    transform: translate(0, 0);
+}
+100% {
+    transform: translate(24px, 0);
+}
+}
+
+
+.ph-adminlist {
+    clear:both;
+    margin: 1em auto;
+    
+}
+
+.ph-adminlist tr th,
+.ph-adminlist tr td {
+    border-collapse: collapse;
+    border: 1px solid #d0d0d0;
+    text-align: center;
+    padding: 0.3em;
+}
+
+.ph-adminlist-select-row {
+    display:flex;
+    justify-content: flex-end;
+}
+.ph-adminlist-select-row .form-select {
+    display:flex;
+}
+
+#phocagallery {
+    margin-bottom: 1em;
+}

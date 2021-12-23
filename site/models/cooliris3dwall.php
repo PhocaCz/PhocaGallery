@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.model');
 
-class PhocagalleryModelCooliris3DWall extends JModelLegacy
+class PhocagalleryModelCooliris3DWall extends BaseDatabaseModel
 {
 
 	function __construct() {
@@ -20,7 +24,7 @@ class PhocagalleryModelCooliris3DWall extends JModelLegacy
 
 	function getCategory($id) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($id > 0) {
 
 			$query = 'SELECT c.*,' .
@@ -30,7 +34,7 @@ class PhocagalleryModelCooliris3DWall extends JModelLegacy
 			$this->_db->setQuery($query, 0, 1);
 			$category = $this->_db->loadObject();
 
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			// USER RIGHT - ACCESS - - - - - -
 			$rightDisplay	= 1;//default is set to 1 (all users can see the category)
 			if (!empty($category)) {
@@ -40,7 +44,8 @@ class PhocagalleryModelCooliris3DWall extends JModelLegacy
 			if ($rightDisplay == 0) {
 				$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
 				$t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->redirect(Route::_($t['pl'], false));
 				exit;
 			}
 			// - - - - - - - - - - - - - - - -

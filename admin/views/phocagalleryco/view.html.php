@@ -9,10 +9,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.application.component.view');
 
 
-class PhocaGalleryCpViewPhocaGalleryCo extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryCo extends HtmlView
 {
 	protected $item;
 	protected $form;
@@ -56,7 +62,7 @@ class PhocaGalleryCpViewPhocaGalleryCo extends JViewLegacy
 	protected function getInfoValues() {
 
 		if (isset($this->item->id)) {
-			$db		= JFactory::getDbo();
+			$db		= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 			// Select the required fields from the table.
@@ -75,9 +81,9 @@ class PhocaGalleryCpViewPhocaGalleryCo extends JViewLegacy
 			$db->setQuery($query);
 			$itemInfo = $db->loadObject();
 
-			if ($db->getErrorNum()) {
+			/*if ($db->getErrorNum()) {
 				throw new Exception($db->getErrorMsg(), 500);
-			}
+			}*/
 
 			return $itemInfo;
 		}
@@ -86,26 +92,26 @@ class PhocaGalleryCpViewPhocaGalleryCo extends JViewLegacy
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagallerycos.php';
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$bar 		= JToolbar::getInstance('toolbar');
-		$user		= JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= Toolbar::getInstance('toolbar');
+		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$canDo		= PhocaGalleryCosHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
-		$text = $isNew ? JText::_( 'COM_PHOCAGALLERY_NEW' ) : JText::_('COM_PHOCAGALLERY_EDIT');
-		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_CAT_COMMENT' ).': <small><small>[ ' . $text.' ]</small></small>' , 'comment');
+		$text = $isNew ? Text::_( 'COM_PHOCAGALLERY_NEW' ) : Text::_('COM_PHOCAGALLERY_EDIT');
+		ToolbarHelper::title(   Text::_( 'COM_PHOCAGALLERY_CAT_COMMENT' ).': <small><small>[ ' . $text.' ]</small></small>' , 'comment');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolbarHelper ::apply('phocagalleryco.apply', 'JToolbar_APPLY');
-			JToolbarHelper ::save('phocagalleryco.save', 'JToolbar_SAVE');
+			ToolbarHelper::apply('phocagalleryco.apply', 'JToolbar_APPLY');
+			ToolbarHelper::save('phocagalleryco.save', 'JToolbar_SAVE');
 		}
 
-		JToolbarHelper ::cancel('phocagalleryco.cancel', 'JToolbar_CLOSE');
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::cancel('phocagalleryco.cancel', 'JToolbar_CLOSE');
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 }

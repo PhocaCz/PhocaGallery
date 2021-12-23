@@ -9,8 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('JPATH_BASE') or die();
+use Joomla\CMS\Object\CMSObject;
 
-class PhocaGalleryLibrary extends JObject
+class PhocaGalleryLibrary extends CMSObject
 {
 	var $name			= '';
 	var $value			= 0;

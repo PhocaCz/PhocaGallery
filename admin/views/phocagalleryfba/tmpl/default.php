@@ -10,10 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+use Joomla\CMS\Language\Text;
+//JHtml::_('behavior.tooltip');
 
 echo '<div id="phocagallery-fba">'. "\n"
-.'<h4>'.JText::_( 'COM_PHOCAGALLERY_FB_SELECT_ALBUM' ).'</h4>';
+.'<h4>'.Text::_( 'COM_PHOCAGALLERY_FB_SELECT_ALBUM' ).'</h4>';
 
 if ($this->userInfo == 1 ){
 
@@ -29,9 +30,9 @@ if ($this->userInfo == 1 ){
 
 	echo '</ul>'. "\n";
 } else {
-	echo '<div>'.JText::_('COM_PHOCAGALLERY_FB_SELECT_USER').'</div>';
+	echo '<div>'.Text::_('COM_PHOCAGALLERY_FB_SELECT_USER').'</div>';
 	echo '<p>&nbsp;</p>';
-	echo '<div><a style="text-decoration:underline" href="#" onclick="window.parent.closeModal();">'.JText::_('COM_PHOCAGALLERY_CLOSE_WINDOW').'</a></div>';
+	echo '<div><a style="text-decoration:underline" href="#" onclick="window.parent.closeModal();">'.Text::_('COM_PHOCAGALLERY_CLOSE_WINDOW').'</a></div>';
 
 }
 

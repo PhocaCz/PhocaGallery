@@ -9,16 +9,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 jimport('joomla.application.component.model');
 
-class PhocaGalleryCpModelPhocaGalleryD extends JModelLegacy
+class PhocaGalleryCpModelPhocaGalleryD extends BaseDatabaseModel
 {
 	protected $id;
 	protected $data;
 	
 	public function __construct() {
 		parent::__construct();
-		$id = JFactory::getApplication()->input->get('id',  0, '', 'int');
+		$id = Factory::getApplication()->input->get('id',  0, '', 'int');
 		$this->setId((int)$id);
 	}
 
@@ -43,7 +46,7 @@ class PhocaGalleryCpModelPhocaGalleryD extends JModelLegacy
 			
 			$fileObject = $this->_db->loadObject();
 			
-			$file 	= new JObject();
+			$file 	= new CMSObject();
 
 			$refresh_url = 'index.php?option=com_phocagallery&view=phocagalleryd&tmpl=component&id='.(int)$this->id;
 			

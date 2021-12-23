@@ -8,25 +8,26 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
- 
-defined('_JEXEC') or die('Restricted access'); 
-echo '<div id="phocagallery-categories-detail" class="pg-cvcsv">'."\n";
+use Joomla\CMS\Router\Route;
 
-foreach ($this->itemscv as $ck => $cv) {
-	
-	if ($this->t['bootstrap_icons'] == 0) {
-		$cls 	= 'class="'.$cv->cls.'"';
-		$icon	= '';
-	} else {
-		$cls 	= '';
-		$icon	= PhocaGalleryRenderFront::renderIcon($cv->iconcls, '', ''). ' ';
-	}
+defined('_JEXEC') or die('Restricted access');
+echo '<div id="phocagallery-categories-detail" class="pg-category-categories-top-box">'."\n";
+foreach ($this->itemscv as $k => $item) {
 
-	echo '<div '.$cls.'>'.$icon.'<a href="'.$cv->link.'" >'.$cv->title.'</a> ';
-	if ($cv->numlinks > 0) {
-		echo ' <span class="pg-cvcsv-count">('.$cv->numlinks.')</span>'. "\n";
-	}
-	echo '</div>'."\n";
+	echo '<div class="pg-category-categories-top-box-title">';
+
+
+	if ($item->type == 3) {
+	    echo '<svg class="ph-si ph-si-category-top-back"><use xlink:href="#ph-si-back"></use></svg>';
+    } else {
+	    echo '<svg class="ph-si ph-si-category-top-category"><use xlink:href="#ph-si-category"></use></svg>';
+    }
+
+
+
+    echo '<a href="' . Route::_($item->link) . '">' . $item->title. '</a>';
+    echo $item->numlinks > 0 ? ' <span class="pg-category-box-count">(' . $item->numlinks . ')</span>' : '';
+    echo '</div>';
 }
 echo '</div>'."\n";
 ?>

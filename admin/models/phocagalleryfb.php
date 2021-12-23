@@ -9,9 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\Registry\Registry;
 jimport('joomla.application.component.modeladmin');
 
-class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryFb extends AdminModel
 {
 	protected $option 		= 'com_phocagallery';
 	protected $text_prefix 	= 'com_phocagallery';
@@ -19,7 +24,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($record->id) {
 			return $user->authorise('core.delete', 'com_phocagallery.phocagalleryfb.'.(int) $record->id);
@@ -30,7 +35,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($record->id) {
 			return $user->authorise('core.edit.state', 'com_phocagallery.phocagalleryfb.'.(int) $record->id);
@@ -42,7 +47,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 
 	public function getTable($type = 'PhocaGalleryFbUsers', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true)
@@ -68,7 +73,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryfb.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryfb.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -86,14 +91,14 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		/*$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias =ApplicationHelper::stringURLSafe($table->title);
 		}*/
 
 		if (empty($table->id)) {
@@ -102,7 +107,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery_fb_users');
 				$max = $db->loadResult();
 
@@ -121,7 +126,7 @@ class PhocaGalleryCpModelPhocaGalleryFb extends JModelAdmin
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
 
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->comments);
 			$item->comments = $registry->toArray();
 		}

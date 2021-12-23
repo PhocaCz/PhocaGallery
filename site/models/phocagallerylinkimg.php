@@ -9,12 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\PaginationObject;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.application.component.model');
 use Joomla\String\StringHelper;
 
 
 // CUSTOM PAGINATON
-class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
+class PhocaGalleryModelPhocaGalleryLinkImgPagination extends Pagination
 {
 	protected function _buildDataObject()
 	{
@@ -34,7 +40,7 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
 			}
 		}
 
-		$data->all = new JPaginationObject(JText::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
+		$data->all = new JPaginationObject(Text::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 
 		if (!$this->viewall)
 		{
@@ -43,8 +49,8 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new JPaginationObject(JText::_('JLIB_HTML_START'), $this->prefix);
-		$data->previous = new JPaginationObject(JText::_('JPREV'), $this->prefix);
+		$data->start = new JPaginationObject(Text::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new JPaginationObject(Text::_('JPREV'), $this->prefix);
 
 		if ($this->pagesCurrent > 1)
 		{
@@ -65,8 +71,8 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
 		}
 
 		// Set the next and end data objects.
-		$data->next = new JPaginationObject(JText::_('JNEXT'), $this->prefix);
-		$data->end = new JPaginationObject(JText::_('JLIB_HTML_END'), $this->prefix);
+		$data->next = new JPaginationObject(Text::_('JNEXT'), $this->prefix);
+		$data->end = new JPaginationObject(Text::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->pagesCurrent < $this->pagesTotal)
 		{
@@ -86,7 +92,7 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
 		{
 			$offset = ($i - 1) * $this->limit;
 
-			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
+			$data->pages[$i] = new PaginationObject($i, $this->prefix);
 
 			if ($i != $this->pagesCurrent || $this->viewall)
 			{
@@ -103,7 +109,7 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends JPagination
 	}
 }
 
-class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
+class PhocaGalleryModelPhocaGalleryLinkImg extends BaseDatabaseModel
 {
 
 	var $_data 			= null;
@@ -114,7 +120,7 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 	function __construct() {
 		parent::__construct();
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Get the pagination request variables
 		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
@@ -137,8 +143,8 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 				//Let the user know that the file doesn't exists
 
-				if (!JFile::exists($fileOriginal)) {
-					$this->_data[$key]->filename = JText::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
+				if (!File::exists($fileOriginal)) {
+					$this->_data[$key]->filename = Text::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 					$this->_data[$key]->fileoriginalexist = 0;
 				} else {
 					//Create thumbnails small, medium, large
@@ -188,7 +194,7 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 
 
 	function _buildContentOrderBy() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 
@@ -201,7 +207,7 @@ class PhocaGalleryModelPhocaGalleryLinkImg extends JModelLegacy
 	}
 
 	function _buildContentWhere() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );

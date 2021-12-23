@@ -7,9 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport('phocagallery.render.renderadminviews');
-class phocaGalleryViewphocaGalleryLinks extends JViewLegacy
+class phocaGalleryViewphocaGalleryLinks extends HtmlView
 {
 		protected $r;
 		protected $t;	  
@@ -17,17 +21,16 @@ class phocaGalleryViewphocaGalleryLinks extends JViewLegacy
 
 		$this->r = new PhocaGalleryRenderAdminViews();
 		$this->t = PhocaGalleryUtils::setVars('link');										
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 		}
 
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
+		$document	= Factory::getDocument();
+		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 
 		$eName	= $app->input->get('e_name', '', 'cmd');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );

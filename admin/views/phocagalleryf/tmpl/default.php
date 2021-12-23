@@ -9,6 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 $currentFolder = '';
 if (isset($this->t['state']->folder) && $this->t['state']->folder != '') {
@@ -23,7 +24,7 @@ if (count($this->t['folders']) > 0) {
         echo $this->loadTemplate('folder');
     }
 } else {
-    echo '<div class="ph-item-list-box-head">'.JText::_( 'COM_PHOCAGALLERY_THERE_IS_NO_FOLDER' ).'</div>';
+    echo '<div class="ph-item-list-box-head">'.Text::_( 'COM_PHOCAGALLERY_THERE_IS_NO_FOLDER' ).'</div>';
 }
 echo '</div>';
 

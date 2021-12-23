@@ -9,13 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 
 class PhocaGalleryTagsHelper
 {
 	public static function getActions($itemId = 0)
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user	= Factory::getUser();
+		$result	= new CMSObject;
 
 		if (empty($itemId)) {
 			$assetName = 'com_phocagallery';

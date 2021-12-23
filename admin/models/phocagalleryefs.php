@@ -8,12 +8,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport( 'phocagallery.file.filefolder' );
 
-class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
+class PhocaGalleryCpModelPhocaGalleryEfs extends ListModel
 {
 	protected	$option 		= 'com_phocagallery';
 
@@ -41,7 +47,7 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 	protected function populateState($ordering = 'a.ordering', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -60,7 +66,7 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -145,7 +151,7 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 	}
 
 	protected function getItemsCheck() {
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.id, a.filename, a.type'
 		.' FROM #__phocagallery_styles AS a';
 		$db->setQuery($query);
@@ -155,7 +161,7 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 
 	public function checkItems() {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$files = $this->getFiles();
 		$items = $this->getItemsCheck();
 		if (!empty($files)) {
@@ -215,10 +221,10 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 		jimport('joomla.filesystem.folder');
 
 		$paths		= PhocaGalleryPath::getPath();
-		$path		= JPath::clean($paths->media_css_abs . '/main/');
+		$path		= Path::clean($paths->media_css_abs . '/main/');
 
 		if (is_dir($path)) {
-			$files = JFolder::files($path, '\.css$', false, false);
+			$files = Folder::files($path, '\.css$', false, false);
 
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
@@ -228,13 +234,13 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 				$result[] 			= $fileO;
 			}
 		} else {
-			$this->setError(JText::_('COM_PHOCAGALLERY_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)');
+			$this->setError(Text::_('COM_PHOCAGALLERY_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)');
 			return false;
 		}
 
-		$path	= JPath::clean($paths->media_css_abs . '/custom/');
+		$path	= Path::clean($paths->media_css_abs . '/custom/');
 		if (is_dir($path)) {
-			$files = JFolder::files($path, '\.css$', false, false);
+			$files = Folder::files($path, '\.css$', false, false);
 
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
@@ -244,7 +250,7 @@ class PhocaGalleryCpModelPhocaGalleryEfs extends JModelList
 				$result[] 			= $fileO;
 			}
 		} else {
-			$this->setError(JText::_('COM_PHOCAGALLERY_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)');
+			$this->setError(Text::_('COM_PHOCAGALLERY_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)');
 			return false;
 		}
 		return $result;

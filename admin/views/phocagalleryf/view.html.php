@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 jimport( 'joomla.application.component.view');
 
-class PhocaGalleryCpViewPhocagalleryF extends JViewLegacy
+class PhocaGalleryCpViewPhocagalleryF extends HtmlView
 {
 	protected $field;
 	protected $fce;
@@ -20,20 +24,20 @@ class PhocaGalleryCpViewPhocagalleryF extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$params = JComponentHelper::getParams( 'com_phocagallery' );
-		$app 	= JFactory::getApplication();
+		$params = ComponentHelper::getParams( 'com_phocagallery' );
+		$app 	= Factory::getApplication();
 		$app->allowCache(false);
 
 		$this->t	= PhocaGalleryUtils::setVars('f');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
 		$path 			= PhocaGalleryPath::getPath();
 
-		$this->field	= JFactory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFolder_'.$this->field;
 
 		/*$this->assignRef('session', JFactory::getSession());
@@ -41,7 +45,7 @@ class PhocaGalleryCpViewPhocagalleryF extends JViewLegacy
 		$this->assignRef('folders', $this->get('folders'));
 		$this->assignRef('state', $this->get('state'));*/
 
-		$this->t['session'] = JFactory::getSession();
+		$this->t['session'] = Factory::getSession();
 		$this->t['path_orig_rel'] = $path->image_rel;
 		$this->t['folders'] = $this->get('folders');
 		$this->t['state'] = $this->get('state');
@@ -53,7 +57,7 @@ class PhocaGalleryCpViewPhocagalleryF extends JViewLegacy
 		if (isset($this->t['folders'][$index])) {
 			$this->_tmp_folder = $this->t['folders'][$index];
 		} else {
-			$this->_tmp_folder = new JObject;
+			$this->_tmp_folder = new CMSObject;
 		}
 	}
 }

@@ -10,9 +10,12 @@
  */
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.modellist');
 
-class PhocaGalleryCpModelPhocaGalleryCs extends JModelList
+class PhocaGalleryCpModelPhocaGalleryCs extends ListModel
 {
 
 	protected	$option 	= 'com_phocagallery';
@@ -49,7 +52,7 @@ class PhocaGalleryCpModelPhocaGalleryCs extends JModelList
 	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -72,7 +75,7 @@ class PhocaGalleryCpModelPhocaGalleryCs extends JModelList
 		$this->setState('filter.level', $levels);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -118,10 +121,10 @@ class PhocaGalleryCpModelPhocaGalleryCs extends JModelList
 		$items	= $this->_getList($query);
 
 		// Check for a database error.
-		if ($this->_db->getErrorNum()) {
+		/*if ($this->_db->getErrorNum()) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		}
+		}*/
 
 		// Add the items to the internal cache.
 		$this->cache[$store] = $items;

@@ -8,32 +8,33 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 ?>
-<fieldset class="adminform" title="<?php echo JText::_('COM_PHOCAGALLERY_FTP_TITLE'); ?>">
-	<legend><?php echo JText::_('COM_PHOCAGALLERY_FTP_TITLE'); ?></legend>
+<fieldset class="adminform" title="<?php echo Text::_('COM_PHOCAGALLERY_FTP_TITLE'); ?>">
+	<legend><?php echo Text::_('COM_PHOCAGALLERY_FTP_TITLE'); ?></legend>
 
-	<?php echo JText::_('COM_PHOCAGALLERY_FTP_DESC'); ?>
+	<?php echo Text::_('COM_PHOCAGALLERY_FTP_DESC'); ?>
 
 	<?php if ($this->t['ftp'] instanceof Exception): ?>
-		<p class="error"><?php echo JText::_($this->t['ftp']->message); ?></p>
+		<p class="error"><?php echo Text::_($this->t['ftp']->message); ?></p>
 	<?php endif; ?>
 
 	<table class="adminform">
 		<tbody>
 			<tr>
 				<td width="120">
-					<label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?></label>
+					<label for="username"><?php echo Text::_('JGLOBAL_USERNAME'); ?></label>
 				</td>
 				<td>
-					<input type="text" id="username" name="username" class="inputbox" size="70" value="" />
+					<input type="text" id="username" name="username" class="form-control" size="70" value="" />
 				</td>
 			</tr>
 			<tr>
 				<td width="120">
-					<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
+					<label for="password"><?php echo Text::_('JGLOBAL_PASSWORD'); ?></label>
 				</td>
 				<td>
-					<input type="password" id="password" name="password" class="inputbox" size="70" value="" />
+					<input type="password" id="password" name="password" class="form-control" size="70" value="" />
 				</td>
 			</tr>
 		</tbody>

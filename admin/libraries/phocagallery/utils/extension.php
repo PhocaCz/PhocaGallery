@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 class PhocaGalleryExtension
 {
 	private static $extension = array();
@@ -34,7 +35,7 @@ class PhocaGalleryExtension
 		}
 		if( !array_key_exists( $element, self::$extension ) ) {
 			
-			$db		= JFactory::getDbo();
+			$db		= Factory::getDbo();
 			$query	= $db->getQuery(true);
 			//$query->select('extension_id AS "id", element AS "element", enabled');
 			if ($type == 'component'){
@@ -50,7 +51,7 @@ class PhocaGalleryExtension
 			$query->where('`element` = '.$db->quote($element));
 			$db->setQuery($query);
 			
-			$cache 			= JFactory::getCache('_system_phocagallery','callback');
+			$cache 			= Factory::getCache('_system_phocagallery','callback');
 			$extensionData	=  $cache->get(array($db, 'loadObject'), null, $element, false);
 			if (isset($extensionData->enabled) && $extensionData->enabled == 1) {
 				self::$extension[$element] = 1;

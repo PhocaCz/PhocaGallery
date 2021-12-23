@@ -9,8 +9,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Uri\Uri;
 
-class PhocaGalleryPath extends JObject
+
+class PhocaGalleryPath extends CMSObject
 {
 	public function __construct() {}
 
@@ -18,8 +21,8 @@ class PhocaGalleryPath extends JObject
 		static $instance;
 		if (!$instance) {
 			$instance = new PhocaGalleryPath();
-			//$baseFront 						= str_replace('/administrator', '', JURI::base(true));
-			$baseFront						= JURI::root(true);
+			//$baseFront 						= str_replace('/administrator', '', JUri::base(true));
+			$baseFront						= Uri::root(true);
 			$instance->image_abs 			= JPATH_ROOT . '/images/phocagallery/';
 			$instance->image_rel			= 'images/phocagallery/';
 			$instance->avatar_abs 			= JPATH_ROOT . '/images/phocagallery/avatars/';

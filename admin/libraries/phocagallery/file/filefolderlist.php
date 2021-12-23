@@ -9,6 +9,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Object\CMSObject;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.image.image');
@@ -21,7 +27,7 @@ class PhocaGalleryFileFolderList
 	public static function getList($small = 0, $medium = 0, $large = 0, $refreshUrl = '') {
 		static $list;
 
-		$params				= JComponentHelper::getParams( 'com_phocagallery' );
+		$params				= ComponentHelper::getParams( 'com_phocagallery' );
 		$clean_thumbnails 	= $params->get( 'clean_thumbnails', 0 );
 
 		// Only process the list once per request
@@ -30,7 +36,7 @@ class PhocaGalleryFileFolderList
 		}
 
 		// Get current path from request
-		$current = JFactory::getApplication()->input->get('folder', '', 'path');
+		$current = Factory::getApplication()->input->get('folder', '', 'path');
 
 		// If undefined, set to empty
 		if ($current == 'undefined') {
@@ -42,7 +48,7 @@ class PhocaGalleryFileFolderList
 
 		// Initialize variables
 		if (strlen($current) > 0) {
-			$origPath = JPath::clean($path->image_abs.$current);
+			$origPath = Path::clean($path->image_abs.$current);
 		} else {
 			$origPath = $path->image_abs;
 		}
@@ -52,14 +58,14 @@ class PhocaGalleryFileFolderList
 		$folders 	= array ();
 
 		// Get the list of files and folders from the given folder
-		$fileList 		= JFolder::files($origPath);
-		$folderList 	= JFolder::folders($origPath, '', false, false, array(0 => 'thumbs'));
+		$fileList 		= Folder::files($origPath);
+		$folderList 	= Folder::folders($origPath, '', false, false, array(0 => 'thumbs'));
 
 		if(is_array($fileList) && !empty($fileList)) {
 			natcasesort($fileList);
 		}
 
-		$field			= JFactory::getApplication()->input->get('field');;
+		$field			= Factory::getApplication()->input->get('field');;
 		$refreshUrl 	= $refreshUrl . '&folder='.$current.'&field='.$field;
 
 
@@ -68,7 +74,7 @@ class PhocaGalleryFileFolderList
 		if ($fileList !== false) {
 			foreach ($fileList as $file) {
 
-				$ext = strtolower(JFile::getExt($file));
+				$ext = strtolower(File::getExt($file));
 				// Don't display thumbnails from defined files (don't save them into a database)...
 				$dontCreateThumb	= PhocaGalleryFileThumbnail::dontCreateThumb($file);
 				if ($dontCreateThumb == 1) {
@@ -76,13 +82,13 @@ class PhocaGalleryFileFolderList
 				}
 				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
 
-					if (JFile::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
+					if (File::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 
 						//Create thumbnails small, medium, large
 						$fileNo			= $current . "/" . $file;
 						$fileThumb 		= PhocaGalleryFileThumbnail::getOrCreateThumbnail($fileNo, $refreshUrl, $small, $medium, $large);
 
-						$tmp 						= new JObject();
+						$tmp 						= new CMSObject();
 						$tmp->name 					= $fileThumb['name'];
 						$tmp->nameno 				= $fileThumb['name_no'];
 						$tmp->linkthumbnailpath		= $fileThumb['thumb_name_m_no_rel'];
@@ -103,9 +109,9 @@ class PhocaGalleryFileFolderList
 
 		if ($folderList !== false) {
 			foreach ($folderList as $folder) {
-				$tmp 							= new JObject();
+				$tmp 							= new CMSObject();
 				$tmp->name 						= basename($folder);
-				$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($origPath . '/'. $folder));
+				$tmp->path_with_name 			= str_replace('\\', '/', Path::clean($origPath . '/'. $folder));
 				$tmp->path_without_name_relative= $path->image_abs . str_replace($origPathServer, '', $tmp->path_with_name);
 				$tmp->path_with_name_relative_no= str_replace($origPathServer, '', $tmp->path_with_name);
 

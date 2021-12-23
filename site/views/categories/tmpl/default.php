@@ -8,50 +8,39 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\FileLayout;
+
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => 'com_phocagallery'));
+
+// SVG Definitions
+$d          = array();
+echo $layoutSVG->render($d);
+
 echo '<div id="phocagallery" class="pg-categories-view'.$this->params->get( 'pageclass_sfx' ).' pg-csv">';
+
 if ( $this->params->get( 'show_page_heading' ) ) {
 	echo '<div class="page-header"><h1>'. $this->escape($this->params->get('page_heading')) . '</h1></div>';
 }
 
-echo '<div id="pg-icons">';
-echo PhocaGalleryRenderFront::renderFeedIcon('categories');
-echo '</div>';
-echo '<div class="ph-cb"></div>';
 
+if ($this->t['display_feed'] == 1 || $this->t['display_feed'] == 2 ) {
+
+    echo '<div class="pg-top-icons">';
+    echo '<a href="' . Route::_(PhocaGalleryRoute::getFeedRoute('categories')) . '" title="' . Text::_('COM_PHOCAGALLERY_RSS') . '"><svg class="ph-si ph-si-feed"><use xlink:href="#ph-si-feed"></use></svg></a>';
+    echo '</div>';
+    echo '<div class="ph-cb"></div>';
+}
 
 if ($this->t['categories_description'] != '') {
-	echo '<div class="pg-csv-desc" >'.Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $this->t['categories_description']).'</div>';
+	echo '<div class="pg-categories-desc" >'.HTMLHelper::_('content.prepare', $this->t['categories_description']).'</div>';
 }
 
-// Obsolete methods
-switch($this->t['display_image_categories']) {
-
-	case 0:
-		echo $this->loadTemplate('obs_catimgdetailtitleonly');
-	break;
-
-	case 2:
-		echo $this->loadTemplate('obs_catimgdetail');
-	break;
-
-	case 3:
-		echo $this->loadTemplate('obs_catimgdetailfloat');
-	break;
-
-	case 4:
-		echo $this->loadTemplate('obs_catimgdesc');
-	break;
-
-	case 5:
-		echo $this->loadTemplate('obs_custom');
-	break;
-
-	case 1:
-	default:
-		echo $this->loadTemplate('categories');
-	break;
-}
+echo $this->loadTemplate('categories');
 echo $this->loadTemplate('pagination');
 echo PhocaGalleryUtils::getExtInfo();
 echo '</div>';

@@ -9,19 +9,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
 
-class PhocagalleryModelCommentImgA extends JModelLegacy
+class PhocagalleryModelCommentImgA extends BaseDatabaseModel
 {
-	
+
 	function comment($data) {
-		
+
 		$row = $this->getTable('phocagallerycommentimgs', 'Table');
-		
-		
+
+
 		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -34,15 +35,15 @@ class PhocagalleryModelCommentImgA extends JModelLegacy
 		}
 
 		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
-		
+
 		return true;
 	}
 }

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->t['display_rating'] == 1) {
 	$votesCount = $votesAverage = $votesWidth = 0;
+
 	if (!empty($this->cv->ratingcount)) {
 		$votesCount = $this->cv->ratingcount;
 	}
@@ -23,22 +24,24 @@ if ($this->t['display_rating'] == 1) {
 			$votesAverage 	= round(((float)$votesAverage / 0.5)) * 0.5;
 			$votesWidth		= 16 * $votesAverage;
 		}
-		
+
 	}
 	if ((int)$votesCount > 1) {
 		$votesText = 'COM_PHOCAGALLERY_VOTES';
 	} else {
 		$votesText = 'COM_PHOCAGALLERY_VOTE';
 	}
-	
-	echo '<div class="pg-csv-rate">' . JText::_('COM_PHOCAGALLERY_RATING'). ': '
-		. $votesAverage .' / '.$votesCount . ' ' . JText::_($votesText). '</div>'
-		.' <div class="pg-csv-rate-box"><ul class="star-rating-small">'
+
+	echo '<div class="pg-categories-box-rating">'
+		/*.'<div>' . JText::_('COM_PHOCAGALLERY_RATING'). ': '
+		. $votesAverage .' / '.$votesCount . ' ' . JText::_($votesText). '</div>'*/
+		.' <div><ul class="star-rating-small">'
 		.'  <li class="current-rating" style="width:'.$votesWidth.'px"></li>'
 		.'   <li><span class="star1"></span></li>';
 	for ($r = 2;$r < 6;$r++) {
 		echo '<li><span class="stars'.$r.'"></span></li>';
 	}
-	echo '</ul></div>'."\n";
+	echo '</ul></div></div>'."\n";
 }
+
 ?>

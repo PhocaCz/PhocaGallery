@@ -11,9 +11,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controllerform');
 
-class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
+class PhocaGalleryCpControllerPhocaGalleryM extends FormController
 {
 	protected	$option 		= 'com_phocagallery';
 	protected	$view_list		= 'phocagallerym';
@@ -36,7 +41,7 @@ class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
 	
 
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocagallery');
 		if ($allow === null) {
@@ -47,7 +52,7 @@ class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocagallery');
 		if ($allow === null) {
@@ -59,8 +64,8 @@ class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
 	
 	/*
 	function save() {
-	JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		$post				= JFactory::getApplication()->input->get('post');
+	Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		$post				= Factory::getApplication()->input->get('post');
 		//$data			= JFactory::getApplication()->input->get('jform', array(0), 'post', 'array');
 		$data = $app->input->post->get('jform', array(), 'array');
 		
@@ -77,9 +82,9 @@ class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
 		$model 		= $this->getModel( 'phocagallerym' );
 
 		if ($model->save($data)) {
-			$msg = JText::_( 'COM_PHOCAGALLERY_SUCCESS_SAVE_MULTIPLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVE_MULTIPLE' );
 		} else {
-			$msg = JText::_( 'COM_PHOCAGALLERY_ERROR_SAVE_MULTIPLE' );
+			$msg = Text::_( 'COM_PHOCAGALLERY_ERROR_SAVE_MULTIPLE' );
 		}
 
 		$link = 'index.php?option=com_phocagallery&view=phocagalleryimgs';
@@ -95,7 +100,7 @@ class PhocaGalleryCpControllerPhocaGalleryM extends JControllerForm
 		//JFactory::getApplication()->input->set( 'layout', 'Edit'  );
 		//JFactory::getApplication()->input->set( 'hidemainmenu', 1 );
 		//PhocaGalleryCpControllerPhocaGalleryM::display();
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout, false));
+		$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout, false));
 	}
 	
 	function cancel($key = NULL) {

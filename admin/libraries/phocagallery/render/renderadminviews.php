@@ -9,12 +9,17 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+// Frontend editor - button plugin
+require_once JPATH_ADMINISTRATOR . '/components/com_phocagallery/libraries/autoloadPhoca.php';
 
 use Joomla\CMS\Session\Session;
 use Phoca\Render\Adminviews;
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 
 class PhocaGalleryRenderAdminViews extends AdminViews
 {
@@ -35,27 +40,33 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 
 	}
 
-	public function tdImage($item, $button, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
-		$o = '<td class="'.$class.'">'. "\n";
-		$o .= '<div class="pg-msnr-container"><div class="phocagallery-box-file">'. "\n"
-			.' <center>'. "\n"
+	public function tdImage($item, $classButton, $txtE, $class = '', $avatarAbs = '', $avatarRel = '') {
+		$o = '';
+
+		$o .= '<td class="'.$class.'">'. "\n";
+		$o .= '<div class="pg-item-box">'. "\n"
+
+			.'<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+			/*.' <center>'. "\n"
+
 			.'  <div class="phocagallery-box-file-first">'. "\n"
 			.'   <div class="phocagallery-box-file-second">'. "\n"
 			.'    <div class="phocagallery-box-file-third">'. "\n"
-			.'     <center>'. "\n";
+			.'     <center>'. "\n";*/
 
 		if ($avatarAbs != '' && $avatarRel != '') {
 			// AVATAR
-			if (JFile::exists($avatarAbs.$item->avatar)){
-				$o .= '<a class="'. $button->methodname.'"'
+			if (File::exists($avatarAbs.$item->avatar)){
+				$o .= '<a class="'. $classButton.'"'
 				//.' title="'. $button->text.'"'
-				.' href="'.JURI::root().$avatarRel.$item->avatar.'" '
+				.' href="'.Uri::root(). str_replace('phoca_thumb_s_', 'phoca_thumb_l_', $avatarRel).$item->avatar.'" '
 				//.' rel="'. $button->options.'"'
+				.' data-size="640x480"'
 				. ' >'
-				.'<img src="'.JURI::root().$avatarRel.$item->avatar.'?imagesid='.md5(uniqid(time())).'" alt="'.JText::_($txtE).'" />'
+				.'<img src="'.Uri::root().$avatarRel.$item->avatar.'?imagesid='.md5(uniqid(time())).'" alt="'.Text::_($txtE).'" itemprop="thumbnail" />'
 				.'</a>';
 			} else {
-				$o .= Joomla\CMS\HTML\HTMLHelper::_( 'image', '/media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+				$o .= HTMLHelper::_( 'image', '/media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
 			}
 		} else {
 			// PICASA
@@ -67,8 +78,8 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 				$imgLink			= $item->extl;
 
 				//$o .= '<a class="'. $button->modalname.'" title="'.$button->text.'" href="'. $imgLink .'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. $imgLink .'" >'
-				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
+				$o .= '<a class="'. $classButton.'"  href="'. $imgLink .'" data-size="640x480">'
+				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.Text::_($txtE).'" />'
 				.'</a>'. "\n";
 			} else if (isset ($item->fileoriginalexist) && $item->fileoriginalexist == 1) {
 
@@ -76,20 +87,22 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
 				$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
 
-				//$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JURI::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
-				$o .= '<a class="'. $button->methodname.'"  href="'. JURI::root(). $imgLink->rel.'"  >'
-				. '<img src="'.JURI::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" itemprop="thumbnail" />'
+				//$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JUri::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
+				$o .= '<a class="'. $classButton.'"  href="'. Uri::root(). $imgLink->rel.'" data-size="640x480">'
+				. '<img src="'.Uri::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.Text::_($txtE).'" itemprop="thumbnail" />'
 				.'</a>'. "\n";
 			} else {
-				$o .= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+				$o .= HTMLHelper::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
 			}
 		}
-		$o .= '     </center>'. "\n"
+		/*$o .= '     </center>'. "\n"
 			.'    </div>'. "\n"
 			.'   </div>'. "\n"
 			.'  </div>'. "\n"
 			.' </center>'. "\n"
-			.'</div></div>'. "\n";
+			.'</div></div>'. "\n";*/
+
+		$o .= '</figure></div>';
 		$o .=  '</td>'. "\n";
 		return $o;
 	}

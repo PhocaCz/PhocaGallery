@@ -9,12 +9,16 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
 class PhocaGalleryRateImage
 {
 	public static function updateVoteStatistics( $imgid ) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 
 		// Get AVG and COUNT
 		$query = 'SELECT COUNT(vs.id) AS count, AVG(vs.rating) AS average'
@@ -68,7 +72,7 @@ class PhocaGalleryRateImage
 
 	public static function getVotesStatistics($id) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT vs.count AS count, vs.average AS average'
 				.' FROM #__phocagallery_img_votes_statistics AS vs'
 			    .' WHERE vs.imgid = '.(int) $id;
@@ -80,7 +84,7 @@ class PhocaGalleryRateImage
 
 	public static function checkUserVote($imgid, $userid) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT v.id AS id'
 			    .' FROM #__phocagallery_img_votes AS v'
 			    .' WHERE v.imgid = '. (int)$imgid
@@ -95,7 +99,7 @@ class PhocaGalleryRateImage
 
 	public static function renderRateImg($id, $displayRating, $small = 1, $refresh = false) {
 
-		$user					= JFactory::getUser();
+		$user					= Factory::getUser();
 		$neededAccessLevels		= PhocaGalleryAccess::getNeededAccessLevels();
 		$access					= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
@@ -145,7 +149,7 @@ class PhocaGalleryRateImage
 
 			// Leave message for already voted images
 			//$vote = JFactory::getApplication()->input->get('vote', 0, '', 'int');
-			$voteMsg = JText::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
+			$voteMsg = Text::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
 			//if ($vote == 1) {
 			//	$voteMsg = JText::_('COM_PHOCADOWNLOAD_ALREADY_RATED_FILE_THANKS');
 			//}
@@ -156,11 +160,11 @@ class PhocaGalleryRateImage
 			}
 /*
 			$o .= '<div style="float:left;"><strong>'
-					. JText::_('COM_PHOCAGALLERY_RATING'). '</strong>: ' . $rating['votesaveragefile'] .' / '
-					.$rating['votescountfile'] . ' ' . JText::_('COM_PHOCAGALLERY_'.$rating['votestextimg']). '&nbsp;&nbsp;</div>';
+					. Text::_('COM_PHOCAGALLERY_RATING'). '</strong>: ' . $rating['votesaveragefile'] .' / '
+					.$rating['votescountfile'] . ' ' . Text::_('COM_PHOCAGALLERY_'.$rating['votestextimg']). '&nbsp;&nbsp;</div>';
 	*/
 			if ($rating['alreadyratedfile']) {
-				$o .= '<div style="float:left" title="'.$voteMsg.'" ><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box" title="'.$voteMsg.'" ><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
 						.'<li><span class="star1"></span></li>';
 
@@ -173,7 +177,7 @@ class PhocaGalleryRateImage
 
 			} else if ($rating['notregisteredfile']) {
 
-				$o .= '<div style="float:left" title="'.JText::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_RATE_IMAGE').'"><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box" title="'.Text::_('COM_PHOCAGALLERY_COMMENT_ONLY_REGISTERED_LOGGED_RATE_IMAGE').'"><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
 						.'<li><span class="star1"></span></li>';
 
@@ -186,16 +190,16 @@ class PhocaGalleryRateImage
 
 			} else {
 
-				$o .= '<div style="float:left"><ul class="star-rating'.$smallO.'">'
+				$o .= '<div class="pg-rate-box"><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
-						.'<li><a href="'.$href.'" onclick="pgRating('.(int)$id.', 1, 1, \'pg-msnr-container\')" title="'. JText::sprintf('COM_PHOCAGALLERY_STAR_OUT_OF', 1, 5). '" class="star1">1</a></li>';
+						.'<li><a href="'.$href.'" onclick="pgRating('.(int)$id.', 1, 1, \'pg-msnr-container\')" title="'. Text::sprintf('COM_PHOCAGALLERY_STAR_OUT_OF', 1, 5). '" class="star1">1</a></li>';
 
 				for ($i = 2;$i < 6;$i++) {
-					$o .= '<li><a href="'.$href.'" onclick="pgRating('.(int)$id.', '.$i.', 1, \'pg-msnr-container\')"  title="'. JText::sprintf('COM_PHOCAGALLERY_STARS_OUT_OF', $i, 5) .'" class="stars'.$i.'">'.$i.'</a></li>';
+					$o .= '<li><a href="'.$href.'" onclick="pgRating('.(int)$id.', '.$i.', 1, \'pg-msnr-container\')"  title="'. Text::sprintf('COM_PHOCAGALLERY_STARS_OUT_OF', $i, 5) .'" class="stars'.$i.'">'.$i.'</a></li>';
 				}
 				$o .= '</ul></div>';
 
-				$or ='<div class="pg-cv-vote-img-result" id="pg-cv-vote-img-result'.(int)$id.'"></div>';
+				$or ='<div class="pg-rate-img-result" id="pg-rate-img-result'.(int)$id.'"></div>';
 			}
 
 
@@ -205,7 +209,7 @@ class PhocaGalleryRateImage
 		if ($refresh == true) {
 			return $o . '<div style="clear:both;"></div>';//we are in Ajax, return only content of pdvoting div
 		} else {
-			return '<div id="pg-cv-vote-img'.(int)$id.'">'.$o.'</div>'.$or . '<div style="clear:both;"></div>';//not in ajax, return the content in div
+			return '<div class="pg-rate-img" id="pg-rate-img'.(int)$id.'">'.$o.'</div>'.$or . '<div style="clear:both;"></div>';//not in ajax, return the content in div
 		}
 
 
@@ -213,18 +217,18 @@ class PhocaGalleryRateImage
 
 	public static function renderRateImgJS($small = 1) {
 
-		$document	 = JFactory::getDocument();
-		$url		  = 'index.php?option=com_phocagallery&view=ratingimga&task=rate&format=json&'.JSession::getFormToken().'=1';
-		$urlRefresh		= 'index.php?option=com_phocagallery&view=ratingimga&task=refreshrate&small='.$small.'&format=json&'.JSession::getFormToken().'=1';
-		$imgLoadingUrl = JURI::base(). 'media/com_phocagallery/images/icon-loading3.gif';
+		$document	 = Factory::getDocument();
+		$url		  = 'index.php?option=com_phocagallery&view=ratingimga&task=rate&format=json&'.Session::getFormToken().'=1';
+		$urlRefresh		= 'index.php?option=com_phocagallery&view=ratingimga&task=refreshrate&small='.$small.'&format=json&'.Session::getFormToken().'=1';
+		$imgLoadingUrl = Uri::base(). 'media/com_phocagallery/images/loading.svg';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 
 
 		$js = '
 		function pgRating(id, vote, m, container) {
 		
-			var result 			= "#pg-cv-vote-img-result" + id;
-			var resultvoting 	= "#pg-cv-vote-img" + id;
+			var result 			= "#pg-rate-img-result" + id;
+			var resultvoting 	= "#pg-rate-img" + id;
 			data = {"ratingId": id, "ratingVote": vote, "format":"json"};
 			
 			pgRequest = jQuery.ajax({
@@ -272,7 +276,7 @@ class PhocaGalleryRateImage
                                 } else if(dataR.status == 0){
                                     jQuery(resultvoting).html(dataR.error);
                                 } else {
-                                    jQuery(resultvoting).text("'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                                    jQuery(resultvoting).text("'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
                                 }
                                 
                                 if (m == 2) {
@@ -281,7 +285,7 @@ class PhocaGalleryRateImage
                             },
                             
                             error: function(){
-                                jQuery(resultvoting).text( "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                                jQuery(resultvoting).text( "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
                             
                                 if (m == 2) {
                                     //var wall = new Masonry(document.getElementById(container));
@@ -295,7 +299,7 @@ class PhocaGalleryRateImage
                     } else if(data.status == 0){
                         jQuery(result).html(data.error);
                     } else {
-                        jQuery(result).text("'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                        jQuery(result).text("'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
                     }
                     
                     if (m == 2) {
@@ -304,7 +308,7 @@ class PhocaGalleryRateImage
                 },
                 
                 error: function(){
-                    jQuery(result).text( "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                    jQuery(result).text( "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				
 				    if (m == 2) {
 					    //var wall = new Masonry(document.getElementById(container));
@@ -361,7 +365,7 @@ class PhocaGalleryRateImage
 								if (rr) {
 									$(resultvoting).set("html", json2Obj.message);
 								} else {
-									$(resultvoting).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+									$(resultvoting).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 								}
 
 								if (m == 2) {
@@ -370,7 +374,7 @@ class PhocaGalleryRateImage
 							},
 
 							onFailure: function() {
-								$(resultvoting).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+								$(resultvoting).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 								if (m == 2) {
 									//var wall = new Masonry(document.getElementById(container));
 								}
@@ -386,7 +390,7 @@ class PhocaGalleryRateImage
 						$(result).set("html", r.error);
 					}
 				} else {
-					$(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+					$(result).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				}
 
 				if (m == 2) {
@@ -395,7 +399,7 @@ class PhocaGalleryRateImage
 			},
 
 			onFailure: function() {
-				$(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+				$(result).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 
 				if (m == 2) {
 					//var wall = new Masonry(document.getElementById(container));

@@ -12,12 +12,13 @@
 namespace Phoca\Render;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Version;
+use Joomla\CMS\Layout\FileLayout;
 
 class Adminview
 {
@@ -64,6 +65,12 @@ class Adminview
 
 	}
 
+	public function startHeader() {
+
+		$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => $this->option));
+		return $layoutSVG->render(array());
+
+	}
 
 	public function startCp() {
 
@@ -116,12 +123,17 @@ class Adminview
 			$tmpl = '&tmpl='.$tmpl;
 		}
 
+		$containerClass = 'container';
+		if ($this->compatible) {
+			$containerClass = '';
+		}
+
 		return '<div id="'.$view.'"><form action="'.Route::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
-		.'<div id="phAdminEdit" class="row-fluid">'."\n";
+		.'<div id="phAdminEdit" class="'.$containerClass.'"><div class="row">'."\n";
 	}
 
 	public function endForm() {
-		return '</div>'."\n".'</form>'."\n".'</div>'. "\n" . $this->ajaxTopHtml();
+		return '</div></div>'."\n".'</form>'."\n".'</div>'. "\n" . $this->ajaxTopHtml();
 	}
 
 	public function startFormRoute($view, $route, $id = 'adminForm', $name = 'adminForm') {
@@ -149,17 +161,73 @@ class Adminview
 		return $o;
 	}
 
+	public function groupHeader($form, $formArray , $image = '') {
+
+		$md 	= 6;
+		$columns = 12;
+		$count = count($formArray);
+
+		if ($image != '') {
+			$mdImage = 2;
+			$columns    = 10;
+		}
+
+		$md = round(($columns/(int)$count), 0);
+		$md = $md == 0 ? 1 : $md;
+
+
+		$o = '';
+
+		$o .= '<div class="row title-alias form-vertical mb-3">';
+
+		if (!empty($formArray)) {
+
+			foreach ($formArray as $value) {
+
+				$o .= '<div class="col-12 col-md-'.(int)$md.'">';
+
+				$o .= '<div class="control-group">'."\n"
+				. '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+				. '<div class="clearfix"></div>'. "\n"
+				. '<div>' . $form->getInput($value). '</div>'."\n"
+				. '<div class="clearfix"></div>' . "\n"
+				. '</div>'. "\n";
+
+				$o .= '</div>';
+			}
+		}
+
+		if ($image != '') {
+
+			$o .= '<div class="col-12 col-md-'.(int)$mdImage.'">';
+			$o .= '<div class="ph-admin-additional-box-img-box">'.$image.'</div>';
+			$o .= '</div>';
+
+		}
+
+
+		$o .= '</div>';
+
+
+
+		return $o;
+
+
+	}
+
 	public function group($form, $formArray, $clear = 0) {
 		$o = '';
 		if (!empty($formArray)) {
 			if ($clear == 1) {
 				foreach ($formArray as $value) {
-					$o .= '<div class="control-group">'."\n"
-					. '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
-					. '<div class="clearfix"></div>'. "\n"
+					$o .=
+
+					//	'<div class="control-group">'."\n"
+					 '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+					//. '<div class="clearfix"></div>'. "\n"
 					. '<div>' . $form->getInput($value). '</div>'."\n"
-					. '<div class="clearfix"></div>' . "\n"
-					. '</div>'. "\n";
+					. '<div class="clearfix"></div>' . "\n";
+					//. '</div>'. "\n";
 				}
 			} else {
 				foreach ($formArray as $value) {

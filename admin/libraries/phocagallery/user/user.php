@@ -9,19 +9,22 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 
 class PhocaGalleryUser
 {
 	public static function getUserLang( $formName = 'language') {
-		$user 		= JFactory::getUser();
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery') ;
+		$user 		= Factory::getUser();
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
 		$userLang	= $paramsC->get( 'user_ucp_lang', 1 );
 		
 		$o = array();
 		
 		switch ($userLang){
 			case 2:
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($user->params);
 				$o['lang'] 		= $registry->get('language','*');
 				
@@ -29,7 +32,7 @@ class PhocaGalleryUser
 			break;
 			
 			case 3:
-				$o['lang'] 		= JFactory::getLanguage()->getTag();
+				$o['lang'] 		= Factory::getLanguage()->getTag();
 				$o['langinput'] = '<input type="hidden" name="'.$formName.'" value="'.$o['lang'].'" />';
 			break;
 			
@@ -44,7 +47,7 @@ class PhocaGalleryUser
 	
 	public static function getUserAvatar($userId) {
 	
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		
 		$query = 'SELECT a.*'
 		. ' FROM #__phocagallery_user AS a'

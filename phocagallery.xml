@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" method="upgrade" version="3.9">
+<extension type="component" method="upgrade" version="4.0">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>09/02/2021</creationDate>
+	<creationDate>23/12/2021</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.4.1</version>
+	<version>4.5.0Beta2</version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>
@@ -32,20 +32,23 @@
 
 	<files folder="site">
 		<folder>controllers</folder>
-		<folder>models</folder>
+		<folder>helpers</folder>
 		<folder>views</folder>
-		<filename>controller.php</filename>
+		<folder>layouts</folder>
+		<folder>models</folder>
 		<filename>index.html</filename>
-		<filename>phocagallery.php</filename>
 		<filename>router.php</filename>
+		<filename>phocagallery.php</filename>
+		<filename>controller.php</filename>
 	</files>
 
 	<media destination="com_phocagallery" folder="media">
-		<folder>css</folder>
 		<folder>duotone</folder>
-		<folder>images</folder>
+		<folder>css</folder>
 		<folder>js</folder>
+		<folder>images</folder>
 		<filename>index.html</filename>
+		<filename>theme.xml</filename>
 	</media>
 
 	<languages folder="admin/language">
@@ -73,20 +76,21 @@
 			</submenu>
 
 		<files folder="admin">
-			<folder>controllers</folder>
-			<folder>help</folder>
-			<folder>helpers</folder>
-			<folder>install</folder>
 			<folder>libraries</folder>
-			<folder>models</folder>
-			<folder>tables</folder>
+			<folder>controllers</folder>
+			<folder>install</folder>
 			<folder>update</folder>
+			<folder>tables</folder>
+			<folder>helpers</folder>
 			<folder>views</folder>
-			<filename>access.xml</filename>
-			<filename>config.xml</filename>
-			<filename>controller.php</filename>
+			<folder>help</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
 			<filename>index.html</filename>
+			<filename>config.xml</filename>
 			<filename>phocagallery.php</filename>
+			<filename>access.xml</filename>
+			<filename>controller.php</filename>
 		</files>
 
 		<languages folder="admin/language">

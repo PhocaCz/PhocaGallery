@@ -11,25 +11,27 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
-class PhocaGalleryModelInfo extends JModelLegacy
+class PhocaGalleryModelInfo extends BaseDatabaseModel
 {
 
 	function __construct() {
 		parent::__construct();
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$id 	= $app->input->get('id', 0, 'int');
 		$this->setId((int)$id);
 		//$post	= $app->input->get('get');
 	}
-	
+
 	function setId($id){
 		$this->_id			= $id;
 		$this->_data		= null;
 	}
-	
+
 	function &getData() {
 		// Load the Phoca gallery data
 		if (!$this->_loadData()) {
@@ -37,10 +39,10 @@ class PhocaGalleryModelInfo extends JModelLegacy
 		}
 		return $this->_data;
 	}
-	
+
 	function _loadData() {
-		$app	= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app	= Factory::getApplication();
+		$user 		= Factory::getUser();
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_data)) {
 			// First try to get image data
@@ -52,20 +54,20 @@ class PhocaGalleryModelInfo extends JModelLegacy
 				.' WHERE a.id = '. (int) $this->_id;
 			$this->_db->setQuery($query, 0, 1);
 			$this->_data 	= $this->_db->loadObject();
-			
+
 			/*
 			if (isset($image->description) && $image->description != '') {
 				$this->_data['description'] = $image->description;
 			} else {
 				$this->_data['description'] = '';
 			}*/
-			
-			return (boolean) $this->_data;	
+
+			return (boolean) $this->_data;
 		}
 		return true;
 	}
-	
-	
+
+
 	function _initData() {
 		if (empty($this->_data)) {
 			$this->_data	= '';

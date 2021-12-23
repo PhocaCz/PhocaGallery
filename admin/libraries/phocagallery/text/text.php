@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Factory;
 use Joomla\String\StringHelper;
 
 class PhocaGalleryText
@@ -46,7 +49,7 @@ class PhocaGalleryText
 
 	public static function getAliasName($name) {
 
-		$paramsC		= JComponentHelper::getParams( 'com_phocagallery' );
+		$paramsC		= ComponentHelper::getParams( 'com_phocagallery' );
 		$alias_iconv	= $paramsC->get( 'alias_iconv', 0 );
 
 		$iconv = 0;
@@ -64,11 +67,11 @@ class PhocaGalleryText
 		}
 
 		if ($iconv == 0) {
-			$name = JFilterOutput::stringURLSafe($name);
+			$name = OutputFilter::stringURLSafe($name);
 		}
 
 		if(trim(str_replace('-','',$name)) == '') {
-			JFactory::getDate()->format("Y-m-d-H-i-s");
+			Factory::getDate()->format("Y-m-d-H-i-s");
 		}
 		return $name;
 	}

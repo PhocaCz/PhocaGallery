@@ -9,6 +9,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 
 class PhocaGalleryRenderDetailButton
 {
@@ -23,8 +31,8 @@ class PhocaGalleryRenderDetailButton
 	protected function _setImageOrdering() {
 
 		if (empty($this->_imgordering)) {
-			$app				= JFactory::getApplication();
-			$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
+			$app				= Factory::getApplication();
+			$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
 			$image_ordering		= $paramsC->get( 'image_ordering', 1 );
 			$this->_imgordering = PhocaGalleryOrdering::getOrderingString($app->getUserStateFromRequest('com_phocagallery.category.' .'imgordering', 'imgordering', $image_ordering, 'int'));
 		}
@@ -41,9 +49,9 @@ class PhocaGalleryRenderDetailButton
 	*/
 	public function getNext ($catid, $id, $ordering, $hrefOnly = 0)  {
 
-		$app			= JFactory::getApplication();
-		$db 			= JFactory::getDBO();
-		$paramsC 		= JComponentHelper::getParams('com_phocagallery') ;
+		$app			= Factory::getApplication();
+		$db 			= Factory::getDBO();
+		$paramsC 		= ComponentHelper::getParams('com_phocagallery') ;
 		$detailWindow	= $paramsC->get( 'detail_window', 0 );
 
 		if ($detailWindow == 7) {
@@ -109,9 +117,9 @@ class PhocaGalleryRenderDetailButton
 		$next = '<div class="'.$class.'"'.$idCss.'>';
 
 		if ($this->type == 'multibox') {
-			$next .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
+			$next .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
 		} else {
-			$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ),  'ph-icon-disabled').'</div>';
+			$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next-grey.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ),  'ph-icon-disabled').'</div>';
 		}
 		//non-active button will be displayed as Default, we will see if we find active link
 		foreach ($nextAll as $key => $value) {
@@ -122,16 +130,16 @@ class PhocaGalleryRenderDetailButton
 				// onclick="disableBackAndNext()"
 				//$href	= JRoute::_('index.php?option=com_phocagallery&view=detail&catid='. $value->catslug.'&id='.$value->slug.$tCom.'&Itemid='. JFactory::getApplication()->input->get('Itemid', 1, 'get', 'int'));
 
-				$href	= JRoute::_(PhocaGalleryRoute::getImageRoute($value->id, $value->catid, $value->alias, $value->catalias) . $tCom);
+				$href	= Route::_(PhocaGalleryRoute::getImageRoute($value->id, $value->catid, $value->alias, $value->catalias) . $tCom);
 
 				$next = '<div class="'.$class.'"'.$idCss.'>' // because of not conflict with beez
 				.'<a href="'.$href.'"'
-				.' title="'.JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ).'" id="next" >';
+				.' title="'.Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ).'" id="next" >';
 
 				if ($this->type == 'multibox') {
-					$next .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
+					$next .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
 				} else {
-					$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
+					$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
 				}
 
 				break;// end it, we must need not to find next ordering
@@ -141,11 +149,11 @@ class PhocaGalleryRenderDetailButton
 				$next = '<div class="'.$class.'"'.$idCss.'>';
 
 				if ($this->type == 'multibox') {
-					$next .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
+					$next .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
 				} else {
-					$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ),  'ph-icon-disabled').'</div>';
+					$next .= PhocaGalleryRenderFront::renderIcon('next', 'media/com_phocagallery/images/icon-next-grey.png', Text::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' ),  'ph-icon-disabled').'</div>';
 				}
-				//.Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
+				//.JHtml::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_NEXT_IMAGE' )).'</div>';
 				break;// end it, we must need not to find next ordering
 			}
 		}
@@ -160,8 +168,8 @@ class PhocaGalleryRenderDetailButton
 	*/
 	public function getPrevious ($catid, $id, $ordering) {
 
-		$app	= JFactory::getApplication();
-		$db 			= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db 			= Factory::getDBO();
 		$params			= $app->getParams();
 		$detailWindow	= $params->get( 'detail_window', 0 );
 		if ($detailWindow == 7) {
@@ -224,11 +232,11 @@ class PhocaGalleryRenderDetailButton
 		}
 
 		$prev = '<div class="'.$class.'"'.$idCss.'>';
-		//.Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
+		//.JHtml::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
 		if ($this->type == 'multibox') {
-			$prev .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
+			$prev .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
 		} else {
-			$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  'ph-icon-disabled').'</div>';
+			$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev-grey.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  'ph-icon-disabled').'</div>';
 		}
 
 		//non-active button will be displayed as Default, we will see if we find active link
@@ -237,16 +245,16 @@ class PhocaGalleryRenderDetailButton
 			// Is there some next id, if not end this and return grey link
 			if (isset($value->id) && $value->id > 0) {
 
-				$href	= JRoute::_(PhocaGalleryRoute::getImageRoute($value->id, $value->catid, $value->alias, $value->catalias).$tCom);
+				$href	= Route::_(PhocaGalleryRoute::getImageRoute($value->id, $value->catid, $value->alias, $value->catalias).$tCom);
 				//onclick="disableBackAndPrev()"
 				$prev = '<div class="'.$class.'"'.$idCss.'>' // because of not conflict with beez
 				.'<a href="'.$href.'"'
-				.' title="'.JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ).'" id="prev" >';
+				.' title="'.Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ).'" id="prev" >';
 
 				if ($this->type == 'multibox') {
-					$prev .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</a></div>';
+					$prev .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</a></div>';
 				} else {
-					$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  '').'</a></div>';
+					$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  '').'</a></div>';
 				}
 
 
@@ -256,9 +264,9 @@ class PhocaGalleryRenderDetailButton
 				$prev = '<div class="'.$class.'"'.$idCss.'>';
 
 				if ($this->type == 'multibox') {
-					$prev .= Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
+					$prev .= HTMLHelper::_('image', 'media/com_phocagallery/images/'.$imgName.'-grey.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' )).'</div>';
 				} else {
-					$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev-grey.png', JText::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  'ph-icon-disabled').'</div>';
+					$prev .= PhocaGalleryRenderFront::renderIcon('prev', 'media/com_phocagallery/images/icon-prev-grey.png', Text::_( 'COM_PHOCAGALLERY_PREV_IMAGE' ),  'ph-icon-disabled').'</div>';
 				}
 
 
@@ -270,7 +278,7 @@ class PhocaGalleryRenderDetailButton
 
 	public function getReload($catidSlug, $idSlug) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params			= $app->getParams();
 		$detailWindow	= $params->get( 'detail_window', 0 );
 		if ($detailWindow == 7) {
@@ -285,15 +293,15 @@ class PhocaGalleryRenderDetailButton
 		$j = explode(':', $catidSlug);
 		$catid		= $j[0];
 		$catalias	= $j[1];
-		$href	= JRoute::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias).$tCom);
+		$href	= Route::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias).$tCom);
 
-		$reload =  '<div class="pg-imgbgd"><a href="'.$href.'" onclick="%onclickreload%" title="'.JText::_( 'COM_PHOCAGALLERY_REFRESH' ).'" >'. PhocaGalleryRenderFront::renderIcon('reload', 'media/com_phocagallery/images/icon-reload.png', JText::_( 'COM_PHOCAGALLERY_REFRESH' )).'</a></div>';
+		$reload =  '<div class="pg-imgbgd"><a href="'.$href.'" onclick="%onclickreload%" title="'.Text::_( 'COM_PHOCAGALLERY_REFRESH' ).'" >'. PhocaGalleryRenderFront::renderIcon('reload', 'media/com_phocagallery/images/icon-reload.png', Text::_( 'COM_PHOCAGALLERY_REFRESH' )).'</a></div>';
 
 		return $reload;
 	}
 
 	public function getClose($catidSlug, $idSlug) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params			= $app->getParams();
 		$detailWindow	= $params->get( 'detail_window', 0 );
 
@@ -312,15 +320,15 @@ class PhocaGalleryRenderDetailButton
 		$j = explode(':', $catidSlug);
 		$catid		= $j[0];
 		$catalias	= $j[1];
-		$href	= JRoute::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias));
-		$close =  '<div class="pg-imgbgd"><a href="'.$href.'" '.$onclick.' title="'.JText::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW').'" >'. PhocaGalleryRenderFront::renderIcon('off', 'media/com_phocagallery/images/icon-exit.png', JText::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW' )).'</a></div>';
+		$href	= Route::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias));
+		$close =  '<div class="pg-imgbgd"><a href="'.$href.'" '.$onclick.' title="'.Text::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW').'" >'. PhocaGalleryRenderFront::renderIcon('off', 'media/com_phocagallery/images/icon-exit.png', Text::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW' )).'</a></div>';
 
 
 		return $close;
 	}
 
 	public function getCloseText($catidSlug, $idSlug) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params			= $app->getParams();
 		$detailWindow	= $params->get( 'detail_window', 0 );
 		if ($detailWindow == 7) {
@@ -338,9 +346,9 @@ class PhocaGalleryRenderDetailButton
 		$j = explode(':', $catidSlug);
 		$catid		= $j[0];
 		$catalias	= $j[1];
-		$href	= JRoute::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias));
+		$href	= Route::_(PhocaGalleryRoute::getImageRoute($id, $catid, $alias, $catalias));
 
-		$close =  '<a style="text-decoration:underline" href="'.$href.'" '.$onclick.' title="'.JText::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW').'" >'. JText::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW' ).'</a>';
+		$close =  '<a style="text-decoration:underline" href="'.$href.'" '.$onclick.' title="'.Text::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW').'" >'. Text::_( 'COM_PHOCAGALLERY_CLOSE_WINDOW' ).'</a>';
 
 		return $close;
 	}
@@ -352,8 +360,8 @@ class PhocaGalleryRenderDetailButton
 
 		jimport('joomla.filesystem.file');
 		phocagalleryimport('phocagallery.file.filethumbnail');
-		$app	= JFactory::getApplication();
-		$db 				= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db 				= Factory::getDBO();
 		$params				= $app->getParams();
 		//$image_ordering		= $params->get( 'image_ordering', 1 );
 		//$imageOrdering 		= PhocaGalleryOrdering::getOrderingString($image_ordering);
@@ -400,9 +408,9 @@ class PhocaGalleryRenderDetailButton
 					$endComma = '';
 				}
 
-				$filterTags		= '';
-				$filterAttrs	= '';
-				$filter	= new JFilterInput( $filterTags, $filterAttrs, 1, 1, 1 );
+				$filterTags		= array();
+				$filterAttrs	= array();
+				$filter	= new InputFilter( $filterTags, $filterAttrs, 1, 1, 1 );
 
 
 
@@ -415,11 +423,11 @@ class PhocaGalleryRenderDetailButton
 					$jsSlideshowData['files'] .= '["'. $value->extl .'", "", "", "'.$description.'"]'.$endComma."\n";
 				} else {
 					$fileThumbnail 	= PhocaGalleryFileThumbnail::getThumbnailName($value->filename, 'large');
-					$imgLink		= JURI::base(true) . '/' . $fileThumbnail->rel;
-					if (JFile::exists($fileThumbnail->abs)) {
+					$imgLink		= Uri::base(true) . '/' . $fileThumbnail->rel;
+					if (File::exists($fileThumbnail->abs)) {
 						$jsSlideshowData['files'] .= '["'. $imgLink .'", "", "", "'.$description.'"]'.$endComma."\n"; ;
 					} else {
-						$fileThumbnail = JURI::base(true).'/' . "media/com_phocagallery/images/phoca_thumb_l_no_image.png";
+						$fileThumbnail = Uri::base(true).'/' . "media/com_phocagallery/images/phoca_thumb_l_no_image.png";
 						$jsSlideshowData['files'] .= '["'.$fileThumbnail.'", "", "", ""]'.$endComma."\n";
 					}
 				}
@@ -438,22 +446,22 @@ class PhocaGalleryRenderDetailButton
 			if ($slideshow==1) {
 
 				$jsSlideshowData['icons'] = '<div class="pg-imgbgd">' // because of not conflict with beez
-				.'<a href="'.JRoute::_($href.'&phocaslideshow=0').'" title="'.JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ).'" >'
+				.'<a href="'.Route::_($href.'&phocaslideshow=0').'" title="'.Text::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ).'" >'
 
-				//.Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-stop.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' )).'</a></div>'
-				.PhocaGalleryRenderFront::renderIcon('stop', 'media/com_phocagallery/images/icon-stop.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' )).'</a></div>'
+				//.JHtml::_('image', 'media/com_phocagallery/images/icon-stop.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' )).'</a></div>'
+				.PhocaGalleryRenderFront::renderIcon('stop', 'media/com_phocagallery/images/icon-stop.png', Text::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' )).'</a></div>'
 				.'</td><td align="center">'//.'&nbsp;'
-				//.Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-play-grey.png', JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' ));
-				.PhocaGalleryRenderFront::renderIcon('play', 'media/com_phocagallery/images/icon-play-grey.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ), 'ph-icon-disabled');
+				//.JHtml::_('image', 'media/com_phocagallery/images/icon-play-grey.png', JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' ));
+				.PhocaGalleryRenderFront::renderIcon('play', 'media/com_phocagallery/images/icon-play-grey.png', Text::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ), 'ph-icon-disabled');
 			} else {
-				$jsSlideshowData['icons'] = PhocaGalleryRenderFront::renderIcon('stop', 'media/com_phocagallery/images/icon-stop-grey.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ), 'ph-icon-disabled')
-				//Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-stop-grey.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ))
+				$jsSlideshowData['icons'] = PhocaGalleryRenderFront::renderIcon('stop', 'media/com_phocagallery/images/icon-stop-grey.png', Text::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ), 'ph-icon-disabled')
+				//JHtml::_('image', 'media/com_phocagallery/images/icon-stop-grey.png', JText::_( 'COM_PHOCAGALLERY_STOP_SLIDESHOW' ))
 				.'</td><td align="center">'//.'&nbsp;'
 				.'<div class="pg-imgbgd">' // because of not conflict with beez
-				.'<a href="'.JRoute::_($href.'&phocaslideshow=1').'" title="'.JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' ).'">'
+				.'<a href="'.Route::_($href.'&phocaslideshow=1').'" title="'.Text::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' ).'">'
 
-				//. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocagallery/images/icon-play.png', JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' )).'</a></div>';
-				.PhocaGalleryRenderFront::renderIcon('play', 'media/com_phocagallery/images/icon-play.png', JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' )).'</a></div>';
+				//. JHtml::_('image', 'media/com_phocagallery/images/icon-play.png', JText::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' )).'</a></div>';
+				.PhocaGalleryRenderFront::renderIcon('play', 'media/com_phocagallery/images/icon-play.png', Text::_( 'COM_PHOCAGALLERY_START_SLIDESHOW' )).'</a></div>';
 			}
 		} else {
 			$jsSlideshowData['icons'] = '';

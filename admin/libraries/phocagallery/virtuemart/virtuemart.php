@@ -9,12 +9,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 class PhocaGalleryVirtueMart
 {
 	public static function getVmLink($id, &$errorMsg) {
 		
-		if (JComponentHelper::isEnabled('com_virtuemart', true)) {
+		if (ComponentHelper::isEnabled('com_virtuemart', true)) {
 			if ((int)$id < 1) {
 				return "";
 			}
@@ -22,7 +24,7 @@ class PhocaGalleryVirtueMart
 			return "";
 		}
 		
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 				
 		$query = 'SELECT c.virtuemart_category_id AS catid, a.virtuemart_product_id AS id, a.published AS published, a.product_in_stock AS product_in_stock'
 		.' FROM #__virtuemart_product_categories AS c'
@@ -79,7 +81,7 @@ class PhocaGalleryVirtueMart
 		
 		
 		
-		$db =JFactory::getDBO();		
+		$db =Factory::getDBO();		
 		$query = 'SELECT a.id AS id, a.link as link'
 		.' FROM #__menu AS a'
 		.' WHERE a.link LIKE '.$db->Quote('%index.php?option=com_virtuemart%')

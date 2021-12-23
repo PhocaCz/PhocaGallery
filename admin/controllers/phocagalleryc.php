@@ -9,9 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controllerform');
 
-class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
+class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 {
 	protected	$option 		= 'com_phocagallery';
 
@@ -26,7 +31,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 		// In case the "Load" button will be saved, two actions need to be done:
 		// 1) Save (apply) the category data (we use Joomla! framework controller so we need to set save method, task = apply
 		// 2) load external images - we need to identify "Load", but task is apply, so we use subtask = loadextimg
-		$task = JFactory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->input->get('task');
 		if ((string)$task == 'loadextimgp') {
 			if ($this->registerTask( 'loadextimgp', 'save')) {
 				JFactory::getApplication()->input->set('task','apply');// we need to apply category data
@@ -59,8 +64,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 	function loadExtImgPgn() {
 
-		$picStart	= JFactory::getApplication()->input->get( 'picstart', 0, 'get', 'int' );
-		$idCat		= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$picStart	= Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
 		if ($picStart > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -72,8 +77,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 	function loadExtImgPgnFb() {
 
-		$fbCount	= JFactory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' );
-		$idCat		= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$fbCount	= Factory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
 		if ($fbCount > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -83,8 +88,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 	}
 	function uploadExtImgF() {
 
-		$idCat	= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
-		$data	= JFactory::getApplication()->input->get('jform', array(), 'post', 'array');
+		$idCat	= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$data	= Factory::getApplication()->input->get('jform', array(), 'post', 'array');
 
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
 			if ($idCat > 0) {
@@ -93,7 +98,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 				$loadImg	= $model->uploadExtImagesFb($idCat, $data, $message);
 			}
 		} else {
-			$message = JText::_('COM_PHOCAGALLERY_ERROR_FB_USER_ALBUM_NOT_SELECTED');
+			$message = Text::_('COM_PHOCAGALLERY_ERROR_FB_USER_ALBUM_NOT_SELECTED');
 			$this->setRedirect( 'index.php?option=com_phocagallery&task=phocagalleryc.edit&id='. $idCat, $message, 'error' );
 		}
 
@@ -101,8 +106,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 	function uploadExtImgFPgn() {
 
-		$fbImg		= JFactory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' );
-		$idCat		= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$fbImg		= Factory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
 		if ($fbImg > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -114,7 +119,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 	/*
 	 * NOT USED IT IS A SUBTASK OF SAVE
 	function loadExtImgI() {
-		$idCat		= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
 		if ($idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -127,7 +132,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocagallery');
 		if ($allow === null) {
@@ -138,7 +143,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocagallery');
 		if ($allow === null) {
@@ -152,11 +157,11 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$lang		= JFactory::getLanguage();
+		$app		= Factory::getApplication();
+		$lang		= Factory::getLanguage();
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		//$data		= JFactory::getApplication()->input->get('jform', array(), 'post', 'array');
@@ -175,16 +180,17 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 			$urlVar = $key;
 		}
 
-		$recordId	= JFactory::getApplication()->input->getInt($urlVar);
+		$recordId	= Factory::getApplication()->input->getInt($urlVar);
 
-		$session	= JFactory::getSession();
+		$session	= Factory::getSession();
 		$registry	= $session->get('registry');
 
 		if (!$this->checkEditId($context, $recordId)) {
 			// Somehow the person just went to the form and saved it - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
-			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
+			//$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId), 'error');
+
+			$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
 
 			return false;
 		}
@@ -197,8 +203,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 			// Check-in the original row.
 			if ($checkin  && $model->checkin($data[$key]) === false) {
 				// Check-in failed, go back to the item and display a notice.
-				$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
-				$this->setMessage($this->getError(), 'error');
+				//$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+				$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
 				$this->setRedirect('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $urlVar));
 
 				return false;
@@ -211,9 +217,9 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 		// Access check.
 		if (!$this->allowSave($data)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
+			//$this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
+			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
+			$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
 
 			return false;
 		}
@@ -251,7 +257,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 			$app->setUserState($context.'.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
+			$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
 
 			return false;
 		}
@@ -264,9 +270,9 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 			$app->setUserState($context.'.data', $validData);
 
 			// Redirect back to the edit screen.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
+			//$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'error');
+			$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
 
 			return false;
 		}
@@ -277,14 +283,14 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 			$app->setUserState($context.'.data', $validData);
 
 			// Check-in failed, go back to the record and display a notice.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
+			//$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
 			$this->setRedirect('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key));
 
 			return false;
 		}
 
-		$this->setMessage(JText::_(($lang->hasKey($this->text_prefix.($recordId==0 && $app->isClient('site') ? '_SUBMIT' : '').'_SAVE_SUCCESS') ? $this->text_prefix : 'JLIB_APPLICATION') . ($recordId==0 && $app->isClient('site') ? '_SUBMIT' : '') . '_SAVE_SUCCESS'));
+		$this->setMessage(Text::_(($lang->hasKey($this->text_prefix.($recordId==0 && $app->isClient('site') ? '_SUBMIT' : '').'_SAVE_SUCCESS') ? $this->text_prefix : 'JLIB_APPLICATION') . ($recordId==0 && $app->isClient('site') ? '_SUBMIT' : '') . '_SAVE_SUCCESS'));
 
 		// Redirect the user and adjust session state based on the chosen task.
 
@@ -292,8 +298,13 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 		//PHOCAEDIT
 		if ($extImgError) {
 			// NOT MORE USED - app enque message used
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
-			$this->setMessage($this->getError(), 'error');
+			//$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
+			//$this->setMessage($this->getError(), 'error');
+
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'error');
+			$this->setRedirect('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key));
+
+			return false;
 
 		}
 		//PHOCAEDIT
@@ -308,7 +319,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 				// Redirect back to the edit screen.
 
-				$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
+				$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $key), false));
 				break;
 
 			case 'save2new':
@@ -317,7 +328,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 				$app->setUserState($context.'.data', null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend(null, $key), false));
+				$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend(null, $key), false));
 				break;
 
 			default:
@@ -327,7 +338,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 
 
 				// Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
+				$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
 				break;
 		}
 
@@ -338,13 +349,13 @@ class PhocaGalleryCpControllerPhocaGalleryc extends JControllerForm
 	}
 
 	public function batch($model = null) {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Set the model
 		$model	= $this->getModel('phocagalleryc', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_phocagallery&view=phocagallerycs'.$this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_phocagallery&view=phocagallerycs'.$this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}

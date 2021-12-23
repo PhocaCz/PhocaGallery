@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Application\ApplicationHelper;
 jimport('joomla.application.component.modeladmin');
 
-class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryCoImg extends AdminModel
 {
 	protected	$option 		= 'com_phocagallery';
 	protected $text_prefix 		= 'com_phocagallery';
@@ -19,7 +23,7 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($record->imgid) {
 			return $user->authorise('core.delete', 'com_phocagallery.phocagallerycoimg.'.(int) $record->imgid);
@@ -30,7 +34,7 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ($record->imgid) {
 			return $user->authorise('core.edit.state', 'com_phocagallery.phocagallerycoimg.'.(int) $record->imgid);
@@ -42,7 +46,7 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 
 	public function getTable($type = 'PhocaGallerycommentImgs', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true)
@@ -68,7 +72,7 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagallerycoimg.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocagallery.edit.phocagallerycoimg.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -88,16 +92,16 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias =ApplicationHelper::stringURLSafe($table->title);
 		}
 		if(intval($table->date) == 0) {
-			$table->date = JFactory::getDate()->toSql();
+			$table->date = Factory::getDate()->toSql();
 		}
 
 		if (empty($table->id)) {
@@ -106,7 +110,7 @@ class PhocaGalleryCpModelPhocaGalleryCoImg extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery_img_comments WHERE imgid = '.(int) $table->imgid);
 				$max = $db->loadResult();
 

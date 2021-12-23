@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 phocagalleryimport('phocagallery.render.rendermaposm');
 phocagalleryimport('phocagallery.text.text');
 if ($this->t['backbutton'] != '' && $this->t['enable_multibox_iframe'] != 1) {
@@ -17,12 +19,12 @@ if ($this->t['backbutton'] != '' && $this->t['enable_multibox_iframe'] != 1) {
 }
 
 if (empty($this->map) || $this->map->longitude == '' || $this->map->latitude == '') {
-	echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
+	echo '<p>' . Text::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
 
 	$text = '<div style="text-align:left"><table style="" border="0" cellspacing="5" cellpadding="5"><tr><td align="left" colspan="2"><b>'. addslashes($this->map->geotitle).'</b></td></tr>';
 	$text .='<tr>';
-	$text .='<td valign="top" align="left">'.Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->map->thumbnail, addslashes($this->map->geotitle)) . '</td>';
+	$text .='<td valign="top" align="left">'.HTMLHelper::_( 'image', $this->map->thumbnail, addslashes($this->map->geotitle)) . '</td>';
 	$text .='<td valign="top" align="left">'. PhocaGalleryText::strTrimAll(addslashes($this->map->description)).'</td>';
 	$text .='</tr></table></div>';
 
@@ -30,15 +32,22 @@ if (empty($this->map) || $this->map->longitude == '' || $this->map->latitude == 
 $map	= new PhocaGalleryRenderMaposm($id);
 
 
-	echo '<noscript>'.JText::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
+	echo '<noscript>'.Text::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
 
 	$cmw = '';
 	if ((int)$this->t['largemapwidth'] > 0) {
 		$cmw = 'width:'.$this->t['largemapwidth'].'px;';
 	}
 
+	$cmw = 'width: 100%;';
+
+
+	//$cmh = 'height:'.$this->t['largemapheight'].'px';
+	$cmh = 'height: 100vh;';
+
+
 	echo '<div align="center" style="margin:0;padding:0;margin-top:10px;text-align: center">';
-	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0 auto;padding:0;'. $cmw. 'height:'.$this->t['largemapheight'].'px">';
+	echo '<div id="phocaGalleryMap'.$id.'" style="margin:0 auto;padding:0;'. $cmw. $cmh.'">';
 	echo '</div></div>';
 
 

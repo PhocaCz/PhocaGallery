@@ -7,9 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 jimport( 'joomla.application.component.view' );
 
-class phocaGalleryCpViewphocaGalleryLinks extends JViewLegacy
+class phocaGalleryCpViewphocaGalleryLinks extends HtmlView
 {
 
 	protected $r;
@@ -20,17 +23,17 @@ class phocaGalleryCpViewphocaGalleryLinks extends JViewLegacy
 		$this->r = new PhocaGalleryRenderAdminViews();
 		$this->t = PhocaGalleryUtils::setVars('link');
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 		}
 
 
-		$eName	= JFactory::getApplication()->input->get('e_name');
+		$eName	= Factory::getApplication()->input->get('e_name');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
 		$this->t['categories']		= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinkcats&amp;tmpl=component&amp;e_name='.$eName;

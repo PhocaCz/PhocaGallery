@@ -8,10 +8,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Log\Log;
 jimport('joomla.application.component.modeladmin');
 
 
-class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 {
 	protected	$option 		= 'com_phocagallery';
 	protected 	$text_prefix	= 'com_phocagallery';
@@ -31,12 +41,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 
 	public function getTable($type = 'PhocaGalleryEf', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocagallery.phocagallerystyles', 'phocagalleryef', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -47,7 +57,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagallerystyles.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocagallery.edit.phocagallerystyles.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -59,14 +69,14 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias =ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -75,7 +85,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery_styles WHERE type = '.(int)$table->type);
 				$max = $db->loadResult();
 
@@ -116,7 +126,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 			//$item->filname      = $filename;
 			$item->source       = file_get_contents($filePath);
 		} else {
-			$this->setError(JText::_('COM_PHOCAGALLERY_FILE_DOES_NOT_EXIST'));
+			$this->setError(Text::_('COM_PHOCAGALLERY_FILE_DOES_NOT_EXIST'));
 		}
 		return $item;
 	}
@@ -128,19 +138,19 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		if ($data['id'] < 1) {
 			$data['type'] = 2;// Custom in every case
 			if ($data['title'] != '') {
-				$filename = \JApplicationHelper::stringURLSafe($data['title']);
+				$filename =ApplicationHelper::stringURLSafe($data['title']);
 
 				if (trim(str_replace('-','',$filename)) == '') {
-					$filename = JFactory::getDate()->format("Y-m-d-H-i-s");
+					$filename = Factory::getDate()->format("Y-m-d-H-i-s");
 				}
 			} else {
-				$filename = JFactory::getDate()->format("Y-m-d-H-i-s");
+				$filename = Factory::getDate()->format("Y-m-d-H-i-s");
 			}
 			$filename 			= $filename . '.css';
 			$data['filename']	= $filename;
 			$filePath = PhocaGalleryFile::existsCSS($filename, $data['type']);
 			if ($filePath) {
-				$this->setError(JText::sprintf('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS', $fileName));
+				$this->setError(Text::sprintf('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS', $fileName));
 				return false;
 			} else {
 				$filePath = PhocaGalleryFile::getCSSPath($data['type']) . $filename;
@@ -158,12 +168,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		//JPluginHelper::importPlugin('extension');
 
 		// Set FTP credentials, if given.
-		JClientHelper::setCredentialsFromRequest('ftp');
-		$ftp = JClientHelper::getCredentials('ftp');
+		ClientHelper::setCredentialsFromRequest('ftp');
+		$ftp = ClientHelper::getCredentials('ftp');
 
 		// Try to make the template file writeable.
-		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0644')) {
-			$this->setError(JText::_('COM_PHOCAGALLERY_ERROR_SOURCE_FILE_NOT_WRITABLE'));
+		if (!$ftp['enabled'] && Path::isOwner($filePath) && !Path::setPermissions($filePath, '0644')) {
+			$this->setError(Text::_('COM_PHOCAGALLERY_ERROR_SOURCE_FILE_NOT_WRITABLE'));
 			return false;
 		}
 
@@ -174,16 +184,16 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 			return false;
 		}*/
 
-		$return = JFile::write($filePath, $data['source']);
+		$return = File::write($filePath, $data['source']);
 
 		// Try to make the template file unwriteable.
 		/*if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {
-			$this->setError(JText::_('COM_PHOCAGALLERY_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
+			$this->setError(Text::_('COM_PHOCAGALLERY_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
 			return false;
 		} else*/
 
 		if (!$return) {
-			$this->setError(JText::sprintf('COM_PHOCAGALLERY_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
+			$this->setError(Text::sprintf('COM_PHOCAGALLERY_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
 			return false;
 		}
 
@@ -201,7 +211,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 		$table = $this->getTable();
 
 		// Include the content plugins for the on delete events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
@@ -216,7 +226,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = \JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
+					$result = Factory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 					if (in_array(false, $result, true))
 					{
 						$this->setError($table->getError());
@@ -235,12 +245,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 
 					//PHOCAEDIT
 					if (file_exists($filePath)) {
-						JFile::delete($filePath);
+						File::delete($filePath);
 					}
 					//END PHOCAEDIT
 
 					// Trigger the onContentAfterDelete event.
-                    \JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
+                    Factory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 
 				}
 				else
@@ -251,12 +261,12 @@ class PhocaGalleryCpModelPhocaGalleryEf extends JModelAdmin
 					$error = $this->getError();
 					if ($error)
 					{
-						JLog::add($error, JLog::WARNING, ' ');
+						Log::add($error, Log::WARNING, ' ');
 						return false;
 					}
 					else
 					{
-						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, ' ');
+						Log::add(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), Log::WARNING, ' ');
 						return false;
 					}
 				}

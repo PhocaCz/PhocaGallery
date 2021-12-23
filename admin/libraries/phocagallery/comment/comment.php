@@ -16,27 +16,29 @@ class PhocaGalleryComment
 		if (substr_count(strtolower($comment), $tag) > substr_count(strtolower($comment), $endTag)) {
 			$comment .= $endTag;
 			$comment = PhocaGalleryComment::closeTags($comment, $tag, $endTag);
-		} 
+		}
 			return $comment;
-		
+
 	}
-	
+
 	public static function getSmileys() {
 		$smileys = array();
-			$smileys[':)'] 		= 'icon-s-smile';
-			$smileys[':lol:'] 	= 'icon-s-lol';
-			$smileys[':('] 		= 'icon-s-sad';
-			$smileys[':?'] 		= 'icon-s-confused';
-			$smileys[':wink:'] 	= 'icon-s-wink';
+			$smileys[':)'] 		= '&#x1F642';
+			$smileys[':lol:'] 	= '&#x1F604';
+			$smileys[':('] 		= '&#x2639';
+			$smileys[':?'] 		= '&#x1F615';
+			$smileys[':wink:'] 	= '&#x1F609';
 		return $smileys;
+
+
 	}
 
 	/*
 	 * @based based on Seb's BB-Code-Parser script by seb
-	 * @url http://www.traum-projekt.com/forum/54-traum-scripts/25292-sebs-bb-code-parser.html 
+	 * @url http://www.traum-projekt.com/forum/54-traum-scripts/25292-sebs-bb-code-parser.html
 	 */
 	public static function bbCodeReplace($string, $currentString = '') {
-	 
+
 	    while($currentString != $string) {
 			$currentString 	= $string;
 			$string 		= preg_replace_callback('{\[(\w+)((=)(.+)|())\]((.|\n)*)\[/\1\]}U', array('PhocaGalleryComment', 'bbCodeCallback'), $string);
@@ -46,13 +48,13 @@ class PhocaGalleryComment
 
 	/*
 	 * @based based on Seb's BB-Code-Parser script by seb
-	 * @url http://www.traum-projekt.com/forum/54-traum-scripts/25292-sebs-bb-code-parser.html 
+	 * @url http://www.traum-projekt.com/forum/54-traum-scripts/25292-sebs-bb-code-parser.html
 	 */
 	public static function bbCodeCallback($matches) {
 		$tag 			= trim($matches[1]);
 		$bodyString 	= $matches[6];
 		$argument 		= $matches[4];
-	    
+
 	    switch($tag) {
 			case 'b':
 			case 'i':

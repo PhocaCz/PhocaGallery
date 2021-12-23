@@ -9,15 +9,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.access.access');
 phocagalleryimport('phocagallery.ordering.ordering');
 
-class PhocagalleryModelComment extends JModelLegacy
+class PhocagalleryModelComment extends BaseDatabaseModel
 {
 	function __construct() {
 		parent::__construct();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$id = $app->input->get('id', 0, 'int');
 		$this->setId((int)$id);
 	}
@@ -37,7 +39,7 @@ class PhocagalleryModelComment extends JModelLegacy
 	function _loadData() {
 		
 		if (empty($this->_data)) {
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$params				= $app->getParams();
 			$image_ordering		= $params->get( 'image_ordering', 1 );
 			$imageOrdering 		= PhocaGalleryOrdering::getOrderingString($image_ordering);

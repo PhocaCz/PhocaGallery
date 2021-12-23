@@ -8,12 +8,20 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.ordering.ordering');
 phocagalleryimport('phocagallery.file.filethumbnail');
 
-class PhocagalleryModelCategory extends JModelLegacy
+class PhocagalleryModelCategory extends BaseDatabaseModel
 {
 	var $_id 				= null;
 	var $_data 				= null;
@@ -24,11 +32,11 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function __construct() {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 
-		$config 			= JFactory::getConfig();
-		$paramsC 			= JComponentHelper::getParams('com_phocagallery') ;
+		$config 			= Factory::getConfig();
+		$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
 		$default_pagination	= $paramsC->get( 'default_pagination_category', '20' );
 		$image_ordering		= $paramsC->get( 'image_ordering', 1 );
 		$context			= $this->_context.'.';
@@ -94,8 +102,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function _buildQuery($rightDisplayDelete = 0, $tagId = 0, $count = 0) {
 
-		$app		= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$user 		= Factory::getUser();
 		$params		= $app->getParams();
 		//$image_ordering		= $params->get( 'image_ordering', 1 );
 
@@ -177,23 +185,23 @@ class PhocagalleryModelCategory extends JModelLegacy
 	 */
 	function getCategory() {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		if ($this->_id == 0) {
 			return '';
 		}
 		if ($this->_loadCategory()) {
 
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			if (!$this->_category->published) {
 				//$mainframe->redirect(JRoute::_('index.php', false), JText::_("COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED"));
 
-				throw new Exception(JText::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ), 404);
+				throw new Exception(Text::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ), 404);
 				exit;
 			}
 			if (!$this->_category->approved) {
 				//$mainframe->redirect(JRoute::_('index.php', false), JText::_("COM_PHOCAGALLERY_CATEGORY_IS_UNAUTHORIZED"));// don't loop
 
-				throw new Exception(JText::_( "COM_PHOCAGALLERY_ERROR_CATEGORY_IS_UNAUTHORIZED" ), 404);
+				throw new Exception(Text::_( "COM_PHOCAGALLERY_ERROR_CATEGORY_IS_UNAUTHORIZED" ), 404);
 				exit;
 			}
 
@@ -207,8 +215,10 @@ class PhocagalleryModelCategory extends JModelLegacy
 			if ($rightDisplay == 0) {
 				$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
 				$t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-				$app->redirect(JRoute::_($t['pl'], false), JText::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
-				exit;
+
+				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION'));
+				$app->redirect(Route::_($t['pl'], false));
+				//exit;
 			}
 			// - - - - - - - - - - - - - - - -
 		}
@@ -240,7 +250,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		$parentCategory = 0;
 
 		if (isset($this->_category->parent_id) && isset($this->_category->id)) {
-			$app	= JFactory::getApplication();
+			$app	= Factory::getApplication();
 			$params				= $app->getParams();
 			$category_ordering	= $params->get( 'category_ordering', 1 );
 			$categoryOrdering 	= PhocaGalleryOrdering::getOrderingString($category_ordering, 2);
@@ -265,7 +275,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 	 */
 	function getSubCategory() {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$params				= $app->getParams();
 		$category_ordering	= $params->get( 'category_ordering', 1 );
 		$categoryOrdering 	= PhocaGalleryOrdering::getOrderingString($category_ordering, 2);
@@ -306,6 +316,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		$this->_db->setQuery($query);
 		$subCategory = $this->_db->loadObjectList();
 
+
 		return $subCategory;
 	}
 
@@ -323,10 +334,10 @@ class PhocagalleryModelCategory extends JModelLegacy
 			. $published;
 		;
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
+		/*if (!$this->_db->query()) {
 			$this->setError('Database Error 3');
 			return false;
-		}
+		}*/
 		return $this->_db->loadRow();
 	}
 
@@ -370,10 +381,11 @@ class PhocagalleryModelCategory extends JModelLegacy
 			. ' WHERE id ='.(int)$id;
 
 		$this->_db->setQuery( $query );
-		if(!$this->_db->query()) {
+		$this->_db->execute();
+		/*if(!$this->_db->query()) {
 			$this->setError('Database Error 2');
 			return false;
-		}
+		}*/
 
 		// Delete thumbnails - medium and large, small from server
 		// All id we want to delete - gel all filenames
@@ -395,17 +407,18 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function publish($id = 0, $publish = 1) {
 
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 		$query = 'UPDATE #__phocagallery'
 			. ' SET published = '.(int) $publish
 			. ' WHERE id = '.(int)$id
 			. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
 
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
+		$this->_db->execute();
+		/*if (!$this->_db->query()) {
 			$this->setError('Database Error 2');
 			return false;
-		}
+		}*/
 		return true;
 	}
 
@@ -495,6 +508,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	}
 
+
+
 	function rate($data) {
 		$row = $this->getTable('phocagalleryvotes', 'Table');
 
@@ -538,7 +553,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 		$row = $this->getTable('phocagallerycomments', 'Table');
 
 		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -551,12 +566,12 @@ class PhocagalleryModelCategory extends JModelLegacy
 		}
 
 		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -565,8 +580,8 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function hit($id) {
 
-		$app	= JFactory::getApplication();
-		$table = JTable::getInstance('phocagalleryc', 'Table');
+		$app	= Factory::getApplication();
+		$table = Table::getInstance('phocagalleryc', 'Table');
 		$table->hit($id);
 		return true;
 	}
@@ -574,7 +589,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 
 	function getCountImages($catId, $published = 1) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		$query = 'SELECT COUNT(i.id) AS countimg'
 			.' FROM #__phocagallery AS i'
@@ -588,7 +603,7 @@ class PhocagalleryModelCategory extends JModelLegacy
 	}
 
 	function getHits($catId) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		$query = 'SELECT cc.hits AS catviewed'
 			.' FROM #__phocagallery_categories AS cc'
@@ -601,8 +616,10 @@ class PhocagalleryModelCategory extends JModelLegacy
 
 	function getStatisticsImages($catId, $order, $order2 = 'ASC', $limit = 3) {
 
-		$query = 'SELECT i.*'
+		$query = 'SELECT i.*,'
+			.' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END as catslug'
 			.' FROM #__phocagallery AS i'
+			.' LEFT JOIN #__phocagallery_categories AS cc ON cc.id = i.catid'
 			.' WHERE i.catid = '.(int) $catId
 			.' AND i.published = 1'
 			.' AND i.approved = 1'

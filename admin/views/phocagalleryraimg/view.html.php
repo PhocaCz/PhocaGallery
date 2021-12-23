@@ -9,9 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
-class PhocaGalleryCpViewPhocaGalleryRaImg extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryRaImg extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -54,27 +57,27 @@ class PhocaGalleryCpViewPhocaGalleryRaImg extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryRaImgHelper::getActions($state->get('filter.category_id'));
 
-		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_IMAGE_RATING' ), 'star' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAGALLERY_IMAGE_RATING' ), 'star' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		/*$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocagallery" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAGALLERY_CONTROL_PANEL').'</a>';
+		$dhtml = '<a href="index.php?option=com_phocagallery" class="btn btn-small"><i class="icon-home-2" title="'.Text::_('COM_PHOCAGALLERY_CONTROL_PANEL').'"></i> '.Text::_('COM_PHOCAGALLERY_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);*/
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper ::deleteList(  JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryraimg.delete', 'COM_PHOCAGALLERY_DELETE');
+			ToolbarHelper::deleteList(  Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryraimg.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'category_title' => JText::_('COM_PHOCAGALLERY_CATEGORY'),
-			'image_title' 	=> JText::_('COM_PHOCAGALLERY_IMAGE'),
-			'ua.username' 	=> JText::_('COM_PHOCAGALLERY_USER'),
-			'a.rating' 		=> JText::_('COM_PHOCAGALLERY_RATING'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'category_title' => Text::_('COM_PHOCAGALLERY_CATEGORY'),
+			'image_title' 	=> Text::_('COM_PHOCAGALLERY_IMAGE'),
+			'ua.username' 	=> Text::_('COM_PHOCAGALLERY_USER'),
+			'a.rating' 		=> Text::_('COM_PHOCAGALLERY_RATING'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

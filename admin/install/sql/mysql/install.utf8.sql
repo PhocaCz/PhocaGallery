@@ -204,7 +204,8 @@ CREATE TABLE IF NOT EXISTS `#__phocagallery_styles` (
 INSERT INTO `#__phocagallery_styles` (`id`, `title`, `alias`, `filename`, `menulink`, `type`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `language`) VALUES
 (1, 'Phocagallery', 'phocagallery', 'phocagallery.css', '', 1, 1, 0, '0000-00-00 00:00:00', 1, NULL, '*'),
 (2, 'Rating', '', 'rating.css', NULL, 1, 1, 0, '0000-00-00 00:00:00', 2, NULL, '*'),
-(3, 'Default', '', 'default.css', NULL, 2, 1, 0, '0000-00-00 00:00:00', 3, NULL, '*');
+(3, 'Default', '', 'default.css', NULL, 2, 1, 0, '0000-00-00 00:00:00', 3, NULL, '*'),
+(4, 'Simple', '', 'theme_simple.css', NULL, 1, 1, 0, '0000-00-00 00:00:00', 3, NULL, '*');
 
 CREATE TABLE IF NOT EXISTS `#__phocagallery_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

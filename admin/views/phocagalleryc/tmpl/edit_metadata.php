@@ -8,12 +8,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 $fieldSets = $this->form->getFieldsets('metadata');
 foreach ($fieldSets as $name => $fieldSet) :
-	/*echo Joomla\CMS\HTML\HTMLHelper::_('sliders.panel',JText::_($fieldSet->label), $name.'-options');
+	/*echo JHtml::_('sliders.panel',JText::_($fieldSet->label), $name.'-options');
 	if (isset($fieldSet->description) && trim($fieldSet->description)) :
-		echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+		echo '<p class="tip">'.$this->escape(Text::_($fieldSet->description)).'</p>';
 	endif;*/
 	?>
 	<fieldset class="panelform">

@@ -9,7 +9,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.filesystem.folder' ); 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.render.renderprocess');
 phocagalleryimport('phocagallery.file.file');
@@ -17,10 +20,10 @@ phocagalleryimport('phocagallery.image.image');
 
 register_shutdown_function(function(){
 	$error = error_get_last();
-	
+
 	if(null !== $error) {
 		if (isset($error['type']) && $error['type'] == 1) {
-			$app		= JFactory::getApplication();
+			$app		= Factory::getApplication();
 			$app->redirect('index.php?option=com_phocagallery&view=phocagalleryfe&error=1');
 			return;
 		}
@@ -49,17 +52,17 @@ class PhocaGalleryImageMagic
 	*/
 	public static function imageMagic($fileIn, $fileOut = null, $width = null, $height = null, $crop = null, $typeOut = null, $watermarkParams = array(), $frontUpload = 0, &$errorMsg = '') {
 
-		$params 		= JComponentHelper::getParams('com_phocagallery') ;
+		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	=	$params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$exif_rotate	= $params->get( 'exif_rotate', 0 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 
 		$fileWatermark = '';
-		
+
 		// While front upload we don't display the process page
 		if ($frontUpload == 0) {
-			
+
 			$stopText = PhocaGalleryRenderProcess::displayStopThumbnailsCreating('processpage');
 			echo $stopText;
 		}
@@ -72,15 +75,15 @@ class PhocaGalleryImageMagic
 		}
 		// - - - - - - - - - - -
 
-		if ($fileIn !== '' && JFile::exists($fileIn)) {
-			
+		if ($fileIn !== '' && File::exists($fileIn)) {
+
 			// array of width, height, IMAGETYPE, "height=x width=x" (string)
 	        list($w, $h, $type) = GetImageSize($fileIn);
-			
-			
+
+
 			// Read EXIF data from image file to get the Orientation flag
 			$exif = null;
-			
+
 			if ($exif_rotate == 1) {
 				if (function_exists('exif_read_data') && $type == IMAGETYPE_JPEG ) {
 					$exif = @exif_read_data($fileIn);
@@ -88,7 +91,7 @@ class PhocaGalleryImageMagic
 				// GetImageSize returns an array of width, height, IMAGETYPE, "height=x width=x" (string)
 				// The EXIF Orientation flag is examined to determine if width and height need to be swapped, i.e. if the image will be rotated in a subsequent step
 				if(isset($exif['Orientation']) && !empty($exif['Orientation'])) {
-					
+
 					switch($exif['Orientation']) {
 					   case 8: // will need to be rotated 90 degrees left, so swap order of width and height
 						  list($h, $w, $type) = GetImageSize($fileIn);
@@ -102,7 +105,7 @@ class PhocaGalleryImageMagic
 					}
 				}
 			}
-			
+
 			if ($w > 0 && $h > 0) {// we got the info from GetImageSize
 
 		        // size of the image
@@ -115,13 +118,13 @@ class PhocaGalleryImageMagic
 				if ($height == null || $height == 0) { // no height, no width
 		            $height = $h;
 		        }
-				
+
 		        // miniaturizing
 		        if (!$crop) { // new size - nw, nh (new width/height)
-		           
-					$scale = (($width / $w) < ($height / $h)) ? ($width / $w) : ($height / $h); // smaller rate 
+
+					$scale = (($width / $w) < ($height / $h)) ? ($width / $w) : ($height / $h); // smaller rate
 					//$scale = $height / $h;
-			   
+
 		            $src = array(0,0, $w, $h);
 		            $dst = array(0,0, floor($w*$scale), floor($h*$scale));
 		        }
@@ -140,20 +143,20 @@ class PhocaGalleryImageMagic
 
 		            $dst = array(0,0, floor($width), floor($height));
 		        }
-				
+
 				// Watermark - - - - - - - - - - -
 				if (!empty($watermarkParams) && ($watermarkParams['create'] == 1 || $watermarkParams['create'] == 2)) {
-				
+
 					$thumbnailSmall		= false;
 					$thumbnailMedium	= false;
 					$thumbnailLarge		= false;
-					
+
 					$thumbnailMedium	= preg_match("/phoca_thumb_m_/i", $fileOut);
 					$thumbnailLarge 	= preg_match("/phoca_thumb_l_/i", $fileOut);
-					
+
 					$path				= PhocaGalleryPath::getPath();
 					$fileName 			= PhocaGalleryFile::getTitleFromFile($fileIn, 1);
-					
+
 					// Which Watermark will be used
 					// If watermark is in current directory use it else use Default
 					$fileWatermarkMedium  	= str_replace($fileName, 'watermark-medium.png', $fileIn);
@@ -162,7 +165,7 @@ class PhocaGalleryImageMagic
 
 					// Which Watermark will be used
 					if ($thumbnailMedium) {
-						if (JFile::exists($fileWatermarkMedium)) {
+						if (File::exists($fileWatermarkMedium)) {
 								$fileWatermark  = $fileWatermarkMedium;
 						} else {
 							if ($watermarkParams['create'] == 2) {
@@ -172,7 +175,7 @@ class PhocaGalleryImageMagic
 							}
 						}
 					} else if ($thumbnailLarge) {
-						if (JFile::exists($fileWatermarkLarge)) {
+						if (File::exists($fileWatermarkLarge)) {
 								$fileWatermark  = $fileWatermarkLarge;
 						} else {
 							if ($watermarkParams['create'] == 2) {
@@ -184,40 +187,40 @@ class PhocaGalleryImageMagic
 					} else {
 							$fileWatermark  = '';
 					}
-					
-					
-					if (!JFile::exists($fileWatermark)) {
+
+
+					if (!File::exists($fileWatermark)) {
 						$fileWatermark = '';
 					}
-					
+
 					if ($fileWatermark != '') {
 						list($wW, $hW, $typeW)	= GetImageSize($fileWatermark);
-					
-						
+
+
 						switch ($watermarkParams['x']) {
 							case 'left':
 								$locationX	= 0;
 							break;
-							
+
 							case 'right':
 								$locationX	= $dst[2] - $wW;
 							break;
-							
+
 							case 'center':
 							Default:
 								$locationX	= ($dst[2] / 2) - ($wW / 2);
 							break;
 						}
-						
+
 						switch ($watermarkParams['y']) {
 							case 'top':
 								$locationY	= 0;
 							break;
-							
+
 							case 'bottom':
 								$locationY	= $dst[3] - $hW;
 							break;
-							
+
 							case 'middle':
 							Default:
 								$locationY	= ($dst[3] / 2) - ($hW / 2);
@@ -228,16 +231,16 @@ class PhocaGalleryImageMagic
 					$fileWatermark = '';
 				}
 			}
-			
 
-			
+
+
 			if ($memory < 50) {
 				ini_set('memory_limit', '50M');
 				$memoryLimitChanged = 1;
 			}
 			// Resampling
 			// in file
-			
+
 			// Watemark
 			if ($fileWatermark != '') {
 				if (!function_exists('ImageCreateFromPNG')) {
@@ -246,8 +249,8 @@ class PhocaGalleryImageMagic
 				}
 				$waterImage1=ImageCreateFromPNG($fileWatermark);
 			}
-			// End Watermark - - - - - - - - - - - - - - - - - - 
-			
+			// End Watermark - - - - - - - - - - - - - - - - - -
+
 	        switch($type) {
 	            case IMAGETYPE_JPEG:
 					if (!function_exists('ImageCreateFromJPEG')) {
@@ -261,7 +264,7 @@ class PhocaGalleryImageMagic
 						$errorMsg = 'ErrorJPGFunction';
 						return false;
 					}
-					
+
 				break;
 	            case IMAGETYPE_PNG :
 					if (!function_exists('ImageCreateFromPNG')) {
@@ -320,7 +323,7 @@ class PhocaGalleryImageMagic
 					return false;
 					break;
 	        }
-			
+
 			if ($image1) {
 
 				$image2 = @ImageCreateTruecolor($dst[2], $dst[3]);
@@ -328,7 +331,7 @@ class PhocaGalleryImageMagic
 					$errorMsg = 'ErrorNoImageCreateTruecolor';
 					return false;
 				}
-				
+
 				switch($type) {
 					case IMAGETYPE_PNG:
 					case IMAGETYPE_WEBP:
@@ -338,7 +341,7 @@ class PhocaGalleryImageMagic
 						@imagesavealpha($image2, true);
 					break;
 				}
-				
+
 				if ($exif_rotate == 1) {
 					// Examine the EXIF Orientation flag (read earlier) to determine if the image needs to be rotated prior to the ImageCopyResampled call
 					// Use the imagerotate() function to perform the rotation, if required
@@ -360,28 +363,28 @@ class PhocaGalleryImageMagic
 								// @imagesavealpha($image1, true);
 								 break;
 						}
-					}   
+					}
 				}
-				
+
 				ImageCopyResampled($image2, $image1, $dst[0],$dst[1], $src[0],$src[1], $dst[2],$dst[3], $src[2],$src[3]);
-				
+
 				// Watermark - - - - - -
 				if ($fileWatermark != '') {
 					ImageCopy($image2, $waterImage1, $locationX, $locationY, 0, 0, $wW, $hW);
 				}
 				// End Watermark - - - -
-				
-				
+
+
 	            // Display the Image - not used
 	            if ($fileOut == null) {
 	                header("Content-type: ". image_type_to_mime_type($typeOut));
 	            }
-				
+
 				// Create the file
 		        if ($typeOut == null) {    // no bitmap
 		            $typeOut = ($type == IMAGETYPE_WBMP) ? IMAGETYPE_PNG : $type;
 		        }
-				
+
 				switch($typeOut) {
 		            case IMAGETYPE_JPEG:
 						if (!function_exists('ImageJPEG')) {
@@ -398,8 +401,8 @@ class PhocaGalleryImageMagic
 							}
 							$imgJPEGToWrite = ob_get_contents();
 							ob_end_clean();
-							
-							if(!JFile::write( $fileOut, $imgJPEGToWrite)) {
+
+							if(!File::write( $fileOut, $imgJPEGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -410,13 +413,13 @@ class PhocaGalleryImageMagic
 							}
 						}
 					break;
-		            
+
 					case IMAGETYPE_PNG :
 						if (!function_exists('ImagePNG')) {
 							$errorMsg = 'ErrorNoPNGFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@ImagePNG($image2, NULL)) {
@@ -426,8 +429,8 @@ class PhocaGalleryImageMagic
 							}
 							$imgPNGToWrite = ob_get_contents();
 							ob_end_clean();
-							
-							if(!JFile::write( $fileOut, $imgPNGToWrite)) {
+
+							if(!File::write( $fileOut, $imgPNGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -438,13 +441,13 @@ class PhocaGalleryImageMagic
 							}
 						}
 					break;
-		            
+
 					case IMAGETYPE_GIF :
 						if (!function_exists('ImageGIF')) {
 							$errorMsg = 'ErrorNoGIFFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@ImageGIF($image2, NULL)) {
@@ -454,8 +457,8 @@ class PhocaGalleryImageMagic
 							}
 							$imgGIFToWrite = ob_get_contents();
 							ob_end_clean();
-							
-							if(!JFile::write( $fileOut, $imgGIFToWrite)) {
+
+							if(!File::write( $fileOut, $imgGIFToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -466,13 +469,13 @@ class PhocaGalleryImageMagic
 							}
 						}
 					break;
-					
+
 					case IMAGETYPE_WEBP :
 						if (!function_exists('ImageWEBP')) {
 							$errorMsg = 'ErrorNoWEBPFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@imagewebp($image2, NULL)) {
@@ -482,8 +485,8 @@ class PhocaGalleryImageMagic
 							}
 							$imgWEBPToWrite = ob_get_contents();
 							ob_end_clean();
-							
-							if(!JFile::write( $fileOut, $imgWEBPToWrite)) {
+
+							if(!File::write( $fileOut, $imgWEBPToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}
@@ -494,20 +497,20 @@ class PhocaGalleryImageMagic
 							}
 						}
 					break;
-		            
+
 					Default:
 						$errorMsg = 'ErrorNotSupportedImage';
 						return false;
 						break;
 				}
-				
+
 				// free memory
 				ImageDestroy($image1);
 	            ImageDestroy($image2);
 				if (isset($waterImage1)) {
 					ImageDestroy($waterImage1);
 				}
-	            
+
 				if ($memoryLimitChanged == 1) {
 					$memoryString = $memory . 'M';
 					ini_set('memory_limit', $memoryString);

@@ -9,21 +9,30 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
 phocagalleryimport('phocagallery.tag.tag');
 
-class JFormFieldPhocaTags extends JFormField
+class JFormFieldPhocaTags extends FormField
 {
 	protected $type 		= 'PhocaTags';
 
 	protected function getInput() {
-		
+
 		$id = (int) $this->form->getValue('id');
 
 		$activeTags = array();
 		if ((int)$id > 0) {
 			$activeTags	= PhocaGalleryTag::getTags($id, 1);
 		}
-		return PhocaGalleryTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL,'id' );
+		//return PhocaGalleryTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL,'id' );
+
+
+		$tags 				= PhocaGalleryTag::getAllTags();
+		$data               = $this->getLayoutData();
+		$data['options']    = (array)$tags;
+		$data['value']      = $activeTags;
+
+		return $this->getRenderer($this->layout)->render($data);
 	}
 }
 ?>

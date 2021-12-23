@@ -9,18 +9,20 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
 jimport('joomla.filesystem.folder');
 
 class PhocaGalleryRenderInfo
 {
     public static function getPhocaVersion() {
         $folder = JPATH_ADMINISTRATOR . '/' . 'components/com_phocagallery';
-        if (JFolder::exists($folder)) {
-            $xmlFilesInDir = JFolder::files($folder, '.xml$');
+        if (Folder::exists($folder)) {
+            $xmlFilesInDir = Folder::files($folder, '.xml$');
         } else {
             $folder = JPATH_SITE . '/components/com_phocagallery';
-            if (JFolder::exists($folder)) {
-                $xmlFilesInDir = JFolder::files($folder, '.xml$');
+            if (Folder::exists($folder)) {
+                $xmlFilesInDir = Folder::files($folder, '.xml$');
             } else {
                 $xmlFilesInDir = null;
             }
@@ -28,7 +30,7 @@ class PhocaGalleryRenderInfo
         $xml_items = array();
         if (!empty($xmlFilesInDir)) {
             foreach ($xmlFilesInDir as $xmlfile) {
-                if ($data = \JInstaller::parseXMLInstallFile($folder . '/' . $xmlfile)) {
+                if ($data = JInstaller::parseXMLInstallFile($folder . '/' . $xmlfile)) {
                     foreach ($data as $key => $value) {
                         $xml_items[$key] = $value;
                     }

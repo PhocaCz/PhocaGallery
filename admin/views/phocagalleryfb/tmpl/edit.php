@@ -8,16 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 $task		= 'phocagalleryimg';
 
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 JFactory::getDocument()->addScriptDeclaration(
@@ -31,12 +34,14 @@ JFactory::getDocument()->addScriptDeclaration(
 }'
 
 );
+
+echo $r->startHeader();
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
-'application' 		=> JText::_($OPT.'_FB_SETTINGS'),
-'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS')
+'application' 		=> Text::_($OPT.'_FB_SETTINGS'),
+'publishing' 	=> Text::_($OPT.'_PUBLISHING_OPTIONS')
 );
 echo $r->navigation($tabs);
 
@@ -45,13 +50,13 @@ echo $r->startTabs();
 
 echo $r->startTab('application', $tabs['application'], 'active');
 
-echo '<h4>'. JText::_($OPT.'_FB_APPLICATION').'</h4>';
+echo '<h4>'. Text::_($OPT.'_FB_APPLICATION').'</h4>';
 
 $formArray = array ('appid', 'appsid', 'ordering');
 echo $r->group($this->form, $formArray);
 
 echo '<div class="clearfix"></div>'
-.'<div>'.JText::_('COM_PHOCAGALLERY_FB_INSTR1') .'</div>'
+.'<div>'.Text::_('COM_PHOCAGALLERY_FB_INSTR1') .'</div>'
 .'<div style="text-align:right"><a style="text-decoration:underline;font-weight:bold;" href="http://developers.facebook.com/setup/" target="_blank" >'. JText::_('COM_PHOCAGALLERY_FB_CREATE_APP').'</a></div>'
 .'<div class="clearfix"></div>';
 
@@ -95,7 +100,7 @@ echo '<div class="clearfix"></div>'
 if (isset($this->item->appid) && $this->item->appid != ''
 	&& isset($this->item->appsid) && $this->item->appsid != '') {
 
-	echo '<h4>'.JText::_('COM_PHOCAGALLERY_FB_USER_SETTINGS'). '</h4>';
+	echo '<h4>'.Text::_('COM_PHOCAGALLERY_FB_USER_SETTINGS'). '</h4>';
 
 	$status	= PhocaGalleryFb::getFbStatus($this->item->appid, $this->item->appsid);
 
@@ -142,9 +147,9 @@ if (isset($this->item->appid) && $this->item->appid != ''
 		echo '</div>';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-		echo '<div style="float:right;"><a href="javascript:void(0)" onclick="pasteFbFields()"><div class="btn btn-primary">'.JText::_('COM_PHOCAGALLERY_FB_PASTE_LOADED_DATA').'</div></a></div>';
+		echo '<div style="float:right;"><a href="javascript:void(0)" onclick="pasteFbFields()"><div class="btn btn-primary">'.Text::_('COM_PHOCAGALLERY_FB_PASTE_LOADED_DATA').'</div></a></div>';
 	}
 
 	echo '<div class="clearfix"></div>';
@@ -154,7 +159,7 @@ if (isset($this->item->appid) && $this->item->appid != ''
 	echo '<input name="jform[expires]" id="jform_expires" value="0" readonly="readonly" type="hidden" />'. "\n";
 	echo '<div class="clearfix"></div>';
 
-	echo '<h4>'. JText::_('COM_PHOCAGALLERY_FB_COMMENTS_SETTINGS') .'</h4>';
+	echo '<h4>'. Text::_('COM_PHOCAGALLERY_FB_COMMENTS_SETTINGS') .'</h4>';
 	foreach($this->form->getFieldset('comments') as $field) {
 		echo '<div class="control-group">';
 		if (!$field->hidden) {
@@ -183,7 +188,7 @@ echo $r->endTabs();
 
 echo '</div>';//end span10
 // Second Column
-echo '<div class="span2"></div>';//end span2
+//echo '<div class="span2"></div>';//end span2
 echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 

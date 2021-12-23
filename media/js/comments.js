@@ -1,15 +1,15 @@
-﻿function pasteTag(tag, closingTag, prependText, appendText) {
+﻿function pgPasteTag(tag, closingTag, prependText, appendText) {
 	var pe 			= document.getElementById( 'phocagallery-comments-editor' );
 	var startTag 	= '[' + tag + ']';
 	var endTag 		= '[/' + tag + ']';
-	
+
 	if (typeof pe.selectionStart != 'undefined') {
 		var tagText = pe.value.substring(pe.selectionStart, pe.selectionEnd);
 	} else if (typeof document.selection != 'undefined') {
 		var tagText = document.selection.createRange().text;
 	} else {
 	}
-	
+
 	if (typeof closingTag == 'undefined') {
 		var closingTag	= true;
 	}
@@ -21,15 +21,15 @@
 	}
 	if (!closingTag) {
 		endTag 			= '';
-	}	
+	}
 	var totalText 		= prependText + startTag + tagText + endTag + appendText;
 	pe.focus();
-	
+
 	if (typeof pe.selectionStart != 'undefined') {
 		var start	= pe.selectionStart;
 		var end 	= pe.selectionEnd;
 		pe.value 	= pe.value.substr(0, start) + totalText + pe.value.substr(end);
-		
+
 		if (typeof selectionStart != 'undefined' && typeof selectionEnd != 'undefined') {
 			pe.selectionStart 	= start + selectionStart;
 			pe.selectionEnd 	= start + selectionEnd;
@@ -45,7 +45,7 @@
 	} else if (typeof document.selection != 'undefined') {
 		var range 	= document.selection.createRange();
 		range.text 	= totalText;
-		
+
 		if (typeof selectionStart != 'undefined' && typeof selectionEnd != 'undefined') {
 			range.moveStart('character', -totalText.length + selectionStart);
 			range.moveEnd('character', -totalText.length + selectionEnd);
@@ -57,7 +57,7 @@
 		}
 		range.select();
 	}
-	countChars();
+	pgCountChars();
 	delete selectionStart;
 	delete selectionEnd;
 }
@@ -68,12 +68,12 @@ function pasteSmiley( smiley ) {
 		var start	= pe.selectionStart;
 		var end 	= pe.selectionEnd;
 		pe.value 	= pe.value.substring( 0, start ) + smiley + pe.value.substring( end );
-		
+
 		newPosition	= start + smiley.length;
-		
+
 		pe.selectionStart	= newPosition;
 		pe.selectionEnd		= newPosition;
-		
+
 	} else if (typeof document.selection != 'undefined') {
 		pe.focus();
 		range = document.selection.createRange();
@@ -81,7 +81,7 @@ function pasteSmiley( smiley ) {
 	} else {
 		pe.value += smiley;
 	}
-	countChars();
+	pgCountChars();
 	pe.focus();
 }
 

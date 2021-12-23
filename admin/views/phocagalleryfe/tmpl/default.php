@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * @package Joomla
  * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div>';
 
-echo '<div class="alert alert-error">'.$this->t['errormessage'].'</div>';
+echo '<div class="alert alert-error alert-danger">'.$this->t['errormessage'].'</div>';
 echo '</div>';
 ?>
 

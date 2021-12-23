@@ -9,13 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 phocagalleryimport('phocagallery.file.filefolderlist');
 
-class PhocaGalleryCpModelPhocaGalleryI extends JModelLegacy
+class PhocaGalleryCpModelPhocaGalleryI extends BaseDatabaseModel
 {
 	protected $option 			= 'com_phocagallery';
 	protected $text_prefix		= 'com_phocagallery';
@@ -25,7 +27,7 @@ class PhocaGalleryCpModelPhocaGalleryI extends JModelLegacy
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$folder = Factory::getApplication()->input->get( 'folder', '', '', 'path' );
 			$this->setState('folder', $folder);
 
 			$parent = str_replace("\\", "/", dirname($folder));
@@ -37,9 +39,9 @@ class PhocaGalleryCpModelPhocaGalleryI extends JModelLegacy
 	}
 
 	function getImages() {
-		$tab 			= JFactory::getApplication()->input->get( 'tab', '', '', 'string' );
-		$muFailed		= JFactory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded		= JFactory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$tab 			= Factory::getApplication()->input->get( 'tab', '', '', 'string' );
+		$muFailed		= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
+		$muUploaded		= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
 
 		$refreshUrl = 'index.php?option=com_phocagallery&view=phocagalleryi&tab='.$tab.'&mufailed='.$muFailed.'&muuploaded='.$muUploaded.'&tmpl=component';
 		$list = PhocaGalleryFileFolderList::getList(0,1,0,$refreshUrl);
@@ -47,7 +49,7 @@ class PhocaGalleryCpModelPhocaGalleryI extends JModelLegacy
 	}
 
 	function getFolders() {
-		$tab = JFactory::getApplication()->input->get( 'tab', 0, '', 'int' );
+		$tab = Factory::getApplication()->input->get( 'tab', 0, '', 'int' );
 		$refreshUrl = 'index.php?option=com_phocagallery&view=phocagalleryi&tab='.$tab.'&tmpl=component';
 		$list = PhocaGalleryFileFolderList::getList(0,0,0,$refreshUrl);
 		return $list['folders'];

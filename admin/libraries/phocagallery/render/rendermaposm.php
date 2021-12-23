@@ -6,7 +6,15 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
+use Joomla\CMS\HTML\HTMLHelper;
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Form;
 
 class PhocaGalleryRenderMaposm
 {
@@ -43,8 +51,8 @@ class PhocaGalleryRenderMaposm
 	function __construct($id = '') {
 
 
-		$app 						= JFactory::getApplication();
-		$paramsC 					= JComponentHelper::getParams('com_phocagallery');
+		$app 						= Factory::getApplication();
+		$paramsC 					= ComponentHelper::getParams('com_phocagallery');
 		$this->router 				= $paramsC->get( 'osm_router', 0 );//
 		$this->maprouterapikey 		= $paramsC->get( 'osm_map_router_api_key', '' );
 		$this->routerserviceurl 	= $paramsC->get( 'osm_router_routerserviceurl', '' );//
@@ -78,51 +86,51 @@ class PhocaGalleryRenderMaposm
 
 
 	function loadAPI() {
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet/leaflet.js');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet/leaflet.css');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet/leaflet.js');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet/leaflet.css');
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-awesome/leaflet.awesome-markers.js');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-awesome/leaflet.awesome-markers.css');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-awesome/leaflet.awesome-markers.js');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-awesome/leaflet.awesome-markers.css');
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-fullscreen/Leaflet.fullscreen.js');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-fullscreen/leaflet.fullscreen.css');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-fullscreen/Leaflet.fullscreen.js');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-fullscreen/leaflet.fullscreen.css');
 
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/L.Control.Locate.min.js');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/L.Control.Locate.css');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/font-awesome.min.css');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/L.Control.Locate.min.js');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/L.Control.Locate.css');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-control-locate/font-awesome.min.css');
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-omnivore/leaflet-omnivore.js');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-omnivore/leaflet-omnivore.js');
 
-		$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-search/leaflet-search.min.js');
-		$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-search/leaflet-search.css');
+		$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-search/leaflet-search.min.js');
+		$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-search/leaflet-search.css');
 
 		if ($this->router == 1) {
-			$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-routing-machine/leaflet-routing-machine.min.js');
-			$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-routing-machine/leaflet-routing-machine.css');
+			$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-routing-machine/leaflet-routing-machine.min.js');
+			$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-routing-machine/leaflet-routing-machine.css');
 
-			$document->addStyleSheet(JURI::root(true) . '/media/com_phocagallery/js/leaflet-geocoder/Control.Geocoder.css');
-			$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-geocoder/Control.Geocoder.js');
+			$document->addStyleSheet(Uri::root(true) . '/media/com_phocagallery/js/leaflet-geocoder/Control.Geocoder.css');
+			$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-geocoder/Control.Geocoder.js');
 		}
 
 		if ($this->easyprint == 1) {
-			$document->addScript(JURI::root(true) . '/media/com_phocagallery/js/leaflet-easyprint/bundle.js');
+			$document->addScript(Uri::root(true) . '/media/com_phocagallery/js/leaflet-easyprint/bundle.js');
 
 		}
 
 	}
 
 	function loadCoordinatesJS() {
-		$document	= JFactory::getDocument();
-		$document->addScript(JURI::root(true).'/media/com_phocagallery/js/administrator/coordinates.js');
+		$document	= Factory::getDocument();
+		$document->addScript(Uri::root(true).'/media/com_phocagallery/js/administrator/coordinates.js');
 	}
 
 	function createMap($lat, $lng, $zoom) {
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$opt = array();
 		if ($this->zoomwheel == 0) {
@@ -139,13 +147,16 @@ class PhocaGalleryRenderMaposm
 		$o[]= 'var map'.$this->name.$this->id.' = L.map("'.$this->name.$this->id.'", '.$options.').setView(['.PhocaGalleryText::filterValue($lat, 'number2').', '.PhocaGalleryText::filterValue($lng, 'number2').'], '.(int)$zoom.');';
 
 
+		$o[]= 'jQuery(\'.phTabs ul li a\').click(function(){ setTimeout(function() { map'.$this->name.$this->id.'.invalidateSize(); }, 0);});';
+
+
 		$this->output[] = implode("\n", $o);
 		return true;
 	}
 
 	function setMapType() {
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Possible new parameters
 		$thunderForestMapType = $this->thunderforestmaptype;
@@ -173,11 +184,11 @@ class PhocaGalleryRenderMaposm
 		} else if ($type === 'thunderforest') {
 
 			if ($thunderForestKey == '') {
-				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_ERROR_API_KEY_NOT_SET'));
+				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_ERROR_API_KEY_NOT_SET'));
 				return false;
 			}
 			if ($thunderForestMapType == '') {
-				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_ERROR_MAP_TYPE_NOT_SET'));
+				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_ERROR_MAP_TYPE_NOT_SET'));
 				return false;
 			}
 			$o[] = 'L.tileLayer(\'https://{s}.tile.thunderforest.com/'.PhocaGalleryText::filterValue($thunderForestMapType, 'url').'/{z}/{x}/{y}.png?apikey={apikey}\', {';
@@ -189,7 +200,7 @@ class PhocaGalleryRenderMaposm
 		} else if ($type === 'mapbox') {
 
 			if ($mapBoxKey == '') {
-				$app->enqueueMessage(JText::_('COM_PHOCAGALLERY_ERROR_API_KEY_NOT_SET'));
+				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_ERROR_API_KEY_NOT_SET'));
 				return false;
 			}
 
@@ -335,16 +346,16 @@ class PhocaGalleryRenderMaposm
 		if ( $zoomInput != '') {
 			$o[]= 'var phZoom = jQuery(\'#jform_zoom\', window.parent.document);';
 			$o[]= 'phZoom.val(map'.$this->name.$this->id.'.getZoom());';
-			$o[]= 'var phmMsg = \'<span class="ph-msg-success">'.JText::_('COM_PHOCAGALLERY_LAT_LNG_ZOOM_SET').'</span>\';';
+			$o[]= 'var phmMsg = \'<span class="ph-msg-success">'.Text::_('COM_PHOCAGALLERY_LAT_LNG_ZOOM_SET').'</span>\';';
 		} else {
-			$o[]= 'var phmMsg = \'<span class="ph-msg-success">'.JText::_('COM_PHOCAGALLERY_LAT_LNG_SET').'</span>\';';
+			$o[]= 'var phmMsg = \'<span class="ph-msg-success">'.Text::_('COM_PHOCAGALLERY_LAT_LNG_SET').'</span>\';';
 		}
 
 		$o[]= 'jQuery(\'#phmPopupInfo\', window.parent.document).html(phmMsg);';
 
 		if ($setGPS == 1) {
-			$o[]= '   if (window.parent) setPMGPSLatitudeJForm(lat);';
-			$o[]= '   if (window.parent) setPMGPSLongitudeJForm(lng);';
+			$o[]= '   if (window.parent) setPMGPSLatitudeForm(lat);';
+			$o[]= '   if (window.parent) setPMGPSLongitudeForm(lng);';
 		}
 		$o[]= '}';
 		$this->output[] = implode("\n", $o);
@@ -420,8 +431,8 @@ class PhocaGalleryRenderMaposm
 		$o[] = '	new L.Control.Fullscreen({';
 		$o[] = '		position: \'topright\',';
 		$o[] = '		title: {';
-		$o[] = '			\'false\': \''.JText::_('COM_PHOCAGALLERY_VIEW_FULLSCREEN').'\',';
-		$o[] = '			\'true\': \''.JText::_('COM_PHOCAGALLERY_EXIT_FULLSCREEN').'\'';
+		$o[] = '			\'false\': \''.Text::_('COM_PHOCAGALLERY_VIEW_FULLSCREEN').'\',';
+		$o[] = '			\'true\': \''.Text::_('COM_PHOCAGALLERY_EXIT_FULLSCREEN').'\'';
 		$o[] = '		}';
 		$o[] = '	})';
 
@@ -444,7 +455,7 @@ class PhocaGalleryRenderMaposm
 		$o[] = 'L.control.locate({';
 		$o[] = '	position: \'topright\',';
 		$o[] = '	strings: {';
-		$o[] = '		\'title\': \''.JText::_('COM_PHOCAGALLERY_CURRENT_POSITION').'\'';
+		$o[] = '		\'title\': \''.Text::_('COM_PHOCAGALLERY_CURRENT_POSITION').'\'';
 		$o[] = '	},';
 		$o[] = '	locateOptions: {';
 		$o[] = '		enableHighAccuracy: true,';
@@ -604,11 +615,13 @@ class PhocaGalleryRenderMaposm
 	}
 
 	public function renderMap() {
+
+		HTMLHelper::_('jquery.framework', false);
 		$o = array();
 		$o[] = 'jQuery(document).ready(function() {';
 		$o[] = implode("\n", $this->output);
 		$o[] = '})';
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $o));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $o));
 	}
 }
 ?>

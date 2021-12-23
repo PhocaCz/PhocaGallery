@@ -9,13 +9,27 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\UCM\UCMType;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport( 'phocagallery.utils.utils' );
 phocagalleryimport( 'phocagallery.picasa.picasa' );
 phocagalleryimport( 'phocagallery.facebook.fb' );
 phocagalleryimport( 'phocagallery.facebook.fbsystem' );
 
-class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 {
 	//protected 	$_XMLFile;
 	//protected 	$_id;
@@ -27,7 +41,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocagallery.phocagalleryc.'.(int) $record->catid);
@@ -38,7 +52,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_phocagallery.phocagalleryc.'.(int) $record->catid);
@@ -49,12 +63,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 	public function getTable($type = 'PhocaGalleryc', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocagallery.phocagalleryc', 'phocagalleryc', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -65,7 +79,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryc.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocagallery.edit.phocagalleryc.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -79,7 +93,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
 			if (isset($item->metadata)) {
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->metadata);
 				$item->metadata = $registry->toArray();
 			}
@@ -91,11 +105,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= \JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		=ApplicationHelper::stringURLSafe($table->alias);
 		$table->parent_id 	= PhocaGalleryUtils::getIntFromString($table->parent_id);
 		$table->image_id 	= PhocaGalleryUtils::getIntFromString($table->image_id);
 		$table->hits 		= PhocaGalleryUtils::getIntFromString($table->hits);
@@ -103,7 +117,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		$table->extfbuid 	= PhocaGalleryUtils::getIntFromString($table->extfbuid);
 
 		if (empty($table->alias)) {
-			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
+			$table->alias =ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -112,7 +126,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocagallery_categories WHERE parent_id = '. (int) $table->parent_id);
 				$max = $db->loadResult();
 
@@ -142,13 +156,13 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	function approve(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$dispatcher	= JDispatcher::getInstance();
-		$user		= JFactory::getUser();
+	//	$dispatcher	= JDispatcher::getInstance();
+		$user		= Factory::getUser();
 		$table		= $this->getTable('phocagalleryc');
 		$pks		= (array) $pks;
 
 		// Include the content plugins for the change of state event.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Access checks.
 		foreach ($pks as $i => $pk) {
@@ -156,7 +170,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
+					throw new Exception(Text::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
 				}
 			}
 		}
@@ -181,7 +195,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	/*
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		return $user->authorise('core.edit.state', $this->option);
 	}
 	*/
@@ -196,7 +210,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	public function save($data, &$extImgError = false)
 	{
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// = = = = = = = = = =
 		// Default VALUES FOR Rights in FRONTEND
 		// ACCESS -  0: all users can see the category (registered or not registered)
@@ -234,19 +248,21 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
+		//$dispatcher = JDispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
 		$isNew		= true;
 
 		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Load the row if saving an existing record.
 		if ($pk > 0) {
 			$table->load($pk);
 			$isNew = false;
 		}
+
+
 
 		// Bind the data.
 		if (!$table->bind($data)) {
@@ -255,7 +271,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 
 		if(intval($table->date) == 0) {
-			$table->date = JFactory::getDate()->toSql();
+			$table->date = Factory::getDate()->toSql();
 		}
 
 		// Prepare the row for saving
@@ -281,7 +297,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 
 		// Clean the cache.
-		$cache = JFactory::getCache($this->option);
+		$cache = Factory::getCache($this->option);
 		$cache->clean();
 
 		// Trigger the onContentAfterSave event.
@@ -293,7 +309,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 		$this->setState($this->getName().'.new', $isNew);
 
-		$subTask = JFactory::getApplication()->input->get('subtask');
+		$subTask = Factory::getApplication()->input->get('subtask');
 
 		// TO DO
 		if ((string)$subTask == 'loadextimgp') {
@@ -388,7 +404,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 
 		if (!$userCategoryId) {
-			$this->setError(JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ) . ' - ' . JText('COM_PHOCAGALLERY_OWNER'));
+			$this->setError(Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ) . ' - ' . Text('COM_PHOCAGALLERY_OWNER'));
 			return false;
 		}
 		return true;
@@ -406,7 +422,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		// Bind the form fields to the table
 		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -417,13 +433,13 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		// Make sure the table is valid
 		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		// Store the table to the database
 		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($row->getError());
 			return false;
 		}
 		return $row->id;
@@ -450,11 +466,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	public function uploadExtImagesFb($idCat, $data, &$errorMsg) {
 
 		$idImg = 0;
-		if (JFactory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' ) > 0) {
-			$data['extfbcatid']	= JFactory::getApplication()->input->get( 'fbalbum', '', 'get'  );
-			$data['extfbuid']	= JFactory::getApplication()->input->get( 'fbuser', '', 'get'  );
-			$data['language']	= JFactory::getApplication()->input->get( 'fblang', '', 'get'  );
-			$idImg				= JFactory::getApplication()->input->get( 'fbimg', '', 'get'  );
+		if (Factory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' ) > 0) {
+			$data['extfbcatid']	= Factory::getApplication()->input->get( 'fbalbum', '', 'get'  );
+			$data['extfbuid']	= Factory::getApplication()->input->get( 'fbuser', '', 'get'  );
+			$data['language']	= Factory::getApplication()->input->get( 'fblang', '', 'get'  );
+			$idImg				= Factory::getApplication()->input->get( 'fbimg', '', 'get'  );
 
 		}
 
@@ -465,26 +481,26 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			$image = PhocaGalleryFbSystem::getImageFromCat($idCat, $idImg);
 
 			if(isset($image['end']) && $image['end'] == 1) {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_FB_END_EXPORT');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_FB_END_EXPORT');
 				return true;
 			}
 			if(!empty($image)) {
 
 				// Don't export external image
 				if(isset($image['extid']) && $image['extid'] != '') {
-					$exportMsg = '<b style="color:#fc0000">'.JText::_( 'COM_PHOCAGALLERY_NOT_EXPORTED' ).'</b> ('.JText::_('COM_PHOCAGALLERY_ERROR_EXT_IMG_NOT_EXPORTED').')';
+					$exportMsg = '<b style="color:#fc0000">'.Text::_( 'COM_PHOCAGALLERY_NOT_EXPORTED' ).'</b> ('.Text::_('COM_PHOCAGALLERY_ERROR_EXT_IMG_NOT_EXPORTED').')';
 				} else {
 
 					$export = PhocaGalleryFb::exportFbImage ($user->appid, $user->fanpageid, $user->appsid, $session, $image, $data['extfbcatid']);
 
 					if(isset($export['id']) && $export['id'] != '') {
-						$exportMsg = '<b style="color:#009900">'.JText::_( 'COM_PHOCAGALLERY_EXPORTED' ).'</b>';
+						$exportMsg = '<b style="color:#009900">'.Text::_( 'COM_PHOCAGALLERY_EXPORTED' ).'</b>';
 					} else {
-						$exportMsg = '<b style="color:#fc0000">'.JText::_( 'COM_PHOCAGALLERY_NOT_EXPORTED' ).'</b> ('.JText::_('COM_PHOCAGALLERY_ERROR_FB_EXPORTING').')';
+						$exportMsg = '<b style="color:#fc0000">'.Text::_( 'COM_PHOCAGALLERY_NOT_EXPORTED' ).'</b> ('.Text::_('COM_PHOCAGALLERY_ERROR_FB_EXPORTING').')';
 					}
 				}
 
-				$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.uploadextimgfpgn&id='.$idCat.'&fbalbum='.$data['extfbcatid'].'&fbuser='.$data['extfbuid'].'&fblang='.$data['language'].'&fbimg='.(int)$image['id'] .'&amp;'. JSession::getFormToken().'=1';
+				$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.uploadextimgfpgn&id='.$idCat.'&fbalbum='.$data['extfbcatid'].'&fbuser='.$data['extfbuid'].'&fblang='.$data['language'].'&fbimg='.(int)$image['id'] .'&amp;'. Session::getFormToken().'=1';
 
 				$imageFileName = '';
 				if(isset($image['filename']) && $image['filename'] != '') {
@@ -492,17 +508,17 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 				$countInfo 	= '<div><span style="color:#0066cc;">'. $image['title'] .$imageFileName . '</span>'
 				. ' '.$exportMsg.'<br />'
-				. '<span>' . JText::_('COM_PHOCAGALLERY_EXPORT_NEXT_IMG_EXPORT') . ' ...</span></div>';
+				. '<span>' . Text::_('COM_PHOCAGALLERY_EXPORT_NEXT_IMG_EXPORT') . ' ...</span></div>';
 
 				PhocaGalleryFbSystem::renderProcessPage($idCat, $refreshUrl, $countInfo);
 				exit;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook Images From Category)';
+				$errorMsg = Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook Images From Category)';
 				return false;
 			}
 
 		} else {
-			$errorMsg = JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)';
+			$errorMsg = Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)';
 			return false;
 		}
 	}
@@ -512,7 +528,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		// PAGINATION
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 		$fb_load_pagination = $paramsC->get( 'fb_load_pagination', 25 );
 
 		//FIRST
@@ -524,19 +540,19 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		// In variable fbAfter we transfer the string which says - there is some after, there are images on FB yet to import
 		// In variable fbCount we store the infromation about that we redirecting the page and do a pagination loop
-		if (JFactory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$fbAfter 			= JFactory::getApplication()->input->get( 'fbafter', '', 'get' );
-			$fbCount 			= JFactory::getApplication()->input->get( 'fbcount', 0, 'get' );
-			$data['extfbuid']	= JFactory::getApplication()->input->get( 'fbuser', '', 'get' );
-			$data['extfbcatid']	= JFactory::getApplication()->input->get( 'fbalbum', '', 'get' );
-			$data['language']	= JFactory::getApplication()->input->get( 'fblang', '', 'get' );
+			$fbAfter 			= Factory::getApplication()->input->get( 'fbafter', '', 'get' );
+			$fbCount 			= Factory::getApplication()->input->get( 'fbcount', 0, 'get' );
+			$data['extfbuid']	= Factory::getApplication()->input->get( 'fbuser', '', 'get' );
+			$data['extfbcatid']	= Factory::getApplication()->input->get( 'fbalbum', '', 'get' );
+			$data['language']	= Factory::getApplication()->input->get( 'fblang', '', 'get' );
 
 		}
 
 		// Preventing from Loop
 		if ($fbCount > 40) {
-			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_FB_IMAGE_NOT_ALL_LOADED' ), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_FB_IMAGE_NOT_ALL_LOADED' ), $message);
 			return false;
 		}
 
@@ -552,8 +568,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 
 		$dataImg = array();
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
@@ -748,12 +764,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					// THIRD
 					if ($fbAfter != '') {
 						$fbCount = $fbCount + 1;
-						$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.loadextimgpgnfb&id='.$idCat.'&fbalbum='.$data['extfbcatid'].'&fbuser='.$data['extfbuid'].'&fblang='.$data['language'].'&fbafter='.$fbAfter .'&fbcount='.$fbCount.'&'. JSession::getFormToken().'=1';
+						$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.loadextimgpgnfb&id='.$idCat.'&fbalbum='.$data['extfbcatid'].'&fbuser='.$data['extfbuid'].'&fblang='.$data['language'].'&fbafter='.$fbAfter .'&fbcount='.$fbCount.'&'. Session::getFormToken().'=1';
 
 						$fbImageFrom 	= ((int)$fbCount * (int)$fb_load_pagination) + 1;
 						$fbImageTo		= (int)$fbImageFrom + (int)$fb_load_pagination - 1;
 
-						$countInfo = '<div>'. JText::sprintf('COM_PHOCAGALLERY_FB_IMPORTING_IMAGES' ,'<b>'.$fbImageFrom. '</b>', '<b>'. $fbImageTo . '</b> ') .'</div>';
+						$countInfo = '<div>'. Text::sprintf('COM_PHOCAGALLERY_FB_IMPORTING_IMAGES' ,'<b>'.$fbImageFrom. '</b>', '<b>'. $fbImageTo . '</b> ') .'</div>';
 
 						// Store images while pagination is working, we know "fbafter" exists, there are still images, don't empty table
 						if(count($dataImg) > 0) {
@@ -761,11 +777,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 							if($this->storeImage($dataImg, (int)$idCat, $storeBehaviour)) {
 								//return true; don't return anything because we will be redirected
 							} else {
-								$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR'), $message);
+								$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR'), $message);
 								return false;
 							}
 						} else {
-							$message = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE');
+							$message = Text::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE');
 							return false;
 						}
 
@@ -775,25 +791,25 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 
 			} else {
-				$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)', $message);
+				$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)', $message);
 				return false;
 			}
 		} else {
-			$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB') . ' ' .JText::_('COM_PHOCAGALLERY_ERROR_CHECK_FB_FORM_FIELDS'), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB') . ' ' .Text::_('COM_PHOCAGALLERY_ERROR_CHECK_FB_FORM_FIELDS'), $message);
 			return false;
 		}
 
 		if(count($dataImg) > 0) {
 
 			if($this->storeImage($dataImg, (int)$idCat, $storeBehaviour)) {
-				$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_FB_IMAGE_LOADED' ), $message);
+				$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_FB_IMAGE_LOADED' ), $message);
 				return true;
 			} else {
-				$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR'), $message);
+				$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR'), $message);
 				return false;
 			}
 		} else {
-			$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE'), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE'), $message);
 			return false;
 		}
 	}
@@ -802,11 +818,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 	public function loadExtImagesFb($idCat, $data, &$errorMsg) {
 
-		$paramsC 	= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery');
 
 		$lw 		= $paramsC->get( 'large_image_width', 640 );
-		$mw 		= $paramsC->get( 'medium_image_width', 100 );
-		$sw 		= $paramsC->get( 'small_image_width', 50 );
+		$mw 		= $paramsC->get( 'medium_image_width', 256 );
+		$sw 		= $paramsC->get( 'small_image_width', 128 );
 
 		$dataImg = array();
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
@@ -911,11 +927,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)';
+				$errorMsg = Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB'). ': (Facebook User Info)';
 				return false;
 			}
 		} else {
-			$errorMsg = JText::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB') . ' ' .JText::_('COM_PHOCAGALLERY_ERROR_CHECK_FB_FORM_FIELDS');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_ERROR_LOADING_DATA_DB') . ' ' .Text::_('COM_PHOCAGALLERY_ERROR_CHECK_FB_FORM_FIELDS');
 			return false;
 		}
 
@@ -924,18 +940,18 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			if($this->storeImage($dataImg, (int)$idCat, 'facebook')) {
 				return true;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_FACEBOOK_IMAGE_SAVE_ERROR');
 				return false;
 			}
 		} else {
-			$errorMsg = JText::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_FACEBOOK_NOT_LOADED_IMAGE');
 			return false;
 		}
 	} */
 
 	public function loadExtImages($idCat, $data, &$message) {
 
-		$paramsC = JComponentHelper::getParams('com_phocagallery');
+		$paramsC = ComponentHelper::getParams('com_phocagallery');
 		$picasa_load_pagination = $paramsC->get( 'picasa_load_pagination', 20 );
 
 		// First get Album ID from PICASA
@@ -945,12 +961,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		$errorMsgA = $errorMsgI = '';
 
 		//FIRST
-		if (JFactory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$data['exta']		= JFactory::getApplication()->input->get( 'picalbum', '', 'get'  );
-			$data['extu']		= JFactory::getApplication()->input->get( 'picuser', '', 'get'  );
-			$data['extauth']	= JFactory::getApplication()->input->get( 'picauth', '', 'get'  );
-			$data['language']	= JFactory::getApplication()->input->get( 'piclang', '', 'get'  );
+			$data['exta']		= Factory::getApplication()->input->get( 'picalbum', '', 'get'  );
+			$data['extu']		= Factory::getApplication()->input->get( 'picuser', '', 'get'  );
+			$data['extauth']	= Factory::getApplication()->input->get( 'picauth', '', 'get'  );
+			$data['language']	= Factory::getApplication()->input->get( 'piclang', '', 'get'  );
 		}
 
 		$album = $this->picasaAlbum($data['extu'], $data['extauth'], $data['exta'], $errorMsgA);
@@ -964,9 +980,9 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		// SECOND
-		if (JFactory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$id	= JFactory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+			$id	= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
 		} else {
 			$id	= 	$idCat;//you get id and you store the table data
 		}
@@ -977,7 +993,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			if ($album && (int)$album['id'] > 0) {
 
 				// PAGINATION
-				$start	= JFactory::getApplication()->input->get( 'picstart', 1, 'get', 'int' );
+				$start	= Factory::getApplication()->input->get( 'picstart', 1, 'get', 'int' );
 				$max	= $picasa_load_pagination;
 				$pagination	= '&start-index='.(int)$start.'&max-results='.(int)$max;
 				$picImg = $this->picasaImages($data['extu'],$data['extauth'], $album['id'], $id, $data['language'], $pagination, $errorMsgI);
@@ -996,18 +1012,18 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 						$maxCount	= (int)$max;
 						// - - - - - -
 						if ((int)$loop > 50 || $maxCount < 20) {
-							$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_PICASA_IMAGE_NOT_ALL_LOADED' ), $message);
+							$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_PICASA_IMAGE_NOT_ALL_LOADED' ), $message);
 							return false;
 						} else {
 							if ((int)$album['num'] > (int)$newStartIf) {
 
-								$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.loadextimgpgn&id='.$id.'&picalbum='.$data['exta'].'&picuser='.$data['extu'].'&picauth='.$data['extauth'].'&piclang='.$data['language'].'&picstart='.(int)$newStart .'&amp;'. JSession::getFormToken().'=1';
+								$refreshUrl	= 'index.php?option=com_phocagallery&task=phocagalleryc.loadextimgpgn&id='.$id.'&picalbum='.$data['exta'].'&picuser='.$data['extu'].'&picauth='.$data['extauth'].'&piclang='.$data['language'].'&picstart='.(int)$newStart .'&amp;'. Session::getFormToken().'=1';
 								$countImg	= $newStartIf + $max;
 								if ($countImg > $album['num']) {
 									$countImg = $album['num'];
 								}
 								//$countInfo 	= '<div><b>'.$newStart. '</b> - <b>'. $countImg . '</b> ' .JText::_('COM_PHOCAGALLERY_FROM'). ' <b>' . $album['num'].'</b></div>';
-								$countInfo = '<div>'. JText::sprintf('COM_PHOCAGALLERY_FROM_ALBUM' ,'<b>'.$newStart. '</b>', '<b>'. $countImg . '</b> ', ' <b>' . $album['num'].'</b>') .'</div>';
+								$countInfo = '<div>'. Text::sprintf('COM_PHOCAGALLERY_FROM_ALBUM' ,'<b>'.$newStart. '</b>', '<b>'. $countImg . '</b> ', ' <b>' . $album['num'].'</b>') .'</div>';
 
 								PhocaGalleryPicasa::renderProcessPage($id, $refreshUrl, $countInfo);
 								exit;
@@ -1022,18 +1038,19 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					$query->where('`id` = '.(int)$id);
 					$this->_db->setQuery( (string)$query );
 
-					if (!$this->_db->query()) {
+					$this->_db->execute();
+					/*if (!$this->_db->query()) {
 						$this->setError($this->_db->getErrorMsg());
 						return false;
-					}
+					}*/
 
-					$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_PICASA_IMAGE_LOADED' ), $message);
+					$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_PICASA_IMAGE_LOADED' ), $message);
 					return true;
 				}
 			}
 
 		} else {
-			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ), $message);
 			return true;
 		}
 	}
@@ -1045,17 +1062,17 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 		if ((isset($data['imgurclient']) && $data['imgurclient'] == '') || !isset($data['imgurclient'])) {
-			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_CLIENT_ID_NOT_SET' ), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_CLIENT_ID_NOT_SET' ), $message);
 			return false;
 		}
 
 		if ((isset($data['imguralbum']) && $data['imguralbum'] == '') || !isset($data['imguralbum'])) {
-			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_ALBUM_ID_NOT_SET' ), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_IMAGES_NOT_IMPORTED_ALBUM_ID_NOT_SET' ), $message);
 			return false;
 		}
 
 		if(!function_exists("curl_init")) {
-			$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_NOT_LOADED_CURL'), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_IMGUR_NOT_LOADED_CURL'), $message);
 			return false;
 		}
 
@@ -1226,14 +1243,14 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 					if($this->storeImage($dataImg, $idCat, 'imgur')) {
 
-						$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_IMPORTED_NUMBER_OF_IMPORTED_IMAGES') . ': '.$i, $message);
+						$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_IMGUR_IMAGE_IMPORTED_NUMBER_OF_IMPORTED_IMAGES') . ': '.$i, $message);
 						return true;
 					} else {
-						$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_SAVE_ERROR'), $message);
+						$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_IMGUR_IMAGE_SAVE_ERROR'), $message);
 						return false;
 					}
 				} else {
-					$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND'), $message);
+					$message = PhocaGalleryUtils::setMessage(Text::_('COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND'), $message);
 					return false;
 
 				}
@@ -1241,11 +1258,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				//$message = PhocaGalleryUtils::setMessage(JText::_('COM_PHOCAGALLERY_IMGUR_IMAGE_LOADED'), $message);
 				//return true;
 			} else {
-				$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND' ), $message);
+				$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_ERROR_IMGUR_NO_IMAGE_FOUND' ), $message);
 				return false;
 			}
 		}  else {
-			$message = PhocaGalleryUtils::setMessage(JText::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ), $message);
+			$message = PhocaGalleryUtils::setMessage(Text::_( 'COM_PHOCAGALLERY_ERROR_SAVING_CATEGORY' ), $message);
 			return false;
 		}
 	}
@@ -1258,7 +1275,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	 */
 	public function getOwnerMainCategory($userId, $categoryId, $parentId, &$errorMsgOwner) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 
 		// It is new subcategory, check if parent category has the same owner
 		// If not don't assing the owner
@@ -1274,7 +1291,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				if (($userId < 1) || $userId == $parentCatOwnerId->owner_id) {
 					return true;
 				} else {
-					$errorMsgOwner .= '<br />'. JText::_('COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_SAME_USER');
+					$errorMsgOwner .= '<br />'. Text::_('COM_PHOCAGALLERY_PARENT_CATEGORY_NOT_ASSIGNED_TO_SAME_USER');
 					return false;
 				}
 			}
@@ -1292,8 +1309,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			$db->setQuery( $query );
 			$ownerMainCategoryId = $db->loadObject();
 			if (isset($ownerMainCategoryId->title)) {
-				$errorMsgOwner .= '<br />'. JText::_('COM_PHOCAGALLERY_SELECTED_USER_CAN_BE_ASSIGNED_TO_ONE_MAIN_CATEGORY_ONLY')
-								.'<br />'. JText::_('COM_PHOCAGALLERY_USER_ASSIGNED_TO_CATEGORY') . ': ' . $ownerMainCategoryId->title;
+				$errorMsgOwner .= '<br />'. Text::_('COM_PHOCAGALLERY_SELECTED_USER_CAN_BE_ASSIGNED_TO_ONE_MAIN_CATEGORY_ONLY')
+								.'<br />'. Text::_('COM_PHOCAGALLERY_USER_ASSIGNED_TO_CATEGORY') . ': ' . $ownerMainCategoryId->title;
 				return false;
 			}
 		}
@@ -1302,7 +1319,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	}
 	/*
 	function accessmenu($id, $access) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$row = $this->getTable();
 		if (!$row->load($id)) {
 			$this->setError($this->_db->getErrorMsg());
@@ -1322,8 +1339,8 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 	}*/
 
 	function delete(&$cid = array()) {
-		$app	= JFactory::getApplication();
-		$db 	= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db 	= Factory::getDBO();
 
 		$result = false;
 		if (count( $cid )) {
@@ -1412,15 +1429,16 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			if (count( $err_cat ) || count( $err_img )) {
 				if (count( $err_cat )) {
 					$cids_cat = implode( ", ", $err_cat );
-					$msg .= JText::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
+					$msg .= Text::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
 				}
 
 				if (count( $err_img )) {
 					$cids_img = implode( ", ", $err_img );
-					$msg .= JText::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
+					$msg .= Text::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
 				}
 				$link = 'index.php?option=com_phocagallery&view=phocagallerycs';
-				$app->redirect($link, $msg);
+				$app->enqueueMessage($msg);
+				$app->redirect($link);
 			}
 		}
 		return true;
@@ -1428,10 +1446,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 	function cooliris($cids, &$message) {
-		$db 		= JFactory::getDBO();
+		$db 		= Factory::getDBO();
 		$path 		= PhocaGalleryPath::getPath();
 		$piclensImg = $path->image_rel_front.'icon-phocagallery.png';
-		$paramsC	= JComponentHelper::getParams('com_phocagallery') ;
+		$paramsC	= ComponentHelper::getParams('com_phocagallery') ;
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
@@ -1439,14 +1457,14 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		// original 0, thumbnail 1
 		$cooliris_image 	= $paramsC->get( 'piclens_image', 1);
 
-		if (JFolder::exists($path->image_abs)) {
+		if (Folder::exists($path->image_abs)) {
 
 			foreach ($cids as $kcid =>$vcid) {
 				$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'. "\n";
 				$xml .= '<rss xmlns:media="http://search.yahoo.com/mrss" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">'. "\n";
 
 				$xml .= ' <channel>'. "\n";
-				$xml .= '  <atom:icon>'.JURI::root() . $piclensImg. '</atom:icon>'. "\n\n";
+				$xml .= '  <atom:icon>'.Uri::root() . $piclensImg. '</atom:icon>'. "\n\n";
 
 				$xml .= '  <title>Phoca Gallery</title>'. "\n";
 				$xml .= '  <link>https://www.phoca.cz/</link>'. "\n";
@@ -1472,10 +1490,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					if ($vrow->extid != '') {
 						$xml .= '<link>' .$vrow->extl . '</link>'. "\n";
 					} else {
-						$xml .= '    <link>' .JURI::root().$thumbFile . '</link>'. "\n";
+						$xml .= '    <link>' .Uri::root().$thumbFile . '</link>'. "\n";
 					}
 
-					$xml .= '    <description>' . JFilterOutput::cleanText(strip_tags($vrow->description )) . '</description>'. "\n";
+					$xml .= '    <description>' . OutputFilter::cleanText(strip_tags($vrow->description )) . '</description>'. "\n";
 
 					if ($vrow->extid != '') {
 						$xml .= '    <media:thumbnail url="' .$vrow->extl .'" />'. "\n";
@@ -1485,11 +1503,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 							$xml .= '    <media:content url="' .$vrow->exto .'" />'. "\n";
 						}
 					} else {
-						$xml .= '    <media:thumbnail url="' .JURI::root().$thumbFile .'" />'. "\n";
+						$xml .= '    <media:thumbnail url="' .Uri::root().$thumbFile .'" />'. "\n";
 						if ($cooliris_image == 1) {
-							$xml .= '    <media:content url="' .JURI::root().$thumbFile .'" />'. "\n";
+							$xml .= '    <media:content url="' .Uri::root().$thumbFile .'" />'. "\n";
 						} else {
-							$xml .= '    <media:content url="' .JURI::root().$origFile .'" />'. "\n";
+							$xml .= '    <media:content url="' .Uri::root().$origFile .'" />'. "\n";
 						}
 					}
 
@@ -1510,7 +1528,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				echo $xml;
 				$xmlToWrite = ob_get_contents();
 				ob_end_clean();
-				if(!JFile::write( $path->image_abs . '/'. $vcid.'.rss', $xmlToWrite)) {
+				if(!File::write( $path->image_abs . '/'. $vcid.'.rss', $xmlToWrite)) {
 					$message = 'COM_PHOCAGALLERY_ERROR_SAVING_RSS';
 					return false;
 				}
@@ -1524,17 +1542,17 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 	protected function picasaAlbum($user, $authkey, $album, &$errorMsg) {
 
-		$paramsC = JComponentHelper::getParams('com_phocagallery');
+		$paramsC = ComponentHelper::getParams('com_phocagallery');
 		$enable_picasa_loading = $paramsC->get( 'enable_picasa_loading', 1 );
 		if($enable_picasa_loading == 0){
-			$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_ENABLED');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_ENABLED');
 			return false;
 		}
 
 
 
 		if(!function_exists("json_decode")){
-			$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_JSON');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_JSON');
 			return false;
 		}
 
@@ -1547,7 +1565,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 
 			if($dataUser == '') {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
 				return false;
 			}
 
@@ -1575,10 +1593,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					}
 				}
 				// Album not found
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
 				return false;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
 				return false;
 			}
 
@@ -1600,7 +1618,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			}
 
 			if($dataUser == '') {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
 				return false;
 			}
 
@@ -1624,10 +1642,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 
 				// Album not found
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_ALBUM');
 				return false;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_USER');
 				return false;
 			}
 		}
@@ -1770,7 +1788,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			}
 			$dataAlbumM 		= PhocaGalleryPicasa::loadDataByAddress($albumAddressM, 'album', $errorMsg);
 			if($dataAlbumM == '') {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
 				return false;
 			}
 			$dataAlbumM 	= json_decode($dataAlbumM);
@@ -1801,12 +1819,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			if($this->storeImage($dataImg, $catid)) {
 				return true;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_IMAGE_SAVE_ERROR');
+				$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_IMAGE_SAVE_ERROR');
 				return false;
 			}
 		} else {
 			return false;
-			$errorMsg = JText::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
+			$errorMsg = Text::_('COM_PHOCAGALLERY_PICASA_NOT_LOADED_IMAGE');
 		}
 	}
 
@@ -1836,11 +1854,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				$this->_db->setQuery( $query );
 			}
 
-
-			if (!$this->_db->query()) {
+			$this->_db->execute();
+			/*if (!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
 				return false;
-			}
+			}*/
 
 			$i = 0;
 
@@ -1869,7 +1887,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 				// Bind the form fields to the Phoca gallery table
 				if (!$row->bind($data)) {
-					$this->setError($this->_db->getErrorMsg());
+					$this->setError($row->getError());
 					return false;
 				}
 
@@ -1886,13 +1904,13 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 				// Make sure the Phoca gallery table is valid
 				if (!$row->check()) {
-					$this->setError($this->_db->getErrorMsg());
+					$this->setError($row->getError());
 					return false;
 				}
 
 				// Store the Phoca gallery table to the database
 				if (!$row->store()) {
-					$this->setError($this->_db->getErrorMsg());
+					$this->setError($row->getError());
 					return false;
 				}
 				$i++;
@@ -1913,7 +1931,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaGalleryC', 'Table');
+			$categoryTable = Table::getInstance('PhocaGalleryC', 'Table');
 
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
@@ -1922,7 +1940,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
@@ -1930,15 +1948,15 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		//if (empty($categoryId)) {
 		if (!isset($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -1963,7 +1981,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -2023,7 +2041,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaGalleryC', 'Table');
+			$categoryTable = Table::getInstance('PhocaGalleryC', 'Table');
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
@@ -2031,7 +2049,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
@@ -2039,20 +2057,20 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 		//if (empty($categoryId)) {
 		if (!isset($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 			return false;
 		}
 
@@ -2068,7 +2086,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -2078,7 +2096,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 
 			// Cannot move the node to be a child of itself.
 			if ((int)$table->id == (int)$categoryId) {
-				$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_INVALID_NODE_RECURSION', get_class($pk)));
+				$e = new JException(Text::sprintf('JLIB_DATABASE_ERROR_INVALID_NODE_RECURSION', get_class($pk)));
 				$this->setError($e);
 				return false;
 			}
@@ -2126,23 +2144,23 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 
 		if (empty($pks)) {
-			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+			$this->setError(Text::_('JGLOBAL_NO_ITEM_SELECTED'));
 			return false;
 		}
 
 		$done = false;
 
 		// Set some needed variables.
-		$this->user = JFactory::getUser();
+		$this->user = Factory::getUser();
 		$this->table = $this->getTable();
 		$this->tableClassName = get_class($this->table);
-		$this->contentType = new JUcmType;
+		$this->contentType = new UCMType;
 		$this->type = $this->contentType->getTypeByTable($this->tableClassName);
 		$this->batchSet = true;
 
 		if ($this->type == false)
 		{
-			$type = new JUcmType;
+			$type = new UCMType;
 			$this->type = $type->getTypeByAlias($this->typeAlias);
 		}
 
@@ -2213,7 +2231,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		}
 
 		if (!$done) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			$this->setError(Text::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
 
@@ -2240,10 +2258,10 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 		if (empty($this->batchSet))
 		{
 			// Set some needed variables.
-			$this->user = JFactory::getUser();
+			$this->user = Factory::getUser();
 			$this->table = $this->getTable();
 			$this->tableClassName = get_class($this->table);
-			$this->contentType = new JUcmType;
+			$this->contentType = new UCMType;
 			$this->type = $this->contentType->getTypeByTable($this->tableClassName);
 		}
 
@@ -2270,7 +2288,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends JModelAdmin
 			}
 			else
 			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 
 				return false;
 			}

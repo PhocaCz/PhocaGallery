@@ -9,19 +9,24 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Object\CMSObject;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 setlocale(LC_ALL, 'C.UTF-8', 'C');
 
-class PhocaGalleryCpModelPhocaGalleryF extends JModelLegacy
+class PhocaGalleryCpModelPhocaGalleryF extends BaseDatabaseModel
 {
 	function getState($property = NULL, $default = NULL) {
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
-			$upload = JFactory::getApplication()->input->get( 'upload', '', '', 'int' );
+			$folder = Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$upload = Factory::getApplication()->input->get( 'upload', '', '', 'int' );
 			$this->setState('folder', $folder);
 			$parent = str_replace("\\", "/", dirname($folder));
 			$parent = ($parent == '.') ? null : $parent;
@@ -59,7 +64,7 @@ class PhocaGalleryCpModelPhocaGalleryF extends JModelLegacy
 
 		// Initialize variables
 		if (strlen($current) > 0) {
-			$orig_path = JPath::clean($path->image_abs.$current);
+			$orig_path = Path::clean($path->image_abs.$current);
 		} else {
 			$orig_path = $path->image_abs;
 		}
@@ -68,14 +73,14 @@ class PhocaGalleryCpModelPhocaGalleryF extends JModelLegacy
 		$folders 	= array ();
 
 		// Get the list of files and folders from the given folder
-		$folder_list 	= JFolder::folders($orig_path, '', false, false, array(0 => 'thumbs'));
+		$folder_list 	= Folder::folders($orig_path, '', false, false, array(0 => 'thumbs'));
 
 		// Iterate over the folders if they exist
 		if ($folder_list !== false) {
 			foreach ($folder_list as $folder) {
-				$tmp 							= new JObject();
+				$tmp 							= new CMSObject();
 				$tmp->name 						= basename($folder);
-				$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/'. $folder));
+				$tmp->path_with_name 			= str_replace('\\', '/', Path::clean($orig_path . '/'. $folder));
 				$tmp->path_without_name_relative= $path->image_rel . str_replace($orig_path_server, '', $tmp->path_with_name);
 				$tmp->path_with_name_relative_no= str_replace($orig_path_server, '', $tmp->path_with_name);
 				$folders[] = $tmp;

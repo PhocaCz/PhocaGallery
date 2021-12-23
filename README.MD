@@ -140,13 +140,13 @@ Phoca Gallery is an efficient image gallery extension for Joomla! CMS.
 
 
 
+## Version (Joomla! 3.x)
 
+4.4.3
 
+## Version (Joomla! 4.x)
 
-
-## Version
-
-4.4.1
+4.5.0Beta2
 
 
 

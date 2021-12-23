@@ -8,16 +8,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 $task		= 'phocagalleryimg';
 
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.formvalidation');
+//JHtml::_('behavior.keepalive');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 
@@ -25,7 +29,7 @@ $OPT		= strtoupper($option);
 <script type="text/javascript">
 Joomla.submitbutton = function(task){
 	if (task != 'phocagalleryimg.cancel' && document.getElementById('jform_catid').value == '') {
-		alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED'));?>');
+		alert('<?php echo $this->escape(Text::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(Text::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED'));?>');
 	} else if (task == 'phocagalleryimg.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
 		<?php //echo $this->form->getField('description')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
@@ -56,7 +60,7 @@ JFactory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) { 
 	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
-		alert("'. JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. JText::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED', true).'");
+		alert("'. Text::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. Text::_('COM_PHOCAGALLERY_CATEGORY_NOT_SELECTED', true).'");
 	} else if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
 		Joomla.submitform(task, document.getElementById("adminForm"));
 	} else {
@@ -79,28 +83,25 @@ JFactory::getDocument()->addScriptDeclaration(
 
 );
 
+echo $r->startHeader();
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span12 form-horizontal">';
+//echo '<div class="span12 form-horizontal">';
+echo '<div>';
 $tabs = array (
-'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'),
-'geo' 			=> JText::_($OPT.'_GEO_OPTIONS'),
-'external'		=> JText::_($OPT.'_EXTERNAL_LINK_OPTIONS'),
-'metadata'		=> JText::_($OPT.'_METADATA_OPTIONS'));
+'general' 		=> Text::_($OPT.'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($OPT.'_PUBLISHING_OPTIONS'),
+'geo' 			=> Text::_($OPT.'_GEO_OPTIONS'),
+'external'		=> Text::_($OPT.'_EXTERNAL_LINK_OPTIONS'),
+'metadata'		=> Text::_($OPT.'_METADATA_OPTIONS'));
 echo $r->navigation($tabs);
 
-echo $r->startTabs();
-
-echo $r->startTab('general', $tabs['general'], 'active');
-
-
-
+// Header
 // - - - - - - - - - -
 // Image
 
 $fileOriginal = PhocaGalleryFile::getFileOriginal($this->item->filename);
-if (!JFile::exists($fileOriginal)) {
+if (!File::exists($fileOriginal)) {
 	$this->item->fileoriginalexist = 0;
 } else {
 	$fileThumb 		= PhocaGalleryFileThumbnail::getOrCreateThumbnail($this->item->filename, '', 0, 0, 0);
@@ -108,7 +109,38 @@ if (!JFile::exists($fileOriginal)) {
 	$this->item->fileoriginalexist = 1;
 }
 
+$image = '';
+if (isset($this->item->extid) && $this->item->extid !='') {
 
+	$resW				= explode(',', $this->item->extw);
+	$resH				= explode(',', $this->item->exth);
+	$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($resW[2], $resH[2], 100, 100);
+	$imgLink			= $this->item->extl;
+
+	$image = '<img class="img-polaroid" src="'.$this->item->exts.'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
+
+} else if (isset ($this->item->fileoriginalexist) && $this->item->fileoriginalexist == 1) {
+
+	$imageRes			= PhocaGalleryImage::getRealImageSize($this->item->filename, 'medium');
+	//$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 100, 100);
+	$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($this->item->filename, 'large');
+	// TO DO check the image
+
+	$image = '<img class="img-polaroid" style="max-width:100px;" src="'.Uri::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
+	.'</a>';
+}
+$formArray = array ('title', 'alias');
+echo $r->groupHeader($this->form, $formArray, $image);
+
+echo $r->startTabs();
+
+echo $r->startTab('general', $tabs['general'], 'active');
+
+
+
+
+
+/*
 echo '<div class="ph-float-right ph-admin-additional-box">';
 // PICASA
 if (isset($this->item->extid) && $this->item->extid !='') {
@@ -127,17 +159,18 @@ if (isset($this->item->extid) && $this->item->extid !='') {
 	$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($this->item->filename, 'large');
 	// TO DO check the image
 
-	echo '<img class="img-polaroid" style="max-width:100px;" src="'.JURI::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
+	echo '<img class="img-polaroid" style="max-width:100px;" src="'.Uri::root().$this->item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" alt="" />'
 	.'</a>';
 } else {
 
 }
 echo '</div>';
+*/
 
 
 
 
-$formArray = array ('title', 'alias', 'catid', 'ordering', 'filename', 'videocode', 'pcproductid', 'vmproductid');
+$formArray = array ('catid', 'ordering', 'filename', 'videocode', 'pcproductid');
 echo $r->group($this->form, $formArray);
 
 echo $this->form->getInput('extid');
@@ -169,12 +202,12 @@ echo $r->endTab();
 
 echo $r->startTab('external', $tabs['external']);
 echo '<div class="clearfix"></div>'. "\n";
-echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS1').'</h3>'."\n";
+echo '<h3>'.Text::_('COM_PHOCAGALLERY_EXTERNAL_LINKS1').'</h3>'."\n";
 $formArray = array ('extlink1link', 'extlink1title', 'extlink1target', 'extlink1icon');
 echo $r->group($this->form, $formArray);
 
 echo '<div class="clearfix"></div>'. "\n";
-echo '<h3>'.JText::_('COM_PHOCAGALLERY_EXTERNAL_LINKS2').'</h3>'."\n";
+echo '<h3>'.Text::_('COM_PHOCAGALLERY_EXTERNAL_LINKS2').'</h3>'."\n";
 $formArray = array ('extlink2link', 'extlink2title', 'extlink2target', 'extlink2icon');
 echo $r->group($this->form, $formArray);
 echo $r->endTab();
@@ -193,7 +226,7 @@ echo $r->endTab();
 
 
 echo $r->endTabs();
-echo '</div>';//end span2
+echo '</div>';
 
 echo $r->formInputs($this->t['task']);
 echo $r->endForm();

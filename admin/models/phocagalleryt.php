@@ -8,6 +8,16 @@
  */
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Log\Log;
 jimport( 'joomla.application.component.modeladmin' );
 jimport( 'joomla.installer.installer' );
 jimport( 'joomla.installer.helper' );
@@ -15,7 +25,7 @@ jimport( 'joomla.filesystem.folder' );
 setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 
-class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
+class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 {
 	protected 	$_paths 	= array();
 	protected 	$_manifest 	= null;
@@ -29,7 +39,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocagallery.phocagalleryt', 'phocagalleryt', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -38,30 +48,30 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 	}
 
 	function install($theme) {
-		$app		= JFactory::getApplication();
-		$db 		= JFactory::getDBO();
+		$app		= Factory::getApplication();
+		$db 		= Factory::getDBO();
 		$package 	= $this->_getPackageFromUpload();
 
 
 
 		if (!$package) {
 			$this->deleteTempFiles();
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_FIND_INSTALL_PACKAGE'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_FIND_INSTALL_PACKAGE'), 500);
 			return false;
 		}
 
-		if ($package['dir'] && JFolder::exists($package['dir'])) {
+		if ($package['dir'] && Folder::exists($package['dir'])) {
 			$this->setPath('source', $package['dir']);
 		} else {
 			$this->deleteTempFiles();
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_INSTALL_PATH_NOT_EXISTS'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_INSTALL_PATH_NOT_EXISTS'), 500);
 			return false;
 		}
 
 		// We need to find the installation manifest file
 		if (!$this->_findManifest()) {
 			$this->deleteTempFiles();
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_FIND_INFO_INSTALL_PACKAGE'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_FIND_INFO_INSTALL_PACKAGE'), 500);
 			return false;
 		}
 
@@ -71,7 +81,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 			if (is_a($child, 'SimpleXMLElement') && $child->getName() == 'files') {
 				if ($this->parseFiles($child) === false) {
 					$this->deleteTempFiles();
-					throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_FIND_INFO_INSTALL_PACKAGE'), 500);
+					throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_FIND_INFO_INSTALL_PACKAGE'), 500);
 					return false;
 				}
 			}
@@ -99,13 +109,13 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 		if (isset($theme['component']) && $theme['component'] == 1 ) {
 
 			$component			=	'com_phocagallery';
-			$paramsC			= JComponentHelper::getParams($component) ;
+			$paramsC			= ComponentHelper::getParams($component) ;
 
 			foreach($paramsThemes as $keyT => $valueT) {
 				$paramsC->set($valueT['name'], $valueT['value']);
 			}
 			$data['params'] 	= $paramsC->toArray();
-			$table 				= JTable::getInstance('extension');
+			$table 				= Table::getInstance('extension');
 
 			$idCom				= $table->find( array('element' => $component ));
 			$table->load($idCom);
@@ -131,7 +141,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 		// -------------------
 		// Menu Categories
 		// -------------------
-		if (isset($theme['categories']) && $theme['categories'] == 1 ){
+/*		if (isset($theme['categories']) && $theme['categories'] == 1 ){
 
 			$link		= 'index.php?option=com_phocagallery&view=categories';
 			$where 		= Array();
@@ -151,7 +161,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 					//$paramsMc = new J Parameter;
 					//$paramsMc->loadJSON($paramsCJSON);
 
-					$paramsMc = new JRegistry;
+					$paramsMc = new Registry;
 					$paramsMc->loadString($paramsCJSON, 'JSON');
 
 					foreach($paramsThemes as $keyT => $valueT) {
@@ -160,7 +170,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 					$dataMc['params'] 	= $paramsMc->toArray();
 
 
-					$table =& JTable::getInstance( 'menu' );
+					$table = Table::getInstance( 'menu' );
 
 					if (!$table->load((int) $valueIT->id)) {
 						throw new Exception('Not a valid table', 500);
@@ -186,12 +196,12 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 
 				}
 			}
-		}
+		}*/
 
 		// -------------------
 		// Menu Category
 		// -------------------
-		if (isset($theme['category']) && $theme['category'] == 1 ) {
+/*		if (isset($theme['category']) && $theme['category'] == 1 ) {
 
 			// Select all categories to get possible menu links
 			$query = 'SELECT c.id FROM #__phocagallery_categories AS c';
@@ -225,13 +235,13 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 							$paramsMc = new Registry;
 							$paramsMc->loadString($paramsCJSON, 'JSON');
 
-							foreach($paramsThemes as $keyT => $valueT) {
+							/*foreach($paramsThemes as $keyT => $valueT) {
 								$paramsMct->set($valueT['name'], $valueT['value']);
 							}
 							$dataMct['params'] 	= $paramsMct->toArray();
+*//*
 
-
-							$table =& JTable::getInstance( 'menu' );
+							$table = Table::getInstance( 'menu' );
 
 							if (!$table->load((int) $valueIT2->id)) {
 								throw new Exception('Not a valid table', 500);
@@ -258,49 +268,49 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 					}
 				}
 			}
-		}
+		}*/
 		return true;
 	}
 
 	function _getPackageFromUpload()
 	{
 		// Get the uploaded file information
-		$userfile = JFactory::getApplication()->input->files->get( 'Filedata', null, 'raw' );
+		$userfile = Factory::getApplication()->input->files->get( 'Filedata', null, 'raw' );
 
 
 		// Make sure that file uploads are enabled in php
 		if (!(bool) ini_get('file_uploads')) {
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_INSTALL_FILE_UPLOAD'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_INSTALL_FILE_UPLOAD'), 500);
 			return false;
 		}
 
 		// Make sure that zlib is loaded so that the package can be unpacked
 		if (!extension_loaded('zlib')) {
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_INSTALL_ZLIB'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_INSTALL_ZLIB'), 500);
 			return false;
 		}
 
 		// If there is no uploaded file, we have a problem...
 		if (!is_array($userfile) ) {
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_NO_FILE_SELECTED'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_NO_FILE_SELECTED'), 500);
 			return false;
 		}
 
 		// Check if there was a problem uploading the file.
 		if ( $userfile['error'] || $userfile['size'] < 1 ) {
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_UPLOAD_FILE'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_UPLOAD_FILE'), 500);
 			return false;
 		}
 
 		// Build the appropriate paths
-		$config 	= JFactory::getConfig();
+		$config 	= Factory::getConfig();
 		$tmp_dest 	= $config->get('tmp_path'). '/'. $userfile['name'];
 
 		$tmp_src	= $userfile['tmp_name'];
 
 		// Move uploaded file
 		jimport('joomla.filesystem.file');
-		$uploaded = JFile::upload($tmp_src, $tmp_dest, false, true);
+		$uploaded = File::upload($tmp_src, $tmp_dest, false, true);
 
 		// Unpack the downloaded package file
 		$package = self::unpack($tmp_dest);
@@ -322,7 +332,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 
 	function _findManifest() {
 		// Get an array of all the xml files from teh installation directory
-		$xmlfiles = JFolder::files($this->getPath('source'), '.xml$', 1, true);
+		$xmlfiles = Folder::files($this->getPath('source'), '.xml$', 1, true);
 
 		// If at least one xml file exists
 		if (count($xmlfiles) > 0) {
@@ -334,7 +344,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 
 					$attr = $manifest->attributes();
 					if ((string)$attr['method'] != 'phocagallerytheme') {
-						throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_NO_THEME_FILE'), 500);
+						throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_NO_THEME_FILE'), 500);
 						return false;
 					}
 
@@ -350,12 +360,12 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 			}
 
 			// None of the xml files found were valid install files
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_XML_INSTALL_PHOCA'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_XML_INSTALL_PHOCA'), 500);
 			return false;
 		} else {
 
 			// No xml files were found in the install folder
-			throw new Exception(JText::_('COM_PHOCAGALLERY_ERROR_XML_INSTALL'), 500);
+			throw new Exception(Text::_('COM_PHOCAGALLERY_ERROR_XML_INSTALL'), 500);
 			return false;
 		}
 	}
@@ -432,8 +442,8 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 			foreach ($folders as $folder)
 			{
 				// Get the source and destination paths
-				$foldersource	= JPath::clean($folder['src']);
-				$folderdest		= JPath::clean($folder['dest']);
+				$foldersource	= Path::clean($folder['src']);
+				$folderdest		= Path::clean($folder['dest']);
 
 				// Get info about custom css and disable all other custom css in database
 				$foldersource2		= str_replace('\\', '/', $foldersource);
@@ -443,33 +453,39 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 				$folder_name		= $folder_array[$last_array_value];
 				if ($folder_name == 'css') {
 					$filesF = scandir($foldersource . '/' . 'custom');
+
 					if (!empty($filesF)) {
 						foreach($filesF as $kF => $vF) {
-							$s 		= strtolower($vF);
-							$f  	= 'custom_';
-							$pos 	= strpos($s, $f);
-							if ($pos === false) {
-							} else {
-								$db =JFactory::getDBO();
+							//$s 		= strtolower($vF);
+							//$f  	= 'custom_';
+							//$pos 	= strpos($s, $f);
+							//if ($pos === false) {
+							//} else {
+								$db =Factory::getDBO();
 								// disable all other custom files
-								$query = ' UPDATE #__phocagallery_styles SET published = 0 WHERE filename LIKE '.$db->quote('custom_%');
+								$query = ' UPDATE #__phocagallery_styles SET published = 0 WHERE type = 2';
+								$db->setQuery($query);
+								$db->execute();
+
+								// disable the default style - simple
+								$query = ' UPDATE #__phocagallery_styles SET published = 0 WHERE type = 1 AND filename = "theme_simple.css"';
 								$db->setQuery($query);
 								$db->execute();
 								// enable the uploaded custom file
-								$query = ' UPDATE #__phocagallery_styles SET published = 1 WHERE filename = '.$db->quote($vF);
+								$query = ' UPDATE #__phocagallery_styles SET published = 1 WHERE type = 2 AND filename = '.$db->quote($vF);
 								$db->setQuery($query);
 								$db->execute();
-							}
+							//}
 						}
 					}
 				}
 
-				if (!JFolder::exists($foldersource)) {
-					throw new Exception(JText::sprintf('COM_PHOCAGALLERY_FOLDER_NOT_EXISTS', $foldersource), 500);
+				if (!Folder::exists($foldersource)) {
+					throw new Exception(Text::sprintf('COM_PHOCAGALLERY_FOLDER_NOT_EXISTS', $foldersource), 500);
 					return false;
 				} else {
-					if (!(JFolder::copy($foldersource, $folderdest, '', true))) {
-						throw new Exception(JText::sprintf('COM_PHOCAGALLERY_ERROR_COPY_FOLDER_TO', $foldersource, $folderdest), 500);
+					if (!(Folder::copy($foldersource, $folderdest, '', true))) {
+						throw new Exception(Text::sprintf('COM_PHOCAGALLERY_ERROR_COPY_FOLDER_TO', $foldersource, $folderdest), 500);
 						return false;
 					} else {
 						$i++;
@@ -485,16 +501,16 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 			foreach ($files as $file)
 			{
 				// Get the source and destination paths
-				$filesource	= JPath::clean($file['src']);
-				$filedest	= JPath::clean($file['dest']);
+				$filesource	= Path::clean($file['src']);
+				$filedest	= Path::clean($file['dest']);
 
 
 				if (!file_exists($filesource)) {
-					throw new Exception(JText::sprintf('COM_PHOCAGALLERY_FILE_NOT_EXISTS', $filesource), 500);
+					throw new Exception(Text::sprintf('COM_PHOCAGALLERY_FILE_NOT_EXISTS', $filesource), 500);
 					return false;
 				} else {
-					if (!(JFile::copy($filesource, $filedest))) {
-						throw new Exception(JText::sprintf('COM_PHOCAGALLERY_ERROR_COPY_FILE_TO', $filesource, $filedest), 500);
+					if (!(File::copy($filesource, $filedest))) {
+						throw new Exception(Text::sprintf('COM_PHOCAGALLERY_ERROR_COPY_FILE_TO', $filesource, $filedest), 500);
 						return false;
 					} else {
 						$i++;
@@ -505,7 +521,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 		}
 
 		if ($fileIncluded == 0 && $folderIncluded ==0) {
-			throw new Exception(JText::sprintf('COM_PHOCAGALLERY_ERROR_INSTALL_FILE'), 500);
+			throw new Exception(Text::sprintf('COM_PHOCAGALLERY_ERROR_INSTALL_FILE'), 500);
 			return false;
 		}
 
@@ -550,17 +566,17 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 	function deleteTempFiles() {
 		$path = $this->getPath('source');
 		if (is_dir($path)) {
-			$val = JFolder::delete($path);
+			$val = Folder::delete($path);
 		} else if (is_file($path)) {
-			$val = JFile::delete($path);
+			$val = File::delete($path);
 		}
 		$packageFile = $this->getPath('packagefile');
 		if (is_file($packageFile)) {
-			$val = JFile::delete($packageFile);
+			$val = File::delete($packageFile);
 		}
 		$extractDir = $this->getPath('extractdir');
 		if (is_dir($extractDir)) {
-			$val = JFolder::delete($extractDir);
+			$val = Folder::delete($extractDir);
 		}
 	}
 
@@ -573,8 +589,8 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 		$tmpdir = uniqid('install_');
 
 		// Clean the paths to use for archive extraction
-		$extractdir = JPath::clean(dirname($p_filename) . '/' . $tmpdir);
-		$archivename = JPath::clean($archivename);
+		$extractdir = Path::clean(dirname($p_filename) . '/' . $tmpdir);
+		$archivename = Path::clean($archivename);
 
 		// Do the unpacking of the archive
 		try
@@ -602,13 +618,13 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 		 * List all the items in the installation directory.  If there is only one, and
 		 * it is a folder, then we will set that folder to be the installation folder.
 		 */
-		$dirList = array_merge(JFolder::files($extractdir, ''), JFolder::folders($extractdir, ''));
+		$dirList = array_merge(Folder::files($extractdir, ''), Folder::folders($extractdir, ''));
 
 		if (count($dirList) == 1)
 		{
-			if (JFolder::exists($extractdir . '/' . $dirList[0]))
+			if (Folder::exists($extractdir . '/' . $dirList[0]))
 			{
-				$extractdir = JPath::clean($extractdir . '/' . $dirList[0]);
+				$extractdir = Path::clean($extractdir . '/' . $dirList[0]);
 			}
 		}
 
@@ -637,11 +653,11 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 	public static function detectType($p_dir)
 	{
 		// Search the install dir for an XML file
-		$files = JFolder::files($p_dir, '\.xml$', 1, true);
+		$files = Folder::files($p_dir, '\.xml$', 1, true);
 
 		if (!count($files))
 		{
-			JLog::add(JText::_('JLIB_INSTALLER_ERROR_NOTFINDXMLSETUPFILE'), JLog::WARNING, ' ');
+			Log::add(Text::_('JLIB_INSTALLER_ERROR_NOTFINDXMLSETUPFILE'), Log::WARNING, ' ');
 			return false;
 		}
 
@@ -667,7 +683,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends JModelAdmin
 			return $type;
 		}
 
-		JLog::add(JText::_('JLIB_INSTALLER_ERROR_NOTFINDJOOMLAXMLSETUPFILE'), JLog::WARNING, ' ');
+		Log::add(Text::_('JLIB_INSTALLER_ERROR_NOTFINDJOOMLAXMLSETUPFILE'), Log::WARNING, ' ');
 
 		// Free up memory.
 		unset($xml);

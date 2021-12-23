@@ -10,6 +10,10 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 class PhocaGalleryFbSystem
 {
 	public static function setSessionData($data) {
@@ -34,7 +38,7 @@ class PhocaGalleryFbSystem
 
 	public static function getFbUserInfo ($id) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.*'
@@ -56,7 +60,7 @@ class PhocaGalleryFbSystem
 			$o['fb_comment_app_id'] = $item->appid;
 		}
 		if(isset($item->comments) && $item->comments != '') {
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->comments);
 			$item->comments = $registry->toArray();
 			foreach($item->comments as $key => $value) {
@@ -69,7 +73,7 @@ class PhocaGalleryFbSystem
 
 	public static function getImageFromCat($idCat, $idImg = 0) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$nextImg = '';
 		if ($idImg > 0) {
@@ -116,11 +120,11 @@ class PhocaGalleryFbSystem
 	public static function renderProcessPage($id, $refreshUrl, $countInfo = '', $import = 0) {
 
 		if ($import == 0) {
-			$stopText = JText::_( 'COM_PHOCAGALLERY_STOP_UPLOADING_FACEBOOK_IMAGES' );
-			$dataText = JText::_('COM_PHOCAGALLERY_FB_UPLOADING_DATA');
+			$stopText = Text::_( 'COM_PHOCAGALLERY_STOP_UPLOADING_FACEBOOK_IMAGES' );
+			$dataText = Text::_('COM_PHOCAGALLERY_FB_UPLOADING_DATA');
 		} else {
-			$stopText = JText::_( 'COM_PHOCAGALLERY_STOP_IMPORTING_FACEBOOK_IMAGES' );
-			$dataText = JText::_('COM_PHOCAGALLERY_FB_IMPORTING_DATA');
+			$stopText = Text::_( 'COM_PHOCAGALLERY_STOP_IMPORTING_FACEBOOK_IMAGES' );
+			$dataText = Text::_('COM_PHOCAGALLERY_FB_IMPORTING_DATA');
 		}
 
 		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
@@ -128,7 +132,7 @@ class PhocaGalleryFbSystem
 		echo '<head>'. "\n";
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'. "\n\n";
 		echo '<title>'.$dataText.'</title>'. "\n";
-		echo '<link rel="stylesheet" href="'.JURI::root(true).'/media/com_phocagallery/css/administrator/phocagallery.css" type="text/css" />';
+		echo '<link rel="stylesheet" href="'.Uri::root(true).'/media/com_phocagallery/css/administrator/phocagallery.css" type="text/css" />';
 
 		echo '</head>'. "\n";
 		echo '<body>'. "\n";

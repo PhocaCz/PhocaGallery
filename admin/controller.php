@@ -10,6 +10,10 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 jimport('joomla.application.component.controller');
 
@@ -30,8 +34,8 @@ $l['in']	= array('COM_PHOCAGALLERY_INFO', 'phocagalleryin');
 // Submenu view
 //$view	= JFactory::getApplication()->input->get( 'view', '', '', 'string', J REQUEST_ALLOWRAW );
 //$layout	= JFactory::getApplication()->input->get( 'layout', '', '', 'string', J REQUEST_ALLOWRAW );
-$view	= JFactory::getApplication()->input->get('view');
-$layout	= JFactory::getApplication()->input->get('layout');
+$view	= Factory::getApplication()->input->get('view');
+$layout	= Factory::getApplication()->input->get('layout');
 
 if ($layout == 'edit') {
 
@@ -46,15 +50,15 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1], true );
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1], true );
 		} else {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1]);
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1]);
 		}
 
 	}
 }
 
-class PhocaGalleryCpController extends JControllerLegacy
+class PhocaGalleryCpController extends BaseController
 {
 	function display($cachable = false, $urlparams = Array()) {
 		parent::display($cachable, $urlparams);

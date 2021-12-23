@@ -9,11 +9,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
 jimport('joomla.application.component.model');
 use Joomla\String\StringHelper;
 
 
-class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
+class PhocaGalleryCpModelPhocaGalleryLinkImg extends BaseDatabaseModel
 {
 
 	var $_data 			= null;
@@ -24,7 +29,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 	function __construct() {
 		parent::__construct();
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		// Get the pagination request variables
 		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
@@ -47,8 +52,8 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 				//Let the user know that the file doesn't exists
 
-				if (!JFile::exists($fileOriginal)) {
-					$this->_data[$key]->filename = JText::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
+				if (!File::exists($fileOriginal)) {
+					$this->_data[$key]->filename = Text::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 					$this->_data[$key]->fileoriginalexist = 0;
 				} else {
 					//Create thumbnails small, medium, large
@@ -75,7 +80,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 	function getPagination() {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new Pagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
@@ -98,7 +103,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 
 
 	function _buildContentOrderBy() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 
@@ -111,7 +116,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends JModelLegacy
 	}
 
 	function _buildContentWhere() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );

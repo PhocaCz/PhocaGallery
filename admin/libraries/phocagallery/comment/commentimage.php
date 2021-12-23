@@ -9,11 +9,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 class PhocaGalleryCommentImage
 {
 	public static function checkUserComment($imgid, $userid) {
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT co.id AS id'
 			    .' FROM #__phocagallery_img_comments AS co'
 			    .' WHERE co.imgid = '. (int)$imgid
@@ -30,7 +34,7 @@ class PhocaGalleryCommentImage
 
 	public static function displayComment($imgid) {
 
-		$db =JFactory::getDBO();
+		$db =Factory::getDBO();
 		$query = 'SELECT co.id AS id, co.title AS title, co.comment AS comment, co.date AS date, u.name AS name, u.username AS username, uc.avatar AS avatar'
 			    .' FROM #__phocagallery_img_comments AS co'
 				.' LEFT JOIN #__users AS u ON u.id = co.userid'
@@ -59,7 +63,7 @@ class PhocaGalleryCommentImage
 	}
 
 	public static function getUserAvatar($userId) {
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.*'
 		. ' FROM #__phocagallery_user AS a'
 		. ' WHERE a.userid = '.(int)$userId;
@@ -76,10 +80,10 @@ class PhocaGalleryCommentImage
 
 		// We only use refresh task (it means to get answer)
 		// pgRequest uses pgRequestRefresh site
-		$document	 = JFactory::getDocument();
-		$url		  = 'index.php?option=com_phocagallery&view=commentimga&task=commentimg&format=json&'.JSession::getFormToken().'=1';
-		$urlRefresh		= 'index.php?option=com_phocagallery&view=commentimga&task=refreshcomment&format=json&'.JSession::getFormToken().'=1';
-		$imgLoadingUrl = JURI::base(). 'media/com_phocagallery/images/icon-loading3.gif';
+		$document	 = Factory::getDocument();
+		$url		  = 'index.php?option=com_phocagallery&view=commentimga&task=commentimg&format=json&'.Session::getFormToken().'=1';
+		$urlRefresh		= 'index.php?option=com_phocagallery&view=commentimga&task=refreshcomment&format=json&'.Session::getFormToken().'=1';
+		$imgLoadingUrl = Uri::base(). 'media/com_phocagallery/images/icon-loading3.gif';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 		//$js  = '<script type="text/javascript">' . "\n";
 		//$js .= 'window.addEvent("domready",function() {
@@ -113,7 +117,7 @@ class PhocaGalleryCommentImage
                     } else if(data.status == 0){
                         jQuery(result).html(data.error);
                     } else {
-                        jQuery(result).text("'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                        jQuery(result).text("'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
                     }
                     
                     if (m == 2) {
@@ -122,7 +126,7 @@ class PhocaGalleryCommentImage
                 },
                 
                 error: function(){
-                    jQuery(result).text( "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+                    jQuery(result).text( "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				
 				    if (m == 2) {
 					    var wall = new Masonry(document.getElementById(container));
@@ -144,7 +148,7 @@ class PhocaGalleryCommentImage
 						jQuery(result).set("html", r.error);
 					}
 				} else {
-					jQuery(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+					jQuery(result).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				}
 
 				if (m == 2) {
@@ -178,7 +182,7 @@ class PhocaGalleryCommentImage
 						jQuery(result).set("html", r.error);
 					}
 				} else {
-					jQuery(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+					jQuery(result).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 				}
 
 				if (m == 2) {
@@ -187,7 +191,7 @@ class PhocaGalleryCommentImage
 			},
 
 			onFailure: function() {
-				jQuery(result).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+				jQuery(result).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 
 				if (m == 2) {
 					var wall = new Masonry(document.getElementById(container));
@@ -222,12 +226,12 @@ class PhocaGalleryCommentImage
 								if (rr) {
 									$(resultcomment).set("html", json2Obj.message);
 								} else {
-									$(resultcomment).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+									$(resultcomment).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 								}
 							},
 
 							onFailure: function() {
-								$(resultcomment).set("text", "'.JText::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
+								$(resultcomment).set("text", "'.Text::_('COM_PHOCAGALLERY_ERROR_REQUESTING_ITEM').'");
 							}
 						})
 

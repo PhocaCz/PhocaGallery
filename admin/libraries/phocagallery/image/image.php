@@ -9,6 +9,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 class PhocaGalleryImage
 {
@@ -22,9 +26,9 @@ class PhocaGalleryImage
 			$fileNameAbs	= $filename;
 		} else {
 			$path			= PhocaGalleryPath::getPath();
-			$fileNameAbs	= JPath::clean($path->image_abs . $filename);
+			$fileNameAbs	= Path::clean($path->image_abs . $filename);
 
-			if (!JFile::exists($fileNameAbs)) {
+			if (!File::exists($fileNameAbs)) {
 				$fileNameAbs	= $path->image_abs_front . 'phoca_thumb_l_no_image.png';
 			}
 		}
@@ -248,7 +252,7 @@ class PhocaGalleryImage
 
 			if ($w != 0) {$w = $w/$rate;} // plus or minus should be divided, not null
 			if ($h != 0) {$h = $h/$rate;}
-			$wHOutput = array('width' => $w, 'height' => $h, 'style' => 'background: #fff url('.JURI::base(true).'/media/com_phocagallery/images/icon-loading2.gif) 50% 50% no-repeat;');
+			$wHOutput = array('width' => $w, 'height' => $h, 'style' => 'background: #fff url('.Uri::base(true).'/media/com_phocagallery/images/icon-loading2.gif) 50% 50% no-repeat;');
 		} else {
 			$w = $h = 0;
 			$wHOutput = array();
@@ -283,7 +287,7 @@ class PhocaGalleryImage
 
 	public static function getImageByImageId($id = 0) {
 
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query = ' SELECT a.id, a.title, c.title as category_title'
 				.' FROM #__phocagallery AS a'
 				.' LEFT JOIN #__phocagallery_categories AS c ON c.id = a.catid'
@@ -320,7 +324,7 @@ class PhocaGalleryImage
 
         if ($file != '' && $extW != '' && $extH != '') {
 
-            $db 	= JFactory::getDBO();
+            $db 	= Factory::getDBO();
             $query = 'UPDATE #__phocagallery'
                 .' SET extw = '.$db->quote($extW).','
                 .' exth = '.$db->quote($extH)

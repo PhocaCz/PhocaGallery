@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 class PhocaGalleryFileUploadJava
 {
@@ -63,7 +64,7 @@ class PhocaGalleryFileUploadJava
 .'<param name="showStatusBar" value="false" />'. "\n"  
 .'<param name="pictureCompressionQuality" value="1" />'. "\n"  
 .'<param name="lookAndFeel"  value="system"/>' . "\n"  
-.'<div style="color:#cc0000">'.JText::_('COM_PHOCAGALLERY_JAVA_PLUGIN_MUST_BE_ENABLED').'</div>'. "\n"  
+.'<div style="color:#cc0000">'.Text::_('COM_PHOCAGALLERY_JAVA_PLUGIN_MUST_BE_ENABLED').'</div>'. "\n"  
 .'</object>'. "\n"  
 .'<!--[if !IE]> -->'. "\n"  
 .'</object>' . "\n"

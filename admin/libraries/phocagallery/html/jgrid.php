@@ -15,13 +15,16 @@ jimport('joomla.html.html.grid');
 jimport('joomla.html.html.jgrid');
 */
 defined('_JEXEC') or die;
-if (! class_exists('JHtmlJGrid')) {
-	require_once( JPATH_SITE.'/libraries/joomla/html/html/jgrid.php' );
+
+use Joomla\CMS\HTML\Helpers\JGrid;
+use Joomla\CMS\HTML\HTMLHelper;
+if (! class_exists('HTMLHelperJGrid')) {
+	require_once( JPATH_SITE.'/libraries/src/HTML/Helpers/JGrid.php' );
 }
 
-class PhocaGalleryJGrid extends JHtmlJGrid
+class PhocaGalleryJGrid extends JGrid
 {
-	
+
 	public static function approved($value, $i, $prefix = '', $enabled = true, $checkbox='cb')
 	{
 		if (is_array($prefix)) {
@@ -36,6 +39,6 @@ class PhocaGalleryJGrid extends JHtmlJGrid
 		);
 		return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
 	}
-	
+
 }
 ?>

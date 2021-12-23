@@ -9,15 +9,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 
-class PhocaGalleryModelMap extends JModelLegacy
+class PhocaGalleryModelMap extends BaseDatabaseModel
 {
 		
 
 	function __construct() {
 		parent::__construct();
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$id 	= $app->input->get('id', 0, 'int');
 		$this->setId((int)$id);
 		$catid	= $app->input->get('catid', 0, 'int');
@@ -55,7 +57,7 @@ class PhocaGalleryModelMap extends JModelLegacy
 	}
 	
 	function _loadData() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 
 		if (empty($this->_data)) {
 			$query = 'SELECT a.title, a.filename, a.description, a.latitude, a.longitude, a.zoom, a.geotitle, a.metadesc, a.metakey,'

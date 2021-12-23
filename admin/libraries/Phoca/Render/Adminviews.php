@@ -12,12 +12,13 @@
 namespace Phoca\Render;
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\Helpers\Sidebar;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Version;
@@ -68,6 +69,8 @@ class Adminviews
 					HTMLHelper::_('formbehavior.chosen', 'select');
 				}
 
+
+
         //	break;
         //}
 
@@ -91,6 +94,13 @@ class Adminviews
             HTMLHelper::_('stylesheet', 'media/' . $this->option . '/css/administrator/3.css', array('version' => 'auto'));
         }
     }
+
+    public function startHeader() {
+
+		$layoutSVG 	= new FileLayout('svg_definitions', null, array('component' => $this->option));
+		//return $layoutSVG->render(array());
+
+	}
 
 
     public function startMainContainer($id = 'phAdminView', $class = 'ph-admin-box') {
@@ -419,18 +429,42 @@ class Adminviews
         return '</tbody>' . "\n";
     }
 
-    public function startTr($i, $catid = 0) {
-        $iD = $i % 2;
-        if ($this->compatible) {
-            return '<tr class="row' . $iD . '" data-dragable-group="' . $catid . '">' . "\n";
-        } else {
+    public function startTr($i, $catid = 0, $id = 0) {
+        $i2 = $i % 2;
 
-            return '<tr class="row' . $iD . '" sortable-group-id="' . $catid . '" >' . "\n";
+        $dataItemId  = '';
+        if ($id > 0) {
+            $dataItemId = ' data-item-id="'.(int)$id.'"';
         }
+        $dataItemCatid  = '';
+
+        if ($this->compatible) {
+            $dataItemCatid = ' data-draggable-group="' . (int)$catid . '"';
+        } else {
+            $dataItemCatid = ' sortable-group-id="' . (int)$catid . '"';
+        }
+
+        $dataParents = '';
+        if ($catid > 0) {
+            $dataParents = ' data-parents="'.(int)$catid.'"';
+        }
+
+
+        return '<tr class="row' . $i2 . '"'.$dataItemId.$dataItemCatid.$dataParents.' data-transitions>' . "\n";
+
     }
 
     public function endTr() {
         return '</tr>' . "\n";
+    }
+
+    public function createIndentation($level) {
+
+        if ((int)$level > 1) {
+            $intendetation = str_repeat('-&nbsp;', ((int)$level - 1));
+            return '<div class="ph-intendation">'.$intendetation.'</div>';
+        }
+        return "";
     }
 
     public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled = true) {

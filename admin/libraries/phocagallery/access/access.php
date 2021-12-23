@@ -10,6 +10,10 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 class PhocaGalleryAccess
 {
@@ -19,7 +23,7 @@ class PhocaGalleryAccess
 	public static function getCategoryAccess($id) {
 
 		$output = array();
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query 	= 'SELECT c.access, c.accessuserid, c.uploaduserid, c.deleteuserid, c.userfolder' .
 				' FROM #__phocagallery_categories AS c' .
 				' WHERE c.id = '. (int) $id .
@@ -48,7 +52,7 @@ class PhocaGalleryAccess
 	 */
 
 	public static function getUserRight($rightType = 'accessuserid', $rightUsers = array(), $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// we can get the variables here, not before function call
 		$userAID = $user->getAuthorisedViewLevels();
 		$userId = $user->get('id', 0);
@@ -186,14 +190,14 @@ class PhocaGalleryAccess
 	 * @return array of id
 	 */
 
-	public static function usersList( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1 ) {
+	public static function usersList( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1,$returnArray = 0) {
 
 		$activeArray = $active;
 		if ($active != '') {
 			$activeArray = explode(',',$active);
 		}
 
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 		$and 	= '';
 		if ($reg) {
 			// does not include registered users in the list
@@ -221,49 +225,49 @@ class PhocaGalleryAccess
 			switch ($name) {
 				case 'jform[accessuserid][]':
 					$idInput1 	= -1;
-					$idText1	= JText::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
+					$idText1	= Text::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
 					$idInput2 	= -2;
-					$idText2	= JText::_( 'COM_PHOCAGALLERY_NOBODY' );
+					$idText2	= Text::_( 'COM_PHOCAGALLERY_NOBODY' );
 				break;
 
 				case 'batch[accessuserid][]':
 					$idInput4 	= -3;
-					$idText4	= JText::_( 'COM_PHOCAGALLERY_KEEP_ORIGINAL_ACCESS_RIGHTS_LEVELS' );
+					$idText4	= Text::_( 'COM_PHOCAGALLERY_KEEP_ORIGINAL_ACCESS_RIGHTS_LEVELS' );
 					$idInput3 	= 0;
-					$idText3	= JText::_( 'COM_PHOCAGALLERY_NOT_SET' );
+					$idText3	= Text::_( 'COM_PHOCAGALLERY_NOT_SET' );
 					$idInput1 	= -1;
-					$idText1	= JText::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
+					$idText1	= Text::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
 					$idInput2 	= -2;
-					$idText2	= JText::_( 'COM_PHOCAGALLERY_NOBODY' );
+					$idText2	= Text::_( 'COM_PHOCAGALLERY_NOBODY' );
 				break;
 
 				case 'jform[default_accessuserid][]':
 					$idInput3 	= 0;
-					$idText3	= JText::_( 'COM_PHOCAGALLERY_NOT_SET' );
+					$idText3	= Text::_( 'COM_PHOCAGALLERY_NOT_SET' );
 					$idInput1 	= -1;
-					$idText1	= JText::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
+					$idText1	= Text::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
 					$idInput2 	= -2;
-					$idText2	= JText::_( 'COM_PHOCAGALLERY_NOBODY' );
+					$idText2	= Text::_( 'COM_PHOCAGALLERY_NOBODY' );
 				break;
 
 				default:
 					$idInput1 	= -2;
-					$idText1	= JText::_( 'COM_PHOCAGALLERY_NOBODY' );
+					$idText1	= Text::_( 'COM_PHOCAGALLERY_NOBODY' );
 					$idInput2 	= -1;
-					$idText2	= JText::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
+					$idText2	= Text::_( 'COM_PHOCAGALLERY_ALL_REGISTERED_USERS' );
 				break;
 			}
 
 			$users = array();
 
 			if ($idText4) {
-				$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput4, '- '. $idText4 .' -' );
+				$users[] = HTMLHelper::_('select.option',  $idInput4, '- '. $idText4 .' -' );
 			}
 			if ($idText3) {
-				$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput3, '- '. $idText3 .' -' );
+				$users[] = HTMLHelper::_('select.option',  $idInput3, '- '. $idText3 .' -' );
 			}
-			$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput1, '- '. $idText1 .' -' );
-			$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput2, '- '. $idText2 .' -' );
+			$users[] = HTMLHelper::_('select.option',  $idInput1, '- '. $idText1 .' -' );
+			$users[] = HTMLHelper::_('select.option',  $idInput2, '- '. $idText2 .' -' );
 
 
 			$users = array_merge( $users, $db->loadObjectList() );
@@ -271,7 +275,11 @@ class PhocaGalleryAccess
 			$users = $db->loadObjectList();
 		}
 
-		$users = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $users, $name, 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id );
+		if ($returnArray == 1) {
+			return $users;
+		}
+
+		$users = HTMLHelper::_('select.genericlist', $users, $name, 'class="form-control" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id );
 
 		return $users;
 	}
@@ -280,9 +288,9 @@ class PhocaGalleryAccess
 	/*
 	 * Get list of users to select Owner of the category
 	 */
-	public static function usersListOwner( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1 ) {
+	public static function usersListOwner( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1, $returnArray = 0) {
 
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 		$and 	= '';
 		if ($reg) {
 			// does not include registered users in the list
@@ -302,15 +310,19 @@ class PhocaGalleryAccess
 		if ( $nouser ) {
 
 			$idInput1 	= -1;
-			$idText1	= JText::_( 'COM_PHOCAGALLERY_NOBODY' );
-			$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  -1, '- '. $idText1 .' -' );
+			$idText1	= Text::_( 'COM_PHOCAGALLERY_NOBODY' );
+			$users[] = HTMLHelper::_('select.option',  -1, '- '. $idText1 .' -' );
 
 			$users = array_merge( $users, $db->loadObjectList() );
 		} else {
 			$users = $db->loadObjectList();
 		}
 
-		$users = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $users, $name, 'class="inputbox" size="4" '. $javascript, 'value', 'text', $active, $id );
+		if ($returnArray == 1) {
+			return $users;
+		}
+
+		$users = HTMLHelper::_('select.genericlist', $users, $name, 'class="form-control" size="4" '. $javascript, 'value', 'text', $active, $id );
 
 		return $users;
 	}
@@ -320,7 +332,7 @@ class PhocaGalleryAccess
 	 */
 	public static function getNeededAccessLevels() {
 
-		$paramsC 				= JComponentHelper::getParams('com_phocagallery');
+		$paramsC 				= ComponentHelper::getParams('com_phocagallery');
 		$registeredAccessLevel 	= $paramsC->get( 'registered_access_level', array(2,3,4) );
 		return $registeredAccessLevel;
 	}

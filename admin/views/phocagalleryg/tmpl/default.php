@@ -9,16 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 phocagalleryimport('phocagallery.render.rendermap');
 
 
 $map	= new PhocaGalleryRenderMap();
 echo $map->loadApi();
-echo '<noscript>'.JText::_('COM_PHOCAGALLERY_GOOGLE_MAPS_ENABLE_JS').'</noscript>';
+echo '<noscript>'.Text::_('COM_PHOCAGALLERY_GOOGLE_MAPS_ENABLE_JS').'</noscript>';
 echo '<div align="center" style="margin:0;padding:0;text-align: center;">';
 echo '<div id="phocaMap" style="margin:0 auto;padding:0;width:520px;height:460px;"></div></div>';
 
-$document					= JFactory::getDocument();
+$document					= Factory::getDocument();
 $document->addCustomTag( "<style type=\"text/css\"> \n" 
 			. '#phocaMap img {
 					max-width: none;

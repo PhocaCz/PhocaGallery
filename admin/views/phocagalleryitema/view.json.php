@@ -7,26 +7,30 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 jimport( 'joomla.application.component.view');
 
-class PhocaGalleryCpViewPhocaGalleryItemA extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryItemA extends HtmlView
 {
 	function display($tpl = null){
 
-		if (!JSession::checkToken('request')) {
+		if (!Session::checkToken('request')) {
 			$response = array(
 				'status' => '0',
-				'error' => '<span class="ph-result-txt ph-error-txt">' . JText::_('JINVALID_TOKEN') . '</span>');
+				'error' => '<span class="ph-result-txt ph-error-txt">' . Text::_('JINVALID_TOKEN') . '</span>');
 			echo json_encode($response);
 			return;
 		}
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$q			= $app->input->get( 'q', '', 'string'  );
 		$id			= $app->input->get( 'item_id', '', 'int'  );
 
 		if (isset($q) && $q != '') {
-			$db		= JFactory::getDbo();
+			$db		= Factory::getDbo();
 			$query	= $db->getQuery(true);
 
 
@@ -38,7 +42,8 @@ class PhocaGalleryCpViewPhocaGalleryItemA extends JViewLegacy
 
 			$search = $db->Quote('%'.$db->escape($q, true).'%');
 			if ((int)$id > 0) {
-				$query->where('( a.id <> '.(int)$id.')');
+				// It is not related function so we don't limit ID here, used when we ask in product edit other products
+				//	$query->where('( a.id <> '.(int)$id.')');
 			}
 			$query->where('( a.title LIKE '.$search.')');
 			//$query->group($db->escape('a.id'));
@@ -46,6 +51,7 @@ class PhocaGalleryCpViewPhocaGalleryItemA extends JViewLegacy
 			$query->order($db->escape('a.ordering'));
 
 			$db->setQuery($query);
+
 
 
 			/*if (!$db->query()) {

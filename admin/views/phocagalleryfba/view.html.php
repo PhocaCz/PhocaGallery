@@ -9,25 +9,27 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport( 'phocagallery.facebook.fb' );
 phocagalleryimport( 'phocagallery.facebook.fbsystem' );
 
-class PhocaGalleryCpViewphocaGalleryFbA extends JViewLegacy
+class PhocaGalleryCpViewphocaGalleryFbA extends HtmlView
 {
 	protected $r;
 	protected $t;
 
 	function display($tpl = null) {
-		$app		= JFactory::getApplication();
-		$document	= JFactory::getDocument();
+		$app		= Factory::getApplication();
+		$document	= Factory::getDocument();
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 
 		$this->t	= PhocaGalleryUtils::setVars('fba');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 
-		$this->field	= JFactory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFbAlbum_'.$this->field;
 
 		//$eName	= JFactory::getApplication()->input->get('e_name');
@@ -35,9 +37,9 @@ class PhocaGalleryCpViewphocaGalleryFbA extends JViewLegacy
 
 
 
-		$uid	= JFactory::getApplication()->input->get('uid', 0, '', 'int');
+		$uid	= Factory::getApplication()->input->get('uid', 0, '', 'int');
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.*'
 		. ' FROM #__phocagallery_fb_users AS a'
 		. ' WHERE a.published = 1'

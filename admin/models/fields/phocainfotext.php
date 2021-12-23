@@ -10,10 +10,11 @@
  */
 
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaInfoText extends JFormField
+class JFormFieldPhocaInfoText extends FormField
 {
 
 	protected $type = 'PhocaInfoText';

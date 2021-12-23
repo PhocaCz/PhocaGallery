@@ -8,16 +8,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 $task		= 'phocagalleryef';
 
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-//Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-//Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+//JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 JFactory::getDocument()->addScriptDeclaration(
@@ -31,31 +34,35 @@ JFactory::getDocument()->addScriptDeclaration(
 }'
 
 );
+
+echo $r->startHeader();
 echo $r->startForm($option, $task, $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
-'general' 		=> JText::_($OPT.'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($OPT.'_PUBLISHING_OPTIONS'));
+'general' 		=> Text::_($OPT.'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($OPT.'_PUBLISHING_OPTIONS'));
 echo $r->navigation($tabs);
 
 echo $r->startTabs();
 
 echo $r->startTab('general', $tabs['general'], 'active');
 
-if ($this->t['ftp']) { echo $this->loadTemplate('ftp');}
+if (isset($this->t['ftp']) && $this->t['ftp']) { echo $this->loadTemplate('ftp');}
 
 //$formArray = array ('title', 'type', 'filename', 'ordering');
 //echo $r->group($this->form, $formArray);
 
-echo '<div class="control-group">';
+//echo '<div class="control-group">';
 echo $r->item($this->form, 'title');
 echo $this->form->getInput('type');
 echo $r->item($this->form, 'typeoutput');
 echo $r->item($this->form, 'filename', $this->t['suffixtype']);
 echo $r->item($this->form, 'ordering');
 
-echo '</div>';
+
+
+//echo '</div>';
 
 echo '<div class="clr"></div>';
 echo $this->form->getLabel('source');

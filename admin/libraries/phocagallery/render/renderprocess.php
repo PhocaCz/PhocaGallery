@@ -9,6 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 class PhocaGalleryRenderProcess
 {
@@ -23,8 +26,8 @@ class PhocaGalleryRenderProcess
 
 	public static function getProcessPage ($filename, $thumbInfo, $refresh_url, $errorMsg = '' ) {
 
-		$countImg 		= (int)JFactory::getApplication()->input->get( 'countimg', 0, 'get', 'INT' );
-		$currentImg 	= (int)JFactory::getApplication()->input->get( 'currentimg',0, 'get','INT' );
+		$countImg 		= (int)Factory::getApplication()->input->get( 'countimg', 0, 'get', 'INT' );
+		$currentImg 	= (int)Factory::getApplication()->input->get( 'currentimg',0, 'get','INT' );
 		$paths			= PhocaGalleryPath::getPath();
 
 		if ($currentImg == 0) {
@@ -32,7 +35,7 @@ class PhocaGalleryRenderProcess
 		}
 		$nextImg = $currentImg + 1;
 
-		$view 		= JFactory::getApplication()->input->get( 'view', '', 'get', 'string' );
+		$view 		= Factory::getApplication()->input->get( 'view', '', 'get', 'string' );
 
 		//we are in whole window - not in modal box
 
@@ -46,24 +49,24 @@ class PhocaGalleryRenderProcess
 			}
 		}
 
-		echo '<span>'. JText::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING_WAIT' ) . '</span>';
+		echo '<span>'. Text::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING_WAIT' ) . '</span>';
 
 		if ( $errorMsg == '' ) {
-			echo '<p>' .JText::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING' )
+			echo '<p>' .Text::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING' )
 			.' <span style="color:#0066cc;">'. $filename . '</span>'
-			.' ... <b style="color:#009900">'.JText::_( 'COM_PHOCAGALLERY_OK' ).'</b><br />'
+			.' ... <b style="color:#009900">'.Text::_( 'COM_PHOCAGALLERY_OK' ).'</b><br />'
 			.'(<span style="color:#0066cc;">' . $thumbInfo . '</span>)</p>';
 		} else {
-			echo '<p>' .JText::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING' )
+			echo '<p>' .Text::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING' )
 			.' <span style="color:#0066cc;padding:0;margin:0"> '. $filename . '</span>'
-			.' ... <b style="color:#fc0000">'.JText::_( 'COM_PHOCAGALLERY_ERROR' ).'</b><br />'
+			.' ... <b style="color:#fc0000">'.Text::_( 'COM_PHOCAGALLERY_ERROR' ).'</b><br />'
 			.'(<span style="color:#0066cc;">' . $thumbInfo . '</span>)</p>';
 
 		}
 
 		if ($countImg == 0) {
 			// BEGIN ---------------------------------------------------------------------------
-			echo '<div class="ph-lds-ellipsis"><div></div><div></div><div></div><div></div></div><div>&nbsp;</div><div>'. JText::_('COM_PHOCAGALLERY_REBUILDING_PROCESS_WAIT') . '</div>';
+			echo '<div class="ph-lds-ellipsis"><div></div><div></div><div></div><div></div></div><div>&nbsp;</div><div>'. Text::_('COM_PHOCAGALLERY_REBUILDING_PROCESS_WAIT') . '</div>';
 			// END -----------------------------------------------------------------------------
 		} else {
 			// Creating thumbnails info
@@ -77,7 +80,7 @@ class PhocaGalleryRenderProcess
 			// BEGIN -----------------------------------------------------------------------
 			//echo '<p>' . JText::_('COM_PHOCAGALLERY_GENERATING'). ': <span style="color:#0066cc">'. $currentImg .'</span> '.JText::_('COM_PHOCAGALLERY_FROM'). ' <span style="color:#0066cc">'. $countImg .'</span> '.JText::_('COM_PHOCAGALLERY_THUMBNAIL_S').'</p>';
 
-			echo '<p>' . JText::sprintf('COM_PHOCAGALLERY_GENERATING_FROM_THUMBNAIL_S', '<span style="color:#0066cc">'. $currentImg .'</span> ', ' <span style="color:#0066cc">'. $countImg .'</span> ').'</p>';
+			echo '<p>' . Text::sprintf('COM_PHOCAGALLERY_GENERATING_FROM_THUMBNAIL_S', '<span style="color:#0066cc">'. $currentImg .'</span> ', ' <span style="color:#0066cc">'. $countImg .'</span> ').'</p>';
 
 			//echo '<p>'.$per.' &#37;</p>';
 			//echo '<div style="width:400px;height:20px;font-size:20px;border-top:2px solid #666;border-left:2px solid #666;border-bottom:2px solid #ccc;border-right:2px solid #ccc;'.$bgCSS.'"><span style="font-size:10px;font-weight:bold">'.$per.' &#37;</div>';
@@ -91,43 +94,43 @@ class PhocaGalleryRenderProcess
 			$errorMessage = '';
 			switch ($errorMsg) {
 				case 'ErrorNotSupportedImage':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOTSUPPORTEDIMAGE');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOTSUPPORTEDIMAGE');
 				break;
 
 				case 'ErrorNoJPGFunction':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOJPGFUNCTION');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOJPGFUNCTION');
 				break;
 
 				case 'ErrorNoPNGFunction':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOPNGFUNCTION');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOPNGFUNCTION');
 				break;
 
 				case 'ErrorNoGIFFunction':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOGIFFUNCTION');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOGIFFUNCTION');
 				break;
 
 				case 'ErrorNoWEBPFunction':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOWEBPFUNCTION');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOWEBPFUNCTION');
 				break;
 
 				case 'ErrorNoWBMPFunction':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOWBMPFUNCTION');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOWBMPFUNCTION');
 				break;
 
 				case 'ErrorWriteFile':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_WRITEFILE');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_WRITEFILE');
 				break;
 
 				case 'ErrorFileOriginalNotExists':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_FILEORIGINALNOTEXISTS');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_FILEORIGINALNOTEXISTS');
 				break;
 
 				case 'ErrorCreatingFolder':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_CREATINGFOLDER');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_CREATINGFOLDER');
 				break;
 
 				case 'ErrorNoImageCreateTruecolor':
-				$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_NOIMAGECREATETRUECOLOR');
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOIMAGECREATETRUECOLOR');
 				break;
 
 				case 'Error1':
@@ -136,7 +139,7 @@ class PhocaGalleryRenderProcess
 				case 'Error4':
 				case 'Error5':
 				Default:
-					$errorMessage = JText::_('COM_PHOCAGALLERY_ERROR_WHILECREATINGTHUMB') . ' ('.$errorMsg.')';
+					$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_WHILECREATINGTHUMB') . ' ('.$errorMsg.')';
 				break;
 			}
 
@@ -146,15 +149,15 @@ class PhocaGalleryRenderProcess
 			if ($view != 'phocagalleryi' && $view != 'phocagalleryd') {
 
 				echo '<div style="text-align:left;margin: 10px 5px">';
-				echo '<table border="0" cellpadding="7"><tr><td>'.JText::_('COM_PHOCAGALLERY_ERROR_MESSAGE').':</td><td><span style="color:#fc0000">'.$errorMessage.'</span></td></tr>';
+				echo '<table border="0" cellpadding="7"><tr><td>'.Text::_('COM_PHOCAGALLERY_ERROR_MESSAGE').':</td><td><span style="color:#fc0000">'.$errorMessage.'</span></td></tr>';
 
-				echo '<tr><td colspan="1" rowspan="4" valign="top" >'.JText::_('COM_PHOCAGALLERY_WHAT_TO_DO_NOW').' :</td>';
+				echo '<tr><td colspan="1" rowspan="4" valign="top" >'.Text::_('COM_PHOCAGALLERY_WHAT_TO_DO_NOW').' :</td>';
 
-				echo '<td>- ' .JText::_( 'COM_PHOCAGALLERY_SOLUTION_BEGIN' ).' <br /><ul><li>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_IMAGE' ).'</li><li>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_GD' ).'</li><li>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_PERMISSION' ).'</li></ul>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_END' ).'<br /> <a href="'.$refresh_url.'&countimg='.$countImg.'&currentimg='.$currentImg .'">' .JText::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a><div class="hr"></div></td></tr>';
+				echo '<td>- ' .Text::_( 'COM_PHOCAGALLERY_SOLUTION_BEGIN' ).' <br /><ul><li>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_IMAGE' ).'</li><li>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_GD' ).'</li><li>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_PERMISSION' ).'</li></ul>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_END' ).'<br /> <a href="'.$refresh_url.'&countimg='.$countImg.'&currentimg='.$currentImg .'">' .Text::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a><div class="hr"></div></td></tr>';
 
-				echo '<tr><td>- ' .JText::_( 'COM_PHOCAGALLERY_DISABLE_CREATING_THUMBS_SOLUTION' ).' <br /> <a href="index.php?option=com_phocagallery&task=phocagalleryimg.disablethumbs">' .JText::_( 'COM_PHOCAGALLERY_BACK_DISABLE_THUMBS_GENERATING' ).'</a> <br />'.JText::_( 'COM_PHOCAGALLERY_ENABLE_THUMBS_GENERATING_OPTIONS' ).'<div class="hr"></div></td></tr>';
+				echo '<tr><td>- ' .Text::_( 'COM_PHOCAGALLERY_DISABLE_CREATING_THUMBS_SOLUTION' ).' <br /> <a href="index.php?option=com_phocagallery&task=phocagalleryimg.disablethumbs">' .Text::_( 'COM_PHOCAGALLERY_BACK_DISABLE_THUMBS_GENERATING' ).'</a> <br />'.Text::_( 'COM_PHOCAGALLERY_ENABLE_THUMBS_GENERATING_OPTIONS' ).'<div class="hr"></div></td></tr>';
 
-				echo '<tr><td>- ' .JText::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_SOLUTION' ).' <br /> <a href="index.php?option=com_media">' .JText::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_LINK' ).'</a><div class="hr"></div></td></tr>';
+				echo '<tr><td>- ' .Text::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_SOLUTION' ).' <br /> <a href="index.php?option=com_media">' .Text::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_LINK' ).'</a><div class="hr"></div></td></tr>';
 
 				echo '<tr><td>- <a href="https://www.phoca.cz/documentation/" target="_blank">' .JText::_( 'COM_PHOCAGALLERY_GO_TO_PHOCA_GALLERY_USER_MANUAL' ).'</a></td></tr>';
 
@@ -166,13 +169,13 @@ class PhocaGalleryRenderProcess
 			{
 				echo '<div style="text-align:left">';
 				echo '<table border="0" cellpadding="3"
-			cellspacing="3"><tr><td>'.JText::_('COM_PHOCAGALLERY_ERROR_MESSAGE').':</td><td><span style="color:#fc0000">'.$errorMessage.'</span></td></tr>';
+			cellspacing="3"><tr><td>'.Text::_('COM_PHOCAGALLERY_ERROR_MESSAGE').':</td><td><span style="color:#fc0000">'.$errorMessage.'</span></td></tr>';
 
-				echo '<tr><td colspan="1" rowspan="3" valign="top">'.JText::_('COM_PHOCAGALLERY_WHAT_TO_DO_NOW').' :</td>';
+				echo '<tr><td colspan="1" rowspan="3" valign="top">'.Text::_('COM_PHOCAGALLERY_WHAT_TO_DO_NOW').' :</td>';
 
-				echo '<td>- ' .JText::_( 'COM_PHOCAGALLERY_SOLUTION_BEGIN' ).' <br /><ul><li>'.JText::_( 'PG COM_PHOCAGALLERY_SOLUTION_IMAGE' ).'</li><li>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_GD' ).'</li><li>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_PERMISSION' ).'</li></ul>'.JText::_( 'COM_PHOCAGALLERY_SOLUTION_END' ).'<br /> <a href="'.$refresh_url.'&countimg='.$countImg.'&currentimg='.$currentImg .'">' .JText::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a><div class="hr"></div></td></tr>';
+				echo '<td>- ' .Text::_( 'COM_PHOCAGALLERY_SOLUTION_BEGIN' ).' <br /><ul><li>'.Text::_( 'PG COM_PHOCAGALLERY_SOLUTION_IMAGE' ).'</li><li>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_GD' ).'</li><li>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_PERMISSION' ).'</li></ul>'.Text::_( 'COM_PHOCAGALLERY_SOLUTION_END' ).'<br /> <a href="'.$refresh_url.'&countimg='.$countImg.'&currentimg='.$currentImg .'">' .Text::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a><div class="hr"></div></td></tr>';
 
-				echo '<td>- ' .JText::_( 'COM_PHOCAGALLERY_NO_SOLUTION' ).' <br /> <a href="#" onclick="SqueezeBox.close();">' .JText::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a></td></tr>';
+				echo '<td>- ' .Text::_( 'COM_PHOCAGALLERY_NO_SOLUTION' ).' <br /> <a href="#" onclick="SqueezeBox.close();">' .Text::_( 'COM_PHOCAGALLERY_BACK_PHOCA_GALLERY' ).'</a></td></tr>';
 
 				echo '</table>';
 				echo '</div>';
@@ -209,7 +212,7 @@ class PhocaGalleryRenderProcess
 
 		// 1 ... link was displayed
 		// 0 ... display the link "Stop ThumbnailsCreation
-		$view 		= JFactory::getApplication()->input->get( 'view' );
+		$view 		= Factory::getApplication()->input->get( 'view' );
 
 		//we are in whole window - not in modal box
 		if ($view == 'phocagalleryi' || $view == 'phocagalleryd') {
@@ -227,7 +230,7 @@ class PhocaGalleryRenderProcess
 				$stopText = self::getHeader('processpage');
 				$boxStyle = self::getBoxStyle();
 				$stopText .= '<div style="'.$boxStyle.'">';// End will be added getProcessPage
-				$stopText .= '<div style="text-align:right;margin-bottom: 15px;"><a style="font-family: sans-serif, Arial;font-weight:bold;color:#e33131;font-size:12px;" href="index.php?option=com_phocagallery&task=phocagalleryimg.disablethumbs" title="' .JText::_( 'COM_PHOCAGALLERY_STOP_THUMBNAIL_GENERATION_DESC' ).'">' .JText::_( 'COM_PHOCAGALLERY_STOP_THUMBNAIL_GENERATION' ).'</a></div>';
+				$stopText .= '<div style="text-align:right;margin-bottom: 15px;"><a style="font-family: sans-serif, Arial;font-weight:bold;color:#e33131;font-size:12px;" href="index.php?option=com_phocagallery&task=phocagalleryimg.disablethumbs" title="' .Text::_( 'COM_PHOCAGALLERY_STOP_THUMBNAIL_GENERATION_DESC' ).'">' .Text::_( 'COM_PHOCAGALLERY_STOP_THUMBNAIL_GENERATION' ).'</a></div>';
 				//$this->stopThumbnailsCreating = 1;// it was added to the site, don't add the same code (because there are 3 thumnails - small, medium, large)
 				//$this->headerAdded = 1;
 				self::$renderProcess[$element] = $stopText;
@@ -249,13 +252,13 @@ class PhocaGalleryRenderProcess
 		if( !array_key_exists( $element, self::$renderHeader ) ) {
 			// test utf-8 ä, ö, ü, č, ř, ž, ß
 			$paths	= PhocaGalleryPath::getPath();
-			$bgImg 	= JURI::root(true).'/media/com_phocagallery/images/administrator/image-bg.jpg';
+			$bgImg 	= Uri::root(true).'/media/com_phocagallery/images/administrator/image-bg.jpg';
 
 			$o = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
 			$o .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-en" lang="en-en" dir="ltr" >'. "\n";
 			$o .= '<head>'. "\n";
 			$o .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'. "\n\n";
-			$o .= '<title>'.JText::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING').'</title>'. "\n";
+			$o .= '<title>'.Text::_( 'COM_PHOCAGALLERY_THUMBNAIL_GENERATING').'</title>'. "\n";
 			$o .= '<link rel="stylesheet" href="'.$paths->media_css_rel_full.'administrator/phocagallery.css" type="text/css" />';
 
 			$o .= "\n" . '<style type="text/css"> html { 

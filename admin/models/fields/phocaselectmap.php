@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectMap extends JFormField
+class JFormFieldPhocaSelectMap extends FormField
 {
 	public $type = 'PhocaSelectMap';
 
@@ -38,7 +42,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 			$link = 'index.php?option=com_phocagallery&amp;view=phocagalleryg&amp;tmpl=component&amp;field='.$this->id. $suffix;
 
 
-			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
+			HTMLHelper::_('jquery.framework');
 
 		}
 
@@ -60,6 +64,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 		$script[] = '	function phocaSelectMap_'.$this->id.'(title) {';
 		$script[] = '		document.getElementById("'.$this->id.'").value = title;';
 		$script[] = '		'.$onchange;
+		$script[] = '		jModalClose();';
 		//$script[] = '		SqueezeBox.close();';
 		//$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
 		$script[] = '	}';
@@ -74,7 +79,7 @@ class JFormFieldPhocaSelectMap extends JFormField
 		}
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 
 
@@ -82,33 +87,33 @@ class JFormFieldPhocaSelectMap extends JFormField
 
 			/*$html[] = '<div class="input-append">';
 			$html[] = '<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' . ' '.$attr.' />';
-			$html[] = '<a class="modal_'.$this->id.' btn" title="'.JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'"'
+			$html[] = '<a class="modal_'.$this->id.' btn" title="'.Text::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'"'
 					.' href="'.($this->element['readonly'] ? '' : $link).'"'
 					.' rel="{handler: \'iframe\', size: {x: 560, y: 470}}">'
-					. JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'</a>';
+					. Text::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES').'</a>';
 			$html[] = '</div>'. "\n";*/
 
 
-			$html[] = '<div class="input-append">';
-			$html[] = '<span class="input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
+			$html[] = '<div class="input-group input-append">';
+			$html[] = '<span class="input-group input-append"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
 				. ' value="' . $this->value . '"' . $attr . ' />';
-			$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '">'
+			$html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . Text::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '">'
 				. '<span class="icon-list icon-white"></span> '
-				. JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '</a></span>';
+				. Text::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES') . '</a></span>';
 			$html[] = '</div>'. "\n";
 
-			$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+			$html[] = HTMLHelper::_(
 				'bootstrap.renderModal',
 				$idA,
 				array(
 					'url'    => $link,
-					'title'  => JText::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES'),
+					'title'  => Text::_('COM_PHOCAGALLERY_FORM_SELECT_COORDINATES'),
 					'width'  => '560px',
 					'height' => '470px',
 					'modalWidth' => '50',
 					'bodyHeight' => '70',
-					'footer' => '<div id="phmPopupInfo" class="ph-info-modal"></div><button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-						. JText::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
+					'footer' => '<div id="phmPopupInfo" class="ph-info-modal"></div><button type="button" class="btn" data-bs-dismiss="modal" aria-hidden="true">'
+						. Text::_('COM_PHOCAGALLERY_CLOSE') . '</button>'
 				)
 			);
 

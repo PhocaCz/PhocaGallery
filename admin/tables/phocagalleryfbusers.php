@@ -10,9 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
 jimport('joomla.filter.input');
 
-class TablePhocaGalleryFbUsers extends JTable
+class TablePhocaGalleryFbUsers extends Table
 {
 	function __construct(& $db) {
 		parent::__construct('#__phocagallery_fb_users', 'id', $db);
@@ -21,13 +23,13 @@ class TablePhocaGalleryFbUsers extends JTable
 	public function bind($array, $ignore = '')
 	{
 		if (isset($array['params']) && is_array($array['params'])) {
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['params']);
 			$array['params'] = (string)$registry;
 		}
 
 		if (isset($array['comments']) && is_array($array['comments'])) {
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['comments']);
 			$array['comments'] = (string)$registry;
 		}

@@ -10,14 +10,17 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 $title			= $this->item->filename;
-$imgLink		= Joomla\CMS\HTML\HTMLHelper::_( 'image', 'images/phocagallery/'. $this->item->filenameno, '');
+$imgLink		= HTMLHelper::_( 'image', 'images/phocagallery/'. $this->item->filenameno, '');
 
 $extImage = PhocaGalleryImage::isExtImage($this->item->extid);
 if ($extImage) {
 	$title		= $this->item->title;
-	$imgLink	= Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->item->exto, '');
+	$imgLink	= HTMLHelper::_( 'image', $this->item->exto, '');
 }
 
 if ($this->t['backbutton'] != '') {
@@ -26,11 +29,11 @@ if ($this->t['backbutton'] != '') {
 	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink . '</div>';
 	echo '<div id="download-msg-nopopup"><div>'
 		.'<table width="360">'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_FORMAT') . ': </td><td>'.$this->item->imagesize.'</td></tr>'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_SIZE') . ': </td><td>'.$this->item->filesize.'</td></tr>';
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_FORMAT') . ': </td><td>'.$this->item->imagesize.'</td></tr>'
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_SIZE') . ': </td><td>'.$this->item->filesize.'</td></tr>';
 
-	echo '<tr><td align="left"><a title="'. JText::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD').'" href="'. JRoute::_('index.php?option=com_phocagallery&view=detail&catid='.$this->item->catslug.'&id='.$this->item->slug.'&phocadownload=2'.'&Itemid='. $this->itemId ).'">'.JText::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD').'</a></td><td>&nbsp;</td>';
+	echo '<tr><td align="left"><a title="'. Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD').'" href="'. Route::_('index.php?option=com_phocagallery&view=detail&catid='.$this->item->catslug.'&id='.$this->item->slug.'&phocadownload=2'.'&Itemid='. $this->itemId ).'">'.Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD').'</a></td><td>&nbsp;</td>';
 
 	echo '</table>';
 	echo '</div></div></div>';
@@ -41,10 +44,10 @@ if ($this->t['backbutton'] != '') {
 	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
 	echo '<div id="download-msg"><div>'
 		.'<table width="360">'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_FORMAT') . ': </td><td>'.$this->item->imagesize.'</td></tr>'
-		.'<tr><td align="left">' . JText::_('COM_PHOCAGALLERY_IMAGE_SIZE') . ': </td><td>'.$this->item->filesize.'</td></tr>'
-		.'<tr><td colspan="2" align="left"><small>' . JText::_('COM_PHOCAGALLERY_DOWNLOAD_IMAGE') . '</small></td></tr>';
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_FORMAT') . ': </td><td>'.$this->item->imagesize.'</td></tr>'
+		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_SIZE') . ': </td><td>'.$this->item->filesize.'</td></tr>'
+		.'<tr><td colspan="2" align="left"><small>' . Text::_('COM_PHOCAGALLERY_DOWNLOAD_IMAGE') . '</small></td></tr>';
 
 		switch($this->t['detailwindow']) {
 			case 3:

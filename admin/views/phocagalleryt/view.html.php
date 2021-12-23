@@ -10,10 +10,18 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Filesystem\Folder;
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.client.helper' );
 phocagalleryimport( 'phocagallery.image.image' );
-class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryT extends HtmlView
 {
 
 	protected $require_ftp;
@@ -24,17 +32,17 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 
 
 
 		$this->t	= PhocaGalleryUtils::setVars('t');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
-		//JHTML::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
-		//$document->addScript(JURI::base(true).'/media/com_phocagallery/js/jcp/picker.js');
+		//JHtml::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
+		//$document->addScript(JUri::base(true).'/media/com_phocagallery/js/jcp/picker.js');
 
-		$this->require_ftp	= JClientHelper::setCredentialsFromRequest('ftp');
+		$this->require_ftp	= ClientHelper::setCredentialsFromRequest('ftp');
 		$this->files	= $this->get('Files');
 		$this->form		= $this->get('Form');
 
@@ -43,21 +51,21 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 		}
 		// Background Image
 		/*
-		$params = JComponentHelper::getParams('com_phocagallery');
+		$params = ComponentHelper::getParams('com_phocagallery');
 
 
 		// Small
-		$this->t['siw']		= $params->get('small_image_width', 50 );
-		$this->t['sih']		= $params->get('small_image_height', 50 );
+		$this->t['siw']		= $params->get('small_image_width', 128 );
+		$this->t['sih']		= $params->get('small_image_height', 96 );
 
 		//After creating an image (post with data);
-		$this->t['ssbgc']	= JFactory::getApplication()->input->get( 'ssbgc', '', '', 'string' );
-		$this->t['sibgc']	= JFactory::getApplication()->input->get( 'sibgc', '', '', 'string' );
-		$this->t['sibrdc']	= JFactory::getApplication()->input->get( 'sibrdc', '', '', 'string' );
-		$this->t['sie']		= JFactory::getApplication()->input->get( 'sie', '', '', 'int' );
-		$this->t['siec']		= JFactory::getApplication()->input->get( 'siec', '', '', 'string' );
-		$siw					= JFactory::getApplication()->input->get( 'siw', '', '', 'int' );
-		$sih					= JFactory::getApplication()->input->get( 'sih', '', '', 'int' );
+		$this->t['ssbgc']	= Factory::getApplication()->input->get( 'ssbgc', '', '', 'string' );
+		$this->t['sibgc']	= Factory::getApplication()->input->get( 'sibgc', '', '', 'string' );
+		$this->t['sibrdc']	= Factory::getApplication()->input->get( 'sibrdc', '', '', 'string' );
+		$this->t['sie']		= Factory::getApplication()->input->get( 'sie', '', '', 'int' );
+		$this->t['siec']		= Factory::getApplication()->input->get( 'siec', '', '', 'string' );
+		$siw					= Factory::getApplication()->input->get( 'siw', '', '', 'int' );
+		$sih					= Factory::getApplication()->input->get( 'sih', '', '', 'int' );
 
 		$this->t['ssbgc']	= PhocaGalleryUtils::filterInput($this->t['ssbgc']);
 		$this->t['sibgc']	= PhocaGalleryUtils::filterInput($this->t['sibgc']);
@@ -72,17 +80,17 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 		if ((int)$sih > 0) 			{$this->t['sih'] = (int)$sih;}
 
 		// Medium
-		$this->t['miw']		= $params->get('medium_image_width', 100 );
-		$this->t['mih']		= $params->get('medium_image_height', 100 );
+		$this->t['miw']		= $params->get('medium_image_width', 256 );
+		$this->t['mih']		= $params->get('medium_image_height', 192 );
 
 		//After creating an image (post with data);
-		$this->t['msbgc']	= JFactory::getApplication()->input->get( 'msbgc', '', '', 'string' );
-		$this->t['mibgc']	= JFactory::getApplication()->input->get( 'mibgc', '', '', 'string' );
-		$this->t['mibrdc']	= JFactory::getApplication()->input->get( 'mibrdc', '', '', 'string' );
-		$this->t['mie']		= JFactory::getApplication()->input->get( 'mie', '', '', 'int' );
-		$this->t['miec']		= JFactory::getApplication()->input->get( 'miec', '', '', 'string' );
-		$miw					= JFactory::getApplication()->input->get( 'miw', '', '', 'int' );
-		$mih					= JFactory::getApplication()->input->get( 'mih', '', '', 'int' );
+		$this->t['msbgc']	= Factory::getApplication()->input->get( 'msbgc', '', '', 'string' );
+		$this->t['mibgc']	= Factory::getApplication()->input->get( 'mibgc', '', '', 'string' );
+		$this->t['mibrdc']	= Factory::getApplication()->input->get( 'mibrdc', '', '', 'string' );
+		$this->t['mie']		= Factory::getApplication()->input->get( 'mie', '', '', 'int' );
+		$this->t['miec']		= Factory::getApplication()->input->get( 'miec', '', '', 'string' );
+		$miw					= Factory::getApplication()->input->get( 'miw', '', '', 'int' );
+		$mih					= Factory::getApplication()->input->get( 'mih', '', '', 'int' );
 
 		$this->t['msbgc']	= PhocaGalleryUtils::filterInput($this->t['msbgc']);
 		$this->t['mibgc']	= PhocaGalleryUtils::filterInput($this->t['mibgc']);
@@ -104,16 +112,16 @@ class PhocaGalleryCpViewPhocaGalleryT extends JViewLegacy
 
 	protected function addToolbar() {
 
-		JToolbarHelper ::title(   JText::_( 'COM_PHOCAGALLERY_THEMES' ), 'grid-view-2');
-		JToolbarHelper ::cancel('phocagalleryt.cancel', 'JToolbar_CLOSE');
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::title(   Text::_( 'COM_PHOCAGALLERY_THEMES' ), 'grid-view-2');
+		ToolbarHelper::cancel('phocagalleryt.cancel', 'JToolbar_CLOSE');
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 	function themeName() {
 		// Get an array of all the xml files from teh installation directory
 		$path		= PhocaGalleryPath::getPath();
-		$xmlFiles 	= JFolder::files($path->image_abs_front, '.xml$', 1, true);
+		$xmlFiles 	= Folder::files($path->image_abs_front, '.xml$', 1, true);
 
 		// If at least one xml file exists
 		if (count($xmlFiles) > 0) {

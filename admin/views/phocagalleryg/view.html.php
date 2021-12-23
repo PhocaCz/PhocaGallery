@@ -9,10 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport( 'joomla.application.component.view');
 phocagalleryimport('phocagallery.render.rendermaposm');
 
-class PhocaGalleryCpViewPhocagalleryG extends JViewLegacy
+class PhocaGalleryCpViewPhocagalleryG extends HtmlView
 {
 	protected $latitude;
 	protected $longitude;
@@ -24,12 +27,12 @@ class PhocaGalleryCpViewPhocagalleryG extends JViewLegacy
 
 	public function display($tpl = null) {
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->t	= PhocaGalleryUtils::setVars('g');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
-		$params	 			= JComponentHelper::getParams( 'com_phocagallery' );
+		$params	 			= ComponentHelper::getParams( 'com_phocagallery' );
 		$this->latitude		= $app->input->get( 'lat', '50.079623358200884', 'get', 'string' );
 		$this->longitude	= $app->input->get( 'lng', '14.429919719696045', 'get', 'string' );
 		$this->zoom			= $app->input->get( 'zoom', '2', 'get', 'string' );
@@ -37,7 +40,7 @@ class PhocaGalleryCpViewPhocagalleryG extends JViewLegacy
 
 		$this->type 		= 'map';
 
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		$document->addCustomTag( "<style type=\"text/css\"> \n"
 			." html,body, .contentpane{overflow:hidden;background:#ffffff;} \n"
 			." </style> \n");

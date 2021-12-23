@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 phocagalleryimport('phocagallery.render.rendermap');
 
 
@@ -23,13 +25,13 @@ echo PhocaGalleryRenderFront::renderFeedIcon('categories');
 echo '</div>';
 
 if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
-	echo '<p>' . JText::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
+	echo '<p>' . Text::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
 	//echo '<script src="http://www.google.com/js api" type="text/javascript"></script>';
 	$map	= new PhocaGalleryRenderMap();
 	//echo $map->loadApi();
 
-	echo '<noscript>'.JText::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
+	echo '<noscript>'.Text::_('COM_PHOCAGALLERY_ERROR_MAP_ENABLE_JAVASCRIPT').'</noscript>';
 	echo '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>';
 	echo '<div align="center" style="margin:0;padding:0;margin-top:10px;">';
 
@@ -71,9 +73,9 @@ if ($this->tGeo['categorieslng'] == '' || $this->tGeo['categorieslat'] == '') {
 				$extCategory = PhocaGalleryImage::isExtImage($category->extid);
 				if ($extCategory) {
 					$correctImageRes = PhocaGalleryPicasa::correctSizeWithRate($category->extw, $category->exth, $this->t['picasa_correct_width'], $this->t['picasa_correct_height']);
-					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
+					$imgLink = HTMLHelper::_( 'image', $category->linkthumbnailpath, str_replace('&raquo;', '-',$category->title), array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 				} else {
-					$imgLink = Joomla\CMS\HTML\HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
+					$imgLink = HTMLHelper::_( 'image', $category->linkthumbnailpath, PhocaGalleryText::strTrimAll(addslashes($category->geotitle )));
 				}
 				$text = '<div style="text-align:left">'
 				.'<table border="0" cellspacing="5" cellpadding="5">'

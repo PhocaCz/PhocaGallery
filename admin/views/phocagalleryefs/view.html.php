@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 
-class PhocaGalleryCpViewPhocaGalleryEfs extends JViewLegacy
+class PhocaGalleryCpViewPhocaGalleryEfs extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -58,38 +62,38 @@ class PhocaGalleryCpViewPhocaGalleryEfs extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryEfsHelper::getActions($state->get('filter.category_id'));
 
-		JToolbarHelper ::title( JText::_( 'COM_PHOCAGALLERY_STYLES' ), 'eye' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAGALLERY_STYLES' ), 'eye' );
 
 		if ($canDo->get('core.create')) {
-			JToolbarHelper ::addNew( 'phocagalleryef.add','JToolbar_NEW');
+			ToolbarHelper::addNew( 'phocagalleryef.add','JToolbar_NEW');
 		}
 
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper ::editList('phocagalleryef.edit','JToolbar_EDIT');
+			ToolbarHelper::editList('phocagalleryef.edit','JToolbar_EDIT');
 		}
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper ::divider();
-			JToolbarHelper ::custom('phocagalleryefs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
-			JToolbarHelper ::custom('phocagalleryefs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
+			ToolbarHelper::divider();
+			ToolbarHelper::custom('phocagalleryefs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			ToolbarHelper::custom('phocagalleryefs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper ::deleteList(  JText::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryefs.delete', 'COM_PHOCAGALLERY_DELETE');
+			ToolbarHelper::deleteList(  Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryefs.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
-		JToolbarHelper ::divider();
-		JToolbarHelper ::help( 'screen.phocagallery', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocagallery', true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('COM_PHOCAGALLERY_ORDERING'),
-			'a.title'	 	=> JText::_('COM_PHOCAGALLERY_TITLE'),
-			'a.filename'	=> JText::_('COM_PHOCAGALLERY_FILENAME'),
-			'a.published'	=> JText::_('COM_PHOCAGALLERY_PUBLISHED'),
-			'a.type'	 	=> JText::_('COM_PHOCAGALLERY_TYPE'),
-			'language' 		=> JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('COM_PHOCAGALLERY_ORDERING'),
+			'a.title'	 	=> Text::_('COM_PHOCAGALLERY_TITLE'),
+			'a.filename'	=> Text::_('COM_PHOCAGALLERY_FILENAME'),
+			'a.published'	=> Text::_('COM_PHOCAGALLERY_PUBLISHED'),
+			'a.type'	 	=> Text::_('COM_PHOCAGALLERY_TYPE'),
+			'language' 		=> Text::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }
