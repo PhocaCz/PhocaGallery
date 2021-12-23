@@ -2076,8 +2076,6 @@ class PhocaGalleryViewCategory extends HtmlView
 		}
 
 		$title = $this->params->get('page_title', '');
-		
-
 
 
 		if (empty($title)) {
