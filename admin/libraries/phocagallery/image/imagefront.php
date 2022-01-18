@@ -414,6 +414,10 @@ class PhocaGalleryImageFront
 		$user 	= Factory::getUser();
 		$image 	= '';
 
+		if (!is_array($categoryImageOrdering) && is_numeric($categoryImageOrdering)) {
+            $categoryImageOrdering = PhocaGalleryOrdering::getOrderingString($categoryImageOrdering);
+        }
+
 		// We need to get a list of all subcategories in the given category
 		if ($categoryImageOrdering['column'] == '') {
 			$ordering  =  ' ORDER BY RAND()';
@@ -464,6 +468,10 @@ class PhocaGalleryImageFront
 		$db 	=Factory::getDBO();
 		$user 	= Factory::getUser();
 		$image 	= new stdClass();
+
+		if (!is_array($categoryImageOrdering) && is_numeric($categoryImageOrdering)) {
+            $categoryImageOrdering = PhocaGalleryOrdering::getOrderingString($categoryImageOrdering);
+        }
 
 		// We need to get a list of all subcategories in the given category
 		if ($categoryImageOrdering['column'] == '') {
