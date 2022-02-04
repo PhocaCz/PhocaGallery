@@ -53,7 +53,7 @@ class JFormFieldPhocaGalleryCategory extends FormField
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
 		$attr .= ' class="form-select"';
-
+		($this->element->attributes()['multiple'] == true) ? $attr .= ' multiple="multiple"' : '';
 
 		$document					= Factory::getDocument();
 		$document->addCustomTag('<script type="text/javascript">
