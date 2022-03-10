@@ -65,7 +65,7 @@ class PhocaGalleryViewComment extends HtmlView
 		$this->t['picasa_correct_width_l']	= (int)$this->params->get( 'large_image_width', 640 );
 		$this->t['picasa_correct_height_l']	= (int)$this->params->get( 'large_image_height', 480 );
 
-		$paramsFb = PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
+		$paramsFb = [];//PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
 		$this->t['fb_comment_app_id']		= isset($paramsFb['fb_comment_app_id']) ? $paramsFb['fb_comment_app_id'] : '';
 		$this->t['fb_comment_width']			= isset($paramsFb['fb_comment_width']) ? $paramsFb['fb_comment_width'] : 550;
 		$this->t['fb_comment_lang'] 			= isset($paramsFb['fb_comment_lang']) ? $paramsFb['fb_comment_lang'] : 'en_US';

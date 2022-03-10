@@ -25,9 +25,9 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\UCM\UCMType;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport( 'phocagallery.utils.utils' );
-phocagalleryimport( 'phocagallery.picasa.picasa' );
-phocagalleryimport( 'phocagallery.facebook.fb' );
-phocagalleryimport( 'phocagallery.facebook.fbsystem' );
+//phocagalleryimport( 'phocagallery.picasa.picasa' );
+//phocagalleryimport( 'phocagallery.facebook.fb' );
+//phocagalleryimport( 'phocagallery.facebook.fbsystem' );
 
 class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 {
@@ -1663,7 +1663,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		// In getSize we decide if the mediumT will be 0 or 1
 		// mediumT = 1 - thumbnail, mediumT = 0 - original
 		$mediumT = 0;
-		phocagalleryimport('phocagallery.picasa.picasa');
+		//phocagalleryimport('phocagallery.picasa.picasa');
 		$size = PhocaGalleryPicasa::getSize($mediumT);
 
 		$Ot				= '$t';

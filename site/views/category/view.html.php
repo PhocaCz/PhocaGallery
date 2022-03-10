@@ -239,7 +239,7 @@ class PhocaGalleryViewCategory extends HtmlView
 		$this->t['gallerymetakey'] 			= $this->params->get( 'gallery_metakey', '' );
 		$this->t['gallerymetadesc'] 			= $this->params->get( 'gallery_metadesc', '' );
 		$this->t['altvalue']		 			= $this->params->get( 'alt_value', 1 );
-		$paramsFb = PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
+		$paramsFb = []; //PhocaGalleryFbSystem::getCommentsParams($this->params->get( 'fb_comment_user_id', ''));// Facebook
 		$this->t['fb_comment_app_id']		= isset($paramsFb['fb_comment_app_id']) ? $paramsFb['fb_comment_app_id'] : '';
 		$this->t['fb_comment_width']			= isset($paramsFb['fb_comment_width']) ? $paramsFb['fb_comment_width'] : 550;
 		$this->t['fb_comment_lang'] 			= isset($paramsFb['fb_comment_lang']) ? $paramsFb['fb_comment_lang'] : 'en_US';

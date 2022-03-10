@@ -54,6 +54,9 @@ class JFormFieldPhocaGalleryCategory extends FormField
 		$attr .= $this->required ? ' required aria-required="true"' : '';
 		$attr .= ' class="form-select"';
 
+		if ($this->element->attributes()['multiple'] == true) {
+			$attr .= ' multiple="multiple"';
+		}
 
 		$document					= Factory::getDocument();
 		$document->addCustomTag('<script type="text/javascript">

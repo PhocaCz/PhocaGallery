@@ -713,7 +713,7 @@ class PhocaGalleryRenderFront
         return '';
     }
 
-    public static function renderASwitch($switchW, $switchH, $switchFixedSize, $extWSwitch, $extHSwitch, $extL, $linkThumbPath) {
+    /*public static function renderASwitch($switchW, $switchH, $switchFixedSize, $extWSwitch, $extHSwitch, $extL, $linkThumbPath) {
 
         if ($extL != '') {
             // Picasa
@@ -737,7 +737,7 @@ class PhocaGalleryRenderFront
         }
 
         return '';
-    }
+    }*/
 
     public static function renderImageClass($image) {
 
