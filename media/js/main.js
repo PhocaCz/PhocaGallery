@@ -64,6 +64,21 @@ document.addEventListener("DOMContentLoaded", () => {
 	});*/
 });
 
+/*
+* Change dynamically title in Bootstrap modal header
+ */
+
+function pgFrameOnLoad(){
+
+	let iframe = document.getElementById("pgCategoryModalIframe");
+	let titleEl = iframe.contentWindow.document.getElementById('pgDetailTitle');
+	if (titleEl) {
+		let title = titleEl.getAttribute('data-title');
+		let modalTitle	= document.getElementById('pgCategoryModalLabel');
+		modalTitle.innerHTML = title;
+	}
+
+}
 
 
 function pgCountChars(maxCount) {

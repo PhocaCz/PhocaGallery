@@ -9,13 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormField;
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
 }
 phocagalleryimport('phocagallery.access.access');
 
-class JFormFieldPhocaUsers extends FormField
+class JFormFieldPhocaUsers extends ListField
 {
 	protected $type 		= 'PhocaUsers';
 
@@ -26,6 +28,8 @@ class JFormFieldPhocaUsers extends FormField
 		$userId	= $this->form->getValue($this->element['name']);
 
 		$owner	= ( (string)$this->element['typeowner'] ? $this->element['typeowner'] : 0 );
+
+
 		if ($owner == 1) {
 			//return PhocaGalleryAccess::usersListOwner($this->name, $this->id, $userId, 1, NULL, 'name', 0, 1 );
 
@@ -58,7 +62,10 @@ class JFormFieldPhocaUsers extends FormField
 			$data['options'] = (array) PhocaGalleryAccess::usersList($this->name, $this->id, $userIdString, 1, NULL,'name', 0, 1 );
 
             $activeArray = $userId;
-            if ($userId != '') {
+
+
+
+            if ($userId != '' && !is_array($userId)) {
                 $activeArray = explode(',',$userId);
             }
             if (!empty($activeArray)) {

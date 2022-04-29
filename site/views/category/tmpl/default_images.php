@@ -133,8 +133,9 @@ if (!empty($this->items)) {
 			// Image Name
 			if ($item->type == 2) {
 			    echo '<div class="pg-item-box-title image">'. "\n";
-			    echo '<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>'. "\n";
+
 				if ($item->display_name == 1) {
+                    echo '<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>'. "\n";
 					echo '<a href="' . Route::_($item->link) . '">' . $item->title. '</a>';
 				}
 				if ($item->display_name == 2) {

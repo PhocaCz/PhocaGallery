@@ -111,8 +111,10 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 			$component			=	'com_phocagallery';
 			$paramsC			= ComponentHelper::getParams($component) ;
 
-			foreach($paramsThemes as $keyT => $valueT) {
-				$paramsC->set($valueT['name'], $valueT['value']);
+			if (!empty($paramsThemes)) {
+				foreach ($paramsThemes as $keyT => $valueT) {
+					$paramsC->set($valueT['name'], $valueT['value']);
+				}
 			}
 			$data['params'] 	= $paramsC->toArray();
 			$table 				= Table::getInstance('extension');

@@ -25,6 +25,12 @@ echo $layoutSVG->render($d);
 
 echo '<div id="phocagallery" class="pg-detail-item-box'.$this->params->get( 'pageclass_sfx' ).'">';
 
+// Bootstrap Modal Popup - change dynamically the title in Bootstrap Modal Header (it is not reloaded when image is reloaded inside the iframe so we need to change it with help of JS - see
+// main.js pgFrameOnLoad()
+// pgFrameOnLoad() in iframe components/com_phocagallery/layouts/category_modal.php
+if ($this->t['detailwindow'] == 0) {
+	echo '<div id="pgDetailTitle" data-title="' . $this->item->title . '" style="display:none"></div>';
+}
 
 if ($this->t['detailwindow'] == 7) {
 	echo '<div class="pg-detail-top-box-back-title">';

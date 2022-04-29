@@ -922,7 +922,7 @@
 
 <field name="default_access" default="1" type="accesslevel" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_DESC" class="form-control" size="1" />
 
-<field name="default_accessuserid" default="0" type="phocausers" multiple="1" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" class="form-control" size="1" />
+<field name="default_accessuserid" default="0" type="phocausers" multiple="true" label="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_LABEL" description="COM_PHOCAGALLERY_FIELD_DEFAULT_ACCESS_RIGHTS_DESC" ayout="joomla.form.field.list-fancy-select"  />
 
 <field name="phocahead10" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_RATING_SETTINGS_LABEL" label="" description=""/>
 
