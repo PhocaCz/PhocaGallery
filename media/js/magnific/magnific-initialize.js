@@ -35,8 +35,8 @@ jQuery(document).ready(function() {
 		}
 	});
 
-/*	
-    /* Will be managed through onclick click() method - copy of first method */
+/*
+    /* Will be managed through onclick click() method - copy of first method *//*
     jQuery('a.pg-magnific2-button').magnificPopup({
 		type: 'image',
 		mainClass: 'mfp-img-mobile',

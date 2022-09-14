@@ -340,3 +340,10 @@ animation: ph-lds-ellipsis3 0.6s infinite;
 #phocagallery {
     margin-bottom: 1em;
 }
+
+@media only screen and (max-width: 768px) {
+    .com_phocagallery form > .pagination {
+        flex-direction:column;
+        align-items: center;
+    }
+}

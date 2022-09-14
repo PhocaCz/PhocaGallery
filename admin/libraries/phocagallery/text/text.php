@@ -36,10 +36,10 @@ class PhocaGalleryText
 
 	public static function strTrimAll($input) {
 		$output	= '';
-	    $input	= trim($input);
+	    $input	= trim((string)$input);
 	    for($i=0;$i<strlen($input);$i++) {
 	        if(substr($input, $i, 1) != " ") {
-	            $output .= trim(substr($input, $i, 1));
+	            $output .= trim((string)substr($input, $i, 1));
 	        } else {
 	            $output .= " ";
 	        }

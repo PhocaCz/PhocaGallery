@@ -157,7 +157,6 @@ class PhocaGalleryFileUploadMultiple
 		$js.='	   \'Drag files here.\' : \''.addslashes(Text::_('COM_PHOCAGALLERY_DRAG_FILES_HERE')).'\''."\n";
 		$js.='   });';
 		$js.=''."\n";
-
 		$js.='	pgJQ("#'.$name.'").pluploadQueue({'."\n";
 		$js.='		runtimes : \''.$runtime.'\','."\n";
 		$js.='		url : \''.$this->url.'\','."\n";
@@ -212,6 +211,10 @@ class PhocaGalleryFileUploadMultiple
 			//$js.='		var uploaded0 = Uploader.total.uploaded + 1;'."\n";
 		}
 		$js.='			Up.trigger("Error", {message : obj.message, code : obj.code, details : obj.details, file: File});'."\n";
+
+
+		//$js.='		console.log(obj);'."\n";
+
 		$js.='				if( queueFiles == Uploader.files.length) {'."\n";
 		if ($this->method == 6) {
 			$js.='		var uploaded0 = Uploader.total.uploaded;'."\n";

@@ -55,7 +55,7 @@ if($controller = Factory::getApplication()->input->get( 'controller')) {
 }
 // Create the controller
 $app	= Factory::getApplication();
-$classname    = 'PhocaGalleryController'.ucfirst($controller);
+$classname    = 'PhocaGalleryController'.ucfirst((string)$controller);
 $controller   = new $classname( );
 
 // Perform the Request task

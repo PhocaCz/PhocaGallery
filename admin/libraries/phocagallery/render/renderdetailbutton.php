@@ -415,7 +415,7 @@ class PhocaGalleryRenderDetailButton
 
 
 				$description	= $filter->clean( PhocaGalleryText::strTrimAll($value->description), 'html' );
-				$description	= addslashes($value->description);
+				$description	= addslashes((string)$value->description);
 				$description 	= trim($description);
 				$description 	= str_replace("\n", '', $description);
 				$description 	= str_replace("\r", '', $description);

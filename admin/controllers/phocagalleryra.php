@@ -20,7 +20,7 @@ class PhocaGalleryCpControllerPhocaGalleryRa extends AdminController
 {
 	protected	$option 		= 'com_phocagallery';
 
-	public function &getModel($name = 'PhocaGalleryRa', $prefix = 'PhocaGalleryCpModel')
+	public function getModel($name = 'PhocaGalleryRa', $prefix = 'PhocaGalleryCpModel', $config = [])
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

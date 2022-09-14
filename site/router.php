@@ -15,13 +15,8 @@ use Joomla\CMS\Component\Router\Rules\MenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
 
-
-/**
- * Routing class of com_phocagallery
- *
- * @since  3.3
- */
 
 if (! class_exists('PhocaGalleryLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocagallery/libraries/loader.php');
@@ -31,18 +26,16 @@ class PhocagalleryRouter extends RouterView
 {
 	protected $noIDs = false;
 
-	/**
-	 * Content Component router constructor
-	 *
-	 * @param   JApplicationCms  $app   The application object
-	 * @param   JMenu            $menu  The menu object to work with
-	 */
+
 	public function __construct($app = null, $menu = null)
 	{
 
 
-		$params = ComponentHelper::getParams('com_phcagallery');
-		$this->noIDs = (bool) $params->get('sef_ids');
+		$params = ComponentHelper::getParams('com_phocagallery');;
+		$this->noIDs = (bool)$params->get('remove_sef_ids');
+
+
+
 
 		$categories = new RouterViewConfiguration('categories');
 		$categories->setKey('id');
@@ -84,14 +77,6 @@ class PhocagalleryRouter extends RouterView
 
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $id     ID of the category to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
 	public function getCategorySegment($id, $query)
 	{
 
@@ -125,28 +110,13 @@ class PhocagalleryRouter extends RouterView
 		return array();
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $id     ID of the category to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
 	public function getCategoriesSegment($id, $query)
 	{
 
 		return $this->getCategorySegment($id, $query);
 	}
 
-	/**
-	 * Method to get the segment(s) for an article
-	 *
-	 * @param   string  $id     ID of the article to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
+
 	public function getDetailSegment($id, $query)
 	{
 
@@ -196,8 +166,11 @@ class PhocagalleryRouter extends RouterView
 			return array($void => $segment);
 		}
 
+
 		return array((int) $id => $id);
 	}
+
+
 
 	/**
 	 * Method to get the segment(s) for a form
@@ -227,11 +200,35 @@ class PhocagalleryRouter extends RouterView
 	{
 
 
+        if (!isset($query['id']) && isset($query['view']) && $query['view'] == 'categories') {
+            $query['id'] = 0;
+        }
 
+
+	    if ($this->noIDs)  {
+	        $db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($db->quoteName('id'))
+				->from($db->quoteName('#__phocagallery_categories'))
+				->where(
+					[
+						$db->quoteName('alias') . ' = :alias',
+						$db->quoteName('parent_id') . ' = :parent_id',
+					]
+				)
+				->bind(':alias', $segment)
+				->bind(':parent_id', $query['id'], ParameterType::INTEGER);
+			$db->setQuery($dbquery);
+
+			return (int) $db->loadResult();
+		}
+
+
+        $category = false;
 	    if (isset($query['id']))
 		{
 
-		    $category = false;
+
 		    if ((int)$query['id'] > 0) {
                 $category = PhocaGalleryCategory::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
@@ -264,33 +261,32 @@ class PhocagalleryRouter extends RouterView
                     }
                 }
 			}
-		}
+		} else {
+
+            // --- under test
+            // We don't have query ID because of e.g. language
+            // Should not happen because of modifications in build function here: administrator/components/com_phocacart/libraries/phocacart/path/routerrules.php
+            /*if ((int)$segment > 0) {
+		        $category = PhocaCartCategory::getCategoryById((int)$segment);
+                if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
+                    // We don't have root category with 0 so we need to start with segment one
+                    return (int)$category->id;
+                }
+            }*/
+            // under test
+        }
 
 		return false;
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $segment  Segment to retrieve the ID for
-	 * @param   array   $query    The request that is parsed right now
-	 *
-	 * @return  mixed   The id of this item or false
-	 */
+
 	public function getCategoriesId($segment, $query)
 	{
 
 		return $this->getCategoryId($segment, $query);
 	}
 
-	/**
-	 * Method to get the segment(s) for an article
-	 *
-	 * @param   string  $segment  Segment of the article to retrieve the ID for
-	 * @param   array   $query    The request that is parsed right now
-	 *
-	 * @return  mixed   The id of this item or false
-	 */
+
 	public function getDetailId($segment, $query)
 	{
 
@@ -299,7 +295,7 @@ class PhocagalleryRouter extends RouterView
 			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('id'))
-				->from($dbquery->qn('#__phocagallery_image'))
+				->from($dbquery->qn('#__phocagallery'))
 				->where('alias = ' . $dbquery->q($segment))
 				->where('catid = ' . $dbquery->q($query['id']));
 			$db->setQuery($dbquery);
@@ -308,6 +304,16 @@ class PhocagalleryRouter extends RouterView
 		}
 
 		return (int) $segment;
+	}
+
+    public function parse(&$segments){
+
+		return parent::parse($segments);
+	}
+
+    public function build(&$query) {
+
+		return parent::build($query);
 	}
 }
 

@@ -428,11 +428,11 @@ $javascript     = 'class="form-select" size="1" onchange="document.getElementByI
 			// - - - - - - - - - - -
 			if ((int)$this->t['displayupload'] == 1) {
 				$sU							= new PhocaGalleryFileUploadSingle();
-				$sU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId()
+				$sU->returnUrl				= Route::_($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId()
 											.'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['images']);
 				$sU->tab					= $this->t['currenttab']['images'];
 				$this->t['su_output']	= $sU->getSingleUploadHTML(1);
-				$this->t['su_url']		= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId()
+				$this->t['su_url']		= Route::_($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId()
 											.'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['images']);
 			}
 
@@ -441,11 +441,11 @@ $javascript     = 'class="form-select" size="1" onchange="document.getElementByI
 			// - - - - - - - - - - -
 			if ((int)$this->t['ytbupload'] > 0) {
 				$sYU						= new PhocaGalleryFileUploadSingle();
-				$sYU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId()
+				$sYU->returnUrl				= Route::_($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId()
 											.'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['images']);
 				$sYU->tab					= $this->t['currenttab']['images'];
 				$this->t['syu_output']	= $sYU->getSingleUploadHTML(1);
-				$this->t['syu_url']		= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId()
+				$this->t['syu_url']		= Route::_($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId()
 											.'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['images']);
 			}
 
@@ -484,11 +484,11 @@ $javascript     = 'class="form-select" size="1" onchange="document.getElementByI
 				$mU						= new PhocaGalleryFileUploadMultiple();
 				$mU->frontEnd			= 2;
 				$mU->method				= $this->t['multipleuploadmethod'];
-				$mU->url				= htmlspecialchars($this->t['action'] . $amp .'controller=user&task=multipleupload&'
+				$mU->url				= Route::_($this->t['action'] . $amp .'controller=user&task=multipleupload&'
 										 . $this->session->getName().'='.$this->session->getId().'&'
 										 . Session::getFormToken().'=1&tab='.$this->t['currenttab']['images']
 										 . '&catid='.$this->t['catidimage']);
-				$mU->reload				= htmlspecialchars($this->t['action'] . $amp
+				$mU->reload				= Route::_($this->t['action'] . $amp
 										. $this->session->getName().'='.$this->session->getId().'&'
 										. Session::getFormToken().'=1&tab='.$this->t['currenttab']['images']);
 				$mU->maxFileSize		= PhocaGalleryFileUploadMultiple::getMultipleUploadSizeFormat($this->t['uploadmaxsize']);
@@ -510,10 +510,10 @@ $javascript     = 'class="form-select" size="1" onchange="document.getElementByI
 				$jU->resizewidth			= $this->t['multipleresizewidth'];
 				$jU->resizeheight			= $this->t['multipleresizeheight'];
 				$jU->uploadmaxsize			= $this->t['uploadmaxsize'];
-				$jU->returnUrl				= htmlspecialchars($this->t['action'] . $amp
+				$jU->returnUrl				= Route::_($this->t['action'] . $amp
 											. $this->session->getName().'='.$this->session->getId().'&'
 											. Session::getFormToken().'=1&tab='.$this->t['currenttab']['images']);
-				$jU->url					= htmlspecialchars($this->t['action'] . $amp .'controller=user&task=javaupload&'
+				$jU->url					= Route::_($this->t['action'] . $amp .'controller=user&task=javaupload&'
 											. $this->session->getName().'='.$this->session->getId().'&'
 											. Session::getFormToken().'=1&tab='.$this->t['currenttab']['images']
 											. '&catid='.$this->t['catidimage']);

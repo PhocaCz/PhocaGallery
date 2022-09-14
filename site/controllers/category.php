@@ -637,8 +637,8 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 		Session::checkToken( 'request' ) or jexit(
 			json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
-			'message' => Text::_('XXCOM_PHOCAGALLERY_ERROR').': ',
-			'details' => Text::_('XXCOM_PHOCAGALLERY_INVALID_TOKEN')))
+			'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
+			'details' => Text::_('COM_PHOCAGALLERY_INVALID_TOKEN')))
 		);
 
 
@@ -714,7 +714,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 			// Sending and setting data for common realsingleupload function
 			$this->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			$this->input->set('return-url', base64_encode($return));// set return url
+			$this->input->set('return-url', base64_encode((string)$return));// set return url
 			$fileName = PhocaGalleryFileUpload::realMultipleUpload(1);
 
 

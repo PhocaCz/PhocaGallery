@@ -11,6 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
@@ -218,8 +219,8 @@ class PhocaGalleryRateImage
 	public static function renderRateImgJS($small = 1) {
 
 		$document	 = Factory::getDocument();
-		$url		  = 'index.php?option=com_phocagallery&view=ratingimga&task=rate&format=json&'.Session::getFormToken().'=1';
-		$urlRefresh		= 'index.php?option=com_phocagallery&view=ratingimga&task=refreshrate&small='.$small.'&format=json&'.Session::getFormToken().'=1';
+		$url		  = Route::_('index.php?option=com_phocagallery&view=ratingimga&task=rate&format=json&'.Session::getFormToken().'=1', false);
+		$urlRefresh		= Route::_('index.php?option=com_phocagallery&view=ratingimga&task=refreshrate&small='.$small.'&format=json&'.Session::getFormToken().'=1', false);
 		$imgLoadingUrl = Uri::base(). 'media/com_phocagallery/images/loading.svg';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 

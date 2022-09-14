@@ -694,6 +694,12 @@
 <option value="3">COM_PHOCAGALLERY_SEARCH_OUTCOME</option>
 </field>
 
+
+		<field name="remove_sef_ids" type="radio" layout="joomla.form.field.radio.switcher" default="0" label="COM_PHOCAGALLERY_SEF_NOIDS_LABEL" description="COM_PHOCAGALLERY_SEF_NOIDS_DESC"  filter="integer" >
+			<option value="0">COM_PHOCAGALLERY_NO</option>
+            <option value="1">COM_PHOCAGALLERY_YES</option>
+		</field>
+
 <field name="phocahead25" type="phocahead" default="COM_PHOCAGALLERY_CONFIG_RSS_SETTINGS_LABEL" label="" description=""/>
 <field name="display_feed" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_DISPLAY_FEED_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_FEED_DESC">
 	<option value="0">COM_PHOCAGALLERY_NO</option>
@@ -1072,21 +1078,9 @@
 
 
 
-	<fieldset class="options-form"
-		name="permissions"
-		label="JCONFIG_PERMISSIONS_LABEL"
-		description="JCONFIG_PERMISSIONS_DESC"
-		>
-
-		<field
-			name="rules"
-			type="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			validate="rules"
-			filter="rules"
-			component="com_phocagallery"
-			section="component" />
-	</fieldset>
+	<fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+            <field name="rules" type="rules" component="com_phocacart" filter="rules" validate="rules" label="COM_PHOCAGALLERY_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
+        </fieldset>
 
 	</fields>
 </config>

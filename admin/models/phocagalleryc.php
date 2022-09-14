@@ -1426,13 +1426,13 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 
 			// There are some images in the category - don't delete it
 			$msg = '';
-			if (count( $err_cat ) || count( $err_img )) {
-				if (count( $err_cat )) {
+			if (!empty( $err_cat ) || !empty( $err_img )) {
+				if (!empty( $err_cat )) {
 					$cids_cat = implode( ", ", $err_cat );
 					$msg .= Text::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
 				}
 
-				if (count( $err_img )) {
+				if (!empty( $err_img )) {
 					$cids_img = implode( ", ", $err_img );
 					$msg .= Text::plural( 'COM_PHOCAGALLERY_ERROR_DELETE_CONTAIN_IMG', $cids_img );
 				}

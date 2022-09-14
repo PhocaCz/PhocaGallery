@@ -1824,10 +1824,10 @@ class PhocaGalleryViewCategory extends HtmlView
 			// - - - - - - - - - - -
 			if ((int)$this->t['displayupload'] == 1) {
 				$sU							= new PhocaGalleryFileUploadSingle();
-				$sU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
+				$sU->returnUrl				= Route::_($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
 				$sU->tab					= $this->t['currenttab']['upload'];
 				$this->t['su_output']	= $sU->getSingleUploadHTML(1);
-				$this->t['su_url']		= htmlspecialchars($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
+				$this->t['su_url']		= Route::_($this->t['action'] . $amp .'task=upload&'. $this->session->getName().'='.$this->session->getId() .'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['upload']);
 
 			}
 
@@ -1838,10 +1838,10 @@ class PhocaGalleryViewCategory extends HtmlView
 
 			if ((int)$this->t['ytbupload'] == 1 && $this->t['displayupload'] == 1 ) {
 				$sYU						= new PhocaGalleryFileUploadSingle();
-				$sYU->returnUrl				= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
+				$sYU->returnUrl				= Route::_($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
 				$sYU->tab					= $this->t['currenttab']['ytbupload'];
 				$this->t['syu_output']	= $sYU->getSingleUploadHTML(1);
-				$this->t['syu_url']		= htmlspecialchars($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
+				$this->t['syu_url']		= Route::_($this->t['action'] . $amp .'task=ytbupload&'. $this->session->getName().'='.$this->session->getId().'&'. Session::getFormToken().'=1&viewback=category&tab='.$this->t['currenttab']['ytbupload']);
 			}
 
 

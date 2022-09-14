@@ -1109,7 +1109,7 @@ class PhocaGalleryImageFront
 			$item->class2		= 'pg-magnific2-button';
 			$item->class3		= 'pg-magnific3-button';
 			$item->link 		= $imgLink;
-			$item->link2 		= $imgLink;
+			$item->link2 		= 'javascript:void(0)';//$imgLink;
 			$item->link3		= $siteLink;
 			$item->linkorig		= $imgLinkOrig;
 			$item->onclick		= '';
