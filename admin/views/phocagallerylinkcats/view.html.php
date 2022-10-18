@@ -25,7 +25,7 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends HtmlView
 	function display($tpl = null) {
 		$app	= Factory::getApplication();
 		$this->r = new PhocaGalleryRenderAdminViews();
-		$this->t = PhocaGalleryUtils::setVars('link');
+		$this->t = PhocaGalleryUtils::setVars('linkcats');
 
 		//Frontend Changes
 		$tUri = '';
@@ -34,11 +34,19 @@ class phocaGalleryCpViewphocaGalleryLinkCats extends HtmlView
 			phocagalleryimport('phocagallery.render.renderadmin');
 		}
 
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
+		}
 
 
-		$eName				= $app->input->get('e_name');
+		HTMLHelper::_('jquery.framework', false);
+		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocagallery/css/phocagallery.css' );
+		$eName				= $app->input->getCmd('editor', '');
+
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
 		// Category Tree

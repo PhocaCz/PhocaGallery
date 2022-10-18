@@ -32,7 +32,7 @@ class PhocaGalleryCpViewphocaGalleryFbA extends HtmlView
 		$this->field	= Factory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFbAlbum_'.$this->field;
 
-		//$eName	= JFactory::getApplication()->input->get('e_name');
+		//$eName	= JFactory::getApplication()->input->get('editor');
 		//$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
 

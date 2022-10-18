@@ -9,6 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
@@ -160,5 +161,27 @@ class PhocaGalleryUtils
 		}
 		return $int;
 	}
+
+	/*
+	 public static function getIp() {
+		$params 				= ComponentHelper::getParams('com_phocagallery');
+		$store_ip				= $params->get( 'store_ip', 0 );
+
+		if ($store_ip == 0) {
+			return '';
+		}
+
+		$ip = false;
+		if(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != getenv('SERVER_ADDR')) {
+			$ip  = $_SERVER['REMOTE_ADDR'];
+		} else {
+			$ip  = getenv('HTTP_X_FORWARDED_FOR');
+		}
+		if (!$ip) {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		return $ip;
+	}*/
 }
 ?>

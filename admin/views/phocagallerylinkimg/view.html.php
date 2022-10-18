@@ -35,10 +35,17 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		$this->r = new PhocaGalleryRenderAdminViews();
 		$this->t = PhocaGalleryUtils::setVars('linkimg');
 
+		$uri		= Uri::getInstance();
+
 		//JHtml::_('behavior.tooltip');
 		//JHtml::_('behavior.formvalidation');
 		//JHtml::_('behavior.keepalive');
 		//JHtml::_('formbehavior.chosen', 'select');
+
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
+		}
 
 		//Frontend Changes
 		$tUri = '';
@@ -55,10 +62,14 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		//JHtml::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
 		//$document->addScript(JUri::root(true) .'/media/com_phocagallery/js/jcp/picker.js');
 
-		$eName				= $app->input->get('e_name', '', 'cmd');
+		HTMLHelper::_('jquery.framework', false);
+		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocagallery/css/phocagallery.css' );
+
+		$eName				= $app->input->get('editor', '', 'cmd');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['type']		= $app->input->get( 'type', 1, 'int' );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
 
@@ -86,7 +97,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		$filter = '';
 
 		// build list of categories
-		$javascript 	= 'class="form-control" size="1" onchange="Joomla.submitform( );"';
+		$javascript 	= 'class="form-select" size="1" onchange="Joomla.submitform( );"';
 
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
 		. ' FROM #__phocagallery_categories AS a'
@@ -124,6 +135,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		switch($this->t['type']) {
 
 			case 2:
+			case 5:
 
 				$i = 0;
 				$itemsCount = $itemsStart = array();
@@ -151,8 +163,8 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 					$itemsCount = $itemsStart = array();
 				}
 
-				$this->lists['limitstartparam'] = HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  '' , 'value', 'text', '' );
-				$this->lists['limitcountparam'] = HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  '' , 'value', 'text', '' );
+				$this->lists['limitstartparam'] = HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  'class="form-select"' , 'value', 'text', '' );
+				$this->lists['limitcountparam'] = HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  'class="form-select"' , 'value', 'text', '' );
 
 				parent::display('images');
 			break;

@@ -14,7 +14,15 @@ use Joomla\CMS\Language\Text;
 //JHtml::_('behavior.tooltip');
 
 $js = '
-function insertLink() {
+function insertPGLink() {
+
+        if (!Joomla.getOptions(\'xtd-phocagallery\')) {
+            return false;
+        }
+
+        var _Joomla$getOptions = Joomla.getOptions(\'xtd-phocagallery\'), editor = _Joomla$getOptions.editor;
+
+
 	var imagecategories = document.getElementById("imagecategories").value;
 	if (imagecategories != \'\') {
 		imagecategories = "|imagecategories="+imagecategories;
@@ -32,17 +40,22 @@ function insertLink() {
 	}
 
 	var tag = "{phocagallery view=categories"+imagecategories+imagecategoriessize+hideCategoriesOutput+"}";
+	window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
 
-	window.parent.jInsertEditorText(tag, \''. $this->t['ename'].'\');
-	//window.parent.document.getElementById(\'sbox-window\').close();
-	window.parent.SqueezeBox.close();
-	return false;
+          if (window.parent.Joomla.Modal) {
+            window.parent.Joomla.Modal.getCurrent().close();
+          }
+
+        return false;
 }
 
 function getSelectedData(array) {
 	var selected = new Array();
 	var dataSelect = document.forms["adminFormLink"].elements["hidecategories"];
 
+    if (dataSelect === undefined ) {
+        return \'\';
+    }
 	for(j = 0; j < dataSelect.options.length; j++){
 		if (dataSelect.options[j].selected) {
 			selected.push(dataSelect.options[j].value); }
@@ -54,65 +67,56 @@ function getSelectedData(array) {
 	}
 }';
 
-JFactory::getDocument()->addScriptDeclaration($js);
+Factory::getDocument()->addScriptDeclaration($js);
 ?>
 <div id="phocagallery-links">
-<fieldset class="adminform">
+    <fieldset class="adminform options-menu options-form">
 <legend><?php echo Text::_( 'COM_PHOCAGALLERY_CATEGORIES' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
-<table class="admintable" width="100%">
-	<tr>
-		<td class="key" align="right" width="30%">
+            <div class="control-group">
+                <div class="control-label">
 			<label for="imagecategories">
 				<?php echo Text::_( 'COM_PHOCAGALLERY_DISPLAY_IMAGES' ); ?>
 			</label>
-		</td>
-		<td width="70%">
-			<select name="imagecategories" id="imagecategories">
+                </div>
+                <div class="controls">
+			<select name="imagecategories" id="imagecategories"  class="form-select">
 			<option value="0" ><?php echo Text::_( 'COM_PHOCAGALLERY_NO' ); ?></option>
 			<option value="1" selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_YES' ); ?></option>
 			</select>
-		</td>
-	</tr>
-	<tr >
-		<td class="key" align="right">
+		</div>
+	</div>
+	<div class="control-group">
+        <div class="control-label">
 			<label for="imagecategoriessize">
 				<?php echo Text::_( 'COM_PHOCAGALLERY_IMAGE_SIZE' ); ?>
 			</label>
-		</td>
-		<td>
-			<select name="imagecategoriessize" id="imagecategoriessize">
-			<option value="0" selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL' ); ?></option>
-			<option value="1"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM' ); ?></option>
-			<option value="2"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON' ); ?></option>
-			<option value="3"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON' ); ?></option>
-			<option value="4"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_WITH_SHADOW' ); ?></option>
-			<option value="5"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_WITH_SHADOW' ); ?></option>
-			<option value="6"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL_FOLDER_ICON_WITH_SHADOW' ); ?></option>
-			<option value="7"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM_FOLDER_ICON_WITH_SHADOW' ); ?></option>
+		</div>
+		<div class="controls">
+			<select name="imagecategoriessize" id="imagecategoriessize" class="form-select">
+			<option value="0"><?php echo Text::_( 'COM_PHOCAGALLERY_SMALL' ); ?></option>
+			<option value="1" selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_MEDIUM' ); ?></option>
 			</select>
-		</td>
-	</tr>
+		</div>
+	</div>
 
 
-	<tr >
-		<td class="key" align="right">
+	<div class="control-group">
+		<div class="control-label">
 			<label for="hidecategories">
 				<?php echo Text::_( 'COM_PHOCAGALLERY_HIDE_CATEGORIES' ); ?>
 			</label>
-		</td>
-		<td>
+		</div>
+		<div class="controls">
 		<?php echo $this->categoriesoutput;?>
-		</td>
-	</tr>
+		</div>
+	</div>
 
-	<tr>
-		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary" onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
-	</tr>
-</table>
-</form>
+	<div class="btn-box-submit">
+                    <button class="btn btn-primary plg-button-insert " onclick="insertPGLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCAGALLERY_INSERT_CODE'); ?></button>
+                </div>
+        </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
+    <div class="btn-box-back"><a class="btn btn-light" href="<?php echo $this->t['backlink']; ?>"><span class="icon-arrow-left"></span> <?php echo Text::_('COM_PHOCAGALLERY_BACK') ?></a></div>
 </div>

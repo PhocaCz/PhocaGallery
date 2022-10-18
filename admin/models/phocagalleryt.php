@@ -316,7 +316,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 
 		// Unpack the downloaded package file
 		$package = self::unpack($tmp_dest);
-		$this->_manifest =& $manifest;
+		///$this->_manifest =& $manifest;
 
 		$this->setPath('packagefile', $package['packagefile']);
 		$this->setPath('extractdir', $package['extractdir']);
@@ -351,7 +351,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 					}
 
 					// Set the manifest object and path
-					$this->_manifest =& $manifest;
+					$this->_manifest = $manifest;
 					$this->setPath('manifest', $file);
 
 					// Set the installation source path to that of the manifest file

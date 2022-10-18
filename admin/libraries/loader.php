@@ -36,11 +36,11 @@ class PhocaGalleryLoader extends JLoader
 
 			switch($className) {
 				case 'helper' :
-					$className = ucfirst(array_pop( $parts )).ucfirst($className);
+					$className = ucfirst((string)array_pop( $parts )).ucfirst((string)$className);
 					break;
 
 				default :
-					$className = ucfirst($className);
+					$className = ucfirst((string)$className);
 					break;
 			}
 

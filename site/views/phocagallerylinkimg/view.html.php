@@ -15,7 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-jimport( 'joomla.application.component.view' );
+//jimport( 'joomla.application.component.view' );
 use Joomla\String\StringHelper;
 phocagalleryimport('phocagallery.render.renderadminviews');
 class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
@@ -31,8 +31,22 @@ class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 
 	function display($tpl = null) {
 		$app	= Factory::getApplication();
+
 		$this->r = new PhocaGalleryRenderAdminViews();
 		$this->t = PhocaGalleryUtils::setVars('linkimg');
+
+		$uri		= Uri::getInstance();
+
+		//JHtml::_('behavior.tooltip');
+		//JHtml::_('behavior.formvalidation');
+		//JHtml::_('behavior.keepalive');
+		//JHtml::_('formbehavior.chosen', 'select');
+
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
+		}
+
 		//Frontend Changes
 		$tUri = '';
 		$jsLink = Uri::base(true);
@@ -48,10 +62,15 @@ class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 		//JHtml::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );
 		//$document->addScript(JUri::root(true) .'/media/com_phocagallery/js/jcp/picker.js');
 
-		$eName				= $app->input->get('e_name', '', 'cmd');
+		HTMLHelper::_('jquery.framework', false);
+		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocagallery/css/phocagallery.css' );
+
+		$eName				= $app->input->get('editor', '', 'cmd');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['type']		= $app->input->get( 'type', 1, 'int' );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
+
 
 
 
@@ -78,7 +97,7 @@ class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 		$filter = '';
 
 		// build list of categories
-		$javascript 	= 'class="form-control" size="1" onchange="Joomla.submitform( );"';
+		$javascript 	= 'class="form-select" size="1" onchange="Joomla.submitform( );"';
 
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
 		. ' FROM #__phocagallery_categories AS a'
@@ -108,14 +127,15 @@ class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 		$this->user = Factory::getUser();
 		$this->request_url = $uri->toString();
 		/*$this->assignRef('tmpl',		$t);
-		$this->assignRef('button',		$button);
-		$this->assignRef('user',		$user);
-		$this->assignRef('items',		$items);
-		$this->assignRef('request_url',	$uriS);*/
+		$this->assignRef('button',		$this->button);
+		$this->assignRef('user',		$this->user);
+		$this->assignRef('items',		$this->items);
+		$this->assignRef('request_url',	$this->request_url);*/
 
 		switch($this->t['type']) {
 
 			case 2:
+			case 5:
 
 				$i = 0;
 				$itemsCount = $itemsStart = array();
@@ -136,15 +156,15 @@ class phocaGalleryViewphocaGalleryLinkImg extends HtmlView
 					$itemsCount[$i]->value 	= (int)$key + 1;
 					$itemsCount[$i]->text	= (int)$key + 1;
 				}
-				$categoryId		= $app->input->get( 'filter_catid', 0, 'int' );
+				$categoryId		= $app->input->get( 'filter_catid', 0, '', 'int' );
 				$categoryIdList	= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0, 'int' );
 
 				if ((int)$categoryId == 0 && $categoryIdList == 0) {
 					$itemsCount = $itemsStart = array();
 				}
 
-				$this->lists['limitstartparam'] = HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  '' , 'value', 'text', '' );
-				$this->lists['limitcountparam'] = HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  '' , 'value', 'text', '' );
+				$this->lists['limitstartparam'] = HTMLHelper::_( 'select.genericlist', $itemsStart, 'limitstartparam',  'class="form-select"' , 'value', 'text', '' );
+				$this->lists['limitcountparam'] = HTMLHelper::_( 'select.genericlist', $itemsCount, 'limitcountparam',  'class="form-select"' , 'value', 'text', '' );
 
 				parent::display('images');
 			break;

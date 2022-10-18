@@ -68,3 +68,10 @@
 .pg-top-icons {
   float: right;
 }
+
+/* UCP */
+@media only screen and (max-width:500px) {
+    #phocagallery-ucp.pg-ucp-view {
+    font-size: 9px;
+  }
+}

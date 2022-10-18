@@ -127,30 +127,46 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends HtmlView
 			ToolbarHelper::editList('phocagalleryimg.edit','JToolbar_EDIT');
 		}
 
+		$dropdown = $bar->dropdownButton('status-group')->text('JTOOLBAR_CHANGE_STATUS')->toggleSplit(false)->icon('icon-ellipsis-h')->buttonClass('btn btn-action')->listCheck(true);
+		$childBar = $dropdown->getChildToolbar();
+
 		if ($canDo->get('core.create')) {
 
 			/*
 			$bar->appendButton( 'Custom', '<a href="#" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.JText::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" class="toolbar"><span class="icon-32-recreate" title="'.JText::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'" type="Custom"></span>'.JText::_('COM_PHOCAGALLERY_RECREATE').'</a>');*/
 
-			$dhtml = '<joomla-toolbar-button id="toolbar-recreate-thumbnails" list-selection>';
+		/*	$dhtml = '<joomla-toolbar-button id="toolbar-recreate-thumbnails" list-selection>';
 			$dhtml .= '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}" ><i class="icon-recreate" title="'.Text::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'"></i> '.Text::_('COM_PHOCAGALLERY_RECREATE_THUMBS').'</button>';
 			$dhtml .= '</joomla-toolbar-button>';
-			$bar->appendButton('Custom', $dhtml);
+			$bar->appendButton('Custom', $dhtml);*/
+
+			$onClick = 'javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_MAKE_SELECTION').'\');}else{if(confirm(\''.Text::_('COM_PHOCAGALLERY_WARNING_RECREATE_THUMBNAILS').'\')){Joomla.submitbutton(\'phocagalleryimg.recreate\');}}';
+
+			$childBar->standardButton('recreate')->text('COM_PHOCAGALLERY_RECREATE_THUMBS')->onclick($onClick)->icon('icon-image');
+
 
 		}
+
 
 
 		if ($canDo->get('core.edit.state')) {
 
-			ToolbarHelper::divider();
-			ToolbarHelper::custom('phocagalleryimgs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			//ToolbarHelper::divider();
+			/*ToolbarHelper::custom('phocagalleryimgs.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
 			ToolbarHelper::custom('phocagalleryimgs.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
 			ToolbarHelper::custom( 'phocagalleryimgs.approve', 'approve.png', '',  'COM_PHOCAGALLERY_APPROVE' , true);
 			ToolbarHelper::custom( 'phocagalleryimgs.disapprove', 'disapprove.png', '',  'COM_PHOCAGALLERY_NOT_APPROVE' , true);
+		*/
+			$childBar->publish('phocagalleryimgs.publish')->listCheck(true);
+			$childBar->unpublish('phocagalleryimgs.unpublish')->listCheck(true);
+			$childBar->standardButton('approve')->text('COM_PHOCAGALLERY_APPROVE')->task('phocagalleryimgs.approve')->listCheck(true);
+			$childBar->standardButton('disapprove')->text('COM_PHOCAGALLERY_NOT_APPROVE')->task('phocagalleryimgs.disapprove')->listCheck(true);
+
 		}
 
 		if ($canDo->get('core.delete')) {
-			ToolbarHelper::deleteList( Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryimgs.delete', 'COM_PHOCAGALLERY_DELETE');
+			$childBar->delete($this->t['tasks'].'.delete')->text('COM_PHOCAGALLERY_DELETE')->message('COM_PHOCAGALLERY_WARNING_DELETE_ITEMS')->icon('icon-trash')->listCheck(true);
+			//ToolbarHelper::deleteList( Text::_( 'COM_PHOCAGALLERY_WARNING_DELETE_ITEMS' ), 'phocagalleryimgs.delete', 'COM_PHOCAGALLERY_DELETE');
 		}
 
 		// Add a batch button
@@ -158,14 +174,17 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends HtmlView
 		{
 
 			//HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
-			$title = Text::_('JToolbar_BATCH');
+			/*$title = Text::_('JToolbar_BATCH');
 			$dhtml = '<joomla-toolbar-button id="toolbar-batch" list-selection>';
 			$dhtml .= "<button data-bs-toggle=\"modal\" data-bs-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
 			$dhtml .= '</joomla-toolbar-button>';
 
-			$bar->appendButton('Custom', $dhtml, 'batch');
+			$bar->appendButton('Custom', $dhtml, 'batch');*/
+
+			HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
+			$childBar->popupButton('batch')->text('JTOOLBAR_BATCH')->selector('collapseModal')->listCheck(true);
 
 
 

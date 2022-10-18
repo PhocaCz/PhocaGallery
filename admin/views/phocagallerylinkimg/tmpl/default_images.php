@@ -16,14 +16,25 @@ $user 	= Factory::getUser();
 //Ordering allowed ?
 $ordering = ($this->lists['order'] == 'a.ordering');
 
+$view = 'category';
+if($this->t['type'] == 5) {
+    $view = 'category-masonry';
+}
+
 //JHtml::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 //<![CDATA[
 function insertLink() {
 
+    if (!Joomla.getOptions('xtd-phocagallery')) {
+       return false;
+    }
+
+       var _Joomla$getOptions = Joomla.getOptions('xtd-phocagallery'), editor = _Joomla$getOptions.editor;
+
 	<?php
-	$items = array('imageshadow', 'fontcolor', 'bgcolor', 'bgcolorhover', 'imagebgcolor', 'bordercolor', 'bordercolorhover', 'detail','displayname', 'displaydetail', 'displaydownload', 'displaybuttons', 'displaydescription', 'descriptionheight' ,'namefontsize', 'namenumchar', 'enableswitch', 'overlib', 'piclens','float', 'boxspace', 'displayimgrating', 'pluginlink', 'type', 'imageordering', 'minboxwidth' );
+	/*$items = array('imageshadow', 'fontcolor', 'bgcolor', 'bgcolorhover', 'imagebgcolor', 'bordercolor', 'bordercolorhover', 'detail','displayname', 'displaydetail', 'displaydownload', 'displaybuttons', 'displaydescription', 'descriptionheight' ,'namefontsize', 'namenumchar', 'enableswitch', 'overlib', 'piclens','float', 'boxspace', 'displayimgrating', 'pluginlink', 'type', 'imageordering', 'minboxwidth' );
 	$itemsArrayOutput = '';
 	foreach ($items as $key => $value) {
 
@@ -32,7 +43,7 @@ function insertLink() {
 			.''.$value.' = "|'.$value.'="+'.$value.';'."\n"
 			.'}';
 		$itemsArrayOutput .= '+'.$value;
-	}
+	}*/
 	?>
 
 	/* LimitStart*/
@@ -47,6 +58,21 @@ function insertLink() {
 	if (limitcount != '') {
 		limitCountOutput = "|limitcount="+limitcount;
 	}
+
+    /* max*/
+	var maxOutput = '';
+	var max = document.getElementById("maxparam").value;
+	if (max != '') {
+		maxOutput = "|max="+max;
+	}
+
+    /* ImageOrdering*/
+    var imageOrderingOutput = '';
+	var imageordering = document.getElementById("imageordering").value;
+	if (imageordering != '') {
+		imageOrderingOutput = "|imageordering="+imageordering;
+	}
+
 	/* Category */
 	var categoryid = document.getElementById("filter_catid").value;
 	var categoryIdOutput = '';
@@ -76,44 +102,48 @@ function insertLink() {
 		return false;
 	}
 
-	var tag = "{phocagallery view=category"+categoryIdOutput+limitStartOutput+limitCountOutput<?php echo $itemsArrayOutput ?>+"}";
-	window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
-	window.parent.SqueezeBox.close();
+	var tag = "{phocagallery view=<?php echo $view ?>"+categoryIdOutput+limitStartOutput+limitCountOutput+maxOutput+imageOrderingOutput<?php /*echo $itemsArrayOutput*/ ?>+"}";
+
+    window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
+
+  if (window.parent.Joomla.Modal) {
+    window.parent.Joomla.Modal.getCurrent().close();
+  }
+
+    return false;
+
+  <?php /*window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
+	window.parent.SqueezeBox.close(); */ ?>
 }
 //]]>
 </script>
 <div id="phocagallery-links">
-<fieldset class="adminform">
+<fieldset class="adminform options-menu options-form">
 <legend><?php echo Text::_('COM_PHOCAGALLERY_IMAGES'); ?></legend>
+
+
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm"  id="adminForm">
 
-<div id="editcell">
-	<table class="admintable" width="100%">
-
-		<tr>
-			<td class="key" align="right"  width="30%">
-			<label for="title" >
-				<?php echo Text::_( 'COM_PHOCAGALLERY_CATEGORY' ); ?>
-			</label>
-			</td width="70%">
-			<td><?php echo $this->lists['catid']; ?></td>
-	</tr>
-
-		<tr>
-			<td class="key" align="right" width="30%"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_LIMIT_START' ); ?></label></td>
-		<td width="70%">
-		<?php echo $this->lists['limitstartparam'];?>
-
-		</tr>
-
-		<tr>
-			<td class="key" align="right" width="30%"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_LIMIT_COUNT' ); ?></label></td>
-		<td width="70%">
-		<?php echo $this->lists['limitcountparam'];?>
-
-		</tr>
-	</table>
+<div class="control-group">
+    <div class="control-label"><label for="title" ><?php echo Text::_( 'COM_PHOCAGALLERY_CATEGORY' ); ?></label></div>
+    <div class="controls"><?php echo $this->lists['catid']; ?></div>
 </div>
+
+<div class="control-group">
+    <div class="control-label"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_LIMIT_START' ); ?></label></div>
+    <div class="controls"><?php echo $this->lists['limitstartparam'];?></div>
+</div>
+
+<div class="control-group">
+    <div class="control-label"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_LIMIT_COUNT' ); ?></label></div>
+    <div class="controls"><?php echo $this->lists['limitcountparam'];?></div>
+</div>
+
+<div class="control-group">
+    <div class="control-label"><label for="imagemax"><?php echo Text::_( 'COM_PHOCAGALLERY_MAX_NUMBER_IMAGES' ); ?></label></div>
+    <div class="controls"><input type="text" name="maxparam" id="maxparam" value="" class="form-control"></div>
+</div>
+
 
 
 <input type="hidden" name="controller" value="phocagallerylinkimg" />
@@ -127,10 +157,11 @@ function insertLink() {
 
 
 <form name="adminFormLink" id="adminFormLink">
-<table class="admintable" width="100%">
-	<tr>
-		<td class="key" align="right" width="30%"><label for="imageordering"><?php echo Text::_( 'COM_PHOCAGALLERY_FIELD_IMAGE_ORDERING_LABEL' ); ?></label></td>
-		<td><select name="imageordering" id="imageordering" class="form-control">
+<div class="control-group">
+                    <div class="control-label">
+                        <label for="imageordering"><?php echo Text::_( 'COM_PHOCAGALLERY_FIELD_IMAGE_ORDERING_LABEL' ); ?></label>
+                        </div>
+		<div class="controls"><select name="imageordering" id="imageordering" class="form-select">
 			<option value="" selected="selected"><?php echo Text::_('COM_PHOCAGALLERY_DEFAULT')?></option>
 			<option value="1"><?php echo Text::_('COM_PHOCAGALLERY_ORDERING_ASC')?></option>
 			<option value="2"><?php echo Text::_('COM_PHOCAGALLERY_ORDERING_DESC')?></option>
@@ -141,24 +172,11 @@ function insertLink() {
 			<option value="7"><?php echo Text::_('COM_PHOCAGALLERY_ID_ASC')?></option>
 			<option value="8"><?php echo Text::_('COM_PHOCAGALLERY_ID_DESC')?></option>
 			<option value="9"><?php echo Text::_('COM_PHOCAGALLERY_RANDOM')?></option>
-		</select></td>
-</tr>
+            </select>
+		</div>
+</div>
 
-
-	<tr>
-		<td class="key" align="right" width="30%"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_IMAGE_BACKGROUND_SHADOW' ); ?></label></td>
-		<td width="70%">
-			<select name="imageshadow" id="imageshadow">
-			<option value=""  selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_DEFAULT' )?></option>
-			<option value="none" ><?php echo Text::_('COM_PHOCAGALLERY_NONE'); ?></option>
-			<option value="shadow1" ><?php echo Text::_( 'COM_PHOCAGALLERY_SHADOW1' ); ?></option>
-			<option value="shadow2" ><?php echo Text::_( 'COM_PHOCAGALLERY_SHADOW2' ); ?></option>
-			<option value="shadow3" ><?php echo Text::_( 'COM_PHOCAGALLERY_SHADOW3' ); ?></option>
-			</select>
-		</td>
-	</tr>
-
-	<?php
+	<?php /*
 	// Colors
 	$itemsColor = array ('fontcolor' => 'COM_PHOCAGALLERY_FIELD_FONT_COLOR_LABEL', 'bgcolor' => 'COM_PHOCAGALLERY_FIELD_BACKGROUND_COLOR_LABEL', 'bgcolorhover' => 'COM_PHOCAGALLERY_FIELD_BACKGROUND_COLOR_HOVER_LABEL', 'imagebgcolor' => 'COM_PHOCAGALLERY_FIELD_IMAGE_BACKGROUND_COLOR_LABEL', 'bordercolor' => 'COM_PHOCAGALLERY_FIELD_BORDER_COLOR_LABEL', 'bordercolorhover' => 'COM_PHOCAGALLERY_FIELD_BORDER_COLOR_HOVER_LABEL');
 
@@ -183,7 +201,7 @@ function insertLink() {
 		<option value="5" ><?php echo Text::_( 'COM_PHOCAGALLERY_HIGHSLIDE_IMAGE_ONLY' ); ?></option>
 		<option value="6" ><?php echo Text::_( 'COM_PHOCAGALLERY_JAK_LIGHTBOX' ); ?></option>
 		<option value="8" ><?php echo Text::_( 'COM_PHOCAGALLERY_SLIMBOX' ); ?></option>
-		<?php /*<option value="7" >No Popup</option>*/ ?>
+		<?php /*<option value="7" >No Popup</option>*//* ?>
 		</select></td>
 	</tr>
 
@@ -270,15 +288,13 @@ function insertLink() {
 			</select>
 		</td>
 	</tr>
-
-
-	<tr>
-		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary" onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
-	</tr>
-</table>
-</form>
+*/
+?>
+	<div class="btn-box-submit">
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCAGALLERY_INSERT_CODE'); ?></button>
+                </div>
+            </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCAGALLERY_BACK')?></a></span></div>
+<div class="btn-box-back"><a class="btn btn-light" href="<?php echo $this->t['backlink']; ?>"><span class="icon-arrow-left"></span> <?php echo Text::_('COM_PHOCAGALLERY_BACK') ?></a></div>
 </div>

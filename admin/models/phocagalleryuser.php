@@ -141,7 +141,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends AdminModel
 	}
 */
 /*TO DO - add rules like in approve */
-	function delete($cid = array()) {
+	function delete(&$cid = array()) {
 
 		if (count( $cid )) {
 			\Joomla\Utilities\ArrayHelper::toInteger($cid);

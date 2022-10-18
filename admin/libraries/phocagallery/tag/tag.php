@@ -63,7 +63,7 @@ class PhocaGalleryTag
 				}
 
 				if (!empty($values)) {
-					$valuesString = implode($values, ',');
+					$valuesString = implode(',', $values);
 
 					$query = ' INSERT INTO #__phocagallery_tags_ref (imgid, tagid)'
 								.' VALUES '.(string)$valuesString;

@@ -8,7 +8,6 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -20,6 +19,8 @@ $user 	= Factory::getUser();
 $ordering = ($this->lists['order'] == 'a.ordering');
 
 //JHtml::_('behavior.tooltip');
+
+
 $js = '
 function insertLink() {';
 
@@ -158,7 +159,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 											 //echo JHtml::_( 'image', $row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())), '', array('width' => $correctImageRes['width'], 'height' => $correctImageRes['height']));
 											 echo '<img src="'.Uri::root().$row->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="" />';
 										} else {
-											//echo JHtml::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
+											//echo JHtml::_( 'image', 'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif');
                                             echo '<img src="'.Uri::root().'media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif'.'" alt="" />';
 										}
 										?>
@@ -209,6 +210,9 @@ JFactory::getDocument()->addScriptDeclaration($js);
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 
+    <?php
+    /*
+    ?>
 	<tr>
 		<td class="key" align="right" width="20%"><label for="imagecategories"><?php echo Text::_( 'COM_PHOCAGALLERY_IMAGE_BACKGROUND_SHADOW' ); ?></label></td>
 		<td width="80%">
@@ -222,7 +226,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		</td>
 	</tr>
 
-	<?php
+
 	// Colors
 	$itemsColor = array ('fontcolor' => 'COM_PHOCAGALLERY_FIELD_FONT_COLOR_LABEL', 'bgcolor' => 'COM_PHOCAGALLERY_FIELD_BACKGROUND_COLOR_LABEL', 'bgcolorhover' => 'COM_PHOCAGALLERY_FIELD_BACKGROUND_COLOR_HOVER_LABEL', 'imagebgcolor' => 'COM_PHOCAGALLERY_FIELD_IMAGE_BACKGROUND_COLOR_LABEL', 'bordercolor' => 'COM_PHOCAGALLERY_FIELD_BORDER_COLOR_LABEL', 'bordercolorhover' => 'COM_PHOCAGALLERY_FIELD_BORDER_COLOR_HOVER_LABEL');
 	foreach ($itemsColor as $key => $value) {
@@ -231,7 +235,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		.'<td nowrap="nowrap"><input type="text" name="'.$key.'" id="'.$key.'" value="" class="text_area" /><span style="margin-left:10px" onclick="openPicker(\''.$key.'\')"  class="picker_buttons">'. Text::_('COM_PHOCAGALLERY_PICK_COLOR').'</span></td>'
 		.'</tr>';
 	}
-	?>
+
 
 	<tr>
 		<td class="key" align="right" width="20%"><label for="detail"><?php echo Text::_( 'COM_PHOCAGALLERY_DETAIL_WINDOW' ); ?></label></td>
@@ -249,8 +253,8 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		<?php /*<option value="7" >No Popup</option>*/ ?>
 		</select></td>
 	</tr>
+<?php
 
-	<?php
 		echo '<tr>'
 		.'<td class="key" align="right" width="20%"><label for="pluginlink">'.Text::_('COM_PHOCAGALLERY_PLUGIN_LINK').'</label></td>'
 		.'<td nowrap><select name="pluginlink" id="pluginlink" class="form-control">'
@@ -268,6 +272,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		.'<option value="2" >'.Text::_( 'COM_PHOCAGALLERY_LARGE_IMAGE' ).'</option>';
 
 	// yes/no
+    /*
 	$itemsYesNo = array ('displayname' => 'COM_PHOCAGALLERY_FIELD_DISPLAY_NAME_LABEL', 'displaydetail' => 'COM_PHOCAGALLERY_FIELD_DISPLAY_DETAIL_ICON_LABEL', 'displaydownload' => 'COM_PHOCAGALLERY_FIELD_DISPLAY_DOWNLOAD_ICON_LABEL', 'displaybuttons' => 'COM_PHOCAGALLERY_FIELD_DISPLAY_BUTTONS_LABEL', 'displaydescription' => 'COM_PHOCAGALLERY_FIELD_DISPLAY_DESCRIPTION_DETAIL_LABEL', 'displayimgrating' => 'COM_PHOCAGALLERY_DISPLAY_IMAGE_RATING' );
 	foreach ($itemsYesNo as $key => $value) {
 		echo '<tr>'
@@ -285,59 +290,16 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		}
 		echo '</select></td>'
 		.'</tr>';
-	}
+	}*/
 
 
-	// Number
-	$itemsNumber = array ('descriptionheight' => 'COM_PHOCAGALLERY_FIELD_DESCRIPTION_DETAIL_HEIGHT_LABEL','namefontsize' => 'COM_PHOCAGALLERY_FIELD_FONT_SIZE_NAME_LABEL', 'namenumchar' => 'COM_PHOCAGALLERY_FIELD_CHAR_LENGTH_NAME_LABEL', 'boxspace' => 'COM_PHOCAGALLERY_FIELD_CATEGORY_BOX_SPACE_LABEL','minboxwidth' => 'COM_PHOCAGALLERY_MIN_BOX_WIDTH');
-	foreach ($itemsNumber as $key => $value) {
-		echo '<tr>'
-		.'<td class="key" align="right" width="20%"><label for="'.$key.'">'.Text::_($value).'</label></td>'
-		.'<td nowrap="nowrap"><input type="text" name="'.$key.'" id="'.$key.'" value="" class="text_area" /></td>'
-		.'</tr>';
-	}
-
-	echo '<tr>'
-		.'<td class="key" align="right" width="20%"><label for="enableswitch">'.Text::_('COM_PHOCAGALLERY_SWITCH_IMAGE').'</label></td>'
-		.'<td nowrap><select name="enableswitch" id="enableswitch" class="form-control">'
-		.'<option value=""  selected="selected">'. Text::_( 'COM_PHOCAGALLERY_DEFAULT' ).'</option>'
-		.'<option value="1" >'.Text::_( 'COM_PHOCAGALLERY_ENABLE' ).'</option>'
-		.'<option value="0" >'.Text::_( 'COM_PHOCAGALLERY_DISABLE' ).'</option>';
-
-	echo '<tr>'
-		.'<td class="key" align="right" width="20%"><label for="overlib">'.Text::_('COM_PHOCAGALLERY_FIELD_OVERLIB_EFFECT_LABEL').'</label></td>'
-		.'<td nowrap><select name="overlib" id="overlib" class="form-control">'
-		.'<option value=""  selected="selected">'. Text::_( 'COM_PHOCAGALLERY_DEFAULT' ).'</option>'
-		.'<option value="0" >'.Text::_( 'COM_PHOCAGALLERY_NONE' ).'</option>'
-		.'<option value="1" >'.Text::_( 'COM_PHOCAGALLERY_ONLY_IMAGE' ).'</option>'
-		.'<option value="2" >'.Text::_( 'COM_PHOCAGALLERY_ONLY_DESCRIPTION' ).'</option>'
-		.'<option value="3" >'.Text::_( 'COM_PHOCAGALLERY_IMAGE_AND_DESCRIPTION' ).'</option>';
-
-	echo '<tr>'
-		.'<td class="key" align="right" width="20%"><label for="piclens">'.Text::_('COM_PHOCAGALLERY_ENABLE_COOLIRIS').'</label></td>'
-		.'<td nowrap><select name="piclens" id="piclens" class="form-control">'
-		.'<option value=""  selected="selected">'. Text::_( 'COM_PHOCAGALLERY_DEFAULT' ).'</option>'
-		.'<option value="0" >'.Text::_( 'COM_PHOCAGALLERY_NO' ).'</option>'
-		.'<option value="1" >'.Text::_( 'COM_PHOCAGALLERY_YES' ).'</option>'
-		.'<option value="2" >'.Text::_( 'COM_PHOCAGALLERY_FIELD_YES_START_COOLIRIS' ).'</option>';
 	?>
 
-
-	<tr>
-		<td class="key" align="right" width="20%"><label for="float"><?php echo Text::_( 'COM_PHOCAGALLERY_FLOAT_IMAGE' ); ?></label></td>
-		<td width="80%">
-			<select name="float" id="float">
-			<option value=""  selected="selected"><?php echo Text::_( 'COM_PHOCAGALLERY_DEFAULT' )?></option>
-			<option value="left" ><?php echo Text::_( 'COM_PHOCAGALLERY_LEFT' ); ?></option>
-			<option value="right" ><?php echo Text::_( 'COM_PHOCAGALLERY_RIGHT' ); ?></option>
-			</select>
-		</td>
-	</tr>
 
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button onclick="insertLink();return false;"><?php echo Text::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary" onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCAGALLERY_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>

@@ -1079,7 +1079,7 @@
 
 
 	<fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
-            <field name="rules" type="rules" component="com_phocacart" filter="rules" validate="rules" label="COM_PHOCAGALLERY_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
+            <field name="rules" type="rules" component="com_phocagallery" filter="rules" validate="rules" label="COM_PHOCAGALLERY_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
         </fieldset>
 
 	</fields>
