@@ -37,6 +37,7 @@ class PhocaGalleryViewDetail extends HtmlView
 	protected $params;
 	protected $itemnext;
 	protected $itemprev;
+    protected $category;
 
 	function display($tpl = null) {
 
@@ -64,6 +65,8 @@ class PhocaGalleryViewDetail extends HtmlView
 
 		PhocaGalleryRenderFront::renderAllCSS();
 		PhocaGalleryRenderFront::renderMainJs();
+
+
 
 
 		// Information from the plugin - window is displayed after plugin action
@@ -98,7 +101,7 @@ class PhocaGalleryViewDetail extends HtmlView
 
 		$this->t['display_comment_img']				= $this->params->get( 'display_comment_img', 0 );
 
-
+        $this->t['display_cat_name_breadcrumbs ']			= $this->params->get( 'display_cat_name_breadcrumbs', 1 );
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS(1);
 
@@ -220,6 +223,8 @@ class PhocaGalleryViewDetail extends HtmlView
 		// Model
 		$model	= $this->getModel();
 		$item	= $model->getData();
+
+        $this->category			= $model->getCategory($item->id);
 
 		//Multibox Thumbnails
 		/*$this->t['mb_thumbs_data'] = '';
@@ -418,6 +423,12 @@ class PhocaGalleryViewDetail extends HtmlView
 		$this->item = $item;
 		$this->_prepareDocument($item);
 
+        // Breadcrumb display:
+		// 0 - only menu link
+		// 1 - menu link - category name
+		// 2 - only category name
+		$this->_addBreadCrumbs( isset($menu->query['id']) ? $menu->query['id'] : 0, $this->t['display_cat_name_breadcrumbs '], $item);
+
 
 
 		if ($this->t['enable_multibox'] == 1) {
@@ -585,5 +596,83 @@ class PhocaGalleryViewDetail extends HtmlView
 		$results 	= Factory::getApplication()->triggerEvent('onViewImage', array((int)$item->id, (int)$item->catid, (int)$item->owner_id, (int)$user->id ) );
 
 
+	}
+
+
+
+    /**
+	 * Method to add Breadcrubms in Phoca Gallery
+	 * @param array $this->category Object array of Category
+	 * @param int $rootId Id of Root Category
+	 * @param int $displayStyle Displaying of Breadcrubm - Nothing, Category Name, Menu link with Name
+	 * @return string Breadcrumbs
+	 */
+	function _addBreadCrumbs($rootId, $displayStyle, $image)
+	{
+	    $app = Factory::getApplication();
+		$i = 0;
+		$category = $this->category[0];
+
+	    while (isset($category->id))
+	    {
+
+			$crumbList[$i++] = $category;
+			if ($category->id == $rootId)
+			{
+				break;
+			}
+
+	        $db = Factory::getDBO();
+	        $query = 'SELECT *' .
+	            ' FROM #__phocagallery_categories AS c' .
+	            ' WHERE c.id = '.(int) $category->parent_id.
+	            ' AND c.published = 1';
+	        $db->setQuery($query);
+	        $rows = $db->loadObjectList('id');
+
+			if (!empty($rows))
+			{
+				$category = $rows[$category->parent_id];
+			}
+			else
+			{
+				$category = '';
+			}
+		//	$category = $rows[$category->parent_id];
+	    }
+
+	    $pathway 		= $app->getPathway();
+		$pathWayItems 	= $pathway->getPathWay();
+		$lastItemIndex 	= count($pathWayItems) - 1;
+
+	    for ($i--; $i >= 0; $i--)
+	    {
+			// special handling of the root category
+			if ($crumbList[$i]->id == $rootId)
+			{
+				switch ($displayStyle)
+				{
+					case 0:	// 0 - only menu link
+						// do nothing
+						break;
+					case 1:	// 1 - menu link with category name
+						// replace the last item in the breadcrumb (menu link title) with the current value plus the category title
+						$pathway->setItemName($lastItemIndex, $pathWayItems[$lastItemIndex]->name . ' - ' . $crumbList[$i]->title);
+						break;
+					case 2:	// 2 - only category name
+						// replace the last item in the breadcrumb (menu link title) with the category title
+						$pathway->setItemName($lastItemIndex, $crumbList[$i]->title);
+						break;
+				}
+			}
+			else
+			{
+
+				$pathway->addItem($crumbList[$i]->title, Route::_('index.php?option=com_phocagallery&view=category&id='. $crumbList[$i]->id.':'.$crumbList[$i]->alias.'&Itemid='. $this->itemId ));
+			}
+	    }
+
+        // Add the image title
+		$pathway->addItem($image->title);
 	}
 }

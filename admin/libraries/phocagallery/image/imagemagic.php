@@ -67,12 +67,12 @@ class PhocaGalleryImageMagic
 			echo $stopText;
 		}
 		// Memory - - - - - - - -
-		$memory = 8;
+		/*$memory = 8;
 		$memoryLimitChanged = 0;
 		$memory = (int)ini_get( 'memory_limit' );
 		if ($memory == 0) {
 			$memory = 8;
-		}
+		}*/
 		// - - - - - - - - - - -
 
 		if ($fileIn !== '' && File::exists($fileIn)) {
@@ -234,10 +234,10 @@ class PhocaGalleryImageMagic
 
 
 
-			if ($memory < 50) {
+			/*if ($memory < 50) {
 				ini_set('memory_limit', '50M');
 				$memoryLimitChanged = 1;
-			}
+			}*/
 			// Resampling
 			// in file
 
@@ -511,20 +511,20 @@ class PhocaGalleryImageMagic
 					ImageDestroy($waterImage1);
 				}
 
-				if ($memoryLimitChanged == 1) {
+				/*if ($memoryLimitChanged == 1) {
 					$memoryString = $memory . 'M';
 					ini_set('memory_limit', $memoryString);
-				}
+				}*/
 	             $errorMsg = ''; // Success
 				 return true;
 	        } else {
 				$errorMsg = 'Error1';
 				return false;
 			}
-			if ($memoryLimitChanged == 1) {
+			/*if ($memoryLimitChanged == 1) {
 				$memoryString = $memory . 'M';
 				ini_set('memory_limit', $memoryString);
-			}
+			}*/
 	    }
 		$errorMsg = 'Error2';
 		return false;

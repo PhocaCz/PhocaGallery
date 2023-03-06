@@ -78,10 +78,18 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 
 		// Try to preselect category when we add new image
 		// Take the value from filter select box in image list
+		// Or take it from GET - if someone wants to add new file and wants to have preselected category
 		if (empty($data) || (!empty($data) && (int)$data->id < 1)) {
 			$filter = (array) $app->getUserState('com_phocagallery.phocagalleryimgs.filter.category_id');
 			if (isset($filter[0]) && (int)$filter[0] > 0) {
+
 				$data->set('catid', (int)$filter[0]);
+			} else {
+				// UNDER TEST
+				$catid = $app->input->get('catid');
+				if ((int)$catid > 0) {
+					$data->set('catid', (int)$catid);
+				}
 			}
 		}
 
@@ -179,11 +187,11 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$context = $this->option.'.'.$this->name;
 
 		// Trigger the onContentChangeState event.
-		/*$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
+		$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
-		}*/
+		}
 
 		return true;
 	}

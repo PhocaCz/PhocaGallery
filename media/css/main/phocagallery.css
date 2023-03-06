@@ -75,3 +75,22 @@
     font-size: 9px;
   }
 }
+
+
+/* YouTube */
+.ph-pswp-video-wrapper,
+.pg-ytb-full,
+.pg-ytb-detail {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+.ph-pswp-video-wrapper iframe,
+.pg-ytb-full iframe,
+.pg-ytb-detail iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

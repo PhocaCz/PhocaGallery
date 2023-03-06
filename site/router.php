@@ -27,27 +27,17 @@ class PhocagalleryRouter extends RouterView
 	protected $noIDs = false;
 
 
-	public function __construct($app = null, $menu = null)
-	{
-
+	public function __construct($app = null, $menu = null) {
 
 		$params = ComponentHelper::getParams('com_phocagallery');;
 		$this->noIDs = (bool)$params->get('remove_sef_ids');
-
-
-
 
 		$categories = new RouterViewConfiguration('categories');
 		$categories->setKey('id');
 		$this->registerView($categories);
 
-
 		$category = new RouterViewConfiguration('category');
-
-
 		$category->setKey('id')->setParent($categories, 'parent_id')->setNestable();
-
-
 		$this->registerView($category);
 
 
@@ -69,37 +59,38 @@ class PhocagalleryRouter extends RouterView
 		phocagalleryimport('phocagallery.category.category');
 		$this->attachRule(new MenuRules($this));
 		$this->attachRule(new PhocaGalleryRouterrules($this));
-
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
-
-
-
 	}
 
-	public function getCategorySegment($id, $query)
-	{
+	public function getCategorySegment($id, $query) {
 
-
+        // SPECIFIC CASE TAG - tag search output in category view
+        // 1. components/com_phocagallery/router.php getCategorySegment() - BUILD
+        // 2. administrator/components/com_phocagallery/libraries/phocadownload/path/routerrules.php build() - BUILD
+        // 3. administrator/components/com_phocagallery/libraries/phocadownload/path/routerrules.php parse() - PARSE
+        if ((int)$id == 0 && isset($query['tagid']) && (int)$query['tagid'] > 0) {
+            //$path[0] = '1:root';
+            $path[0] = '0:category';
+            if ($this->noIDs) {
+				foreach ($path as &$segment) {
+					list($id, $segment) = explode(':', $segment, 2);
+				}
+			}
+            return $path;
+        }
 
 	    $category = PhocaGalleryCategory::getCategoryById($id);
 
-
 		if (isset($category->id)) {
-
-
-
-
 
 		    $path = PhocaGalleryCategory::getPath(array(), (int)$category->id, $category->parent_id, $category->title, $category->alias);
 
 		    //$path = array_reverse($path, true);
 		    //$path = array_reverse($category->getPath(), true);
 			$path[0] = '1:root';// we don't use root but it is needed when building urls with joomla methods
-			if ($this->noIDs)
-			{
-				foreach ($path as &$segment)
-				{
+			if ($this->noIDs) {
+				foreach ($path as &$segment) {
 					list($id, $segment) = explode(':', $segment, 2);
 				}
 			}
@@ -110,18 +101,14 @@ class PhocagalleryRouter extends RouterView
 		return array();
 	}
 
-	public function getCategoriesSegment($id, $query)
-	{
-
+	public function getCategoriesSegment($id, $query) {
 		return $this->getCategorySegment($id, $query);
 	}
 
 
-	public function getDetailSegment($id, $query)
-	{
+	public function getDetailSegment($id, $query) {
 
-		if (!strpos($id, ':'))
-		{
+		if (!strpos($id, ':')) {
 			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
@@ -132,23 +119,17 @@ class PhocagalleryRouter extends RouterView
 			$id .= ':' . $db->loadResult();
 		}
 
-		if ($this->noIDs)
-		{
+		if ($this->noIDs) {
 			list($void, $segment) = explode(':', $id, 2);
-
 			return array($void => $segment);
 		}
-
 
 		return array((int) $id => $id);
 	}
 
-	public function getInfoSegment($id, $query)
-	{
+	public function getInfoSegment($id, $query) {
 
-
-		if (!strpos($id, ':'))
-		{
+		if (!strpos($id, ':')) {
 			$db = Factory::getDbo();
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
@@ -159,18 +140,13 @@ class PhocagalleryRouter extends RouterView
 			$id .= ':' . $db->loadResult();
 		}
 
-		if ($this->noIDs)
-		{
+		if ($this->noIDs) {
 			list($void, $segment) = explode(':', $id, 2);
-
 			return array($void => $segment);
 		}
 
-
 		return array((int) $id => $id);
 	}
-
-
 
 	/**
 	 * Method to get the segment(s) for a form
@@ -182,8 +158,7 @@ class PhocagalleryRouter extends RouterView
 	 *
 	 * @since   3.7.3
 	 */
-	public function getFormSegment($id, $query)
-	{
+	public function getFormSegment($id, $query) {
 
 		return $this->getArticleSegment($id, $query);
 	}
@@ -196,14 +171,11 @@ class PhocagalleryRouter extends RouterView
 	 *
 	 * @return  mixed   The id of this item or false
 	 */
-	public function getCategoryId($segment, $query)
-	{
-
+	public function getCategoryId($segment, $query) {
 
         if (!isset($query['id']) && isset($query['view']) && $query['view'] == 'categories') {
             $query['id'] = 0;
         }
-
 
 	    if ($this->noIDs)  {
 	        $db = Factory::getDbo();
@@ -223,12 +195,8 @@ class PhocagalleryRouter extends RouterView
 			return (int) $db->loadResult();
 		}
 
-
         $category = false;
-	    if (isset($query['id']))
-		{
-
-
+	    if (isset($query['id'])) {
 		    if ((int)$query['id'] > 0) {
                 $category = PhocaGalleryCategory::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
@@ -240,12 +208,8 @@ class PhocagalleryRouter extends RouterView
                 }
             }
 
-
-
-
 			if ($category) {
                 if (!empty($category->subcategories)){
-
                     foreach ($category->subcategories as $child) {
                         if ($this->noIDs) {
                             if ($child->alias == $segment) {
@@ -262,7 +226,6 @@ class PhocagalleryRouter extends RouterView
                 }
 			}
 		} else {
-
             // --- under test
             // We don't have query ID because of e.g. language
             // Should not happen because of modifications in build function here: administrator/components/com_phocacart/libraries/phocacart/path/routerrules.php
@@ -279,16 +242,12 @@ class PhocagalleryRouter extends RouterView
 		return false;
 	}
 
-
-	public function getCategoriesId($segment, $query)
-	{
+	public function getCategoriesId($segment, $query) {
 
 		return $this->getCategoryId($segment, $query);
 	}
 
-
-	public function getDetailId($segment, $query)
-	{
+	public function getDetailId($segment, $query) {
 
 		if ($this->noIDs)
 		{
@@ -307,30 +266,23 @@ class PhocagalleryRouter extends RouterView
 	}
 
     public function parse(&$segments){
-
 		return parent::parse($segments);
 	}
 
     public function build(&$query) {
-
 		return parent::build($query);
 	}
 }
 
 
-function PhocaGalleryBuildRoute(&$query)
-{
+function PhocaGalleryBuildRoute(&$query) {
 
 	$app = Factory::getApplication();
 	$router = new PhocagalleryRouter($app, $app->getMenu());
-
 	return $router->build($query);
 }
 
-
-function PhocaGalleryParseRoute($segments)
-{
-
+function PhocaGalleryParseRoute($segments) {
 
 	$app = Factory::getApplication();
 	$router = new PhocagalleryRouter($app, $app->getMenu());

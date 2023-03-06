@@ -2170,8 +2170,10 @@ class PhocaGalleryViewCategory extends HtmlView
 	    $app = Factory::getApplication();
 		$i = 0;
 		$category = $this->category;
+
 	    while (isset($category->id))
 	    {
+
 			$crumbList[$i++] = $category;
 			if ($category->id == $rootId)
 			{

@@ -20,6 +20,8 @@ phocagalleryimport('phocagallery.ordering.ordering');
 class PhocaGalleryModelDetail extends BaseDatabaseModel
 {
 
+	public $_category 			= null;
+
 	function __construct() {
 		parent::__construct();
 		$app				= Factory::getApplication();
@@ -283,6 +285,44 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 				.' ORDER BY c.ordering '.$order;
 		return $query;
 
+	}
+
+	function getCategory($imageId) {
+		if (empty($this->_category)) {
+			$query			= $this->_getCategoryQuery( $imageId );
+			$this->_category= $this->_getList( $query, 0, 1 );
+		}
+		return $this->_category;
+	}
+
+	function _getCategoryQuery( $imageId ) {
+
+		$wheres		= array();
+		$app		= Factory::getApplication();
+		$params 	= $app->getParams();
+		$user 		= Factory::getUser();
+		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
+
+
+
+		$wheres[]	= " c.id= ".(int)$imageId;
+		$wheres[] = " cc.access IN (".$userLevels.")";
+		$wheres[] = " cc.published = 1";
+
+		if ($this->getState('filter.language')) {
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+		}
+
+
+		$query = " SELECT cc.id, cc.title, cc.alias, cc.description, cc.access as cataccess, cc.accessuserid as cataccessuserid, cc.parent_id as parent_id"
+				. " FROM #__phocagallery_categories AS cc"
+				. " LEFT JOIN #__phocagallery AS c ON c.catid = cc.id"
+				. " WHERE " . implode( " AND ", $wheres )
+				. " ORDER BY cc.ordering";
+
+
+		return $query;
 	}
 }
 ?>

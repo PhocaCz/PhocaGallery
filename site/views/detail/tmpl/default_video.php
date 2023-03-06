@@ -30,7 +30,7 @@ if ($this->t['ytb_display'] == 1) {
 			." body {overflow:hidden;} \n"
 			." </style> \n");*/
 
-	echo '<div style="padding:0;margin:0;" class="pg-ytb-full">'.$this->item->videocode.'</div>';
+	echo '<div class="pg-ytb-full">'.$this->item->videocode.'</div>';
 } else {
 
 
@@ -78,7 +78,11 @@ echo '<div class="ph-mc" style="padding-top:10px">'
 	.'<div id="phocaGalleryImageBox" style="'.$iW.'margin: auto;padding: 0;">'
 	.$closeImage;
 */
-echo '<div class="pg-detail-item-image-box">'.$closeImage.'</div>';
+
+
+//echo '<div class="pg-detail-item-image-box">'.$closeImage.'</div>';
+
+echo '<div class="pg-ytb-detail">'.$this->item->videocode.'</div>';
 
 
 

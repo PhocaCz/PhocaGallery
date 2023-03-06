@@ -13,7 +13,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
-jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.render.renderprocess');
 phocagalleryimport('phocagallery.file.file');
@@ -33,28 +33,28 @@ register_shutdown_function(function(){
 class PhocaGalleryImageRotate
 {
 	public static function rotateImage($thumbName, $size, $angle=90, &$errorMsg) {
-	
+
 		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
-	
+
 		// Try to change the size
-		$memory = 8;
+		/*$memory = 8;
 		$memoryLimitChanged = 0;
 		$memory = (int)ini_get( 'memory_limit' );
 		if ($memory == 0) {
 			$memory = 8;
-		}
+		}*/
 
 		$fileIn 	= $thumbName->abs;
 		$fileOut 	= $thumbName->abs;
-	
+
 		if ($fileIn !== '' && file_exists($fileIn)) {
-			
+
 			//array of width, height, IMAGETYPE, "height=x width=x" (string)
 	        list($w, $h, $type) = GetImageSize($fileIn);
-			
+
 			// we got the info from GetImageSize
 			if ($w > 0 && $h > 0 && $type !='') {
 				// Change the $w against $h because of rotating
@@ -64,13 +64,13 @@ class PhocaGalleryImageRotate
 				$errorMsg = 'ErrorWorHorType';
 				return false;
 			}
-			
+
 			// Try to increase memory
-			if ($memory < 50) {
+			/*if ($memory < 50) {
 				ini_set('memory_limit', '50M');
 				$memoryLimitChanged = 1;
-			}
-			
+			}*/
+
 	        switch($type)
 	        {
 	            case IMAGETYPE_JPEG:
@@ -112,7 +112,7 @@ class PhocaGalleryImageRotate
 						return false;
 					}
 					break;
-					
+
 				case IMAGETYPE_WEBP :
 					if (!function_exists('ImageCreateFromWEBP')) {
 						$errorMsg = 'ErrorNoWEBPFunction';
@@ -144,14 +144,14 @@ class PhocaGalleryImageRotate
 					return false;
 					break;
 	        }
-			
+
 			if ($image1) {
 				// Building image for ROTATING
 			/*	$image2 = @ImageCreateTruecolor($dst[2], $dst[3]);
 				if (!$image2) {
 					return 'ErrorNoImageCreateTruecolor';
 				}*/
-				
+
 			/*	if(!function_exists("imagerotate")) {
 					$errorMsg = 'ErrorNoImageRotate';
 					return false;
@@ -182,13 +182,13 @@ class PhocaGalleryImageRotate
 						}
 						//imagefill($image2, 0, 0, $colBlack);
 						//imagecolortransparent($image2, $colBlack);
-						
+
 						imagealphablending($image2, false);
 						imagesavealpha($image2, true);
 					break;
-					
-					
-					
+
+
+
 					Default:
 						if(!function_exists("imagerotate")) {
 							$image2 	= PhocaGalleryImageRotate::imageRotate($image1, $angle, 0);
@@ -204,14 +204,14 @@ class PhocaGalleryImageRotate
 				$parameterSize 	= PhocaGalleryFileThumbnail::getThumbnailResize($size);
 				$newWidth		= $parameterSize['width']; // Get maximum sizes, they can be displayed
 				$newHeight		= $parameterSize['height'];// Get maximum sizes, they can be displayed
-					
+
 				$scale = (($newWidth / $rotateWidth) < ($newHeight / $rotateHeight)) ? ($newWidth / $rotateWidth) : ($newHeight / $rotateHeight); // smaller rate
 				$src = array(0,0, $rotateWidth, $rotateHeight);
 				$dst = array(0,0, floor($rotateWidth*$scale), floor($rotateHeight*$scale));
-						
+
 				// If original is smaller than thumbnail size, don't resize it
 				if ($src[2] > $dst[2] || $src[3] > $dst[3]) {
-					
+
 					// Building image for RESIZING THE ROTATED IMAGE
 					$image3 = @ImageCreateTruecolor($dst[2], $dst[3]);
 					if (!$image3) {
@@ -242,12 +242,12 @@ class PhocaGalleryImageRotate
 							imagecolortransparent($image3, $colBlack);
 						break;
 					}
-						
+
 				} else {
 					$image3 = $image2;
-					
+
 				}
-						
+
 				switch($type) {
 		            case IMAGETYPE_JPEG:
 						if (!function_exists('ImageJPEG')) {
@@ -264,7 +264,7 @@ class PhocaGalleryImageRotate
 							}
 							$imgJPEGToWrite = ob_get_contents();
 							ob_end_clean();
-							
+
 							if(!File::write( $fileOut, $imgJPEGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -276,13 +276,13 @@ class PhocaGalleryImageRotate
 							}
 						}
 					break;
-		            
+
 					case IMAGETYPE_PNG :
 						if (!function_exists('ImagePNG')) {
 							$errorMsg = 'ErrorNoPNGFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@ImagePNG($image3, NULL)) {
@@ -292,7 +292,7 @@ class PhocaGalleryImageRotate
 							}
 							$imgPNGToWrite = ob_get_contents();
 							ob_end_clean();
-							
+
 							if(!File::write( $fileOut, $imgPNGToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -304,13 +304,13 @@ class PhocaGalleryImageRotate
 							}
 						}
 					break;
-		            
+
 					case IMAGETYPE_GIF :
 						if (!function_exists('ImageGIF')) {
 							$errorMsg = 'ErrorNoGIFFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@ImageGIF($image3, NULL)) {
@@ -320,7 +320,7 @@ class PhocaGalleryImageRotate
 							}
 							$imgGIFToWrite = ob_get_contents();
 							ob_end_clean();
-							
+
 							if(!File::write( $fileOut, $imgGIFToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -338,7 +338,7 @@ class PhocaGalleryImageRotate
 							$errorMsg = 'ErrorNoWEBPFunction';
 							return false;
 						}
-						
+
 						if ($jfile_thumbs == 1) {
 							ob_start();
 							if (!@imagewebp($image3, NULL)) {
@@ -348,7 +348,7 @@ class PhocaGalleryImageRotate
 							}
 							$imgWEBPToWrite = ob_get_contents();
 							ob_end_clean();
-							
+
 							if(!File::write( $fileOut, $imgWEBPToWrite)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -359,40 +359,40 @@ class PhocaGalleryImageRotate
 								return false;
 							}
 						}
-					break;					
-						
-						
+					break;
+
+
 		            Default:
 						$errorMsg =  'ErrorNotSupportedImage';
 						return false;
 						break;
 				}
-				
+
 				// free memory
 				if (isset($image1)) {ImageDestroy($image1);}// Original
 				if (isset($image2)) {ImageDestroy($image2);}// Original
 				if (isset($image3)) {@ImageDestroy($image3);}// Resized
-				
-	            
-				if ($memoryLimitChanged == 1) {
+
+
+				/*if ($memoryLimitChanged == 1) {
 					$memoryString = $memory . 'M';
 					ini_set('memory_limit', $memoryString);
-				}
+				}*/
 	            return true; // Success
 	        } else {
 				$errorMsg = PhocaGalleryUtils::setMessage($errorMsg, Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_PROCESS'));
 				return false;
 			}
-			
-			if ($memoryLimitChanged == 1) {
+
+			/*if ($memoryLimitChanged == 1) {
 				$memoryString = $memory . 'M';
 				ini_set('memory_limit', $memoryString);
-			}
+			}*/
 	    }
 		$errorMsg = Text::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');
 		return false;
 	}
-	
+
 		/* This function is provided by php manual (function.imagerotate.php)
 	It's a workaround to enables image rotation on distributions which do not
 	use the bundled gd library (e.g. Debian, Ubuntu).

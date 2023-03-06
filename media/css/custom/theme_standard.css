@@ -125,6 +125,8 @@ F8961E
     
     font-weight: bold;
 	margin-top: 0.5em;
+    display: flex;
+    align-items: center;
 }
 
 .pg-item-box-title a,
@@ -337,4 +339,11 @@ animation: ph-lds-ellipsis3 0.6s infinite;
 
 #phocagallery {
     margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 768px) {
+    .com_phocagallery form > .pagination {
+        flex-direction:column;
+        align-items: center;
+    }
 }

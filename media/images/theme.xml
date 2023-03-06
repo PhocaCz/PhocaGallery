@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <install method="phocagallerytheme" type="component" version="4.5">
 	<name>Standard - Phoca Gallery 4.5</name>
-	<creationDate>06/11/2021</creationDate>
+	<creationDate>26/10/2022</creationDate>
 	<author>Jan Pavelka (www.phoca.cz)</author>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>1.0.0</version>
+	<version>4.5.2</version>
 	<description>Phoca Gallery Theme File - Standard</description>
 
 	<files>
@@ -16,9 +16,9 @@
         <folder>css</folder>
 		<filename>theme.xml</filename>
 	</files>
-	
+
 	<params>
-	
+
 
 	</params>
 </install>

@@ -172,6 +172,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 		$result = new stdClass();
 		$result->category_count = 0;
 		$result->image_count 	= 0;
+		$i = 1;
 
 		// Category will be saved - Images will be saved in recursive function
 		if (isset($data['foldercid'])) {
@@ -205,7 +206,11 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 						$datam['filename']		= $filename;
 
 						if ($data['title']	!= '') {
+
 							$datam['title']		= $data['title'];
+							$datam['title']		= str_replace('{###}', str_pad((string)$i, 3, '0', STR_PAD_LEFT), $datam['title']);
+							$datam['title']		= str_replace('{##}', str_pad((string)$i, 2, '0', STR_PAD_LEFT), $datam['title']);
+							$datam['title']		= str_replace('{#}', $i, $datam['title']);
 						} else {
 							$datam['title']		= PhocaGalleryFile::getTitleFromFile($filename);
 						}
@@ -261,8 +266,10 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 							return false;
 						}
 						$result->image_count++;
+						$i++;
 					}
 				}
+
 			}
 			$this->setImageCount($result->image_count);
 
@@ -336,6 +343,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 
 	protected function _addAllImagesFromFolder(&$existingImages, $category_id, $fullPath, $rel_path, $data = array()) {
 		$count = 0;
+		$i = 1;
 		$fileList = Folder::files( $fullPath );
 		natcasesort($fileList);
 		// Iterate over the files if they exist
@@ -366,6 +374,10 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 						$datam['language']		= $data['language'];
 						if ($data['title']	!= '') {
 							$datam['title']		= $data['title'];
+
+							$datam['title']		= str_replace('{###}', str_pad((string)$i, 3, '0', STR_PAD_LEFT), $datam['title']);
+							$datam['title']		= str_replace('{##}', str_pad((string)$i, 2, '0', STR_PAD_LEFT), $datam['title']);
+							$datam['title']		= str_replace('{#}', $i, $datam['title']);
 						} else {
 							$datam['title']		= PhocaGalleryFile::getTitleFromFile($filename);
 						}
@@ -423,6 +435,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 					    $image->catid 		= $category_id;
 					    $existingImages[] 	= &$image ;
 						$count++ ;
+						$i++;
 					}
 				}
 			}

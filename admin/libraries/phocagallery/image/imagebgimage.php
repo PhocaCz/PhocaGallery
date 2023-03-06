@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
-jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.path.path');
 phocagalleryimport('phocagallery.file.file');
@@ -25,32 +25,32 @@ phocagalleryimport('phocagallery.utils.utils');
 class PhocaGalleryImageBgImage
 {
 	public static function createBgImage($data, &$errorMsg) {
-	
+
 		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 		$formatIcon		= 'png';
 		$path			= PhocaGalleryPath::getPath();
-		
+
 		$fileIn 	= $fileOut = $path->image_abs_front. $data['image'] .'.'. $formatIcon;
-	
+
 		if ($fileIn !== '' && File::exists($fileIn)) {
-		
-			$memory 			= 8;
+
+			/*$memory 			= 8;
 			$memoryLimitChanged = 0;
-			
+
 			$memory = (int)ini_get( 'memory_limit' );
 			if ($memory == 0) {
 				$memory = 8;
 			}
-			
+
 			// Try to increase memory
 			if ($memory < 50) {
 				ini_set('memory_limit', '50M');
 				$memoryLimitChanged = 1;
-			}
-			
+			}*/
+
 			$imageWidth 			= $data['iw'];
 			$imageHeight			= $data['ih'];
 			$completeImageWidth 	= $imageWidth + 18;
@@ -66,14 +66,14 @@ class PhocaGalleryImageBgImage
 			$imgY	= 6; $imgHY = $imageHeight + 5 + $imgY;
 			$brdX 	= $imgX - 1; $brdWX = $imgWX + 1;
 			$brdY	= $imgY - 1; $brdHY = $imgHY + 1;
-			
+
 			// Crate an image
 			$img 	= @imagecreatetruecolor($completeImageWidth, $completeImageHeight);
 			if (!$img) {
 				$errorMsg = 'ErrorNoImageCreateTruecolor';
 				return false;
 			}
-			
+
 			if ($completeImageBackground == '') {
 				switch($formatIcon) {
 					case 'jpg':
@@ -92,7 +92,7 @@ class PhocaGalleryImageBgImage
 				$bGClr	= PhocaGalleryUtils::htmlToRgb($completeImageBackground);
 				imagefilledrectangle($img, 0, 0, $completeImageWidth, $completeImageHeight, imagecolorallocate($img, $bGClr[0], $bGClr[1], $bGClr[2]));
 			}
-			
+
 			// Create Retangle
 			if ($retangleColor != '') {
 				$rtgClr		= PhocaGalleryUtils::htmlToRgb($retangleColor);
@@ -108,7 +108,7 @@ class PhocaGalleryImageBgImage
 			if ((int)$effect > 0)
 			if ($shadowColor != '') {
 				$shdClr	= PhocaGalleryUtils::htmlToRgb($shadowColor);
-			
+
 				if ((int)$effect == 3) {
 					$shdX = $brdX  - 1;
 					$shdY = $brdY  - 1;
@@ -124,8 +124,8 @@ class PhocaGalleryImageBgImage
 				}
 				$shdWX 	= $brdWX + 1;
 				$shdHY	= $brdHY + 1;
-				
-				
+
+
 				foreach($effectArray as $key => $value) {
 					$effectImg = @imagecolorallocatealpha($img, $shdClr[0], $shdClr[1], $shdClr[2],$value);
 					if (!$effectImg) {
@@ -133,26 +133,26 @@ class PhocaGalleryImageBgImage
 						return false;
 					}
 					imagerectangle($img, $shdX, $shdY, $shdWX, $shdHY, $effectImg);
-				
+
 					if ((int)$effect == 3) {
 						$shdX--;
 						$shdY--;
-						
+
 					} else if ((int)$effect == 2) {
 						$shdX++;
 						$shdY++;
-						
+
 					} else {
 						//$shdX++;
 						//$shdY++;
 					}
-					
+
 					$shdWX++;
 					$shdHY++;
-					
+
 				}
 			}
-				
+
 			// Write Rectangle over the shadow
 			if ($retangleColor != '') {
 				imagefilledrectangle($img, $imgX, $imgY, $imgWX, $imgHY, $retangle);
@@ -160,8 +160,8 @@ class PhocaGalleryImageBgImage
 			if ($borderColor != '') {
 				imagerectangle($img, $brdX, $brdY, $brdWX, $brdHY, $border);
 			}
-		
-			
+
+
 			switch($formatIcon) {
 				case 'jpg':
 				case 'jpeg':
@@ -179,7 +179,7 @@ class PhocaGalleryImageBgImage
 						}
 						$imgJPEGToWrite = ob_get_contents();
 						ob_end_clean();
-						
+
 						if(!File::write( $fileOut, $imgJPEGToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
@@ -191,7 +191,7 @@ class PhocaGalleryImageBgImage
 						}
 					}
 				break;
-				
+
 				case 'png' :
 					if (!function_exists('ImagePNG')) {
 						$errorMsg = 'ErrorNoPNGFunction';
@@ -207,7 +207,7 @@ class PhocaGalleryImageBgImage
 						}
 						$imgPNGToWrite = ob_get_contents();
 						ob_end_clean();
-						
+
 						if(!File::write( $fileOut, $imgPNGToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
@@ -219,13 +219,13 @@ class PhocaGalleryImageBgImage
 						}
 					}
 				break;
-				
+
 				case 'gif' :
 					if (!function_exists('ImageGIF')) {
 						$errorMsg = 'ErrorNoGIFFunction';
 						return false;
 					}
-					
+
 					if ($jfile_thumbs == 1) {
 						ob_start();
 						if (!@ImageGIF($img, NULL)) {
@@ -235,7 +235,7 @@ class PhocaGalleryImageBgImage
 						}
 						$imgGIFToWrite = ob_get_contents();
 						ob_end_clean();
-						
+
 						if(!File::write( $fileOut, $imgGIFToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
@@ -263,7 +263,7 @@ class PhocaGalleryImageBgImage
 						}
 						$imgWEBPToWrite = ob_get_contents();
 						ob_end_clean();
-						
+
 						if(!File::write( $fileOut, $imgWEBPToWrite)) {
 							$errorMsg = 'ErrorWriteFile';
 							return false;
@@ -274,25 +274,25 @@ class PhocaGalleryImageBgImage
 							return false;
 						}
 					}
-				break;				
-				
+				break;
+
 				Default:
 					$errorMsg =  'ErrorNotSupportedImage';
 					return false;
 				break;
 			}
-			
+
 			// free memory
 			ImageDestroy($img);// Original
-	            
-			if ($memoryLimitChanged == 1) {
+
+			/*if ($memoryLimitChanged == 1) {
 				$memoryString = $memory . 'M';
 				ini_set('memory_limit', $memoryString);
-			}
-	        
+			}*/
+
 			return true; // Success
 		}
-		
+
 		$errorMsg = 'Error2';
 		return false;
 	}

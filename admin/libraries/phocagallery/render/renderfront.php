@@ -772,6 +772,7 @@ class PhocaGalleryRenderFront
             . ' ORDER BY a.type, a.ordering ASC';
         $db->setQuery($query);
         $filenames = $db->loadObjectList();
+
         if (!empty($filenames)) {
             foreach ($filenames as $fk => $fv) {
 

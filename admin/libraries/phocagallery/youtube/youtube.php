@@ -38,7 +38,7 @@ class PhocaGalleryYoutube
 
 
 
-			$youtubeheight	= PhocaGallerySettings::getAdvancedSettings('youtubeheight');
+		/*	$youtubeheight	= PhocaGallerySettings::getAdvancedSettings('youtubeheight');
 			$youtubewidth	= PhocaGallerySettings::getAdvancedSettings('youtubewidth');
 
 			if ((int)$ywidth > 0) {
@@ -46,7 +46,7 @@ class PhocaGalleryYoutube
 			}
 			if ((int)$yheight > 0) {
 				$youtubeheight	= (int)$yheight;
-			}
+			} */
 
 
 			/*$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'">'
@@ -55,7 +55,8 @@ class PhocaGalleryYoutube
 			.'<param name="allowscriptaccess" value="always"></param>'
 			.'<embed src="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"></embed></object>';*/
 
-			$o .= '<iframe height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'" src="//www.youtube.com/embed/'.$code.'" frameborder="0" allowfullscreen></iframe>';
+            // height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"
+			$o .= '<iframe src="//www.youtube.com/embed/'.$code.'" frameborder="0" allowfullscreen></iframe>';
 		}
 
 		if ($o != '') {
