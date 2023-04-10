@@ -1,3 +1,4 @@
+
 <?php
 /*
  * @package		Joomla.Framework
@@ -312,11 +313,11 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		}
 
 		// Trigger the onContentBeforeSave event.
-		/*$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
+		$result = Factory::getApplication()->triggerEvent($this->event_before_save, array($this->option,$this->name, $isNew,$table));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
-		}*/
+		}
 
 		// Store the data.
 		if (!$table->store()) {
@@ -337,7 +338,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$cache->clean();
 
 		// Trigger the onContentAfterSave event.
-		//$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew));
+		Factory::getApplication()->triggerEvent($this->event_after_save, array($this->option, $table, $isNew));
 
 		$pkName = $table->getKeyName();
 		if (isset($table->$pkName)) {
