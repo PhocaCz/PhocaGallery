@@ -160,6 +160,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 	{
 		// Initialise variables.
 		//$dispatcher	= JDispatcher::getInstance();
+		$app		= Factory::getApplication();
 		$user		= Factory::getUser();
 		$table		= $this->getTable('phocagallery');
 		$pks		= (array) $pks;
@@ -187,8 +188,15 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$context = $this->option.'.'.$this->name;
 
 		// Trigger the onContentChangeState event.
-		$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
+		/*$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
 		if (in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
+*/
+		PluginHelper::importPlugin($this->events_map['change_state']);
+		$result = $app->triggerEvent($this->event_change_state, array($context, $pks, $value));
+		if (\in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
 		}
@@ -198,6 +206,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 
 	function save($data) {
 
+		$app						= Factory::getApplication();
 		$params						= ComponentHelper::getParams( 'com_phocagallery' );
 		$clean_thumbnails 			= $params->get( 'clean_thumbnails', 0 );
 		$fileOriginalNotExist		= 0;
@@ -318,6 +327,13 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 			return false;
 		}*/
 
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
+
 		// Store the data.
 		if (!$table->store()) {
 			$this->setError($table->getError());
@@ -338,6 +354,12 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 
 		// Trigger the onContentAfterSave event.
 		//$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew));
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		$pkName = $table->getKeyName();
 		if (isset($table->$pkName)) {
