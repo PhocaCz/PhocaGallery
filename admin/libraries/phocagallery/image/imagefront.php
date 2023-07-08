@@ -82,6 +82,7 @@ class PhocaGalleryImageFront
 			//$key = '-key';
 			return false;
 		}
+		$fileThumbnail = '';
 		switch ($imgCategoriesSize) {
 			// user wants to display only icon folder (parameters) medium
 			case 3:
@@ -1087,6 +1088,7 @@ class PhocaGalleryImageFront
 			$item->onclick		= '';
 			$item->onclick2		= $item->onclick;
 			$item->onclick3		= $item->onclick;
+			$item->onclick4		= $item->onclick;// Rating
 			$item->linkorig		= $imgLinkOrig;
 
 		} else if ($t['detail_window'] == 1) {
@@ -1097,6 +1099,7 @@ class PhocaGalleryImageFront
 			$item->onclick		= "window.open(this.href,'win2','width=".$t['popup_width'].",height=".$t['popup_height'].",scrollbars=yes,menubar=no,resizable=yes'); return false;";
 			$item->onclick2		= $item->onclick;
 			$item->onclick3		= $item->onclick;
+			$item->onclick4		= $item->onclick;// Rating
 			$item->link 		= $siteLink;
 			$item->link2 		= $siteLink;
 			$item->link3		= $siteLink;
@@ -1115,6 +1118,7 @@ class PhocaGalleryImageFront
 			$item->onclick		= '';
 			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();';
 			$item->onclick3		= $item->onclick;
+			$item->onclick4		= $item->onclick;// Rating
 
 		} else if ( $t['detail_window'] == 14 ) {
 			// PHOTOSWIPE
@@ -1129,6 +1133,7 @@ class PhocaGalleryImageFront
 			$item->itemprop		= 'contentUrl';
 			$item->onclick2		= 'document.getElementById(\'pgImg'.$item->id.'\').click();';
 			$item->onclick3		= $item->onclick;
+			$item->onclick4		= $item->onclick;// Rating
 
 
 			switch ($t['photoswipe_display_caption']) {
@@ -1164,6 +1169,7 @@ class PhocaGalleryImageFront
 			$item->onclick		= '';
 			$item->onclick2		= $item->onclick;
 			$item->onclick3		= $item->onclick;
+			$item->onclick4		= $item->onclick;// Rating
 
 
 		}

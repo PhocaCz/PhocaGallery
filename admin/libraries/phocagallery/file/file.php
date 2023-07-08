@@ -22,6 +22,9 @@ class PhocaGalleryFile
 {
 	public static function getTitleFromFile(&$filename, $displayExt = 0) {
 
+		if (!isset($filename)) {
+			$filename = '';
+		}
 
 		$filename 			= str_replace('//', '/', $filename);
 		$filename			= str_replace('\\', '/', $filename);
@@ -29,7 +32,7 @@ class PhocaGalleryFile
 		$countFolderArray	= count($folderArray);// Count this array
 		$lastArrayValue 	= $countFolderArray - 1;// The last array value is (Count array - 1)
 
-		$title = new CMSObject();
+		$title = new stdClass();
 		$title->with_extension 		= $folderArray[$lastArrayValue];
 		$title->without_extension	= PhocaGalleryFile::removeExtension($folderArray[$lastArrayValue]);
 

@@ -6,7 +6,7 @@
 
 <field name="alias" type="text" class="form-control" size="40" label="COM_PHOCAGALLERY_FIELD_ALIAS_LABEL" description="COM_PHOCAGALLERY_FIELD_ALIAS_M_DESC" />
 
-<field name="catid" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_DESC" class="form-control" />
+<field name="catid" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_DESC"  />
 
 
 

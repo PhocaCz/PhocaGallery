@@ -203,6 +203,12 @@
 	<option value="2">COM_PHOCAGALLERY_YESHTML</option>
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 </field>
+
+<field name="display_masonry" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_DISPLAY_MASONRY_LABEL" description="COM_PHOCAGALLERY_FIELD_DISPLAY_MASONRY_DESC">
+	<option value="1">COM_PHOCAGALLERY_YES</option>
+	<option value="0">COM_PHOCAGALLERY_NO</option>
+</field>
+
 <!--
 <field name="diff_thumb_height" default="0" type="list" label="COM_PHOCAGALLERY_FIELD_DIFF_THUMB_HEIGHT_LABEL" description="COM_PHOCAGALLERY_FIELD_DIFF_THUMB_HEIGHT_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>
@@ -1003,7 +1009,7 @@
 	<option value="6">COM_PHOCAGALLERY_SMALL_AND_LARGE_THUMBNAIL</option>
 	<option value="7">COM_PHOCAGALLERY_ALL</option>
 </field>
-
+<!--
 <field name="additional_thumbnails" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_ADDITIONAL_THUMBNAILS_LABEL" description="COM_PHOCAGALLERY_FIELD_ADDITIONAL_THUMBNAILS_DESC">
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_ONLY_MEDIUM_THUMBNAIL</option>
@@ -1013,8 +1019,9 @@
 </field>
 
 <field name="additional_thumbnail_margin" type="text" size="3" default="0" label="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_LABEL" description="COM_PHOCAGALLERY_FIELD_MARGIN_ADDITIONAL_THUMBNAILS_DESC"/>
-
+-->
 <field name="jpeg_quality" type="text" size="3" default="85" label="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_LABEL" description="COM_PHOCAGALLERY_FIELD_JPEG_QUALITY_DESC"/>
+<field name="webp_quality" type="text" size="3" default="80" label="COM_PHOCAGALLERY_FIELD_WEBP_QUALITY_LABEL" description="COM_PHOCAGALLERY_FIELD_WEBP_QUALITY_DESC"/>
 
 <field name="exif_rotate" type="list" default="0" label="COM_PHOCAGALLERY_FIELD_EXIF_ROTATE_LABEL" description="COM_PHOCAGALLERY_FIELD_EXIF_ROTATE_DESC">
 	<option value="1">COM_PHOCAGALLERY_YES</option>

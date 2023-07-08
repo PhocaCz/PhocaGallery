@@ -57,6 +57,8 @@ class PhocaGalleryImageMagic
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$exif_rotate	= $params->get( 'exif_rotate', 0 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
+		$webp_quality	= $params->get( 'webp_quality', 80 );
+		$webp_quality	= PhocaGalleryImage::getJpegQuality($webp_quality);
 
 		$fileWatermark = '';
 
@@ -478,7 +480,7 @@ class PhocaGalleryImageMagic
 
 						if ($jfile_thumbs == 1) {
 							ob_start();
-							if (!@imagewebp($image2, NULL)) {
+							if (!@imagewebp($image2, NULL, $webp_quality)) {
 								ob_end_clean();
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -491,7 +493,7 @@ class PhocaGalleryImageMagic
 								return false;
 							}
 						} else {
-							if (!@imagewebp($image2, $fileOut)) {
+							if (!@imagewebp($image2, $fileOut, $webp_quality)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}

@@ -188,12 +188,13 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$context = $this->option.'.'.$this->name;
 
 		// Trigger the onContentChangeState event.
-		/*$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
+		//$result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
+		$result = $app->triggerEvent($this->event_change_state, array($context, $pks, $value));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
 		}
-*/
+
 		PluginHelper::importPlugin($this->events_map['change_state']);
 		$result = $app->triggerEvent($this->event_change_state, array($context, $pks, $value));
 		if (\in_array(false, $result, true)) {
@@ -322,6 +323,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 
 		// Trigger the onContentBeforeSave event.
 		/*$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
+		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;

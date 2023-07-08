@@ -36,6 +36,8 @@ class PhocaGalleryImageRotate
 
 		$params 		= ComponentHelper::getParams('com_phocagallery') ;
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
+		$webp_quality	= $params->get( 'webp_quality', 80 );
+		$webp_quality	= PhocaGalleryImage::getJpegQuality($webp_quality);
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 
@@ -341,7 +343,7 @@ class PhocaGalleryImageRotate
 
 						if ($jfile_thumbs == 1) {
 							ob_start();
-							if (!@imagewebp($image3, NULL)) {
+							if (!@imagewebp($image3, NULL, $webp_quality)) {
 								ob_end_clean();
 								$errorMsg = 'ErrorWriteFile';
 								return false;
@@ -354,7 +356,7 @@ class PhocaGalleryImageRotate
 								return false;
 							}
 						} else {
-							if (!@imagewebp($image3, $fileOut)) {
+							if (!@imagewebp($image3, $fileOut, $webp_quality)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}

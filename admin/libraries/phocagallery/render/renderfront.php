@@ -773,6 +773,9 @@ class PhocaGalleryRenderFront
         $db->setQuery($query);
         $filenames = $db->loadObjectList();
 
+
+        $wa  = $app->getDocument()->getWebAssetManager();
+
         if (!empty($filenames)) {
             foreach ($filenames as $fk => $fv) {
 
@@ -791,12 +794,16 @@ class PhocaGalleryRenderFront
                     if ($isIncluded) {
 
                         //HTMLHelper::stylesheet($path . $fv->filename);
-                        HTMLHelper::_('stylesheet', $path . $fv->filename , array('version' => 'auto'));
+                       // HTMLHelper::_('stylesheet', $path . $fv->filename , array('version' => 'auto'));
+                        $wa->registerAndUseStyle('com_phocagallery.'.str_replace('.', '-', $fv->filename), $path . $fv->filename);
+
                     }
                 } else {
 
                     //HTMLHelper::stylesheet($path . $fv->filename);
-                    HTMLHelper::_('stylesheet', $path . $fv->filename,  array('version' => 'auto'));
+                    //HTMLHelper::_('stylesheet', $path . $fv->filename,  array('version' => 'auto'));
+                    $wa->registerAndUseStyle('com_phocagallery.'.str_replace('.', '-', $fv->filename), $path . $fv->filename);
+
                 }
             }
         }

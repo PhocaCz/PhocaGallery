@@ -2,24 +2,24 @@
 <form>
 <fieldset addfieldpath="/administrator/components/com_phocagallery/models/fields">
 	<fields name="filter">
-		
-		
+
+
 	<field name="search" type="text" inputmode="search" label="COM_PHOCAGALLERY_SEARCH" description="COM_PHOCAGALLERY_SEARCH" hint="JSEARCH_FILTER" />
 
 		<field name="published" type="list" label="JOPTION_FILTER_PUBLISHED" description="JOPTION_FILTER_PUBLISHED_DESC" onchange="this.form.submit();" >
-		
+
 		<option value="">JOPTION_SELECT_PUBLISHED</option>
 		<option value="1">COM_PHOCAGALLERY_PUBLISHED</option>
 		<option value="0">COM_PHOCAGALLERY_UNPUBLISHED</option>
 		</field>
 
-		<field name="category_id" type="PhocaGalleryCategory" label="JOPTION_FILTER_CATEGORY" description="JOPTION_FILTER_CATEGORY_DESC"   onchange="this.form.submit();" />
-		
+		<field name="category_id" type="PhocaGalleryCategory" typemethod="filter" layout="joomla.form.field.list-fancy-select" label="JOPTION_FILTER_CATEGORY" description="JOPTION_FILTER_CATEGORY_DESC"   onchange="this.form.submit();" />
+
 		<field name="language" type="contentlanguage" label="JOPTION_FILTER_LANGUAGE" description="JOPTION_FILTER_LANGUAGE_DESC" onchange="this.form.submit();">
 			<option value="">JOPTION_SELECT_LANGUAGE</option>
 			<option value="*">JALL</option>
 		</field>
-		
+
 		<input type="hidden" name="form_submited" value="1"/>
 	</fields>
 

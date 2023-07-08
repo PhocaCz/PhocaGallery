@@ -44,44 +44,42 @@ class PhocaGalleryViewCategory extends HtmlView
 
 	function display($tpl = null) {
 
-		$app						= Factory::getApplication();
+		$app = Factory::getApplication();
 		// Don't load all the framework if nonsense
-		$id 						= $app->input->get('id', 0, 'int');
-		$this->tagId				= $app->input->get( 'tagid', 0, 'int' );
+		$id          = $app->input->get('id', 0, 'int');
+		$this->tagId = $app->input->get('tagid', 0, 'int');
 
 
 		if ($id < 1 && $this->tagId < 1) {
 
-			throw new Exception(Text::_( "COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED" ) , 404);
+			throw new Exception(Text::_("COM_PHOCAGALLERY_CATEGORY_IS_UNPUBLISHED"), 404);
 
 			exit;
 		}
 
-		$document					= Factory::getDocument();
-		$uri 						= Uri::getInstance();
-		$menus						= $app->getMenu();
-		$menu						= $menus->getActive();
-		$this->params				= $app->getParams();
+		$document     = Factory::getDocument();
+		$uri          = Uri::getInstance();
+		$menus        = $app->getMenu();
+		$menu         = $menus->getActive();
+		$this->params = $app->getParams();
 
 
+		$this->t['display_feed'] = $this->params->get('display_feed', 1);
 
 
-		$this->t['display_feed']			= $this->params->get('display_feed', 1);
+		$this->t['user']   = Factory::getUser();
+		$this->t['action'] = $uri->toString();
+		$this->t['path']   = PhocaGalleryPath::getPath();
+		$limitStart        = $app->input->get('limitstart', 0, 'int');
 
-
-		$this->t['user'] 		= Factory::getUser();
-		$this->t['action']		= $uri->toString();
-		$this->t['path'] 		= PhocaGalleryPath::getPath();
-		$limitStart					= $app->input->get( 'limitstart', 0, 'int');
-
-		$this->t['tab'] 			= $app->input->get('tab', 0, 'int');
-		$this->t['pl']			= 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-		$this->t['icon_path']	= 'media/com_phocagallery/images/';
-		$this->t['plcat']		= 'index.php?option=com_phocagallery&view=category';
-		$this->itemId				= $app->input->get('Itemid', 0, 'int');
-		$this->t['itemid']			= $this->itemId;
-		$neededAccessLevels			= PhocaGalleryAccess::getNeededAccessLevels();
-		$access						= PhocaGalleryAccess::isAccess($this->t['user']->getAuthorisedViewLevels(), $neededAccessLevels);
+		$this->t['tab']       = $app->input->get('tab', 0, 'int');
+		$this->t['pl']        = 'index.php?option=com_users&view=login&return=' . base64_encode($uri->toString());
+		$this->t['icon_path'] = 'media/com_phocagallery/images/';
+		$this->t['plcat']     = 'index.php?option=com_phocagallery&view=category';
+		$this->itemId         = $app->input->get('Itemid', 0, 'int');
+		$this->t['itemid']    = $this->itemId;
+		$neededAccessLevels   = PhocaGalleryAccess::getNeededAccessLevels();
+		$access               = PhocaGalleryAccess::isAccess($this->t['user']->getAuthorisedViewLevels(), $neededAccessLevels);
 
 		// CSS
 		PhocaGalleryRenderFront::renderAllCSS();
@@ -141,6 +139,8 @@ class PhocaGalleryViewCategory extends HtmlView
 
 		$this->t['display_new']   			= $this->params->get('display_new', 0);
         $this->t['display_hot']    			= $this->params->get('display_hot', 0);
+
+
 
 		// Switch image JS
 		$this->t['basic_image']	= '';
@@ -266,6 +266,8 @@ class PhocaGalleryViewCategory extends HtmlView
 		$this->t['multibox_height']			= (int)$this->params->get( 'multibox_height', 560 );
 		$this->t['multibox_width']			= (int)$this->params->get( 'multibox_width', 980 );
 		$this->t['disable_mootools_modal']	= $this->params->get( 'disable_mootools_modal', 0 );
+
+
 
 		// CSS
 		/*switch($this->t['image_categories_size']) {
@@ -395,8 +397,6 @@ class PhocaGalleryViewCategory extends HtmlView
 		$btn->setButtons($this->t['detail_window'], $libraries, $library);
 
 
-
-
 		$this->t ['highslideonclick']	= '';// for using with highslide
 		if (isset($this->button->highslideonclick)) {
 			$this->t ['highslideonclick'] = $this->button->highslideonclick;// TO DO
@@ -452,6 +452,15 @@ class PhocaGalleryViewCategory extends HtmlView
 		$display_categories_back_button = $this->params->get( 'display_categories_back_button', 1 );
 		// PARAMS - Access Category - display category (subcategory folder or backbutton  to not accessible cat
 		$display_access_category 		= $this->params->get( 'display_access_category', 1 );
+
+		// MASONRY
+		$wa                         = $app->getDocument()->getWebAssetManager();
+		if ($this->t['display_masonry'] == 1){
+			$wa->registerAndUseStyle('com_phocagallery.masonry', 'media/com_phocagallery/css/misc/phocagallery-masonry.css');
+			// Disable some parameters
+			$display_back_button = 0;
+			$display_subcat_page = 0;
+		}
 
 		// Set page title per category
 		if ($this->t['display_cat_name_title'] == 1 && isset($this->category->title)) {
@@ -1123,7 +1132,12 @@ class PhocaGalleryViewCategory extends HtmlView
 					$this->items[$iS]->datasize = 'data-size="' . (int)$dataSizeW . 'x' . (int)$dataSizeH . '"';
 				}
 
-				$this->items[$iS]->linkthumbnailpath = PhocaGalleryImageFront::displayCategoryImageOrNoImage($this->items[$iS]->filename, $iFormat);
+				if ($this->t['display_masonry'] == 1) {
+					$this->items[$iS]->linkthumbnailpath = PhocaGalleryImageFront::displayCategoryImageOrNoImage($this->items[$iS]->filename, $iFormatD);
+				} else {
+					$this->items[$iS]->linkthumbnailpath = PhocaGalleryImageFront::displayCategoryImageOrNoImage($this->items[$iS]->filename, $iFormat);
+				}
+
 			}
 
 			if (isset($parentCategory->params)) {
