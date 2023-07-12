@@ -135,6 +135,7 @@ class PhocaGalleryViewCategory extends HtmlView
 		$this->t['equal_heights']			= $this->params->get( 'equal_heights', 0 );
 		$this->t['photoswipe_display_caption']= $this->params->get( 'photoswipe_display_caption', 1 );
 		$this->t['masonry_center']			= $this->params->get( 'masonry_center', 0 );
+		$this->t['display_masonry']			= $this->params->get( 'display_masonry', 0 );
 		$this->t['map_type']				= $this->params->get( 'map_type', 2 );
 
 		$this->t['display_new']   			= $this->params->get('display_new', 0);
