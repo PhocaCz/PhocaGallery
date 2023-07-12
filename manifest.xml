@@ -29,7 +29,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.5.4/com_phocagallery_v4.5.4.zip</downloadurl>
 		</downloads>
-		<sha512>4a9eb5f3acbe412568fe0967e4f50c33382e47c043ee7c3376cd80de2931bfe3110f306dab7103dc77dca2c0130fa95e51f6e4074d878c34c0b47882c569ec4a</sha512>
+		<sha512>d54aff08a8020337acb5abe8334b61eca6523e51a869507151d0dfc0c0db922647f2e86235f77f76f8fef4cce1f44146d671a643437a946c185ea2696a338174</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
