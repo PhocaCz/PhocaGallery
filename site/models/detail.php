@@ -55,7 +55,7 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 
 			$whereLang = '';
 			if ($this->getState('filter.language')) {
-				$whereLang =  ' AND a.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+				$whereLang =  ' AND a.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 			}
 
 
@@ -162,7 +162,7 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 
 		$wheres				= array();
 		if ($this->getState('filter.language')) {
-			$wheres[]	= ' a.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[]	= ' a.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 		$imageOrdering 		= PhocaGalleryOrdering::getOrderingString($image_ordering, 1);
 		$published  		= ' AND a.published = 1';
@@ -273,8 +273,8 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 		}
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		$query = ' SELECT c.id, c.title, c.alias, c.catid,'
@@ -310,8 +310,8 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 		$wheres[] = " cc.published = 1";
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 

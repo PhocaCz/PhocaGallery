@@ -16,14 +16,14 @@ $task		= 'phocagalleryef';
 
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.keepalive');
 //JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
 $app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) {
 	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {

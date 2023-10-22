@@ -28,7 +28,7 @@ class PhocagalleryModelCategories extends BaseDatabaseModel
 		$app 				= Factory::getApplication();
 		$config 			= Factory::getConfig();
 		$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
-		$default_pagination	= $paramsC->get( 'default_pagination_categories', '0' );
+		$default_pagination	= (int)$paramsC->get( 'default_pagination_categories', '0' );
 		$category_ordering	= $paramsC->get( 'category_ordering', 1 );
 		$context			= $this->_context.'.';
 
@@ -100,7 +100,7 @@ class PhocagalleryModelCategories extends BaseDatabaseModel
 		// Filter by language
 		$whereLang = '';
 		if ($this->getState('filter.language')) {
-			$whereLang =  ' AND cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$whereLang =  ' AND cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		// Params

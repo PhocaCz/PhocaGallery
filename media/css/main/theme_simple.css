@@ -118,10 +118,14 @@ F8961E
     padding: 0.5em;
     color: #fff;
     font-weight: bold;
-    background: rgba(0,0,0,.5);
     width: 100%;
     border-radius: 0 0 3px 3px;
     font-size: 115%;
+	background: rgba(0,0,0,.5);
+}
+
+.pg-item-box-title.pg-display-name-2 {
+	background:transparent;
 }
 
 /* Capitalize first letter of sentence */
@@ -262,7 +266,7 @@ F8961E
 }
 .ph-loading-text .ph-lds-ellipsis {
     height: 50px;
-}  
+}
 .ph-loading-hidden {
     display: none;
 }
@@ -321,7 +325,7 @@ animation: ph-lds-ellipsis3 0.6s infinite;
 .ph-adminlist {
     clear:both;
     margin: 1em auto;
-    
+
 }
 
 .ph-adminlist tr th,

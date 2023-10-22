@@ -24,12 +24,12 @@
 		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
-		<version>4.5.4</version>
-		<infourl title="Phoca Gallery 4.5.4">http://www.phoca.cz/version/index.php?phocagallery=4.5.4</infourl>
+		<version>4.5.5</version>
+		<infourl title="Phoca Gallery 4.5.5">http://www.phoca.cz/version/index.php?phocagallery=4.5.5</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.5.4/com_phocagallery_v4.5.4.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.5.5/com_phocagallery_v4.5.5.zip</downloadurl>
 		</downloads>
-		<sha512>d54aff08a8020337acb5abe8334b61eca6523e51a869507151d0dfc0c0db922647f2e86235f77f76f8fef4cce1f44146d671a643437a946c185ea2696a338174</sha512>
+		<sha512>37ff79dda222bca085712e4c4b472b4a39105bbd2d022b52c33de327a4027fab3b71d9043f08565178664d46f13e8bb23947f822647ddceff49aba6809bc0a81</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>

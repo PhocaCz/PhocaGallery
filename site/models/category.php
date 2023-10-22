@@ -37,10 +37,9 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 
 		$config 			= Factory::getConfig();
 		$paramsC 			= ComponentHelper::getParams('com_phocagallery') ;
-		$default_pagination	= $paramsC->get( 'default_pagination_category', '20' );
+		$default_pagination	= (int)$paramsC->get( 'default_pagination_category', '20' );
 		$image_ordering		= $paramsC->get( 'image_ordering', 1 );
 		$context			= $this->_context.'.';
-
 
 		// Get the pagination request variables
 		$this->setState('limit', $app->getUserStateFromRequest($context .'limit', 'limit', $default_pagination, 'int'));
@@ -114,7 +113,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 
 		// Filter by language
 		if ($this->getState('filter.language')) {
-			$wheres[]	= ' a.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[]	= ' a.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		// Link from comment system
@@ -283,7 +282,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 		// Filter by language
 		$whereLang = '';
 		if ($this->getState('filter.language')) {
-			$whereLang =  ' AND cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$whereLang =  ' AND cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		//$query = 'SELECT c.*, COUNT(a.id) countimage' ... Cannot be used because get error if there is no image

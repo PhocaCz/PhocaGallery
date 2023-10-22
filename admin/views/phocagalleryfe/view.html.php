@@ -7,6 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -30,7 +32,7 @@ class PhocaGalleryCpViewPhocaGalleryFe extends HtmlView
 		$this->t	= PhocaGalleryUtils::setVars('fe');
 		$this->r	= new PhocaGalleryRenderAdminview();
 
-		$this->sidebar = JHtmlSidebar::render();
+		$this->sidebar = Sidebar::render();
 
 		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 		$app		= Factory::getApplication();
@@ -42,7 +44,7 @@ class PhocaGalleryCpViewPhocaGalleryFe extends HtmlView
 			break;
 
 			default:
-				$this->t['errormessage'] = JText::_('COM_PHOCAGALLERY_ERROR_1_MEMORY');//TO DO
+				$this->t['errormessage'] = Text::_('COM_PHOCAGALLERY_ERROR_1_MEMORY');//TO DO
 			break;
 		}
 		$this->addToolbar();

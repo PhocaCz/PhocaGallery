@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="4.0">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>12/07/2023</creationDate>
+	<creationDate>23/10/2023</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.5.4</version>
+	<version>4.5.5</version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>

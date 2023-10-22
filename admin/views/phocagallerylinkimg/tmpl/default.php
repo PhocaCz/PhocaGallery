@@ -75,7 +75,7 @@ $js .= '
 	window.parent.SqueezeBox.close();
 }';
 
-JFactory::getDocument()->addScriptDeclaration($js);
+Factory::getDocument()->addScriptDeclaration($js);
 ?>
 <div id="phocagallery-links">
 <fieldset class="adminform">

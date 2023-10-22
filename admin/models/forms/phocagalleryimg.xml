@@ -36,7 +36,7 @@
 
 
 
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCAGALLERY_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAGALLERY_FIELD_DESCRIPTION_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCAGALLERY_FIELD_DESCRIPTION_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCAGALLERY_FIELD_DESCRIPTION_DESC" />
 
 <field name="extu" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_FIELD_PICASA_USER_LABEL" description="COM_PHOCAGALLERY_FIELD_PICASA_USER_DESC"  />
 <field name="exta" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_FIELD_PICASA_ALBUM_LABEL" description="COM_PHOCAGALLERY_FIELD_PICASA_ALBUM_DESC"  />

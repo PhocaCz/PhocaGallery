@@ -38,7 +38,7 @@ class PhocaGalleryFileUploadMultiple
 
 		//First load mootools, then jquery and set noConflict
 		//JHtml::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
-		JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
+		HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
 		$document	= Factory::getDocument();
 		// No more used  - - - - -
 		//$nC = 'var pgJQ =  jQuery.noConflict();';//SET BELOW

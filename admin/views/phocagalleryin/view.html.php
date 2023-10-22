@@ -29,7 +29,7 @@ class PhocaGalleryCpViewPhocaGalleryIn extends HtmlView
 
 		$params 	= ComponentHelper::getParams('com_phocagallery');
 
-		//$this->sidebar = JHtmlSidebar::render();
+		//$this->sidebar = Sidebar::render();
 		$this->t	= PhocaGalleryUtils::setVars('in');
 		$this->r	= new PhocaGalleryRenderAdminview();
 

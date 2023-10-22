@@ -159,7 +159,7 @@ class PhocaGalleryRenderProcess
 
 				echo '<tr><td>- ' .Text::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_SOLUTION' ).' <br /> <a href="index.php?option=com_media">' .Text::_( 'COM_PHOCAGALLERY_MEDIA_MANAGER_LINK' ).'</a><div class="hr"></div></td></tr>';
 
-				echo '<tr><td>- <a href="https://www.phoca.cz/documentation/" target="_blank">' .JText::_( 'COM_PHOCAGALLERY_GO_TO_PHOCA_GALLERY_USER_MANUAL' ).'</a></td></tr>';
+				echo '<tr><td>- <a href="https://www.phoca.cz/documentation/" target="_blank">' . Text::_( 'COM_PHOCAGALLERY_GO_TO_PHOCA_GALLERY_USER_MANUAL' ).'</a></td></tr>';
 
 				echo '</table>';
 				echo '</div>';

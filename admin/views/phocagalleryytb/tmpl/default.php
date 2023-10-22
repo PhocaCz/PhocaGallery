@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 'function importYtb(task) {
 	if (document.getElementById("ytblink").value == "") {
 		alert("'. Text::_("COM_PHOCAGALLERY_YTB_LINK_NOT_SET", true).'");

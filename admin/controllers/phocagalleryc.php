@@ -34,14 +34,14 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 		$task = Factory::getApplication()->input->get('task');
 		if ((string)$task == 'loadextimgp') {
 			if ($this->registerTask( 'loadextimgp', 'save')) {
-				JFactory::getApplication()->input->set('task','apply');// we need to apply category data
-				JFactory::getApplication()->input->set('subtask','loadextimgp');// we need to get info to run loading images
+				Factory::getApplication()->input->set('task','apply');// we need to apply category data
+				Factory::getApplication()->input->set('subtask','loadextimgp');// we need to get info to run loading images
 			}
 		}
 		if ((string)$task == 'loadextimgf') {
 			if ($this->registerTask( 'loadextimgf', 'save')) {
-				JFactory::getApplication()->input->set('task','apply');// we need to apply category data
-				JFactory::getApplication()->input->set('subtask','loadextimgf');// we need to get info to run loading images
+				Factory::getApplication()->input->set('task','apply');// we need to apply category data
+				Factory::getApplication()->input->set('subtask','loadextimgf');// we need to get info to run loading images
 			}
 		}
 		$this->registerTask( 'uploadextimgf', 'uploadExtImgF');
@@ -49,8 +49,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 
 		if ((string)$task == 'loadextimgi') {
 			if ($this->registerTask( 'loadextimgi', 'save')) {
-				JFactory::getApplication()->input->set('task','apply');// we need to apply category data
-				JFactory::getApplication()->input->set('subtask','loadextimgi');// we need to get info to run loading images
+				Factory::getApplication()->input->set('task','apply');// we need to apply category data
+				Factory::getApplication()->input->set('subtask','loadextimgi');// we need to get info to run loading images
 			}
 		}
 

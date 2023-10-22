@@ -1320,7 +1320,7 @@ class PhocaGalleryViewCategory extends HtmlView
 					$wHOutput	= PhocaGalleryImage::getTransformImageArray($imgSize, $this->t['overlibimagerate']);
 				}
 
-				$oImg		= JHtml::_( 'image', $this->items[$iS]->extl, '' /*htmlspecialchars( addslashes($this->items[$iS]->title)) */, $wHOutput );
+				$oImg		= HtmlHelper::_( 'image', $this->items[$iS]->extl, '' /*htmlspecialchars( addslashes($this->items[$iS]->title)) */, $wHOutput );
 			} else {
 
 				$thumbL 	= str_replace ('phoca_thumb_m1_','phoca_thumb_m_',$this->items[$iS]->linkthumbnailpath);
@@ -1335,7 +1335,7 @@ class PhocaGalleryViewCategory extends HtmlView
 				$thumbLI 	= str_replace ('phoca_thumb_m1_','phoca_thumb_m_',$this->items[$iS]->linkthumbnailpath);
 				$thumbLI 	= str_replace ('phoca_thumb_m2_','phoca_thumb_m_',$thumbLI);
 				$thumbLI 	= str_replace ('phoca_thumb_m3_','phoca_thumb_m_',$thumbLI);
-				$oImg		= JHtml::_( 'image', $thumbL, '' /*$this->items[$iS]->title*/, $wHOutput );
+				$oImg		= HtmlHelper::_( 'image', $thumbL, '' /*$this->items[$iS]->title*/, $wHOutput );
 			}
 
 			/*switch ($enable_overlib) {

@@ -93,8 +93,9 @@ class JFormFieldPhocaGalleryCategory extends FormField
 
 		array_walk($categories, function ($category) use ($categories) {
 			if ($category->parent_id) {
-				if ($categories[$category->parent_id]->children === null)
+				if ($categories[$category->parent_id]->children === null) {
 					$categories[$category->parent_id]->children = [];
+				}
 				$categories[$category->parent_id]->children[] = $category;
 			}
 		});

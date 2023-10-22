@@ -16,14 +16,14 @@ $task		= 'phocagalleryimg';
 
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.keepalive');
 //JHtml::_('formbehavior.chosen', 'select');
 
 $r 			= $this->r;
 $app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) {
 	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
@@ -57,7 +57,7 @@ echo $r->group($this->form, $formArray);
 
 echo '<div class="clearfix"></div>'
 .'<div>'.Text::_('COM_PHOCAGALLERY_FB_INSTR1') .'</div>'
-.'<div style="text-align:right"><a style="text-decoration:underline;font-weight:bold;" href="http://developers.facebook.com/setup/" target="_blank" >'. JText::_('COM_PHOCAGALLERY_FB_CREATE_APP').'</a></div>'
+.'<div style="text-align:right"><a style="text-decoration:underline;font-weight:bold;" href="https://developers.facebook.com/setup/" target="_blank" >'.  Text::_('COM_PHOCAGALLERY_FB_CREATE_APP').'</a></div>'
 .'<div class="clearfix"></div>';
 
 

@@ -128,7 +128,7 @@ class PhocaGalleryRenderDetailButton
 			if (isset($value->id) && $value->id > 0) {
 
 				// onclick="disableBackAndNext()"
-				//$href	= JRoute::_('index.php?option=com_phocagallery&view=detail&catid='. $value->catslug.'&id='.$value->slug.$tCom.'&Itemid='. JFactory::getApplication()->input->get('Itemid', 1, 'get', 'int'));
+				//$href	= JRoute::_('index.php?option=com_phocagallery&view=detail&catid='. $value->catslug.'&id='.$value->slug.$tCom.'&Itemid='. Factory::getApplication()->input->get('Itemid', 1, 'get', 'int'));
 
 				$href	= Route::_(PhocaGalleryRoute::getImageRoute($value->id, $value->catid, $value->alias, $value->catalias) . $tCom);
 

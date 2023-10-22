@@ -138,8 +138,8 @@ if (!empty($this->items)) {
             // Image Name
             if ($item->type == 2) {
                 if ($item->display_name == 1 || $item->display_name == 2) {
-                    echo '<div class="pg-item-box-title image">' . "\n";
 
+                    echo '<div class="pg-item-box-title image pg-display-name-'.$item->display_name.'">' . "\n";
 
                     if ($item->display_name == 1) {
                         echo '<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>' . "\n";

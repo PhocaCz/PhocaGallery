@@ -9,7 +9,7 @@
 
 <field name="alias" type="text" class="form-control" size="40" label="COM_PHOCAGALLERY_FIELD_ALIAS_LABEL" description="COM_PHOCAGALLERY_FIELD_ALIAS_DESC" />
 
-<field name="parent_id" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_PARENT_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_CATEGORY_DESC"  class="form-select" />
+<field name="parent_id" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_PARENT_CATEGORY_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_CATEGORY_DESC" />
 
 <field name="image_id" type="phocaselectitem" label="COM_PHOCAGALLERY_FIELD_IMAGE_ID_LABEL" description="COM_PHOCAGALLERY_FIELD_IMAGE_ID_DESC" />
 
@@ -34,7 +34,7 @@
 <field name="zoom" type="phocaselectmap"  label="COM_PHOCAGALLERY_FIELD_ZOOM_LABEL" description="COM_PHOCAGALLERY_FIELD_ZOOM_DESC" class="form-select" size="40" />
 <field name="geotitle" type="Text" class="form-select" size="40" label="COM_PHOCAGALLERY_FIELD_GEOTITLE_LABEL" description="COM_PHOCAGALLERY_FIELD_GEOTITLE_DESC"  />
 
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-select" label="COM_PHOCAGALLERY_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAGALLERY_FIELD_DESCRIPTION_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-select" label="COM_PHOCAGALLERY_FIELD_DESCRIPTION_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCAGALLERY_FIELD_DESCRIPTION_DESC" />
 
 <field name="extu" type="Text" class="form-select" size="40" label="COM_PHOCAGALLERY_FIELD_PICASA_USER_LABEL" description="COM_PHOCAGALLERY_FIELD_PICASA_USER_DESC"  />
 <field name="exta" type="Text" class="form-select" size="40" label="COM_PHOCAGALLERY_FIELD_PICASA_ALBUM_LABEL" description="COM_PHOCAGALLERY_FIELD_PICASA_ALBUM_DESC"  />

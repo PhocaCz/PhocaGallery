@@ -16,7 +16,7 @@ $task		= 'phocagalleryc';
 
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.keepalive');
 //JHtml::_('formbehavior.chosen', 'select');
 
 $r 			=  $this->r;
@@ -24,7 +24,7 @@ $app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 $OPT		= strtoupper($option);
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) {
 
@@ -59,9 +59,9 @@ $tabs = array (
 'general' 		=> Text::_($OPT.'_GENERAL_OPTIONS'),
 'publishing' 	=> Text::_($OPT.'_PUBLISHING_OPTIONS'),
 'metadata'		=> Text::_($OPT.'_METADATA_OPTIONS'),
-/*'picasa'		=> JText::_($OPT.'_PICASA_SETTINGS'),*/
-'imgur'		    => JText::_($OPT.'_IMGUR_SETTINGS')/*,
-'facebook'		=> JText::_($OPT.'_FB_SETTINGS')*/);
+/*'picasa'		=> Text::_($OPT.'_PICASA_SETTINGS'),*/
+'imgur'		    => Text::_($OPT.'_IMGUR_SETTINGS')/*,
+'facebook'		=> Text::_($OPT.'_FB_SETTINGS')*/);
 echo $r->navigation($tabs);
 
 

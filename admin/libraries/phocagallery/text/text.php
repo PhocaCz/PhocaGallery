@@ -113,6 +113,9 @@ class PhocaGalleryText
 
 			case 'folderpath':
 			case 'filepath':
+				if (!isset($string)) {
+					return '';
+				}
 				$string = preg_replace('/[\"\*\:\<\>\?\'\|]+/', '', $string);
 				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 			break;

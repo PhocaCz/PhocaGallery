@@ -23,7 +23,7 @@
 	<option value="16">COM_PHOCAGALLERY_HITS_DESC</option>
 </field>
 
-<field name="categories_description" default="" buttons="0" width="330" type="editor" filter="JComponentHelper::filterText" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_VIEW_DESCRIPTION_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_VIEW_DESCRIPTION_DESC"/>
+<field name="categories_description" default="" buttons="0" width="330" type="editor" filter="\Joomla\CMS\Component\ComponentHelper::filterText" label="COM_PHOCAGALLERY_FIELD_CATEGORIES_VIEW_DESCRIPTION_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORIES_VIEW_DESCRIPTION_DESC"/>
 
 
 <field name="image_categories_size" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_IMAGE_CATEGORIES_SIZE_LABEL" description="COM_PHOCAGALLERY_FIELD_IMAGE_CATEGORIES_SIZE_DESC">

@@ -29,7 +29,7 @@ $tasks		= $task . 's';
 
 // phocagallerym-form renamed to adminForm because of used Joomla! javascript and its fixed value.
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 'Joomla.submitbutton = function(task)
 	{
 		if (task == "phocagallerym.cancel") {
