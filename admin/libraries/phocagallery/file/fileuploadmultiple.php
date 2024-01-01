@@ -173,7 +173,7 @@ class PhocaGalleryFileUploadMultiple
 		$js.='		unique_names : false,'."\n";
 		$js.='		multipart: true,'."\n";
 		$js.='		filters : ['."\n";
-		$js.='			{title : "'.Text::_('COM_PHOCAGALLERY_IMAGE_FILES').'", extensions : "jpg,gif,png,jpeg,webp"}'."\n";
+		$js.='			{title : "'.Text::_('COM_PHOCAGALLERY_IMAGE_FILES').'", extensions : "jpg,gif,png,jpeg,webp,avif"}'."\n";
 		//$js.='			{title : "Zip files", extensions : "zip"}'."\n";
 		$js.='		],'."\n";
 		$js.=''."\n";

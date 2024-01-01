@@ -551,9 +551,9 @@ class PhocaGalleryFileUpload
 
 		$params 	= ComponentHelper::getParams( 'com_phocagallery' );
 		$paramsL 	= array();
-		$paramsL['upload_extensions'] 	= 'gif,jpg,png,jpeg,webp';
-		$paramsL['image_extensions'] 	= 'gif,jpg,png,jpeg,webp';
-		$paramsL['upload_mime']			= 'image/jpeg,image/gif,image/png,image/webp';
+		$paramsL['upload_extensions'] 	= 'gif,jpg,png,jpeg,webp,avif';
+		$paramsL['image_extensions'] 	= 'gif,jpg,png,jpeg,webp,avif';
+		$paramsL['upload_mime']			= 'image/jpeg,image/gif,image/png,image/webp,image/avif';
 		$paramsL['upload_mime_illegal']	='application/x-shockwave-flash,application/msword,application/excel,application/pdf,application/powerpoint,text/plain,application/x-zip,text/html';
 
 		// The file doesn't exist

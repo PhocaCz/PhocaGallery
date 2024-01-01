@@ -36,15 +36,15 @@ class PhocaGalleryPaginationUserSubCat extends Pagination
 		// Initialize variables
 		$data = new stdClass();
 
-		$data->all	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_VIEW_ALL'));
+		$data->all	= new PaginationObject(Text::_('COM_PHOCAGALLERY_VIEW_ALL'));
 		if (!$this->viewall) {
 			$data->all->base	= '0';
 			$data->all->link	= Route::_($tabLink."&limitstartsubcat=");
 		}
 
 		// Set the start and previous data objects
-		$data->start	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_START'));
-		$data->previous	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_PREV'));
+		$data->start	= new PaginationObject(Text::_('COM_PHOCAGALLERY_PAG_START'));
+		$data->previous	= new PaginationObject(Text::_('COM_PHOCAGALLERY_PAG_PREV'));
 
 		if ($this->pagesCurrent > 1)
 		{
@@ -59,8 +59,8 @@ class PhocaGalleryPaginationUserSubCat extends Pagination
 		}
 
 		// Set the next and end data objects
-		$data->next	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_NEXT'));
-		$data->end	= new JPaginationObject(Text::_('COM_PHOCAGALLERY_PAG_END'));
+		$data->next	= new PaginationObject(Text::_('COM_PHOCAGALLERY_PAG_NEXT'));
+		$data->end	= new PaginationObject(Text::_('COM_PHOCAGALLERY_PAG_END'));
 
 		if ($this->pagesCurrent < $this->pagesTotal)
 		{

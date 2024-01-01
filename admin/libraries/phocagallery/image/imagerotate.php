@@ -38,6 +38,8 @@ class PhocaGalleryImageRotate
 		$jfile_thumbs	= $params->get( 'jfile_thumbs', 1 );
 		$webp_quality	= $params->get( 'webp_quality', 80 );
 		$webp_quality	= PhocaGalleryImage::getJpegQuality($webp_quality);
+		$avif_quality	= $params->get( 'avif_quality', 80 );
+		$avif_quality	= PhocaGalleryImage::getJpegQuality($avif_quality);
 		$jpeg_quality	= $params->get( 'jpeg_quality', 85 );
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 
@@ -128,6 +130,21 @@ class PhocaGalleryImageRotate
 						return false;
 					}
 					break;
+
+				case IMAGETYPE_AVIF :
+					if (!function_exists('imagecreatefromavif')) {
+						$errorMsg = 'ErrorNoAVIFFunction';
+						return false;
+					}
+					//$image1 = ImageCreateFromGIF($fileIn);
+					try {
+						$image1 = imagecreatefromavif($fileIn);
+					} catch(\Exception $exception) {
+						$errorMsg = 'ErrorAVIFFunction';
+						return false;
+					}
+					break;
+
 	            case IMAGETYPE_WBMP:
 					if (!function_exists('ImageCreateFromWBMP')) {
 						$errorMsg = 'ErrorNoWBMPFunction';
@@ -162,6 +179,7 @@ class PhocaGalleryImageRotate
 				{
 					case IMAGETYPE_PNG:
 					case IMAGETYPE_WEBP:
+					case IMAGETYPE_AVIF:
 					//	imagealphablending($image1, false);
 					//	imagesavealpha($image1, true);
 						if(!function_exists("imagecolorallocate")) {
@@ -225,6 +243,7 @@ class PhocaGalleryImageRotate
 					{
 						case IMAGETYPE_PNG:
 						case IMAGETYPE_WEBP:
+						case IMAGETYPE_AVIF:
 						//	imagealphablending($image2, true);
 						//	imagesavealpha($image2, true);
 							if(!function_exists("imagecolorallocate")) {
@@ -357,6 +376,34 @@ class PhocaGalleryImageRotate
 							}
 						} else {
 							if (!@imagewebp($image3, $fileOut, $webp_quality)) {
+								$errorMsg = 'ErrorWriteFile';
+								return false;
+							}
+						}
+					break;
+
+					case IMAGETYPE_AVIF :
+						if (!function_exists('ImageAVIF')) {
+							$errorMsg = 'ErrorNoAVIFFunction';
+							return false;
+						}
+
+						if ($jfile_thumbs == 1) {
+							ob_start();
+							if (!@imageavif($image3, NULL, $avif_quality)) {
+								ob_end_clean();
+								$errorMsg = 'ErrorWriteFile';
+								return false;
+							}
+							$imgAVIFToWrite = ob_get_contents();
+							ob_end_clean();
+
+							if(!File::write( $fileOut, $imgAVIFToWrite)) {
+								$errorMsg = 'ErrorWriteFile';
+								return false;
+							}
+						} else {
+							if (!@imageavif($image3, $fileOut, $avif_quality)) {
 								$errorMsg = 'ErrorWriteFile';
 								return false;
 							}

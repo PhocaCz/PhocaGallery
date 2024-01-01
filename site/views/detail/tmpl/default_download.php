@@ -23,10 +23,11 @@ if ($extImage) {
 	$imgLink	= HTMLHelper::_( 'image', $this->item->exto, '');
 }
 
-if ($this->t['backbutton'] != '') {
+if (isset($this->t['backbutton']) && $this->t['backbutton'] != '') {
 	echo $this->t['backbutton'];
 
 	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink . '</div>';
+	echo '<div id="download-box"><div style="overflow:scroll;width:100%;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink . '</div>';
 	echo '<div id="download-msg-nopopup"><div>'
 		.'<table width="360">'
 		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
@@ -41,7 +42,8 @@ if ($this->t['backbutton'] != '') {
 
 } else {
 
-	echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
+	//echo '<div id="download-box"><div style="overflow:scroll;width:'.$this->t['boxlargewidth'].'px;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
+	echo '<div id="download-box"><div style="overflow:scroll;width: 100%;height:'.$this->t['boxlargeheight'].'px;margin:0px;padding:0px;">' . $imgLink. '</div>';
 	echo '<div id="download-msg"><div>'
 		.'<table width="360">'
 		.'<tr><td align="left">' . Text::_('COM_PHOCAGALLERY_IMAGE_NAME') . ': </td><td>'.$title.'</td></tr>'
@@ -60,7 +62,7 @@ if ($this->t['backbutton'] != '') {
 			break;
 
 			default:
-				echo '<tr><td>&nbsp;</td><td align="right">'.str_replace("%onclickclose%", $this->t['detailwindowclose'], $this->item->closetext).'</td></tr>';
+				//echo '<tr><td>&nbsp;</td><td align="right">'.str_replace("%onclickclose%", $this->t['detailwindowclose'], $this->item->closetext).'</td></tr>';
 			break;
 		}
 

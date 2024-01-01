@@ -40,7 +40,7 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends Pagination
 			}
 		}
 
-		$data->all = new JPaginationObject(Text::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
+		$data->all = new PaginationObject(Text::_('JLIB_HTML_VIEW_ALL'), $this->prefix);
 
 		if (!$this->viewall)
 		{
@@ -49,8 +49,8 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends Pagination
 		}
 
 		// Set the start and previous data objects.
-		$data->start = new JPaginationObject(Text::_('JLIB_HTML_START'), $this->prefix);
-		$data->previous = new JPaginationObject(Text::_('JPREV'), $this->prefix);
+		$data->start = new PaginationObject(Text::_('JLIB_HTML_START'), $this->prefix);
+		$data->previous = new PaginationObject(Text::_('JPREV'), $this->prefix);
 
 		if ($this->pagesCurrent > 1)
 		{
@@ -71,8 +71,8 @@ class PhocaGalleryModelPhocaGalleryLinkImgPagination extends Pagination
 		}
 
 		// Set the next and end data objects.
-		$data->next = new JPaginationObject(Text::_('JNEXT'), $this->prefix);
-		$data->end = new JPaginationObject(Text::_('JLIB_HTML_END'), $this->prefix);
+		$data->next = new PaginationObject(Text::_('JNEXT'), $this->prefix);
+		$data->end = new PaginationObject(Text::_('JLIB_HTML_END'), $this->prefix);
 
 		if ($this->pagesCurrent < $this->pagesTotal)
 		{

@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -22,7 +24,12 @@ class JFormFieldPhocaHead extends FormField
 
 	protected function getInput() {
 
-		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagalleryoptions.css' );
+		$app				= Factory::getApplication();
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$option				= 'com_phocagallery';
+		$wa->registerAndUseStyle($option . '.options', 'media/' .$option . '/css/administrator/phocagalleryoptions.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle($option . '.theme', 'media/' .$option . '/css/administrator/theme-dark.css', array('version' => 'auto'), [], ['template.active']);
+
 		//echo '<div style="clear:both;"></div>';
 		$phocaImage	= ( (string)$this->element['phocaimage'] ? $this->element['phocaimage'] : '' );
 		$image 		= '';

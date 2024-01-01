@@ -37,61 +37,33 @@ class Adminviews
 
     public function __construct() {
 
-        $app              = Factory::getApplication();
-        $version          = new Version();
-        $this->compatible = $version->isCompatible('4.0.0-alpha');
-        $this->view       = $app->input->get('view');
-        $this->option     = $app->input->get('option');
-        $this->optionLang = strtoupper($this->option);
-        $this->tmpl       = $app->input->get('tmpl');
-        $this->document   = Factory::getDocument();
+        $app				= Factory::getApplication();
+		$version 			= new Version();
+		$this->compatible 	= $version->isCompatible('4.0.0-alpha');
+		$this->view			= $app->input->get('view');
+		$this->option		= $app->input->get('option');
+		$this->optionLang   = strtoupper($this->option);
+		$this->sidebar 		= Factory::getApplication()->getTemplate(true)->params->get('menu', 1) ? true : false;
+		$this->document	  	= Factory::getDocument();
+		$wa 				= $app->getDocument()->getWebAssetManager();
 
+		HTMLHelper::_('bootstrap.tooltip');
+        HTMLHelper::_('behavior.multiselect');
+        HTMLHelper::_('dropdown.init');
+        HTMLHelper::_('jquery.framework', false);
 
-        $this->sidebar = Factory::getApplication()->getTemplate(true)->params->get('menu', 1) ? true : false;
-
-
-        /* switch($this->view) {
-
-             case 2:
-                 HTMLHelper::_('behavior.keepalive');
-                 if (!$this->compatible) {
-                     HTMLHelper::_('formbehavior.chosen', 'select');
-                 }
-             break;
-
-             case 1:
-             default:*/
-
-				HTMLHelper::_('bootstrap.tooltip');
-				HTMLHelper::_('behavior.multiselect');
-				HTMLHelper::_('dropdown.init');
-				if (!$this->compatible) {
-					HTMLHelper::_('formbehavior.chosen', 'select');
-				}
-
-
-
-        //	break;
-        //}
+		$wa->registerAndUseStyle($this->option . '.font', 'media/' . $this->option . '/duotone/joomla-fonts.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle($this->option . '.main', 'media/' .$this->option . '/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle($this->option . '.version', 'media/' .$this->option . '/css/administrator/4.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle($this->option . '.theme', 'media/' .$this->option . '/css/administrator/theme-dark.css', array('version' => 'auto'), [], ['template.active']);
 
         // Modal
         if ($this->tmpl == 'component') {
-
             HTMLHelper::_('behavior.core');
             HTMLHelper::_('behavior.polyfill', array('event'), 'lt IE 9');
-            HTMLHelper::_('script', 'media/' . $this->option . '/js/administrator/admin-phocaitems-modal.min.js', array('version' => 'auto', 'relative' => true));
+            //HTMLHelper::_('script', 'media/' . $this->option . '/js/administrator/admin-phocaitems-modal.min.js', array('version' => 'auto', 'relative' => true));
             HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', array('placement' => 'bottom'));
             HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));
-
-        }
-
-        HTMLHelper::_('stylesheet', 'media/' . $this->option . '/duotone/joomla-fonts.css', array('version' => 'auto'));
-        HTMLHelper::_('stylesheet', 'media/' . $this->option . '/css/administrator/' . str_replace('com_', '', $this->option) . '.css', array('version' => 'auto'));
-
-        if ($this->compatible) {
-            HTMLHelper::_('stylesheet', 'media/' . $this->option . '/css/administrator/4.css', array('version' => 'auto'));
-        } else {
-            HTMLHelper::_('stylesheet', 'media/' . $this->option . '/css/administrator/3.css', array('version' => 'auto'));
         }
     }
 
@@ -157,12 +129,31 @@ class Adminviews
     }
 
     public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
-        return '<div id="' . $view . '"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view) . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
+
+        // CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+        return '<div id="' . $view . '" class="'.$groupClass.'"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view) . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
     }
 
     public function startFormModal($option, $view, $id = 'adminForm', $name = 'adminForm', $function = '') {
 
-        return '<div id="' . $view . '"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view . '&layout=modal&tmpl=component&function=' . $function . '&' . Session::getFormToken() . '=1') . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
+         // CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+        return '<div id="' . $view . '" class="'.$groupClass.'"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view . '&layout=modal&tmpl=component&function=' . $function . '&' . Session::getFormToken() . '=1') . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
     }
 
     public function endForm() {
@@ -200,8 +191,8 @@ class Adminviews
         Factory::getDocument()->addScriptDeclaration(implode("\n", $s));
     }
 
-    public function startTable($id) {
-        return '<table class="table table-striped" id="' . $id . '">' . "\n";
+    public function startTable($id, $class = '') {
+        return '<table class="table table-striped '.$class.'" id="' . $id . '">' . "\n";
     }
 
     public function endTable() {
@@ -319,15 +310,17 @@ class Adminviews
             . '<input type="hidden" name="original_order_values" value="' . implode(',', $originalOrders) . '" />' . "\n";
     }
 
-    public function td($value, $class = '') {
+    public function td($value, $class = '', $tag = 'td') {
+
+        // th for columns which cannot be hidden (Joomla feature);
         if ($class != '') {
-            return '<td class="' . $class . '">' . $value . '</td>' . "\n";
+            return '<'.$tag.' class="' . $class . '">' . $value . '</'.$tag.'>' . "\n";
         } else {
-            return '<td>' . $value . '</td>' . "\n";
+            return '<'.$tag.'>' . $value . '</'.$tag.'>' . "\n";
         }
     }
 
-    public function tdPublishDownUp($publishUp, $publishDown) {
+    public function tdPublishDownUp($publishUp, $publishDown, $class = '') {
 
         $o  = '';
         $db = Factory::getDBO();
@@ -342,7 +335,7 @@ class Adminviews
         $publish_down->setTimezone($tz);
 
 
-        if ($now->toUnix() <= $publish_up->toUnix()) {
+        if ($now->toUnix() <= ($publish_up->toUnix())) { // Possible $publish_up->toUnix() - 1 for lazy servers where e.g. when multiple add, pending is displayed instead of active, because it is faster then SQL date
             $text = Text::_($this->optionLang . '_PENDING');
         } else if (($now->toUnix() <= $publish_down->toUnix() || $publishDown == $nullDate)) {
             $text = Text::_($this->optionLang . '_ACTIVE');
@@ -367,7 +360,7 @@ class Adminviews
         }
 
         if ($times) {
-            $o .= '<td align="center">'
+            $o .= '<td align="center" class="'.$class.'">'
                 . '<span class="editlinktip hasTip" title="' . Text::_($this->optionLang . '_PUBLISH_INFORMATION') . '::' . $times . '">'
                 . '<a href="javascript:void(0);" >' . $text . '</a></span>'
                 . '</td>' . "\n";
@@ -378,9 +371,20 @@ class Adminviews
     }
 
 
-    public function saveOrder($t, $listDirn) {
+    public function saveOrder($t, $listDirn, $catid = 0) {
+
+
 
         $saveOrderingUrl = 'index.php?option=' . $t['o'] . '&task=' . $t['tasks'] . '.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+
+        // Joomla BUG: https://github.com/joomla/joomla-cms/issues/36346 $this->t['catid']
+        // Add catid to the URL instead of sending in POST
+        // administrator/components/com_phocacart/views/phocacartitems/tmpl/default.php 37
+        if ((int)$catid > 0) {
+            $saveOrderingUrl .= '&catid='.(int)$catid;
+        }
+        // ---
+
         if ($this->compatible) {
             HTMLHelper::_('draggablelist.draggable');
         } else {
@@ -429,7 +433,7 @@ class Adminviews
         return '</tbody>' . "\n";
     }
 
-    public function startTr($i, $catid = 0, $id = 0) {
+    public function startTr($i, $catid = 0, $id = 0, $level = -1, $parentsString = '', $class = '') {
         $i2 = $i % 2;
 
         $dataItemId  = '';
@@ -445,12 +449,19 @@ class Adminviews
         }
 
         $dataParents = '';
-        if ($catid > 0) {
+        if ($parentsString != '') {
+            $dataParents = ' data-parents="'.$parentsString.'"';
+        } else if ($catid > 0) {
             $dataParents = ' data-parents="'.(int)$catid.'"';
         }
 
+        $dataLevel = '';
+        if ($level > -1) {
+            $dataLevel = ' data-parents="'.(int)$level.'"';
+        }
 
-        return '<tr class="row' . $i2 . '"'.$dataItemId.$dataItemCatid.$dataParents.' data-transitions>' . "\n";
+
+        return '<tr for="cb'.$i.'" class="'.$class.'row' . $i2  . '"'.$dataItemId.$dataItemCatid.$dataParents.$dataLevel.' data-transitions>' . "\n";
 
     }
 
@@ -467,15 +478,15 @@ class Adminviews
         return "";
     }
 
-    public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled = true) {
+    public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected = true) {
         if ($this->compatible) {
-            return $this->td(HTMLHelper::_('grid.id', $i, $itemId), 'text-center');
+            return $this->td(HTMLHelper::_('grid.id', $i, $itemId), 'text-center ph-select-row');
         } else {
-            return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled);
+            return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected);
         }
     }
 
-    public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled = true) {
+    public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected = true, $catid = 0) {
 
         if ($this->compatible) {
 
@@ -485,16 +496,17 @@ class Adminviews
             $iconClass = '';
             if (!$canChange) {
                 $iconClass = ' inactive';
+            } else if (!$saveOrderCatSelected) {
+                $iconClass = ' inactive" title="' . Text::_($this->optionLang . '_SELECT_CATEGORY_TO_ORDER_ITEMS');
             } else if (!$saveOrder) {
                 $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-            } else if (!$catOrderingEnabled) {
-                $iconClass = ' inactive" title="' . Text::_($this->optionLang . '_SELECT_CATEGORY_TO_ORDER_ITEMS');
             }
 
             $o[] = '<span class="sortable-handler' . $iconClass . '"><span class="fas fa-ellipsis-v" aria-hidden="true"></span></span>';
 
             if ($canChange && $saveOrder) {
                 $o[] = '<input type="text" name="order[]" size="5" value="' . $ordering . '" class="width-20 text-area-order hidden">';
+
             }
 
             $o[] = '</td>';

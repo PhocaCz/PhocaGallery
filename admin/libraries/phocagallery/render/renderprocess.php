@@ -113,6 +113,10 @@ class PhocaGalleryRenderProcess
 				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOWEBPFUNCTION');
 				break;
 
+				case 'ErrorNoAVIFFunction':
+				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOAVIFFUNCTION');
+				break;
+
 				case 'ErrorNoWBMPFunction':
 				$errorMessage = Text::_('COM_PHOCAGALLERY_ERROR_NOWBMPFUNCTION');
 				break;

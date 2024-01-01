@@ -80,7 +80,7 @@ class PhocaGalleryFileFolderList
 				if ($dontCreateThumb == 1) {
 					$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 				}
-				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
+				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp' || $ext == 'avif') {
 
 					if (File::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 

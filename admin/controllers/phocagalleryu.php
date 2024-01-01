@@ -35,7 +35,7 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
-		
+
 		$paramsC = ComponentHelper::getParams('com_phocagallery');
 		$folder_permissions = $paramsC->get( 'folder_permissions', 0755 );
 		//$folder_permissions = octdec((int)$folder_permissions);
@@ -50,26 +50,26 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 		$tab			= Factory::getApplication()->input->get( 'tab', '', '', 'string' );
 		$field			= Factory::getApplication()->input->get( 'field');
 		$viewBack		= Factory::getApplication()->input->get( 'viewback', '', '', '' );
-		
+
 		$link = '';
 		switch ($viewBack) {
 			case 'phocagalleryi':
 				$link = 'index.php?option=com_phocagallery&view=phocagalleryi&tmpl=component&folder='.$parent.'&tab='.(string)$tab.'&field='.$field;
 			break;
-		
+
 			case 'phocagallerym':
 				$link = 'index.php?option=com_phocagallery&view=phocagallerym&layout=edit&hidemainmenu=1&tab='.(string)$tab.'&folder='.$parent;
 			break;
-			
+
 			case 'phocagalleryf':
 				$link = 'index.php?option=com_phocagallery&view=phocagalleryf&tmpl=component&folder='.$parent.'&field='.$field;
 			break;
-			
+
 			default:
 				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_ERROR_CONTROLLER'));
 				$app->redirect('index.php?option=com_phocagallery');
 			break;
-		
+
 		}
 
 		//JFactory::getApplication()->input->set('folder', $parent);
@@ -96,7 +96,7 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 					break;
 					case 644:
 						Folder::create($folder, 0644 );
-					break;				
+					break;
 					case 755:
 					Default:
 						Folder::create($folder, 0755 );
@@ -106,7 +106,7 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 					File::write($folder. '/'. "index.html", $data);
 				}
-				
+
 				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_SUCCESS_FOLDER_CREATING'));
 				$app->redirect($link);
 			} else {
@@ -117,21 +117,21 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 		}
 		$app->redirect($link);
 	}
-	
+
 	function multipleupload() {
 		$result = PhocaGalleryFileUpload::realMultipleUpload();
-		return true;	
+		return true;
 	}
-	
+
 	function upload() {
 		$result = PhocaGalleryFileUpload::realSingleUpload();
 		return true;
 	}
-	
-	
-	function javaupload() {	
+
+
+	function javaupload() {
 		$result = PhocaGalleryFileUpload::realJavaUpload();
 		return true;
 	}
-	
+
 }

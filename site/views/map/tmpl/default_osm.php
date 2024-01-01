@@ -21,11 +21,10 @@ if ($this->t['backbutton'] != '' && $this->t['enable_multibox_iframe'] != 1) {
 if (empty($this->map) || $this->map->longitude == '' || $this->map->latitude == '') {
 	echo '<p>' . Text::_('COM_PHOCAGALLERY_ERROR_MAP_NO_DATA') . '</p>';
 } else {
-
-	$text = '<div style="text-align:left"><table style="" border="0" cellspacing="5" cellpadding="5"><tr><td align="left" colspan="2"><b>'. addslashes($this->map->geotitle).'</b></td></tr>';
+	$text = '<div style="text-align:left"><table style="" border="0" cellspacing="5" cellpadding="5"><tr><td align="left" colspan="2"><b>'. addslashes((string)$this->map->geotitle).'</b></td></tr>';
 	$text .='<tr>';
-	$text .='<td valign="top" align="left">'.HTMLHelper::_( 'image', $this->map->thumbnail, addslashes($this->map->geotitle)) . '</td>';
-	$text .='<td valign="top" align="left">'. PhocaGalleryText::strTrimAll(addslashes($this->map->description)).'</td>';
+	$text .='<td valign="top" align="left">'.HTMLHelper::_( 'image', $this->map->thumbnail, addslashes((string)$this->map->geotitle)) . '</td>';
+	$text .='<td valign="top" align="left">'. PhocaGalleryText::strTrimAll(addslashes((string)$this->map->description)).'</td>';
 	$text .='</tr></table></div>';
 
 	$id		= uniqid();

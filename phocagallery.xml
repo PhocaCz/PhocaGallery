@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" method="upgrade" version="4.0">
+<extension type="component" method="upgrade" version="5.0">
 	<name>com_phocagallery</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>23/10/2023</creationDate>
+	<creationDate>01/01/2024</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.5.5</version>
+	<version>5.0.0Beta7</version>
 	<description>COM_PHOCAGALLERY_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaGallery</projectName>

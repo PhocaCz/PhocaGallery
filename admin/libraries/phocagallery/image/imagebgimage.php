@@ -32,6 +32,8 @@ class PhocaGalleryImageBgImage
 		$jpeg_quality	= PhocaGalleryImage::getJpegQuality($jpeg_quality);
 		$webp_quality	= $params->get( 'webp_quality', 80 );
 		$webp_quality	= PhocaGalleryImage::getJpegQuality($webp_quality);
+		$avif_quality	= $params->get( 'avif_quality', 80 );
+		$avif_quality	= PhocaGalleryImage::getJpegQuality($avif_quality);
 		$formatIcon		= 'png';
 		$path			= PhocaGalleryPath::getPath();
 
@@ -85,6 +87,7 @@ class PhocaGalleryImageBgImage
 					break;
 					case 'png':
 					case 'webp':
+					case 'avif':
 						@imagealphablending($img,false);
 						imagefilledrectangle($img,0,0,$completeImageWidth,$completeImageHeight,imagecolorallocatealpha($img,255,255,255,127));
 						@imagealphablending($img,true);
@@ -277,6 +280,34 @@ class PhocaGalleryImageBgImage
 						}
 					}
 				break;
+
+				case 'avif' :
+				if (!function_exists('ImageAvif')) {
+					$errorMsg = 'ErrorNoAVIFFunction';
+					return false;
+				}
+				@imagesavealpha($img, true);
+				if ($jfile_thumbs == 1) {
+					ob_start();
+					if (!@imageavif($img, NULL, $avif_quality)) {
+						ob_end_clean();
+						$errorMsg = 'ErrorWriteFile';
+						return false;
+					}
+					$imgAVIFToWrite = ob_get_contents();
+					ob_end_clean();
+
+					if(!File::write( $fileOut, $imgAVIFToWrite)) {
+						$errorMsg = 'ErrorWriteFile';
+						return false;
+					}
+				} else {
+					if (!@imageavif($img, $fileOut, $webp_quality)) {
+						$errorMsg = 'ErrorWriteFile';
+						return false;
+					}
+				}
+			break;
 
 				Default:
 					$errorMsg =  'ErrorNotSupportedImage';

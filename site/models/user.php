@@ -20,7 +20,7 @@ phocagalleryimport('phocagallery.pagination.paginationusersubcat');
 phocagalleryimport('phocagallery.pagination.paginationuserimage');
 use Joomla\String\StringHelper;
 
-class PhocagalleryModelUser extends JModelLegacy
+class PhocagalleryModelUser extends BaseDatabaseModel
 {
 	var $_data_subcat 			= null;
 	var $_total_subcat	 		= null;

@@ -228,12 +228,13 @@ if (!empty($this->items)) {
                         echo ' <a title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '"'
                             . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&phocadownload=' . $item->display_icon_download . '&Itemid=' . $this->itemId) . '"';
                     } else {
-                        echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '"'
+                        echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '" data-img-title="' . $item->title . '"'
                             . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&phocadownload=' . (int)$item->display_icon_download . '&Itemid=' . $this->itemId) . '"';
 
                         if ($item->onclick3 != '') {
                             echo 'onclick="' . $item->onclick3 . '"';
                         }
+
                     }
                     echo ' >';
                     echo '<svg class="ph-si ph-si-download"><use xlink:href="#ph-si-download"></use></svg>';

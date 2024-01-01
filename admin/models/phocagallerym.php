@@ -194,7 +194,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 					if ($dontCreateThumb == 1) {
 						$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 					}
-					if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
+					if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp' || $ext == 'avif') {
 
 						$row = $this->getTable('phocagallery');
 
@@ -239,7 +239,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 						// Save
 						// Bind the form fields to the Phoca gallery table
 						if (!$row->bind($datam)) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 
@@ -256,13 +256,13 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 
 						// Make sure the Phoca gallery table is valid
 						if (!$row->check()) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 
 						// Store the Phoca gallery table to the database
 						if (!$row->store()) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 						$result->image_count++;
@@ -292,7 +292,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 		} else if ($this->firstImageFolder != '') {
 			$fileNameThumb	= $this->firstImageFolder;
 		} else {
-			$fileNameThumb == '';
+			$fileNameThumb = '';
 		}
 
 		if ($fileNameThumb != '') {
@@ -303,7 +303,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 
 		//Clean Thumbs Folder if there are thumbnail files but not original file
 		if ($clean_thumbnails == 1) {
-			PhocaGalleryFolder::cleanThumbsFolder();
+			PhocaGalleryFileFolder::cleanThumbsFolder();
 		}
 		// - - - - - - - - - - - - - - - - -
 
@@ -358,7 +358,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 				if ($dontCreateThumb == 1) {
 					$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 				}
-				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp') {
+				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp' || $ext == 'avif') {
 					if (File::exists($fullPath. '/'. $filename) &&
 					    substr($filename, 0, 1) != '.' &&
 						strtolower($filename) !== 'index.html' &&
@@ -401,7 +401,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 						// Save
 						// Bind the form fields to the Phoca gallery table
 						if (!$row->bind($datam)) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 
@@ -416,13 +416,13 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 
 						// Make sure the Phoca gallery table is valid
 						if (!$row->check()) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 
 						// Store the Phoca gallery table to the database
 						if (!$row->store()) {
-							$this->setError($this->_db->getErrorMsg());
+							$this->setError($row->getError());
 							return false;
 						}
 
@@ -477,12 +477,12 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 
 		  if (!$row->check()) {
 
-			throw new Exception($db->stderr('Check Problem'), 500);
+			throw new Exception('Check Problem', 500);
 		  }
 
 		  if (!$row->store()) {
 
-			throw new Exception($db->stderr('Store Problem'), 500);
+			throw new Exception('Store Problem', 500);
 		  }
 
 		  $category 			= new CMSObject();

@@ -53,15 +53,19 @@ class JFormFieldPhocaSelectItem extends FormField
 
 
 
-		$document = Factory::getDocument();
+		$document 			= Factory::getDocument();
+		$app				= Factory::getApplication();
+		$wa 				= $app->getDocument()->getWebAssetManager();
 
 		HTMLHelper::_('jquery.framework', false);
+		//HTMLHelper::_('script', 'media/com_phocagallery/js/administrator/select2/select2.js', array('version' => 'auto'));
+		//HTMLHelper::_('script', 'media/com_phocagallery/js/administrator/select2/jquery.phocaselect2.js', array('version' => 'auto'));
+		//HTMLHelper::_('stylesheet', 'media/com_phocagallery/js/administrator/select2/select2.css', array('version' => 'auto'));
+		$wa->registerAndUseScript('com_phocagallery.select2', 'media/com_phocagallery/js/administrator/select2/select2.js', array('version' => 'auto'));
+		$wa->registerAndUseScript('com_phocagallery.phocaselect2', 'media/com_phocagallery/js/administrator/select2/jquery.phocaselect2.js', array('version' => 'auto'));
+		$wa->registerAndUseStyle('com_phocagallery.select2', 'media/com_phocagallery/js/administrator/select2/select2.css', array('version' => 'auto'));
 
-		HTMLHelper::_('script', 'media/com_phocagallery/js/administrator/select2/select2.js', array('version' => 'auto'));
-		HTMLHelper::_('script', 'media/com_phocagallery/js/administrator/select2/jquery.phocaselect2.js', array('version' => 'auto'));
-		HTMLHelper::_('stylesheet', 'media/com_phocagallery/js/administrator/select2/select2.css', array('version' => 'auto'));
-
-$document->addScriptOptions('phLang', array(
+		$document->addScriptOptions('phLang', array(
 			'COM_PHOCAGALLERY_NO_MATCHES_FOUND' => Text::_('COM_PHOCAGALLERY_NO_MATCHES_FOUND'),
 			'COM_PHOCAGALLERY_PLEASE_ENTER' => Text::_('COM_PHOCAGALLERY_PLEASE_ENTER'),
 			'COM_PHOCAGALLERY_S_MORE_CHARACTER' => Text::_('COM_PHOCAGALLERY_S_MORE_CHARACTER'),
