@@ -9,7 +9,7 @@
 
 <field name="alias" type="text" class="form-control" size="40" label="COM_PHOCAGALLERY_FIELD_ALIAS_LABEL" description="COM_PHOCAGALLERY_FIELD_ALIAS_DESC" />
 
-<field name="link_cat" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_CATEGORY_LINK_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_LINK_DESC" class="form-control"  />
+<field name="link_cat" type="phocagallerycategory" label="COM_PHOCAGALLERY_FIELD_CATEGORY_LINK_LABEL" description="COM_PHOCAGALLERY_FIELD_CATEGORY_LINK_DESC"  />
 
 <field name="link_ext" type="text" label="COM_PHOCAGALLERY_FIELD_EXT_LINK_TAG_LABEL"  description="COM_PHOCAGALLERY_FIELD_EXT_LINK_TAG_DESC" class="form-control" size="40" />
 
@@ -21,7 +21,7 @@
 
 
 	<fieldset name="publish" label="COM_PHOCAGALLERY_GROUP_LABEL_PUBLISHING_DETAILS" >
-<field name="published" type="list" label="COM_PHOCAGALLERY_FIELD_PUBLISHED_LABEL" description="COM_PHOCAGALLERY_FIELD_PUBLISHED_DESC" class="form-control" size="1" default="1">
+<field name="published" type="list" label="COM_PHOCAGALLERY_FIELD_PUBLISHED_LABEL" description="COM_PHOCAGALLERY_FIELD_PUBLISHED_DESC" class="form-select" size="1" default="1">
 	<option value="1">JPUBLISHED</option>
 	<option	value="0">JUNPUBLISHED</option>
 </field>

@@ -227,6 +227,20 @@ class PhocaGalleryImage
 		return $boxSize;
 	}
 
+	public static function getPngQuality($thumbQuality) {
+
+		if ((int)$thumbQuality < 0) {
+			$thumbQuality = 0;
+		}
+		if ((int)$thumbQuality > 100) {
+			$thumbQuality = 100;
+		}
+
+		$pngQuality = ($thumbQuality - 100) / 11.111111;
+		$pngQuality = round(abs($pngQuality));
+		return $pngQuality;
+	}
+
 	public static function getJpegQuality($jpegQuality) {
 		if ((int)$jpegQuality < 0) {
 			$jpegQuality = 0;

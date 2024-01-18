@@ -282,30 +282,34 @@ class PhocaGalleryImageMagic
 
 
 					clearstatcache();
-
+					
 					// Which Watermark will be used
 					if ($thumbnailMedium) {
-						if ($fileWatermarkMedium) {
-								$fileWatermark  = $fileWatermarkMedium;
+						if ($watermarkParams['create'] == 1 && $fileWatermarkMedium) {
+							$fileWatermark  = $fileWatermarkMedium;
+						} else if ($watermarkParams['create'] == 2 && $fileWatermarkMediumRoot) {
+							$fileWatermark = $fileWatermarkMediumRoot;
+						} else if ($fileWatermarkMedium) {
+							$fileWatermark = $fileWatermarkMedium;
+						} else if ($fileWatermarkMediumRoot) {
+							$fileWatermark = $fileWatermarkMediumRoot;
 						} else {
-							if ($watermarkParams['create'] == 2 && $fileWatermarkMediumRoot) {
-								$fileWatermark  = $fileWatermarkMediumRoot;
-							} else {
-								$fileWatermark	= '';
-							}
+							$fileWatermark	= '';
 						}
 					} else if ($thumbnailLarge) {
-						if ($fileWatermarkLarge) {
-								$fileWatermark  = $fileWatermarkLarge;
+						if ($watermarkParams['create'] == 1 && $fileWatermarkLarge) {
+							$fileWatermark  = $fileWatermarkLarge;
+						} else if ($watermarkParams['create'] == 2 && $fileWatermarkLargeRoot) {
+							$fileWatermark = $fileWatermarkLargeRoot;
+						} else if ($fileWatermarkLarge) {
+							$fileWatermark = $fileWatermarkLarge;
+						} else if ($fileWatermarkLargeRoot) {
+							$fileWatermark = $fileWatermarkLargeRoot;
 						} else {
-							if ($watermarkParams['create'] == 2 && $fileWatermarkLargeRoot) {
-								$fileWatermark  = $fileWatermarkLargeRoot;
-							} else {
-								$fileWatermark	= '';
-							}
+							$fileWatermark	= '';
 						}
 					} else {
-							$fileWatermark  = '';
+						$fileWatermark  = '';
 					}
 
 
@@ -695,7 +699,7 @@ class PhocaGalleryImageMagic
 						}
 					break;
 
-					Default:
+					default:
 						$errorMsg = 'ErrorNotSupportedImage';
 						return false;
 						break;

@@ -1227,9 +1227,9 @@ class PhocaGalleryImageFront
 		}
 
 		if (($t['detail_window'] == 8 || $t['detail_window'] == 10 || $t['detail_window'] == 12) && $t['displaydescriptiondetail'] > 0) {
-			$item->odesctitletag = strip_tags($titleDesc).strip_tags($item->description);
+			$item->odesctitletag = strip_tags((string)$titleDesc).strip_tags((string)$item->description);
 		} else {
-			$item->odesctitletag = strip_tags($imgTitle);
+			$item->odesctitletag = strip_tags((string)$imgTitle);
 		}
 
 

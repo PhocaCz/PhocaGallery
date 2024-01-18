@@ -46,14 +46,14 @@
 <field name="extlink1link" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_EXTERNAL_LINK_LINK_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_LINK_DESC"  />
 <field name="extlink1title" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_EXTERNAL_LINK_TITLE_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TITLE_DESC"  />
 
-<field name="extlink1target" type="list" class="form-control"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_TARGET_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TARGET_DESC"  default="_self" >
+<field name="extlink1target" type="list" class="form-select"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_TARGET_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TARGET_DESC"  default="_self" >
 	<option value="_self">COM_PHOCAGALLERY_OPEN_WINDOW_SELF</option>
 	<option value="_blank">COM_PHOCAGALLERY_OPEN_WINDOW_BLANK</option>
 	<option value="_parent">COM_PHOCAGALLERY_OPEN_WINDOW_PARENT</option>
 	<option value="_top">COM_PHOCAGALLERY_OPEN_WINDOW_TOP</option>
 </field>
 
-<field name="extlink1icon" type="list" class="form-control"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_ICON_DESC" default="1"  >
+<field name="extlink1icon" type="list" class="form-select"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_ICON_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_ICON_DESC" default="1"  >
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
@@ -61,14 +61,14 @@
 <field name="extlink2link" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_EXTERNAL_LINK_LINK2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_LINK2_DESC"  />
 <field name="extlink2title" type="Text" class="form-control" size="40" label="COM_PHOCAGALLERY_EXTERNAL_LINK_TITLE2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TITLE2_DESC"  />
 
-<field name="extlink2target" type="list" class="form-control"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_TARGET2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TARGET2_DESC"  default="_self" >
+<field name="extlink2target" type="list" class="form-select"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_TARGET2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_TARGET2_DESC"  default="_self" >
 	<option value="_self">COM_PHOCAGALLERY_OPEN_WINDOW_SELF</option>
 	<option value="_blank">COM_PHOCAGALLERY_OPEN_WINDOW_BLANK</option>
 	<option value="_parent">COM_PHOCAGALLERY_OPEN_WINDOW_PARENT</option>
 	<option value="_top">COM_PHOCAGALLERY_OPEN_WINDOW_TOP</option>
 </field>
 
-<field name="extlink2icon" type="list" class="form-control"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_ICON2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_ICON2_DESC" default="1"  >
+<field name="extlink2icon" type="list" class="form-select"  label="COM_PHOCAGALLERY_EXTERNAL_LINK_ICON2_LABEL" description="COM_PHOCAGALLERY_FIELD_EXTERNAL_LINK_ICON2_DESC" default="1"  >
 	<option value="0">COM_PHOCAGALLERY_NO</option>
 	<option value="1">COM_PHOCAGALLERY_YES</option>
 </field>
@@ -88,12 +88,12 @@
 
 	<fieldset name="publish" label="COM_PHOCAGALLERY_GROUP_LABEL_PUBLISHING_DETAILS" >
 
-<field name="published" type="list" label="COM_PHOCAGALLERY_FIELD_PUBLISHED_LABEL" description="COM_PHOCAGALLERY_FIELD_PUBLISHED_DESC" class="form-control" size="1" default="1">
+<field name="published" type="list" label="COM_PHOCAGALLERY_FIELD_PUBLISHED_LABEL" description="COM_PHOCAGALLERY_FIELD_PUBLISHED_DESC" class="form-select" size="1" default="1">
 	<option value="1">JPUBLISHED</option>
 	<option	value="0">JUNPUBLISHED</option>
 </field>
 
-<field name="approved" type="list" label="COM_PHOCAGALLERY_FIELD_APPROVED_LABEL" description="COM_PHOCAGALLERY_FIELD_APPROVED_DESC" class="form-control" size="1" default="1">
+<field name="approved" type="list" label="COM_PHOCAGALLERY_FIELD_APPROVED_LABEL" description="COM_PHOCAGALLERY_FIELD_APPROVED_DESC" class="form-select" size="1" default="1">
 	<option value="1">COM_PHOCAGALLERY_APPROVED</option>
 	<option	value="0">COM_PHOCAGALLERY_NOT_APPROVED</option>
 </field>
@@ -102,7 +102,7 @@
 
 <field name="hits" type="Text" class="form-control" size="6" label="COM_PHOCAGALLERY_FIELD_HITS" description="COM_PHOCAGALLERY_FIELD_HITS_DESC" />
 
-<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_LANGUAGE_IMAGE_DESC" class="form-control">
+<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_LANGUAGE_IMAGE_DESC" class="form-select">
 	<option value="*">JALL</option>
 </field>
 
