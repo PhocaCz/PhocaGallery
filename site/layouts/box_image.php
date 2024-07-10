@@ -35,8 +35,7 @@ if (isset($item->videocode) && $item->videocode != '' && $item->videocode != '0'
 echo ' >';
 
 echo '<div class="pg-item-box-image">';
-echo HTMLHelper::_( 'image', isset($item->extid) & (int)$item->extid> 0 ? $item->extm : $item->linkthumbnailpath, $item->oimgalt, array( 'class' => 'pg-image c-Image c-Image--shaded', 'itemprop' => "thumbnail"));
-
+echo HTMLHelper::_( 'image', isset($item->extid) & $item->extid !=  '' ? $item->extm : $item->linkthumbnailpath, $item->oimgalt, array( 'class' => 'pg-image c-Image c-Image--shaded', 'itemprop' => "thumbnail"));
 
 echo '</div>';
 

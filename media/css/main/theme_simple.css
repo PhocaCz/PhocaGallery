@@ -138,7 +138,8 @@ F8961E
     text-transform: capitalize;
 }
 
-
+#phocagallery .pg-item-box-title a,
+#phocagallery .pg-category-box-title a,
 .pg-item-box-title a,
 .pg-category-box-title a {
     text-decoration: none;

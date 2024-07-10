@@ -59,11 +59,8 @@ class PhocaGalleryYoutube
 			$o .= '<iframe src="//www.youtube.com/embed/'.$code.'" frameborder="0" allowfullscreen></iframe>';
 		}
 
-		if ($o != '') {
-			return $o;
-		}
+		return $o;
 
-		return $videoCode;
 	}
 
 	public static function getCode($url) {

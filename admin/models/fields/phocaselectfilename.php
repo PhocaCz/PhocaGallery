@@ -40,7 +40,7 @@ class JFormFieldPhocaSelectFilename extends FormField
 		if ($extId > 0) {
 			$readonly	= ' readonly="readonly"';
 			$attr		= '';
-			return '<input type="text" name="'.$this->name.'" id="'.$this->id.'" value="-" '.$attr.$readonly.' />';
+			return '<input type="text" name="'.$this->name.'" id="'.$this->id.'" value="-" '.$attr.$readonly.' class="form-control" />';
 		}
 
 

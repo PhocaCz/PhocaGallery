@@ -166,6 +166,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 		$table		= $model->getTable();
 		//$data		= JFactory::getApplication()->input->get('jform', array(), 'post', 'array');
 		$data		= $app->input->post->get('jform', array(), 'array');
+
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";
 		$task		= $this->getTask();
@@ -235,6 +236,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 		}
 
 		// Test if the data is valid.
+
 		$validData = $model->validate($form, $data);
 
 		// Check for validation errors.
