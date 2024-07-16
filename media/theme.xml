@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
-<install method="phocagallerytheme" type="component" version="4.5">
-	<name>Standard - Phoca Gallery 4.5</name>
-	<creationDate>26/10/2022</creationDate>
+<install method="phocagallerytheme" type="component" version="5">
+	<name>Theme Simple - Phoca Gallery 5</name>
+	<creationDate>16/07/2024</creationDate>
 	<author>Jan Pavelka (www.phoca.cz)</author>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>4.5.2</version>
-	<description>Phoca Gallery Theme File - Standard</description>
+	<version>5.1.0</version>
+	<description>Phoca Gallery Theme File - Simple</description>
 
 	<files>
 		<folder>images</folder>
