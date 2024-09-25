@@ -289,6 +289,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 			$this->setError($table->getError());
 			return false;
 		}*/
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		// Store the data.
 		if (!$table->store()) {
@@ -302,6 +308,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 
 		// Trigger the onContentAfterSave event.
 		//$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew));
+		//PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		$pkName = $table->getKeyName();
 		if (isset($table->$pkName)) {
@@ -1403,14 +1415,28 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 					}
 				}
 
+				$table		= $this->getTable();
 				if (count( $cid )) {
 					$cids = implode( ',', $cid );
-					$query = 'DELETE FROM #__phocagallery_categories'
+					/*$query = 'DELETE FROM #__phocagallery_categories'
 					. ' WHERE id IN ( '.$cids.' )';
 					$db->setQuery( $query );
 					if (!$db->execute()) {
 						$this->setError($this->_db->getErrorMsg());
 						return false;
+					}*/
+
+					PluginHelper::importPlugin($this->events_map['delete']);
+					foreach ($cid as $i => $pk) {
+						if ($table->load($pk)) {
+							if ($this->canDelete($table)) {
+								if (!$table->delete($pk)) {
+									throw new Exception($table->getError(), 500);
+									return false;
+								}
+								$app->triggerEvent($this->event_after_delete, array($this->option.'.'.$this->name, $table));
+							}
+						}
 					}
 
 					// Delete items in phocagallery_user_category

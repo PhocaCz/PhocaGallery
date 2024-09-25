@@ -414,7 +414,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$clean_thumbnails 	= $params->get( 'clean_thumbnails', 0 );
 		$result 			= false;
 
-
+		$table		= $this->getTable();
 		if (count( $cid )) {
 			\Joomla\Utilities\ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
@@ -427,7 +427,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 			// - - - - - - - - - - - - -
 
 			//Delete it from DB
-			$query = 'DELETE FROM #__phocagallery'
+			/*$query = 'DELETE FROM #__phocagallery'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
 			$this->_db->execute();
@@ -435,6 +435,19 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}*/
+			$app		= Factory::getApplication();
+			PluginHelper::importPlugin($this->events_map['delete']);
+			foreach ($cid as $i => $pk) {
+				if ($table->load($pk)) {
+					if ($this->canDelete($table)) {
+						if (!$table->delete($pk)) {
+							throw new Exception($table->getError(), 500);
+							return false;
+						}
+						$app->triggerEvent($this->event_after_delete, array($this->option.'.'.$this->name, $table));
+					}
+				}
+			}
 
 			// - - - - - - - - - - - - - -
 			// Delete thumbnails - medium and large, small from server
