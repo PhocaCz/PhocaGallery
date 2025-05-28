@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 jimport( 'joomla.application.component.view');
@@ -248,7 +248,7 @@ class PhocaGalleryViewCategories extends HtmlView
 				$sizeString = PhocaGalleryImageFront::getSizeString($this->t['image_categories_size']);
 				$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_'.$sizeString.'_'. $this->categories[$key]->avatar;
 				$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_'.$sizeString.'_'. $this->categories[$key]->avatar;
-				if (File::exists($pathAvatarAbs)){
+				if (PhocaGalleryFile::exists($pathAvatarAbs)){
 
 					$this->categories[$key]->linkthumbnailpath	=  $pathAvatarRel;
 					$this->categories[$key]->rightdisplaykey				= $rightDisplayKey;

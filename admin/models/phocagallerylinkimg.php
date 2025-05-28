@@ -11,7 +11,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 jimport('joomla.application.component.model');
@@ -52,7 +52,7 @@ class PhocaGalleryCpModelPhocaGalleryLinkImg extends BaseDatabaseModel
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 				//Let the user know that the file doesn't exists
 
-				if (!File::exists($fileOriginal)) {
+				if (!PhocaGalleryFile::exists($fileOriginal)) {
 					$this->_data[$key]->filename = Text::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 					$this->_data[$key]->fileoriginalexist = 0;
 				} else {

@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -56,7 +56,7 @@ class PhocaGalleryRenderAdminViews extends AdminViews
 
 		if ($avatarAbs != '' && $avatarRel != '') {
 			// AVATAR
-			if (File::exists($avatarAbs.$item->avatar)){
+			if (PhocaGalleryFile::exists($avatarAbs.$item->avatar)){
 				$o .= '<a class="'. $classButton.'"'
 				//.' title="'. $button->text.'"'
 				.' href="'.Uri::root(). str_replace('phoca_thumb_s_', 'phoca_thumb_l_', $avatarRel).$item->avatar.'" '

@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
@@ -36,7 +36,7 @@ class PhocaGalleryFileDownload
 				phocagalleryimport('phocagallery.file.file');
 				$fileOriginal = PhocaGalleryFile::getFileOriginal($item->filenameno);
 
-				if (!File::exists($fileOriginal)) {
+				if (!PhocaGalleryFile::exists($fileOriginal)) {
 					$msg = Text::_('COM_PHOCAGALLERY_ERROR_DOWNLOADING_FILE');
 					$app->enqueueMessage($msg, 'error');
 					$app->redirect($backLink);

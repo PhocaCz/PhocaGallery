@@ -14,9 +14,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 jimport('joomla.client.helper');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -82,7 +82,7 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 
 		if (strlen($folderNew) > 0) {
 			$folder = Path::clean($path->image_abs. '/'. $parent. '/'. $folderNew);
-			if (!Folder::exists($folder) && !File::exists($folder)) {
+			if (!PhocaGalleryFileFolder::exists($folder) && !PhocaGalleryFile::exists($folder)) {
 				//JFolder::create($path, $folder_permissions );
 				switch((int)$folder_permissions) {
 					case 777:

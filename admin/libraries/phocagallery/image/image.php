@@ -9,8 +9,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
@@ -28,7 +28,7 @@ class PhocaGalleryImage
 			$path			= PhocaGalleryPath::getPath();
 			$fileNameAbs	= Path::clean($path->image_abs . $filename);
 
-			if (!File::exists($fileNameAbs)) {
+			if (!PhocaGalleryFile::exists($fileNameAbs)) {
 				$fileNameAbs	= $path->image_abs_front . 'phoca_thumb_l_no_image.png';
 			}
 		}

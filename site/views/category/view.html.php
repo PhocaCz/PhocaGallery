@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -1172,7 +1172,7 @@ class PhocaGalleryViewCategory extends HtmlView
 
 			// Photoswipe needs data-size parameter
 			if ($this->t['detail_window'] == 14) {
-				if (File::exists($thumbLink->abs)) {
+				if (PhocaGalleryFile::exists($thumbLink->abs)) {
 					$thumbSize = @getimagesize($thumbLink->abs);
 					if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 						$this->items[$iS]->datasize = 'data-size="' . (int)$thumbSize[0] . 'x' . (int)$thumbSize[1] . '"';
@@ -1671,7 +1671,7 @@ class PhocaGalleryViewCategory extends HtmlView
 							if ($itemMVI->extw != '' && $itemMVI->exth != '') {
 								$itemMVI->datasize 		= 'data-size="'.(int)$dataSizeW.'x'.(int)$dataSizeH. '"';
 							} else {
-								if (File::exists($thumbLink->abs)) {
+								if (PhocaGalleryFile::exists($thumbLink->abs)) {
 									$thumbSize	= @getimagesize($thumbLink->abs);
 									if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 										$itemMVI->datasize 		= 'data-size="'.(int)$thumbSize[0].'x'.(int)$thumbSize[1]. '"';
@@ -1741,7 +1741,7 @@ class PhocaGalleryViewCategory extends HtmlView
 							if ($itemLAI->extw != '' && $itemLAI->exth != '') {
 								$itemLAI->datasize 		= 'data-size="'.(int)$dataSizeW.'x'.(int)$dataSizeH. '"';
 							} else {
-								if (File::exists($thumbLink->abs)) {
+								if (PhocaGalleryFile::exists($thumbLink->abs)) {
 									$thumbSize	= @getimagesize($thumbLink->abs);
 									if (isset($thumbSize[0]) && isset($thumbSize[1])) {
 										$itemLAI->datasize 		= 'data-size="'.(int)$thumbSize[0].'x'.(int)$thumbSize[1]. '"';

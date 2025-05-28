@@ -28,6 +28,7 @@ phocagalleryimport('phocagallery.utils.exception');
 phocagalleryimport('phocagallery.category.category');
 phocagalleryimport('phocagallery.path.path');
 phocagalleryimport('phocagallery.file.file');
+phocagalleryimport('phocagallery.file.filefolder');
 phocagalleryimport('phocagallery.file.filethumbnail');
 phocagalleryimport('phocagallery.file.fileupload');
 phocagalleryimport('phocagallery.render.renderadmin');

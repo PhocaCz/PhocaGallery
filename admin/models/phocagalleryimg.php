@@ -220,7 +220,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 			}
 		} else {
 			//If this file doesn't exists don't save it
-			if (!PhocaGalleryFile::existsFileOriginal($data['filename'])) {
+			if (!PhocaGalleryPhocaGalleryFile::existsFileOriginal($data['filename'])) {
 				//$this->setError('Original File does not exist');
 				//return false;
 				$fileOriginalNotExist = 1;
@@ -493,7 +493,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 						return false;
 					} else if (isset($value->filename) && $value->filename != '') {
 
-						$original	= PhocaGalleryFile::existsFileOriginal($value->filename);
+						$original	= PhocaGalleryPhocaGalleryFile::existsFileOriginal($value->filename);
 						if (!$original) {
 							// Original does not exist - cannot generate new thumbnail
 							$message = Text::_('COM_PHOCAGALLERY_FILEORIGINAL_NOT_EXISTS');

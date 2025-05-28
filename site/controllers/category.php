@@ -15,7 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Plugin\PluginHelper;
 phocagalleryimport('phocagallery.access.access');
 jimport( 'joomla.filesystem.file' );
@@ -338,7 +338,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
@@ -437,7 +437,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
@@ -556,7 +556,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg, 'error');
 				$app->redirect($redirectUrl);
@@ -691,7 +691,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			}
 
 
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 
 
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,

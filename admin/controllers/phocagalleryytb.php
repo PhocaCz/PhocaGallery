@@ -14,7 +14,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport('joomla.application.component.controllerform');
 jimport('joomla.client.helper');
 phocagalleryimport('phocagallery.youtube.youtube');

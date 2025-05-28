@@ -10,8 +10,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Factory;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -81,7 +81,7 @@ class PhocaGalleryFile
 		$path			= PhocaGalleryPath::getPath();
 		$fileNameAbs	= Path::clean($path->image_abs . $filename);
 
-		if (!File::exists($fileNameAbs)) {
+		if (!PhocaGalleryFile::exists($fileNameAbs)) {
 			$fileNameAbs	= $path->image_abs_front . 'phoca_thumb_l_no_image.png';
 		}
 
@@ -138,7 +138,7 @@ class PhocaGalleryFile
 
 	public static function existsFileOriginal($filename) {
 		$fileOriginal = PhocaGalleryFile::getFileOriginal($filename);
-		if (File::exists($fileOriginal)) {
+		if (PhocaGalleryFile::exists($fileOriginal)) {
 			return true;
 		} else {
 			return false;
@@ -148,7 +148,7 @@ class PhocaGalleryFile
 
 	public static function deleteFile ($filename) {
 		$fileOriginal = PhocaGalleryFile::getFileOriginal($filename);
-		if (File::exists($fileOriginal)){
+		if (PhocaGalleryFile::exists($fileOriginal)){
 			File::delete($fileOriginal);
 			return true;
 		}
@@ -200,5 +200,9 @@ class PhocaGalleryFile
 
 		return false;
 	}
+
+	public static function exists($file) {
+        return is_file(Path::clean($file));
+    }
 }
 ?>

@@ -14,7 +14,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 jimport( 'joomla.application.component.view');
 phocagalleryimport('phocagallery.comment.comment');
@@ -118,7 +118,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 						if (isset($avatar->avatar) && $avatar->avatar != '') {
 							$pathAvatarAbs	= $this->t['path']->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar->avatar;
 							$pathAvatarRel	= $this->t['path']->avatar_rel . 'thumbs/phoca_thumb_s_'. $avatar->avatar;
-							if (File::exists($pathAvatarAbs)){
+							if (PhocaGalleryFile::exists($pathAvatarAbs)){
 								$avSize = getimagesize($pathAvatarAbs);
 								$avRatio = $avSize[0]/$avSize[1];
 								$avHeight = 20;

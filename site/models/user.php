@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport('joomla.application.component.model');
 phocagalleryimport('phocagallery.pagination.paginationusersubcat');
 phocagalleryimport('phocagallery.pagination.paginationuserimage');
@@ -883,7 +883,7 @@ class PhocagalleryModelUser extends BaseDatabaseModel
 
 		if (!$edit) {
 			//If this file doesn't exists don't save it
-			if (!PhocaGalleryFile::existsFileOriginal($data['filename'])) {
+			if (!PhocaGalleryPhocaGalleryFile::existsFileOriginal($data['filename'])) {
 				$this->setError('File not exists');
 				return false;
 			}
@@ -1047,7 +1047,7 @@ class PhocagalleryModelUser extends BaseDatabaseModel
 		$pathAvatarAbs[]	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $avatar;
 
 		foreach ($pathAvatarAbs as $value) {
-			if (File::exists($value)){
+			if (PhocaGalleryFile::exists($value)){
 				File::delete($value);
 			}
 		}

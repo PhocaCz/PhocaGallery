@@ -11,8 +11,8 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Object\CMSObject;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');

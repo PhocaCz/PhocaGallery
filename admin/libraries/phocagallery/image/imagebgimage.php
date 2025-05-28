@@ -10,7 +10,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.path.path');
@@ -39,7 +39,7 @@ class PhocaGalleryImageBgImage
 
 		$fileIn 	= $fileOut = $path->image_abs_front. $data['image'] .'.'. $formatIcon;
 
-		if ($fileIn !== '' && File::exists($fileIn)) {
+		if ($fileIn !== '' && PhocaGalleryFile::exists($fileIn)) {
 
 			/*$memory 			= 8;
 			$memoryLimitChanged = 0;

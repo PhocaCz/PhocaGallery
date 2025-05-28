@@ -18,7 +18,7 @@ use Joomla\CMS\Session\Session;
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 phocagalleryimport( 'phocagallery.youtube.youtube');
 $app	= Factory::getApplication();
@@ -435,7 +435,7 @@ if (!empty($this->items)) {
                         if (isset($cov->avatar) && $cov->avatar != '') {
                             $pathAvatarAbs	= $this->t['path']->avatar_abs  .'thumbs/phoca_thumb_s_'. $cov->avatar;
                             $pathAvatarRel	= $this->t['path']->avatar_rel . 'thumbs/phoca_thumb_s_'. $cov->avatar;
-                            if (File::exists($pathAvatarAbs)){
+                            if (PhocaGalleryFile::exists($pathAvatarAbs)){
                                 $avSize = getimagesize($pathAvatarAbs);
                                 $avRatio = $avSize[0]/$avSize[1];
                                 $avHeight = 20;

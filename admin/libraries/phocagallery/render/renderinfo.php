@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
 jimport('joomla.filesystem.folder');
 
@@ -17,11 +17,11 @@ class PhocaGalleryRenderInfo
 {
     public static function getPhocaVersion() {
         $folder = JPATH_ADMINISTRATOR . '/' . 'components/com_phocagallery';
-        if (Folder::exists($folder)) {
+        if (PhocaGalleryFileFolder::exists($folder)) {
             $xmlFilesInDir = Folder::files($folder, '.xml$');
         } else {
             $folder = JPATH_SITE . '/components/com_phocagallery';
-            if (Folder::exists($folder)) {
+            if (PhocaGalleryFileFolder::exists($folder)) {
                 $xmlFilesInDir = Folder::files($folder, '.xml$');
             } else {
                 $xmlFilesInDir = null;

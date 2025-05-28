@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.render.renderprocess');
@@ -79,7 +79,7 @@ class PhocaGalleryImageMagic
 		}*/
 		// - - - - - - - - - - -
 
-		if ($fileIn !== '' && File::exists($fileIn)) {
+		if ($fileIn !== '' && PhocaGalleryFile::exists($fileIn)) {
 
 			// array of width, height, IMAGETYPE, "height=x width=x" (string)
 	        list($w, $h, $type) = GetImageSize($fileIn);
@@ -181,101 +181,101 @@ class PhocaGalleryImageMagic
 					$fileWatermarkLargeAvifRoot  	= $path->image_abs . 'watermark-large.avif';
 
 					if ($type == IMAGETYPE_WEBP) {
-						if (File::exists($fileWatermarkMediumWebp)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumWebp)) {
 							$fileWatermarkMedium = $fileWatermarkMediumWebp;
-						} else if (File::exists($fileWatermarkMediumPng)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumPng)) {
 							$fileWatermarkMedium = $fileWatermarkMediumPng;
-						} else if (File::exists($fileWatermarkMediumAvif)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumAvif)) {
 							$fileWatermarkMedium = $fileWatermarkMediumAvif;
 						}
 
-						if (File::exists($fileWatermarkMediumWebpRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumWebpRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumWebpRoot;
-						} else if (File::exists($fileWatermarkMediumPngRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumPngRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumPngRoot;
-						} else if (File::exists($fileWatermarkMediumAvifRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumAvifRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumAvifRoot;
 						}
 
-						if (File::exists($fileWatermarkLargeWebp)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargeWebp)) {
 							$fileWatermarkLarge = $fileWatermarkLargeWebp;
-						} else if (File::exists($fileWatermarkLargePng)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargePng)) {
 							$fileWatermarkLarge = $fileWatermarkLargePng;
-						} else if (File::exists($fileWatermarkLargeAvif)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeAvif)) {
 							$fileWatermarkLarge = $fileWatermarkLargeAvif;
 						}
 
-						if (File::exists($fileWatermarkLargeWebpRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargeWebpRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeWebpRoot;
-						} else if (File::exists($fileWatermarkLargePngRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargePngRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargePngRoot;
-						} else if (File::exists($fileWatermarkLargeAvifRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeAvifRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeAvifRoot;
 						}
 
 					} else if ($type ==  IMAGETYPE_AVIF){
-						if (File::exists($fileWatermarkMediumAvif)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumAvif)) {
 							$fileWatermarkMedium = $fileWatermarkMediumAvif;
-						} else if (File::exists($fileWatermarkMediumPng)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumPng)) {
 							$fileWatermarkMedium = $fileWatermarkMediumPng;
-						} else if (File::exists($fileWatermarkMediumWebp)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumWebp)) {
 							$fileWatermarkMedium = $fileWatermarkMediumWebp;
 						}
 
-						if (File::exists($fileWatermarkMediumAvifRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumAvifRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumAvifRoot;
-						} else if (File::exists($fileWatermarkMediumPngRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumPngRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumPngRoot;
-						} else if (File::exists($fileWatermarkMediumWebpRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumWebpRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumWebpRoot;
 						}
 
-						if (File::exists($fileWatermarkLargeAvif)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargeAvif)) {
 							$fileWatermarkLarge = $fileWatermarkLargeAvif;
-						} else if (File::exists($fileWatermarkLargePng)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargePng)) {
 							$fileWatermarkLarge = $fileWatermarkLargePng;
-						} else if (File::exists($fileWatermarkLargeWebp)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeWebp)) {
 							$fileWatermarkLarge = $fileWatermarkLargeWebp;
 						}
 
-						if (File::exists($fileWatermarkLargeAvifRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargeAvifRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeAvifRoot;
-						} else if (File::exists($fileWatermarkLargePngRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargePngRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargePngRoot;
-						} else if (File::exists($fileWatermarkLargeWebpRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeWebpRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeWebpRoot;
 						}
 
 					} else {
-						if (File::exists($fileWatermarkMediumPng)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumPng)) {
 							$fileWatermarkMedium = $fileWatermarkMediumPng;
-						} else if (File::exists($fileWatermarkMediumWebp)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumWebp)) {
 							$fileWatermarkMedium = $fileWatermarkMediumWebp;
-						} else if (File::exists($fileWatermarkMediumAvif)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumAvif)) {
 							$fileWatermarkMedium = $fileWatermarkMediumAvif;
 						}
 
-						if (File::exists($fileWatermarkMediumPngRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkMediumPngRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumPngRoot;
-						} else if (File::exists($fileWatermarkMediumWebpRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumWebpRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumWebpRoot;
-						} else if (File::exists($fileWatermarkMediumAvifRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkMediumAvifRoot)) {
 							$fileWatermarkMediumRoot = $fileWatermarkMediumAvifRoot;
 						}
 
-						if (File::exists($fileWatermarkLargePng)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargePng)) {
 							$fileWatermarkLarge = $fileWatermarkLargePng;
-						} else if (File::exists($fileWatermarkLargeWebp)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeWebp)) {
 							$fileWatermarkLarge = $fileWatermarkLargeWebp;
-						} else if (File::exists($fileWatermarkLargeAvif)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeAvif)) {
 							$fileWatermarkLarge = $fileWatermarkLargeAvif;
 						}
 
-						if (File::exists($fileWatermarkLargePngRoot)) {
+						if (PhocaGalleryFile::exists($fileWatermarkLargePngRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargePngRoot;
-						} else if (File::exists($fileWatermarkLargeWebpRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeWebpRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeWebpRoot;
-						} else if (File::exists($fileWatermarkLargeAvifRoot)) {
+						} else if (PhocaGalleryFile::exists($fileWatermarkLargeAvifRoot)) {
 							$fileWatermarkLargeRoot = $fileWatermarkLargeAvifRoot;
 						}
 					}
@@ -313,7 +313,7 @@ class PhocaGalleryImageMagic
 					}
 
 
-					if (!File::exists($fileWatermark)) {
+					if (!PhocaGalleryFile::exists($fileWatermark)) {
 						$fileWatermark = '';
 					}
 

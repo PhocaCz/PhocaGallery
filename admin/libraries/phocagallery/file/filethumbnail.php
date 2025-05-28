@@ -10,10 +10,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocagalleryimport('phocagallery.path.path');
@@ -104,38 +104,38 @@ class PhocaGalleryFileThumbnail
 
 		if ($small == 1) {
 			$fileNameThumbS = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'small');
-			if (File::exists($fileNameThumbS->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbS->abs)) {
 				File::delete($fileNameThumbS->abs);
 			}
 			$fileNameThumbS = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'small1');
-			if (File::exists($fileNameThumbS->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbS->abs)) {
 				File::delete($fileNameThumbS->abs);
 			}
 			$fileNameThumbS = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'small2');
-			if (File::exists($fileNameThumbS->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbS->abs)) {
 				File::delete($fileNameThumbS->abs);
 			}
 			$fileNameThumbS = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'small3');
-			if (File::exists($fileNameThumbS->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbS->abs)) {
 				File::delete($fileNameThumbS->abs);
 			}
 		}
 
 		if ($medium == 1) {
 			$fileNameThumbM = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'medium');
-			if (File::exists($fileNameThumbM->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbM->abs)) {
 				File::delete($fileNameThumbM->abs);
 			}
 			$fileNameThumbM = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'medium1');
-			if (File::exists($fileNameThumbM->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbM->abs)) {
 				File::delete($fileNameThumbM->abs);
 			}
 			$fileNameThumbM = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'medium2');
-			if (File::exists($fileNameThumbM->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbM->abs)) {
 				File::delete($fileNameThumbM->abs);
 			}
 			$fileNameThumbM = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'medium3');
-			if (File::exists($fileNameThumbM->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbM->abs)) {
 				File::delete($fileNameThumbM->abs);
 			}
 
@@ -143,11 +143,11 @@ class PhocaGalleryFileThumbnail
 
 		if ($large == 1) {
 			$fileNameThumbL = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'large');
-			if (File::exists($fileNameThumbL->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbL->abs)) {
 				File::delete($fileNameThumbL->abs);
 			}
 			$fileNameThumbL = PhocaGalleryFileThumbnail::getThumbnailName ($filename, 'large1');
-			if (File::exists($fileNameThumbL->abs)) {
+			if (PhocaGalleryFile::exists($fileNameThumbL->abs)) {
 				File::delete($fileNameThumbL->abs);
 			}
 		}
@@ -257,7 +257,7 @@ class PhocaGalleryFileThumbnail
 				}
 
 				// Folder must exist
-				if (Folder::exists($file['path_without_file_name_thumb'])) {
+				if (PhocaGalleryFileFolder::exists($file['path_without_file_name_thumb'])) {
 
 
 					// Thumbnails real size
@@ -278,7 +278,7 @@ class PhocaGalleryFileThumbnail
 
 
 						// Thumbnail real size
-						if ($createSmall && File::exists($thumbNameS->abs)) {
+						if ($createSmall && PhocaGalleryFile::exists($thumbNameS->abs)) {
 							$size = getimagesize($thumbNameS->abs);
 							if (isset($size[0])) {
 								$tRS['s']['w'] = $size[0];
@@ -302,7 +302,7 @@ class PhocaGalleryFileThumbnail
 						}
 
 						// Thumbnail real size
-						if ($createMedium && File::exists($thumbNameM->abs)) {
+						if ($createMedium && PhocaGalleryFile::exists($thumbNameM->abs)) {
 							$size = getimagesize($thumbNameM->abs);
 							if (isset($size[0])) {
 								$tRS['m']['w'] = $size[0];
@@ -324,7 +324,7 @@ class PhocaGalleryFileThumbnail
 						}
 
 						// Thumbnail real size
-						if ($createLarge && File::exists($thumbNameL->abs)) {
+						if ($createLarge && PhocaGalleryFile::exists($thumbNameL->abs)) {
 
 							$size = getimagesize($thumbNameL->abs);
 							if (isset($size[0])) {
@@ -465,10 +465,10 @@ class PhocaGalleryFileThumbnail
 		// disable or enable the thumbnail creation
 		if ($enable_thumb_creation == 1) {
 
-			if (Folder::exists($folderOriginal)) {
+			if (PhocaGalleryFileFolder::exists($folderOriginal)) {
 				if (strlen($folderThumbnail) > 0) {
 					$folderThumbnail = Path::clean($folderThumbnail);
-					if (!Folder::exists($folderThumbnail) && !File::exists($folderThumbnail)) {
+					if (!PhocaGalleryFileFolder::exists($folderThumbnail) && !PhocaGalleryFile::exists($folderThumbnail)) {
 						switch((int)$folder_permissions) {
 							case 777:
 								Folder::create($folderThumbnail, 0777 );
@@ -494,7 +494,7 @@ class PhocaGalleryFileThumbnail
 							File::write($folderThumbnail. '/'. "index.html", $data);
 						}
 						// folder was not created
-						if (!Folder::exists($folderThumbnail)) {
+						if (!PhocaGalleryFileFolder::exists($folderThumbnail)) {
 							$errorMsg = 'ErrorCreatingFolder';
 							return false;
 						}
@@ -557,9 +557,9 @@ class PhocaGalleryFileThumbnail
 		if ($enable_thumb_creation == 1) {
 			$fileResize	= PhocaGalleryFileThumbnail::getThumbnailResize($size);
 
-			if (File::exists($fileOriginal)) {
+			if (PhocaGalleryFile::exists($fileOriginal)) {
 				//file doesn't exist, create thumbnail
-				if (!File::exists($fileThumbnail)) {
+				if (!PhocaGalleryFile::exists($fileThumbnail)) {
 					$errorMsg = 'Error4';
 					//Don't do thumbnail if the file is smaller (width, height) than the possible thumbnail
 					list($width, $height) = GetImageSize($fileOriginal);

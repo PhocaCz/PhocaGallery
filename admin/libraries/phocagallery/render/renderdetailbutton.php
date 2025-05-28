@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 class PhocaGalleryRenderDetailButton
 {
@@ -424,7 +424,7 @@ class PhocaGalleryRenderDetailButton
 				} else {
 					$fileThumbnail 	= PhocaGalleryFileThumbnail::getThumbnailName($value->filename, 'large');
 					$imgLink		= Uri::base(true) . '/' . $fileThumbnail->rel;
-					if (File::exists($fileThumbnail->abs)) {
+					if (PhocaGalleryFile::exists($fileThumbnail->abs)) {
 						$jsSlideshowData['files'] .= '["'. $imgLink .'", "", "", "'.$description.'"]'.$endComma."\n"; ;
 					} else {
 						$fileThumbnail = Uri::base(true).'/' . "media/com_phocagallery/images/phoca_thumb_l_no_image.png";

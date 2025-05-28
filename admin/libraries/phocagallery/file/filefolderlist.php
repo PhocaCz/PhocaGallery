@@ -11,9 +11,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Object\CMSObject;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -82,7 +82,7 @@ class PhocaGalleryFileFolderList
 				}
 				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp' || $ext == 'avif') {
 
-					if (File::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
+					if (PhocaGalleryFile::exists($origPath. '/'. $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 
 						//Create thumbnails small, medium, large
 						$fileNo			= $current . "/" . $file;

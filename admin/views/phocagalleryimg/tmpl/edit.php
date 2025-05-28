@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 
 $task		= 'phocagalleryimg';
@@ -101,7 +101,7 @@ echo $r->navigation($tabs);
 // Image
 
 $fileOriginal = PhocaGalleryFile::getFileOriginal($this->item->filename);
-if (!File::exists($fileOriginal)) {
+if (!PhocaGalleryFile::exists($fileOriginal)) {
 	$this->item->fileoriginalexist = 0;
 } else {
 	$fileThumb 		= PhocaGalleryFileThumbnail::getOrCreateThumbnail($this->item->filename, '', 0, 0, 0);

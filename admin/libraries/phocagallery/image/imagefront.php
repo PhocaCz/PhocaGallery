@@ -10,7 +10,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -103,7 +103,7 @@ class PhocaGalleryImageFront
 			case 1:
 			case 5:
 			$fileThumbnail = PhocaGalleryFileThumbnail::getThumbnailName($filename, 'medium');
-			if (!File::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
+			if (!PhocaGalleryFile::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
 				return false;
 				//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-medium'.$key.'.png';
 			}
@@ -113,7 +113,7 @@ class PhocaGalleryImageFront
 			case 0:
 			case 4:
 			$fileThumbnail = PhocaGalleryFileThumbnail::getThumbnailName($filename, 'small');
-			if (!File::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
+			if (!PhocaGalleryFile::exists($fileThumbnail->abs) || $rightDisplayKey == 0) {
 				return false;
 				//$fileThumbnail->rel	= $path->image_rel_front . 'icon-folder-small-main'.$key.'.png';
 			}
@@ -226,7 +226,7 @@ class PhocaGalleryImageFront
 
 
 		//Thumbnail_file doesn't exists or user wants to display folder icon or if category is not accessable, display the key in the image:
-		if ((int)$rightDisplayKey == 0 || !File::exists($fileThumbnail->abs) ||  $displayCategoryIconImage != 1) {
+		if ((int)$rightDisplayKey == 0 || !PhocaGalleryFile::exists($fileThumbnail->abs) ||  $displayCategoryIconImage != 1) {
 				$fileThumbnail->rel 				= false;
 				$fileThumbnail->linkthumbnailpath	= false;
 				$fileThumbnail->extid				= 0;
@@ -390,7 +390,7 @@ class PhocaGalleryImageFront
 
 
 		//Thumbnail_file doesn't exists
-		if (!File::exists($fileThumbnail->abs)) {
+		if (!PhocaGalleryFile::exists($fileThumbnail->abs)) {
 			switch ($size) {
 				case 'large':
 				$fileThumbnail->rel	= $path->image_rel_front . 'phoca_thumb_l_no_image.png';

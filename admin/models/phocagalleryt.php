@@ -11,12 +11,12 @@ defined( '_JEXEC' ) or die();
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Log\Log;
 jimport( 'joomla.application.component.modeladmin' );
 jimport( 'joomla.installer.installer' );
@@ -60,7 +60,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 			return false;
 		}
 
-		if ($package['dir'] && Folder::exists($package['dir'])) {
+		if ($package['dir'] && PhocaGalleryFileFolder::exists($package['dir'])) {
 			$this->setPath('source', $package['dir']);
 		} else {
 			$this->deleteTempFiles();
@@ -482,7 +482,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 					}
 				}
 
-				if (!Folder::exists($foldersource)) {
+				if (!PhocaGalleryFileFolder::exists($foldersource)) {
 					throw new Exception(Text::sprintf('COM_PHOCAGALLERY_FOLDER_NOT_EXISTS', $foldersource), 500);
 					return false;
 				} else {
@@ -624,7 +624,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 
 		if (count($dirList) == 1)
 		{
-			if (Folder::exists($extractdir . '/' . $dirList[0]))
+			if (PhocaGalleryFileFolder::exists($extractdir . '/' . $dirList[0]))
 			{
 				$extractdir = Path::clean($extractdir . '/' . $dirList[0]);
 			}

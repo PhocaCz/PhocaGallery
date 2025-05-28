@@ -18,10 +18,10 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\UCM\UCMType;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport( 'phocagallery.utils.utils' );
@@ -1483,7 +1483,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		// original 0, thumbnail 1
 		$cooliris_image 	= $paramsC->get( 'piclens_image', 1);
 
-		if (Folder::exists($path->image_abs)) {
+		if (PhocaGalleryFileFolder::exists($path->image_abs)) {
 
 			foreach ($cids as $kcid =>$vcid) {
 				$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>'. "\n";

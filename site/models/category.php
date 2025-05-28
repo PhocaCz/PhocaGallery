@@ -426,7 +426,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 
 
 
-		if (!PhocaGalleryFile::existsFileOriginal($data['filename'])) {
+		if (!PhocaGalleryPhocaGalleryFile::existsFileOriginal($data['filename'])) {
 			$this->setError('File not exists');
 			return false;
 		}

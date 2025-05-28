@@ -9,9 +9,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Component\ComponentHelper;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -38,7 +38,7 @@ class PhocaGalleryFileFolder
 		// Iterate over the files if they exist
 		if ($fileList !== false) {
 			foreach ($fileList as $file) {
-				if (File::exists($file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
+				if (PhocaGalleryFile::exists($file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 
 					//Clean absolute path
 					$file = str_replace('\\', '/', Path::clean($file));
@@ -54,7 +54,7 @@ class PhocaGalleryFileFolder
 						$fileNameOrigs	= str_replace ('thumbs/phoca_thumb_s_', '', $file);//get fictive original files
 
 						//There is Thumbfile but not Originalfile - we delete it
-						if (File::exists($filenameThumbs) && !File::exists($fileNameOrigs)) {
+						if (PhocaGalleryFile::exists($filenameThumbs) && !PhocaGalleryFile::exists($fileNameOrigs)) {
 							File::delete($filenameThumbs);
 						}
 					//  Reverse
@@ -70,7 +70,7 @@ class PhocaGalleryFileFolder
 						$fileNameOrigm 	= str_replace ('thumbs/phoca_thumb_m_', '', $file);//get fictive original files
 
 						//There is Thumbfile but not Originalfile - we delete it
-						if (File::exists($filenameThumbm) && !File::exists($fileNameOrigm)) {
+						if (PhocaGalleryFile::exists($filenameThumbm) && !PhocaGalleryFile::exists($fileNameOrigm)) {
 							File::delete($filenameThumbm);
 						}
 					}
@@ -82,7 +82,7 @@ class PhocaGalleryFileFolder
 						$fileNameOrigl 	= str_replace ('thumbs/phoca_thumb_l_', '', $file);//get fictive original files
 
 						//There is Thumbfile but not Originalfile - we delete it
-						if (File::exists($filenameThumbl) && !File::exists($fileNameOrigl)) {
+						if (PhocaGalleryFile::exists($filenameThumbl) && !PhocaGalleryFile::exists($fileNameOrigl)) {
 							File::delete($filenameThumbl);
 						}
 					}
@@ -100,7 +100,7 @@ class PhocaGalleryFileFolder
 		$path 	= PhocaGalleryPath::getPath();
 		$folder = Path::clean($path->image_abs . $folder);
 		if (strlen($folder) > 0) {
-			if (!Folder::exists($folder) && !File::exists($folder)) {
+			if (!PhocaGalleryFileFolder::exists($folder) && !PhocaGalleryFile::exists($folder)) {
 
 				// Because of problems on some servers:
 				// It is temporary solution
@@ -129,7 +129,7 @@ class PhocaGalleryFileFolder
 					File::write($folder. '/'. "index.html", $data);
 				}
 				// folder was not created
-				if (!Folder::exists($folder)) {
+				if (!PhocaGalleryFileFolder::exists($folder)) {
 					$errorMsg = "CreatingFolder";
 					return false;
 				}
@@ -143,5 +143,9 @@ class PhocaGalleryFileFolder
 		}
 		return true;
 	}
+
+	public static function exists($path) {
+        return is_dir(Path::clean($path));
+    }
 }
 ?>

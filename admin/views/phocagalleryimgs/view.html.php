@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport( 'joomla.application.component.view' );
 phocagalleryimport('phocagallery.library.library');
 phocagalleryimport('phocagallery.render.renderdetailwindow');
@@ -232,7 +232,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends HtmlView
 				foreach ($this->items_thumbnail as $key => $value) {
 					$fileOriginalThumb = PhocaGalleryFile::getFileOriginal($value->filename);
 					//Let the user know that the file doesn't exists and delete all thumbnails
-					if (File::exists($fileOriginalThumb)) {
+					if (PhocaGalleryFile::exists($fileOriginalThumb)) {
 						$refreshUrlThumb = 'index.php?option=com_phocagallery&view=phocagalleryimgs';
 						$fileThumb = PhocaGalleryFileThumbnail::getOrCreateThumbnail( $value->filename, $refreshUrlThumb, 1, 1, 1);
 					}
@@ -247,7 +247,7 @@ class PhocaGalleryCpViewPhocaGalleryImgs extends HtmlView
 					$fileOriginal = PhocaGalleryFile::getFileOriginal($value->filename);
 					//Let the user know that the file doesn't exists and delete all thumbnails
 
-					if (!File::exists($fileOriginal)) {
+					if (!PhocaGalleryFile::exists($fileOriginal)) {
 						$this->items[$key]->filename = Text::_( 'COM_PHOCAGALLERY_IMG_FILE_NOT_EXISTS' );
 						$this->items[$key]->fileoriginalexist = 0;
 					} else {

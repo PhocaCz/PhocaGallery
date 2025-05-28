@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Component\ComponentHelper;
@@ -17,8 +17,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Client\ClientHelper;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.filesystem.folder' );
@@ -112,7 +112,7 @@ class PhocaGalleryFileUpload
 				// Get the real size - if chunk is uploaded, it is only a part size, so we must compute all size
 				// If there is last chunk we can computhe the whole size
 				if ($lastChunk == $chunks) {
-					if (File::exists($filepathImgTemp) && File::exists($file['tmp_name'])) {
+					if (PhocaGalleryFile::exists($filepathImgTemp) && PhocaGalleryFile::exists($file['tmp_name'])) {
 						$realSize = filesize($filepathImgTemp) + filesize($file['tmp_name']);
 					}
 				}
@@ -125,7 +125,7 @@ class PhocaGalleryFileUpload
 				// - remove all parts in temp file
 				// Because some parts are uploaded before we can run the condition
 				// to recognize if the file already exists.
-				if (File::exists($filepathImgFinal)) {
+				if (PhocaGalleryFile::exists($filepathImgFinal)) {
 					if($lastChunk == $chunks){
 					@Folder::delete($filepathFolderTemp);
 				}
@@ -147,12 +147,12 @@ class PhocaGalleryFileUpload
 				}
 
 				// Ok create temp folder and add chunks
-				if (!Folder::exists($filepathFolderTemp)) {
+				if (!PhocaGalleryFileFolder::exists($filepathFolderTemp)) {
 					@Folder::create($filepathFolderTemp);
 				}
 
 				// Remove old temp files
-				if (Folder::exists($filepathFolderTemp)) {
+				if (PhocaGalleryFileFolder::exists($filepathFolderTemp)) {
 					$dirFiles = Folder::files($filepathFolderTemp);
 					if (!empty($dirFiles)) {
 						foreach ($dirFiles as $fileS) {
@@ -283,7 +283,7 @@ class PhocaGalleryFileUpload
 					'details' => Text::_($errUploadMsg))));
 				}
 
-				if (File::exists($filepathImgFinal)) {
+				if (PhocaGalleryFile::exists($filepathImgFinal)) {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 108,
 					'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
 					'details' => Text::_('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS'))));
@@ -408,7 +408,7 @@ class PhocaGalleryFileUpload
 				}
 			}
 
-			if (File::exists($filepath)) {
+			if (PhocaGalleryFile::exists($filepath)) {
 				if ($return) {
 					$app->enqueueMessage( Text::_('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS'), 'error');
 					$app->redirect(base64_decode($return).'&folder='.$folderUrl);
@@ -514,7 +514,7 @@ class PhocaGalleryFileUpload
 					exit( 'ERROR: '.Text::_($errUploadMsg));
 				}
 
-				if (File::exists($filepath)) {
+				if (PhocaGalleryFile::exists($filepath)) {
 					exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS'));
 				}
 

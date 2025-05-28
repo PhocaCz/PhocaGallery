@@ -17,7 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.client.helper' );
 phocagalleryimport( 'phocagallery.image.image' );

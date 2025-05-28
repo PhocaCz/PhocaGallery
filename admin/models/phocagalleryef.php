@@ -14,8 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Client\ClientHelper;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Log\Log;
 jimport('joomla.application.component.modeladmin');
@@ -119,7 +119,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 	public function &getSource($id, $filename, $type) {
 		$item = new stdClass;
 
-		$filePath = PhocaGalleryFile::existsCSS($filename, $type);
+		$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $type);
 		if ($filePath) {
 			//$item->id			= $id;
 			//$item->type			= $type;
@@ -148,7 +148,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 			}
 			$filename 			= $filename . '.css';
 			$data['filename']	= $filename;
-			$filePath = PhocaGalleryFile::existsCSS($filename, $data['type']);
+			$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $data['type']);
 			if ($filePath) {
 				$this->setError(Text::sprintf('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS', $fileName));
 				return false;
@@ -157,7 +157,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 			}
 		} else {
 			$filename = PhocaGalleryFile::getCSSFile($data['id']);
-			$filePath = PhocaGalleryFile::existsCSS($filename, $data['type']);
+			$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $data['type']);
 		}
 
 		//$dispatcher = J EventDispatcher::getInstance();

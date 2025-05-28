@@ -13,11 +13,11 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Object\CMSObject;
 
 jimport('joomla.application.component.modeladmin');
@@ -359,7 +359,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 					$ext = '';// WE USE $ext FOR NOT CREATE A THUMBNAIL CLAUSE
 				}
 				if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'webp' || $ext == 'avif') {
-					if (File::exists($fullPath. '/'. $filename) &&
+					if (PhocaGalleryFile::exists($fullPath. '/'. $filename) &&
 					    substr($filename, 0, 1) != '.' &&
 						strtolower($filename) !== 'index.html' &&
 						!$this->_ImageExist($existingImages, $storedfilename, $category_id) ) {

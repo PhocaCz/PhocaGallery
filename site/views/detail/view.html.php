@@ -13,7 +13,7 @@ use Joomla\CMS\Factory;
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -245,7 +245,7 @@ class PhocaGalleryViewDetail extends HtmlView
 		if ($userAvatar) {
 			$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
 			$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_s_'. $userAvatar->avatar;
-			if (File::exists($pathAvatarAbs)){
+			if (PhocaGalleryFile::exists($pathAvatarAbs)){
 				$sIH	= $this->params->get( 'small_image_height', 96 );
 				$sIHR	= @getImageSize($pathAvatarAbs);
 				if (isset($sIHR[1])) {

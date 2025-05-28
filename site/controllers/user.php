@@ -16,10 +16,10 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Session\Session;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Client\ClientHelper;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 phocagalleryimport('phocagallery.access.access');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -775,7 +775,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'));
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'));
 				return false;
 			}
@@ -865,7 +865,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg);
 				$app->redirect($redirectUrl);
@@ -961,7 +961,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				$app->redirect($redirectUrl);
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				$errUploadMsg = Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS');
 				$app->enqueueMessage($errUploadMsg );
 				$app->redirect($redirectUrl);
@@ -1095,7 +1095,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_DEFINED'))));
 				return false;
 			}
-			if (!Folder::exists($path->image_abs . $rightFolder . '/')) {
+			if (!PhocaGalleryFileFolder::exists($path->image_abs . $rightFolder . '/')) {
 				jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 104,
 				'message' => Text::_('COM_PHOCAGALLERY_ERROR').': ',
 				'details' => Text::_('COM_PHOCAGALLERY_USER_FOLDER_NOT_EXISTS'))));

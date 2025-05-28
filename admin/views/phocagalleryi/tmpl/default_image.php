@@ -9,13 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 jimport( 'joomla.filesystem.file' );
 $image['width'] = $image['height'] = 100;
 
-if (File::exists( $this->_tmp_img->linkthumbnailpathabs )) {
+if (PhocaGalleryFile::exists( $this->_tmp_img->linkthumbnailpathabs )) {
 	list($width, $height) = GetImageSize( $this->_tmp_img->linkthumbnailpathabs );
 	$image = PhocaGalleryImage::correctSizeWithRate($width, $height);
 }

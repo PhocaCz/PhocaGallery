@@ -29,6 +29,7 @@ phocagalleryimport('phocagallery.library.library');
 phocagalleryimport('phocagallery.text.text');
 phocagalleryimport('phocagallery.access.access');
 phocagalleryimport('phocagallery.file.file');
+phocagalleryimport('phocagallery.file.filefolder');
 phocagalleryimport('phocagallery.image.image');
 phocagalleryimport('phocagallery.image.imagefront');
 phocagalleryimport('phocagallery.render.renderdetailwindow');

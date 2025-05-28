@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Session\Session;
 jimport( 'joomla.client.helper' );
 jimport( 'joomla.application.component.view' );
@@ -227,7 +227,7 @@ class PhocaGalleryViewUser extends HtmlView
 		if ($userAvatar) {
 			$pathAvatarAbs	= $path->avatar_abs  .'thumbs/phoca_thumb_m_'. $userAvatar->avatar;
 			$pathAvatarRel	= $path->avatar_rel . 'thumbs/phoca_thumb_m_'. $userAvatar->avatar;
-			if (File::exists($pathAvatarAbs)){
+			if (PhocaGalleryFile::exists($pathAvatarAbs)){
 				$this->t['useravatarimg']	= '<img src="'.Uri::base(true) . '/' . $pathAvatarRel.'?imagesid='.md5(uniqid(time())).'" alt="" />';
 				$this->t['useravatarapproved']	= 	$userAvatar->approved;
 			}

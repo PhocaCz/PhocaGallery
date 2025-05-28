@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 jimport( 'joomla.filesystem.file' );
 
 class PhocaGalleryYoutube
@@ -178,7 +178,7 @@ class PhocaGalleryYoutube
 
 
 				if ($img != '') {
-					if (File::exists(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
+					if (PhocaGalleryFile::exists(JPATH_ROOT . '/images/phocagallery' . '/'. $ytb['filename'], $img)) {
 						//$errorMsg = JText::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
 						//return false;
 						//Overwrite the images
@@ -233,7 +233,7 @@ class PhocaGalleryYoutube
 
 			$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
 
-			if (File::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
+			if (PhocaGalleryFile::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
 				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');
 				return false;
 			}
