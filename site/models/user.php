@@ -883,7 +883,7 @@ class PhocagalleryModelUser extends BaseDatabaseModel
 
 		if (!$edit) {
 			//If this file doesn't exists don't save it
-			if (!PhocaGalleryPhocaGalleryFile::existsFileOriginal($data['filename'])) {
+			if (!PhocaGalleryFile::existsFileOriginal($data['filename'])) {
 				$this->setError('File not exists');
 				return false;
 			}

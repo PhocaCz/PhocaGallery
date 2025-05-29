@@ -111,7 +111,7 @@ if ($canCreate || $canEdit) {
 
 echo $r->td($checkO, "small");
 
-$filename 	= PhocaGalleryPhocaGalleryFile::existsCss($item->filename, $item->type);
+$filename 	= PhocaGalleryFile::existsCss($item->filename, $item->type);
 $main		= '';
 if ((int)$item->type == 1) {
 	$main = ' <span class="label label-warning badge bg-warning">'.Text::_('COM_PHOCAGALLERY_MAIN').'</span>';

@@ -119,7 +119,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 	public function &getSource($id, $filename, $type) {
 		$item = new stdClass;
 
-		$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $type);
+		$filePath = PhocaGalleryFile::existsCSS($filename, $type);
 		if ($filePath) {
 			//$item->id			= $id;
 			//$item->type			= $type;
@@ -148,7 +148,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 			}
 			$filename 			= $filename . '.css';
 			$data['filename']	= $filename;
-			$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $data['type']);
+			$filePath = PhocaGalleryFile::existsCSS($filename, $data['type']);
 			if ($filePath) {
 				$this->setError(Text::sprintf('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS', $fileName));
 				return false;
@@ -157,7 +157,7 @@ class PhocaGalleryCpModelPhocaGalleryEf extends AdminModel
 			}
 		} else {
 			$filename = PhocaGalleryFile::getCSSFile($data['id']);
-			$filePath = PhocaGalleryPhocaGalleryFile::existsCSS($filename, $data['type']);
+			$filePath = PhocaGalleryFile::existsCSS($filename, $data['type']);
 		}
 
 		//$dispatcher = J EventDispatcher::getInstance();
