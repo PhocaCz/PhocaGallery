@@ -49,14 +49,14 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/5.1.1/com_phocagallery_v5.1.1.zip</downloadurl>
 		</downloads>
-		<sha512>2fb72dc27a4f294f34cb70d91815c1ab6f99f7f452cd6f2369385cfc4f4fe8f8551721d396bb2d1890cb2f0afa120b77ba492134d2b3cb8d3ba795ec0e1703c2</sha512>
+		<sha512>ba60a99085f267161ffea500e3f17d316f2c79b169ceb10cd638175e5cd2cdbcf00cc0a802beaac8ad559c6d94c65f9aac087ede758707cccd2fe390596821ac</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="(4|5)\.*"/>
+		<targetplatform name="joomla" version="5\.*"/>
 		<client>administrator</client>
 	</update>
 </updates>
