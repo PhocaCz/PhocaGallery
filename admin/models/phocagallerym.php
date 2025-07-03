@@ -19,7 +19,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\Object\CMSObject;
-
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -28,6 +28,7 @@ setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 {
+	use AdminModelTrait;
 	protected $option 			= 'com_phocagallery';
 	protected $text_prefix		= 'com_phocagallery';
 	public 		$typeAlias 		= 'com_phocagallery.phocagallerym';

@@ -14,10 +14,12 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 
 class PhocaGalleryCpModelPhocaGalleryRaImg extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 
 	public function __construct($config = array())

@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 use Joomla\String\StringHelper;
 
@@ -21,6 +22,7 @@ use Joomla\String\StringHelper;
 class PhocaGalleryCpModelPhocaGalleryLinkImg extends BaseDatabaseModel
 {
 
+	use AdminModelTrait;
 	var $_data 			= null;
 	var $_total 		= null;
 	var $_pagination 	= null;

@@ -13,11 +13,13 @@ defined( '_JEXEC' ) or die();
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 
 class PhocaGalleryCpModelPhocaGalleryCs extends ListModel
 {
 
+	use AdminModelTrait;
 	protected	$option 	= 'com_phocagallery';
 	protected $total		= 0;
 	//public 		$context		= 'com_phocagallery.phocagallerycoimgs';

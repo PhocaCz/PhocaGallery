@@ -12,10 +12,12 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 
 class PhocaGalleryCpModelPhocaGalleryD extends BaseDatabaseModel
 {
+	use AdminModelTrait;
 	protected $id;
 	protected $data;
 	

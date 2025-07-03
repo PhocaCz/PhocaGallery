@@ -18,11 +18,13 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport('phocagallery.tag.tag');
 
 class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 	protected 	$text_prefix	= 'com_phocagallery';
 	public 		$typeAlias 		= 'com_phocagallery.phocagalleryimg';

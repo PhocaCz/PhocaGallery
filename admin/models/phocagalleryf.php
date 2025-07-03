@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\Filesystem\Path;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Object\CMSObject;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -21,6 +22,7 @@ setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryCpModelPhocaGalleryF extends BaseDatabaseModel
 {
+	use AdminModelTrait;
 	function getState($property = NULL, $default = NULL) {
 		static $set;
 

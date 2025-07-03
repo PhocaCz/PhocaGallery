@@ -14,6 +14,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\Path;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -21,6 +22,7 @@ phocagalleryimport( 'phocagallery.file.filefolder' );
 
 class PhocaGalleryCpModelPhocaGalleryEfs extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 
 	public function __construct($config = array())

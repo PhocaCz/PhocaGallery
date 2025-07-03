@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -21,6 +22,7 @@ phocagalleryimport( 'phocagallery.file.filefolder' );
 class PhocaGalleryCpModelPhocaGalleryUsers extends ListModel
 {
 
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 	public 		$context		= 'com_phocagallery.phocagalleryusers';
 

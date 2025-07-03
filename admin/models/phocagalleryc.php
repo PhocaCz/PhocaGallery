@@ -23,6 +23,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Filesystem\File;
 use Joomla\CMS\UCM\UCMType;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 phocagalleryimport( 'phocagallery.utils.utils' );
 //phocagalleryimport( 'phocagallery.picasa.picasa' );
@@ -31,6 +32,7 @@ phocagalleryimport( 'phocagallery.utils.utils' );
 
 class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 {
+	use AdminModelTrait;
 	//protected 	$_XMLFile;
 	//protected 	$_id;
 	//protected 	$_data;

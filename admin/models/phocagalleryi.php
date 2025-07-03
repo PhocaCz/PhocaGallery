@@ -11,7 +11,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
-
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -19,6 +19,7 @@ phocagalleryimport('phocagallery.file.filefolderlist');
 
 class PhocaGalleryCpModelPhocaGalleryI extends BaseDatabaseModel
 {
+	use AdminModelTrait;
 	protected $option 			= 'com_phocagallery';
 	protected $text_prefix		= 'com_phocagallery';
 	//public 		$typeAlias 		= 'com_phocagallery.phocagalleryi';

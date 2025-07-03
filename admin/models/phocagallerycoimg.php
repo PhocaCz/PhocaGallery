@@ -13,10 +13,12 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Application\ApplicationHelper;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 
 class PhocaGalleryCpModelPhocaGalleryCoImg extends AdminModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 	protected $text_prefix 		= 'com_phocagallery';
 	public 		$typeAlias 		= 'com_phocagallery.phocagallerycoimg';

@@ -5,6 +5,7 @@
 	"license": "GNU/GPL",
 	"projectName": "PhocaGallery",
 	"extensionName": "Phoca Gallery",
+	"nameSpace": "Phoca\\Component\\Phocagallery",
 	"projectInitials" : "PG",				  
 	"description": "Phoca Gallery is an efficient image gallery extension for Joomla! CMS.",
 	"projectUrl": "https://www.phoca.cz/phocagallery",

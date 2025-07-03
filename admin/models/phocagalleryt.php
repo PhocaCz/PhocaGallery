@@ -18,6 +18,7 @@ use Joomla\Registry\Registry;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\Log\Log;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport( 'joomla.application.component.modeladmin' );
 jimport( 'joomla.installer.installer' );
 jimport( 'joomla.installer.helper' );
@@ -27,6 +28,7 @@ setlocale(LC_ALL, 'C.UTF-8', 'C');
 
 class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 {
+	use AdminModelTrait;
 	protected 	$_paths 	= array();
 	protected 	$_manifest 	= null;
 	protected	$option 		= 'com_phocagallery';

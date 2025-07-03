@@ -15,11 +15,13 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Application\ApplicationHelper;
+use Phoca\PhocaGallery\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 
 class PhocaGalleryCpModelPhocaGalleryUser extends AdminModel
 {
 
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocagallery';
 	protected 	$text_prefix	= 'com_phocagallery';
 	public 		$typeAlias 		= 'com_phocagallery.phocagalleryuser';
