@@ -42,7 +42,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		//JHtml::_('behavior.keepalive');
 		//JHtml::_('formbehavior.chosen', 'select');
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
 		}
@@ -66,9 +66,9 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocagallery/css/phocagallery.css' );
 
-		$eName				= $app->input->get('editor', '', 'cmd');
+		$eName				= $app->getInput()->get('editor', '', 'cmd');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['type']		= $app->input->get( 'type', 1, 'int' );
+		$this->t['type']		= $app->getInput()->get( 'type', 1, 'int' );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
@@ -156,7 +156,7 @@ class phocaGalleryCpViewphocaGalleryLinkImg extends HtmlView
 					$itemsCount[$i]->value 	= (int)$key + 1;
 					$itemsCount[$i]->text	= (int)$key + 1;
 				}
-				$categoryId		= $app->input->get( 'filter_catid', 0, '', 'int' );
+				$categoryId		= $app->getInput()->get( 'filter_catid', 0, '', 'int' );
 				$categoryIdList	= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid',	0, 'int' );
 
 				if ((int)$categoryId == 0 && $categoryIdList == 0) {

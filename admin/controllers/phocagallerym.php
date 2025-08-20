@@ -30,15 +30,15 @@ class PhocaGalleryCpControllerPhocaGalleryM extends FormController
 		$this->layout = 'edit';
 		// Register Extra tasks
 		//$this->registerTask( 'add'  , 	'eidt' );
-		//$view = JFactory::getApplication()->input->get( 'view' );
-		
+		//$view = JFactory::getApplication()->getInput()->get( 'view' );
+
 	}
 
 	//public function display() {
 		//$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout, false));
 	//}
-	
-	
+
+
 
 	protected function allowAdd($data = array()) {
 		$user		= Factory::getUser();
@@ -61,24 +61,24 @@ class PhocaGalleryCpControllerPhocaGalleryM extends FormController
 			return $allow;
 		}
 	}
-	
+
 	/*
 	function save() {
 	Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$post				= Factory::getApplication()->input->get('post');
-		//$data			= JFactory::getApplication()->input->get('jform', array(0), 'post', 'array');
-		$data = $app->input->post->get('jform', array(), 'array');
-		
+		$post				= Factory::getApplication()->getInput()->get('post');
+		//$data			= JFactory::getApplication()->getInput()->get('jform', array(0), 'post', 'array');
+		$data = $app->getInput()->post->get('jform', array(), 'array');
+
 		if(isset($post['foldercid'])) {
 			$data['foldercid']	= $post['foldercid'];
 		}
 		if(isset($post['cid'])) {
 			$data['cid']		= $post['cid'];
 		}
-		
-	
-	
-		
+
+
+
+
 		$model 		= $this->getModel( 'phocagallerym' );
 
 		if ($model->save($data)) {
@@ -90,19 +90,19 @@ class PhocaGalleryCpControllerPhocaGalleryM extends FormController
 		$link = 'index.php?option=com_phocagallery&view=phocagalleryimgs';
 		$this->setRedirect($link, $msg);
 	}*/
-	
 
-	
-	
-	
+
+
+
+
 	function edit($key = NULL, $urlVar = NULL) {
-		//JFactory::getApplication()->input->set( 'view', 'phocagallerym' );
-		//JFactory::getApplication()->input->set( 'layout', 'Edit'  );
-		//JFactory::getApplication()->input->set( 'hidemainmenu', 1 );
+		//JFactory::getApplication()->getInput()->set( 'view', 'phocagallerym' );
+		//JFactory::getApplication()->getInput()->set( 'layout', 'Edit'  );
+		//JFactory::getApplication()->getInput()->set( 'hidemainmenu', 1 );
 		//PhocaGalleryCpControllerPhocaGalleryM::display();
 		$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout, false));
 	}
-	
+
 	function cancel($key = NULL) {
 		// Checkin the Phoca Gallery
 		//$model = $this->getModel( 'phocagallery' );

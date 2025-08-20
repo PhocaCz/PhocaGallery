@@ -26,7 +26,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 {
 
 	function display($tpl = null){
-		
+
 		if (!Session::checkToken('request')) {
 			$response = array(
 				'status' => '0',
@@ -35,37 +35,37 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 			echo json_encode($response);
 			return;
 		}
-	
+
 		$app	= Factory::getApplication();
 		$params	= $app->getParams();
-		
-		
-		$commentValue	= $app->input->get( 'commentValue', '',  'string'  );
-		$commentId 		= $app->input->get( 'commentId', 0,  'int'  );// ID of File
-		$format 		= $app->input->get( 'format', '',  'string'  );
-		$task 			= $app->input->get( 'task', '',  'string'  );
-		$view 			= $app->input->get( 'view', '',  'string'  );
-		
-		
+
+
+		$commentValue	= $app->getInput()->get( 'commentValue', '',  'string'  );
+		$commentId 		= $app->getInput()->get( 'commentId', 0,  'int'  );// ID of File
+		$format 		= $app->getInput()->get( 'format', '',  'string'  );
+		$task 			= $app->getInput()->get( 'task', '',  'string'  );
+		$view 			= $app->getInput()->get( 'view', '',  'string'  );
+
+
 		$paramsC 		= ComponentHelper::getParams('com_phocagallery');
 		$param['display_comment_img'] = $paramsC->get( 'display_comment_img', 0 );
-		
-		
-		if ($task == 'refreshcomment' && ((int)$param['display_comment_img'] == 2 || (int)$param['display_comment_img'] == 3)) {	
-		
+
+
+		if ($task == 'refreshcomment' && ((int)$param['display_comment_img'] == 2 || (int)$param['display_comment_img'] == 3)) {
+
 			$user 		= Factory::getUser();
 			//$view 		= J Request::get Var( 'view', '', 'get', '', J REQUEST_NOTRIM  );
 			//$Itemid		= J Request::get Var( 'Itemid', 0, '', 'int');
-		
+
 			$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 			$access				= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
-		
-			
+
+
 			$post['imgid'] 		= (int)$commentId;
 			$post['userid']		= $user->id;
 			$post['comment']	= strip_tags($commentValue);
 
-			
+
 			if ($format != 'json') {
 				$msg = Text::_('COM_PHOCAGALLERY_ERROR_WRONG_COMMENT') ;
 				$response = array(
@@ -74,7 +74,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 				echo json_encode($response);
 				return;
 			}
-			
+
 			if ((int)$post['imgid'] < 1) {
 				$msg = Text::_('COM_PHOCAGALLERY_ERROR_IMAGE_NOT_EXISTS');
 				$response = array(
@@ -83,12 +83,12 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 				echo json_encode($response);
 				return;
 			}
-			
+
 			$model = $this->getModel();
 
-			
+
 			$checkUserComment	= PhocaGalleryCommentImage::checkUserComment( $post['imgid'], $post['userid'] );
-			
+
 			// User has already commented this category
 			if ($checkUserComment) {
 				$msg = Text::_('COM_PHOCAGALLERY_COMMENT_ALREADY_SUBMITTED');
@@ -99,7 +99,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 				echo json_encode($response);
 				return;
 			} else {
-				
+
 				if ($access > 0 && $user->id > 0) {
 					if(!$model->comment($post)) {
 						$msg = Text::_('COM_PHOCAGALLERY_ERROR_COMMENTING_IMAGE');
@@ -109,7 +109,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 						echo json_encode($response);
 						return;
 					} else {
-						
+
 						$o = '<div class="pg-cv-comment-img-box-item">';
 						$o .= '<div class="pg-cv-comment-img-box-avatar">';
 						$avatar 			= PhocaGalleryCommentImage::getUserAvatar($user->id);
@@ -131,8 +131,8 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 						$o .= '<div class="pg-cv-comment-img-box-comment">'.$user->name.': '.$post['comment'].'</div>';
 						$o .= '<div style="clear:both"></div>';
 						$o .= '</div>';
-						
-						
+
+
 						$msg = $o . '<br />' . Text::_('COM_PHOCAGALLERY_SUCCESS_COMMENT_SUBMIT');
 						$response = array(
 						'status' => '1',
@@ -140,7 +140,7 @@ class PhocaGalleryViewCommentImgA extends HtmlView
 						'message' => $msg);
 						echo json_encode($response);
 						return;
-					} 
+					}
 				} else {
 					$msg = Text::_('COM_PHOCAGALLERY_NOT_AUTHORISED_ACTION');
 						$response = array(

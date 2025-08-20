@@ -38,7 +38,7 @@ class PhocaGalleryViewCategories extends HtmlView
 		$params 	= $app->getParams();
 
 		// Specific category
-		$id 				= $app->input->get('id', 0, 'int');
+		$id 				= $app->getInput()->get('id', 0, 'int');
 		// Params
 		$categories 		= $params->get( 'feed_cat_ids', '' );
 		$ordering			= $params->get( 'feed_img_ordering', 6 );

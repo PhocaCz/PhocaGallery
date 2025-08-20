@@ -20,24 +20,24 @@ class PhocagalleryModelComment extends BaseDatabaseModel
 	function __construct() {
 		parent::__construct();
 		$app = Factory::getApplication();
-		$id = $app->input->get('id', 0, 'int');
+		$id = $app->getInput()->get('id', 0, 'int');
 		$this->setId((int)$id);
 	}
-	
+
 	function setId($id) {
 		$this->_id			= $id;
 		$this->_data		= null;
 	}
-	
+
 	function &getData() {
 		if (!$this->_loadData()) {
 			$this->_initData();
 		}
 		return $this->_data;
 	}
-	
+
 	function _loadData() {
-		
+
 		if (empty($this->_data)) {
 			$app	= Factory::getApplication();
 			$params				= $app->getParams();
@@ -53,11 +53,11 @@ class PhocagalleryModelComment extends BaseDatabaseModel
 					.$imageOrdering['output'];
 			$this->_db->setQuery($query);
 			$this->_data = $this->_db->loadObject();
-			return (boolean) $this->_data;	
+			return (boolean) $this->_data;
 		}
 		return true;
 	}
-	
+
 	function _initData() {
 		if (empty($this->_data)) {
 			$this->_data = '';
@@ -65,12 +65,12 @@ class PhocagalleryModelComment extends BaseDatabaseModel
 		}
 		return true;
 	}
-	
+
 	function comment($data) {
-		
+
 		$row = $this->getTable('phocagallerycommentimgs', 'Table');
-		
-		
+
+
 		if (!$row->bind($data)) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -93,9 +93,9 @@ class PhocagalleryModelComment extends BaseDatabaseModel
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 }
 ?>

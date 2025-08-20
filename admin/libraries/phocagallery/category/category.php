@@ -459,10 +459,10 @@ final class PhocaGalleryCategory
 	public static function getActiveCategoryId() {
 
 		$app			= Factory::getApplication();
-		$option			= $app->input->get( 'option', '', 'string' );
-		$view			= $app->input->get( 'view', '', 'string' );
-		$catid			= $app->input->get( 'catid', '', 'int' ); // ID in items view is category id
-		$id				= $app->input->get( 'id', '', 'int' );
+		$option			= $app->getInput()->get( 'option', '', 'string' );
+		$view			= $app->getInput()->get( 'view', '', 'string' );
+		$catid			= $app->getInput()->get( 'catid', '', 'int' ); // ID in items view is category id
+		$id				= $app->getInput()->get( 'id', '', 'int' );
 
 		if ($option == 'com_phocacart' && ($view == 'items' || $view == 'category')) {
 

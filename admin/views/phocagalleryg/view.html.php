@@ -33,9 +33,9 @@ class PhocaGalleryCpViewPhocagalleryG extends HtmlView
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 		$params	 			= ComponentHelper::getParams( 'com_phocagallery' );
-		$this->latitude		= $app->input->get( 'lat', '50.079623358200884', 'get', 'string' );
-		$this->longitude	= $app->input->get( 'lng', '14.429919719696045', 'get', 'string' );
-		$this->zoom			= $app->input->get( 'zoom', '2', 'get', 'string' );
+		$this->latitude		= $app->getInput()->get( 'lat', '50.079623358200884', 'get', 'string' );
+		$this->longitude	= $app->getInput()->get( 'lng', '14.429919719696045', 'get', 'string' );
+		$this->zoom			= $app->getInput()->get( 'zoom', '2', 'get', 'string' );
 		$this->map_type		= $params->get( 'map_type', 2 );
 
 		$this->type 		= 'map';

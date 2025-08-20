@@ -127,9 +127,9 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 	function save($data) {
 		$app	= Factory::getApplication();
 
-		$foldercid	= Factory::getApplication()->input->get('foldercid', array(), 'raw');
-		$cid	= Factory::getApplication()->input->get('cid', 0, 'raw');
-		$data	= Factory::getApplication()->input->get('jform', array(0), 'post', 'array');
+		$foldercid	= Factory::getApplication()->getInput()->get('foldercid', array(), 'raw');
+		$cid	= Factory::getApplication()->getInput()->get('cid', 0, 'raw');
+		$data	= Factory::getApplication()->getInput()->get('jform', array(0), 'post', 'array');
 
 
 		if(isset($foldercid)) {
@@ -526,7 +526,7 @@ class PhocaGalleryCpModelPhocaGalleryM extends AdminModel
 		static $set;
 
 		if (!$set) {
-			$folder = Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$folder = Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
 			$this->setState('folder', $folder);
 
 			$parent = str_replace("\\", "/", dirname($folder));

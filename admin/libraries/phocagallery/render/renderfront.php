@@ -764,7 +764,7 @@ class PhocaGalleryRenderFront
 
     public static function renderAllCSS($noBootStrap = 0) {
         $app    = Factory::getApplication();
-        $itemid = $app->input->get('Itemid', 0, 'int');
+        $itemid = $app->getInput()->get('Itemid', 0, 'int');
         $db     = Factory::getDBO();
         $query  = 'SELECT a.filename as filename, a.type as type, a.menulink as menulink'
             . ' FROM #__phocagallery_styles AS a'

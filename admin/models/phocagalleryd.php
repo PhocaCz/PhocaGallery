@@ -20,10 +20,10 @@ class PhocaGalleryCpModelPhocaGalleryD extends BaseDatabaseModel
 	use AdminModelTrait;
 	protected $id;
 	protected $data;
-	
+
 	public function __construct() {
 		parent::__construct();
-		$id = Factory::getApplication()->input->get('id',  0, '', 'int');
+		$id = Factory::getApplication()->getInput()->get('id',  0, '', 'int');
 		$this->setId((int)$id);
 	}
 
@@ -38,26 +38,26 @@ class PhocaGalleryCpModelPhocaGalleryD extends BaseDatabaseModel
 		}
 		return $this->data;
 	}
-	
+
 	function loadData() {
 		if (empty($this->data)) {
 			$query = 'SELECT a.*' .
 					' FROM #__phocagallery AS a' .
 					' WHERE a.id = '.(int) $this->id;
 			$this->_db->setQuery($query);
-			
+
 			$fileObject = $this->_db->loadObject();
-			
+
 			$file 	= new CMSObject();
 
 			$refresh_url = 'index.php?option=com_phocagallery&view=phocagalleryd&tmpl=component&id='.(int)$this->id;
-			
+
 			//Creata thumbnails if not exist
 			PhocaGalleryFileThumbnail::getOrCreateThumbnail($fileObject->filename, $refresh_url, 1, 1, 1);
-			
+
 			jimport( 'joomla.filesystem.file' );
-			if (!isset($fileObject->filename)) {					
-				$file->set('linkthumbnailpath', '');			
+			if (!isset($fileObject->filename)) {
+				$file->set('linkthumbnailpath', '');
 			} else {
 				$thumbFile = PhocaGalleryFileThumbnail::getThumbnailName ($fileObject->filename, 'large');
 				$file->set('linkthumbnailpath', $thumbFile->rel);
@@ -66,19 +66,19 @@ class PhocaGalleryCpModelPhocaGalleryD extends BaseDatabaseModel
 				$file->set('extw', $fileObject->extw);
 				$file->set('exth', $fileObject->exth);
 			}
-				
+
 			$this->data = $file;
 			return (boolean) $this->data;
 		}
 		return true;
 	}
-	
+
 	protected function initData() {
 		if (empty($this->data)) {
 			$this->data	= '';
 			return (boolean) $this->data;
 		}
 		return true;
-	}	
+	}
 }
 ?>

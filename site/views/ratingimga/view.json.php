@@ -35,12 +35,12 @@ class PhocaGalleryViewRatingImgA extends HtmlView
 		$params			= $app->getParams();
 
 
-		$ratingVote 	= $app->input->get( 'ratingVote', 0,  'int'  );
-		$ratingId 		= $app->input->get( 'ratingId', 0,  'int'  );// ID of File
-		$format 		= $app->input->get( 'format', '', 'string'  );
-		$task 			= $app->input->get( 'task', '',  'string'  );
-		$view 			= $app->input->get( 'view', '',  'string'  );
-		$small			= $app->input->get( 'small', 1,  'string'  );//small or large rating icons
+		$ratingVote 	= $app->getInput()->get( 'ratingVote', 0,  'int'  );
+		$ratingId 		= $app->getInput()->get( 'ratingId', 0,  'int'  );// ID of File
+		$format 		= $app->getInput()->get( 'format', '', 'string'  );
+		$task 			= $app->getInput()->get( 'task', '',  'string'  );
+		$view 			= $app->getInput()->get( 'view', '',  'string'  );
+		$small			= $app->getInput()->get( 'small', 1,  'string'  );//small or large rating icons
 
 
 		$paramsC 		= ComponentHelper::getParams('com_phocagallery');

@@ -31,17 +31,17 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 		// In case the "Load" button will be saved, two actions need to be done:
 		// 1) Save (apply) the category data (we use Joomla! framework controller so we need to set save method, task = apply
 		// 2) load external images - we need to identify "Load", but task is apply, so we use subtask = loadextimg
-		$task = Factory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->getInput()->get('task');
 		if ((string)$task == 'loadextimgp') {
 			if ($this->registerTask( 'loadextimgp', 'save')) {
-				Factory::getApplication()->input->set('task','apply');// we need to apply category data
-				Factory::getApplication()->input->set('subtask','loadextimgp');// we need to get info to run loading images
+				Factory::getApplication()->getInput()->set('task','apply');// we need to apply category data
+				Factory::getApplication()->getInput()->set('subtask','loadextimgp');// we need to get info to run loading images
 			}
 		}
 		if ((string)$task == 'loadextimgf') {
 			if ($this->registerTask( 'loadextimgf', 'save')) {
-				Factory::getApplication()->input->set('task','apply');// we need to apply category data
-				Factory::getApplication()->input->set('subtask','loadextimgf');// we need to get info to run loading images
+				Factory::getApplication()->getInput()->set('task','apply');// we need to apply category data
+				Factory::getApplication()->getInput()->set('subtask','loadextimgf');// we need to get info to run loading images
 			}
 		}
 		$this->registerTask( 'uploadextimgf', 'uploadExtImgF');
@@ -49,8 +49,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 
 		if ((string)$task == 'loadextimgi') {
 			if ($this->registerTask( 'loadextimgi', 'save')) {
-				Factory::getApplication()->input->set('task','apply');// we need to apply category data
-				Factory::getApplication()->input->set('subtask','loadextimgi');// we need to get info to run loading images
+				Factory::getApplication()->getInput()->set('task','apply');// we need to apply category data
+				Factory::getApplication()->getInput()->set('subtask','loadextimgi');// we need to get info to run loading images
 			}
 		}
 
@@ -64,8 +64,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 
 	function loadExtImgPgn() {
 
-		$picStart	= Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' );
-		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$picStart	= Factory::getApplication()->getInput()->get( 'picstart', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
 		if ($picStart > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -77,8 +77,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 
 	function loadExtImgPgnFb() {
 
-		$fbCount	= Factory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' );
-		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$fbCount	= Factory::getApplication()->getInput()->get( 'fbcount', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
 		if ($fbCount > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -88,8 +88,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 	}
 	function uploadExtImgF() {
 
-		$idCat	= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
-		$data	= Factory::getApplication()->input->get('jform', array(), 'post', 'array');
+		$idCat	= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
+		$data	= Factory::getApplication()->getInput()->get('jform', array(), 'post', 'array');
 
 		if (isset($data['extfbuid']) && $data['extfbuid'] > 0 && isset($data['extfbcatid']) && $data['extfbcatid'] != '' ) {
 			if ($idCat > 0) {
@@ -106,8 +106,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 
 	function uploadExtImgFPgn() {
 
-		$fbImg		= Factory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' );
-		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$fbImg		= Factory::getApplication()->getInput()->get( 'fbimg', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
 		if ($fbImg > 0 && $idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -119,7 +119,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 	/*
 	 * NOT USED IT IS A SUBTASK OF SAVE
 	function loadExtImgI() {
-		$idCat		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+		$idCat		= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
 		if ($idCat > 0) {
 			$model		= $this->getModel();
 			$message	= '';
@@ -164,8 +164,8 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 		$lang		= Factory::getLanguage();
 		$model		= $this->getModel();
 		$table		= $model->getTable();
-		//$data		= JFactory::getApplication()->input->get('jform', array(), 'post', 'array');
-		$data		= $app->input->post->get('jform', array(), 'array');
+		//$data		= JFactory::getApplication()->getInput()->get('jform', array(), 'post', 'array');
+		$data		= $app->getInput()->post->get('jform', array(), 'array');
 
 		$checkin	= property_exists($table, 'checked_out');
 		$context	= "$this->option.edit.$this->context";
@@ -181,7 +181,7 @@ class PhocaGalleryCpControllerPhocaGalleryc extends FormController
 			$urlVar = $key;
 		}
 
-		$recordId	= Factory::getApplication()->input->getInt($urlVar);
+		$recordId	= Factory::getApplication()->getInput()->getInt($urlVar);
 
 		$session	= Factory::getSession();
 		$registry	= $session->get('registry');

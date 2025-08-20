@@ -31,7 +31,7 @@ class PhocaGalleryRouterrules extends MenuRules
         // 2. administrator/components/com_phocagallery/libraries/phocadownload/path/routerrules.php build() - BUILD
         // 3. administrator/components/com_phocagallery/libraries/phocadownload/path/routerrules.php parse() - PARSE
         $app    = Factory::getApplication();
-        $tagId  = $app->input->get('tagid', 0, 'int');
+        $tagId  = $app->getInput()->get('tagid', 0, 'int');
         if ($segments[0] == 'category' && (int)$tagId > 0){
             // We are in category view but tags output
             $vars['view'] = 'category';

@@ -26,12 +26,12 @@ class PhocaGalleryViewMap extends HtmlView
 		$this->params	= $app->getParams();
 		// PLUGIN WINDOW - we get information from plugin
 		$get		= array();
-		$get['map']		= $app->input->get( 'map', '', 'string' );
-		$this->itemId	= $app->input->get('Itemid', 0, 'int');
+		$get['map']		= $app->getInput()->get( 'map', '', 'string' );
+		$this->itemId	= $app->getInput()->get('Itemid', 0, 'int');
 
 		// Multibox
-		$get['mapwidth']						= $app->input->get( 'mapwidth', '', 'string' );
-		$get['mapheight']						= $app->input->get( 'mapheight', '', 'string' );
+		$get['mapwidth']						= $app->getInput()->get( 'mapwidth', '', 'string' );
+		$get['mapheight']						= $app->getInput()->get( 'mapheight', '', 'string' );
 		$this->t['enable_multibox']			= $this->params->get( 'enable_multibox', 0);
 		$this->t['enable_multibox_iframe'] 	= 0;
 		if ($get['mapwidth'] != '') {
@@ -158,7 +158,7 @@ class PhocaGalleryViewMap extends HtmlView
 		$this->t['backbutton'] = '';
 		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $map->catslug.'&Itemid='. $app->getInput()->get('Itemid', 0, 'int')).'"'
 				.' title="'.Text::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', Text::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}

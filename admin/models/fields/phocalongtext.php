@@ -20,11 +20,11 @@ class JFormFieldPhocaLongText extends FormField
 	protected $phocaParams 	= null;
 
 	protected function getInput() {
-	
+
 		$document		= Factory::getDocument();
-		$option 		= Factory::getApplication()->input->getCmd('option');
+		$option 		= Factory::getApplication()->getInput()->getCmd('option');
 		$globalValue 	= $this->_getPhocaParams( $this->element['name'] );
-		
+
 		// Initialize some field attributes.
 		$size		= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
 		$class		= $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
@@ -33,9 +33,9 @@ class JFormFieldPhocaLongText extends FormField
 		$disabled	= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 		// Initialize JavaScript field attributes.
 		$onchange	= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
-		
+
 		$value 		= htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
-		
+
 		// TO DO 1.6
 		// MENU - Set Default value to "" because of saving "" value into the menu link ( use global = "")
 		if ($option == "com_menus") {
@@ -44,39 +44,39 @@ class JFormFieldPhocaLongText extends FormField
 				$value = '';
 			}
 		}
-		
+
 		// MENU - Display the global value
 		if ($option == "com_menus") {
 			$html ='<table><tr><td colspan="3"><input type="text" name="'.$this->name.'" id="'.$this->id.'" value="'.$value.'"'
-			   .$class.$size.$disabled.$readonly.$onchange.$maxLength.'/></td></tr>';		
-			$html .='<tr><td>[</td><td><input  type="text"  value="'. $globalValue .'" style="width:15em;border:1px solid #fff;background:#fff;" /></td><td>]</td></tr></table>'; 
+			   .$class.$size.$disabled.$readonly.$onchange.$maxLength.'/></td></tr>';
+			$html .='<tr><td>[</td><td><input  type="text"  value="'. $globalValue .'" style="width:15em;border:1px solid #fff;background:#fff;" /></td><td>]</td></tr></table>';
 		} else {
 			$html ='<input type="text" name="'.$this->name.'" id="'.$this->id.'" value="'.$value.'"'
 			   .$class.$size.$disabled.$readonly.$onchange.$maxLength.'/>';
 		}
 		return $html;
 	}
-	
+
 	protected function getLabel() {
 		echo '<div class="clearfix"></div>';
 		return parent::getLabel();
 		echo '<div class="clearfix"></div>';
 	}
-	
+
 	protected function _setPhocaParams(){
-	
+
 		$component 			= 'com_phocagallery';
 		$paramsC			= ComponentHelper::getParams($component) ;
 		$this->phocaParams	= $paramsC;
 	}
 
 	protected function _getPhocaParams( $name ){
-	
+
 		// Don't call sql query by every param item (it will be loaded only one time)
 		if (!$this->phocaParams) {
 			$params = $this->_setPhocaParams();
 		}
-		$globalValue 	= $this->phocaParams->get( $name, '' );	
+		$globalValue 	= $this->phocaParams->get( $name, '' );
 		return $globalValue;
 	}
 }

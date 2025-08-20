@@ -81,7 +81,7 @@ class JFormFieldPhocaGalleryCategory extends FormField
 
 		 // TO DO - check for other views than category edit
 		$omitIds = [];
-		switch (Factory::getApplication()->input->get('view')) {
+		switch (Factory::getApplication()->getInput()->get('view')) {
 		  case 'phocagallerycategory':
 			if ($this->form->getValue('id') > 0)
 			  $omitIds[] = $this->form->getValue('id');

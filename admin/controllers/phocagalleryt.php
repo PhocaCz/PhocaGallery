@@ -8,7 +8,7 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
- 
+
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
@@ -21,35 +21,35 @@ jimport('joomla.client.helper');
 class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 {
 	protected	$option 		= 'com_phocagallery';
-	
+
 	function __construct() {
 		parent::__construct();
-		$this->registerTask( 'themeinstall'  , 	'themeinstall' );	
+		$this->registerTask( 'themeinstall'  , 	'themeinstall' );
 		$this->registerTask( 'bgimagesmall'  , 	'bgimagesmall' );
 		$this->registerTask( 'bgimagemedium'  , 'bgimagemedium' );
-		$this->registerTask( 'displayeditcss'  , 'displayeditcss' );		
+		$this->registerTask( 'displayeditcss'  , 'displayeditcss' );
 	}
 
 	function displayeditcss() {
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));		
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$fileid = $this->input->get('fileid');
 		$fileid = urldecode(base64_decode($fileid));
 		$model		= $this->getModel();
 		echo $model->getFileContent($fileid);
 		Factory::getApplication()->close();
 	}
-	
+
 	function themeinstall() {
 
 		Session::checkToken() or die( 'Invalid Token' );
-		//$post	= JFactory::getApplication()->input->get('post');
-		
+		//$post	= JFactory::getApplication()->getInput()->get('post');
+
 		$post = array();
-		$post['theme_component']	= Factory::getApplication()->input->get('theme_component', array(), 'raw');
-		$post['theme_categories']	= Factory::getApplication()->input->get('theme_categories', array(), 'raw');
-		$post['theme_category']		= Factory::getApplication()->input->get('theme_category', array(), 'raw');
+		$post['theme_component']	= Factory::getApplication()->getInput()->get('theme_component', array(), 'raw');
+		$post['theme_categories']	= Factory::getApplication()->getInput()->get('theme_categories', array(), 'raw');
+		$post['theme_category']		= Factory::getApplication()->getInput()->get('theme_category', array(), 'raw');
 		$theme = array();
-		
+
 		if (isset($post['theme_component'])) {
 			//$theme['component'] = 1;
 		}
@@ -62,11 +62,11 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 			$theme['category'] 	= 0;
 		}
 		$theme['component'] = 1;
-		
+
 		if (!empty($theme)) {
-		
+
 			$ftp = ClientHelper::setCredentialsFromRequest('ftp');
-		
+
 			$model	= $this->getModel( 'phocagalleryt' );
 
 			if ($model->install($theme)) {
@@ -77,27 +77,27 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 		} else {
 			$msg = Text::_('COM_PHOCAGALLERY_ERROR_THEME_APPLICATION_AREA');
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_phocagallery&view=phocagalleryt', $msg );
 	}
 
 	function cancel($key = NULL) {
 		$this->setRedirect( 'index.php?option=com_phocagallery' );
 	}
-	
+
 	function bgimagesmall() {
 		Session::checkToken() or die( 'Invalid Token' );
-		
-		//$post				= JFactory::getApplication()->input->get('post');
+
+		//$post				= JFactory::getApplication()->getInput()->get('post');
 		$post = array();
-		$post['siw'] = Factory::getApplication()->input->files->get( 'siw');
-		$post['sih'] = Factory::getApplication()->input->files->get( 'sih');
-		$post['ssbgc'] = Factory::getApplication()->input->files->get( 'ssbgc');
-		$post['sibgc'] = Factory::getApplication()->input->files->get( 'sibgc');
-		$post['sibrdc'] = Factory::getApplication()->input->files->get( 'sibrdc');
-		$post['siec'] = Factory::getApplication()->input->files->get( 'siec');
-		$post['sie'] = Factory::getApplication()->input->files->get( 'sie');
-		
+		$post['siw'] = Factory::getApplication()->getInput()->files->get( 'siw');
+		$post['sih'] = Factory::getApplication()->getInput()->files->get( 'sih');
+		$post['ssbgc'] = Factory::getApplication()->getInput()->files->get( 'ssbgc');
+		$post['sibgc'] = Factory::getApplication()->getInput()->files->get( 'sibgc');
+		$post['sibrdc'] = Factory::getApplication()->getInput()->files->get( 'sibrdc');
+		$post['siec'] = Factory::getApplication()->getInput()->files->get( 'siec');
+		$post['sie'] = Factory::getApplication()->getInput()->files->get( 'sie');
+
 		$data['image']	= 'shadow3';
 		$data['iw']		= $post['siw'];
 		$data['ih']		= $post['sih'];
@@ -108,9 +108,9 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 		$data['ie']		= $post['sie'];
 
 		phocagalleryimport('phocagallery.image.imagebgimage');
-		$errorMsg = '';		
+		$errorMsg = '';
 		$bgImage = PhocaGalleryImageBgImage::createBgImage($data, $errorMsg);
-	
+
 		if ($bgImage) {
 			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
 		} else {
@@ -119,24 +119,24 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 				$msg .= '<br />' . $errorMsg;
 			}
 		}
-		
+
 		$linkSuffix = '&siw='.$post['siw'].'&sih='.$post['sih'].'&ssbgc='.str_replace('#','',$post['ssbgc']).'&sibgc='.str_replace('#','',$post['sibgc']).'&sibrdc='.str_replace('#','',$post['sibrdc']).'&sie='.$post['sie'].'&siec='.str_replace('#','',$post['siec']);
-		
+
 		$this->setRedirect( 'index.php?option=com_phocagallery&view=phocagalleryt'.$linkSuffix , $msg );
 	}
-	
+
 	function bgimagemedium() {
 		Session::checkToken() or die( 'Invalid Token' );
-		//$post				= JFactory::getApplication()->input->get('post');
+		//$post				= JFactory::getApplication()->getInput()->get('post');
 		$post = array();
-		$post['miw'] = Factory::getApplication()->input->files->get( 'miw');
-		$post['mih'] = Factory::getApplication()->input->files->get( 'mih');
-		$post['msbgc'] = Factory::getApplication()->input->files->get( 'msbgc');
-		$post['mibgc'] = Factory::getApplication()->input->files->get( 'mibgc');
-		$post['mibrdc'] = Factory::getApplication()->input->files->get( 'mibrdc');
-		$post['miec'] = Factory::getApplication()->input->files->get( 'miec');
-		$post['mie'] = Factory::getApplication()->input->files->get( 'mie');
-		
+		$post['miw'] = Factory::getApplication()->getInput()->files->get( 'miw');
+		$post['mih'] = Factory::getApplication()->getInput()->files->get( 'mih');
+		$post['msbgc'] = Factory::getApplication()->getInput()->files->get( 'msbgc');
+		$post['mibgc'] = Factory::getApplication()->getInput()->files->get( 'mibgc');
+		$post['mibrdc'] = Factory::getApplication()->getInput()->files->get( 'mibrdc');
+		$post['miec'] = Factory::getApplication()->getInput()->files->get( 'miec');
+		$post['mie'] = Factory::getApplication()->getInput()->files->get( 'mie');
+
 		$data['image']	= 'shadow1';
 		$data['iw']		= $post['miw'];
 		$data['ih']		= $post['mih'];
@@ -147,9 +147,9 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 		$data['ie']		= $post['mie'];
 
 		phocagalleryimport('phocagallery.image.imagebgimage');
-		$errorMsg = '';		
+		$errorMsg = '';
 		$bgImage = PhocaGalleryImageBgImage::createBgImage($data, $errorMsg);
-	
+
 		if ($bgImage) {
 			$msg = Text::_('COM_PHOCAGALLERY_SUCCESS_BG_IMAGE');
 		} else {
@@ -158,9 +158,9 @@ class PhocaGalleryCpControllerPhocaGalleryT extends FormController
 				$msg .= '<br />' . $errorMsg;
 			}
 		}
-		
+
 		$linkSuffix = '&miw='.$post['miw'].'&mih='.$post['mih'].'&msbgc='.str_replace('#','',$post['msbgc']).'&mibgc='.str_replace('#','',$post['mibgc']).'&mibrdc='.str_replace('#','',$post['mibrdc']).'&mie='.$post['mie'].'&miec='.str_replace('#','',$post['miec']);
-		
+
 		$this->setRedirect( 'index.php?option=com_phocagallery&view=phocagalleryt'.$linkSuffix , $msg );
 	}
 }

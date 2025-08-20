@@ -27,8 +27,8 @@ class PhocaGalleryCpModelPhocaGalleryF extends BaseDatabaseModel
 		static $set;
 
 		if (!$set) {
-			$folder = Factory::getApplication()->input->get( 'folder', '', '', 'path' );
-			$upload = Factory::getApplication()->input->get( 'upload', '', '', 'int' );
+			$folder = Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
+			$upload = Factory::getApplication()->getInput()->get( 'upload', '', '', 'int' );
 			$this->setState('folder', $folder);
 			$parent = str_replace("\\", "/", dirname($folder));
 			$parent = ($parent == '.') ? null : $parent;

@@ -22,9 +22,9 @@ class PhocaGalleryModelInfo extends BaseDatabaseModel
 	function __construct() {
 		parent::__construct();
 		$app	= Factory::getApplication();
-		$id 	= $app->input->get('id', 0, 'int');
+		$id 	= $app->getInput()->get('id', 0, 'int');
 		$this->setId((int)$id);
-		//$post	= $app->input->get('get');
+		//$post	= $app->getInput()->get('get');
 	}
 
 	function setId($id){

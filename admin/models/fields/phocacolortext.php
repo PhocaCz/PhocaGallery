@@ -25,7 +25,7 @@ class JFormFieldPhocaColorText extends FormField
 	protected function getInput() {
 
 		$document		= Factory::getDocument();
-		$option 		= Factory::getApplication()->input->getCmd('option');
+		$option 		= Factory::getApplication()->getInput()->getCmd('option');
 		$globalValue 	= $this->_getPhocaParams( $this->element['name'] );
 
 		HTMLHelper::stylesheet( 'media/com_phocagallery/js/jcp/picker.css' );

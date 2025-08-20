@@ -43,7 +43,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 
 		// Get the pagination request variables
 		$this->setState('limit', $app->getUserStateFromRequest($context .'limit', 'limit', $default_pagination, 'int'));
-		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
+		$this->setState('limitstart', $app->getInput()->get('limitstart', 0, 'int'));
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 		// Get the filter request variables
@@ -55,7 +55,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 		//$this->setState('filter_order', J Request::get Cmd('filter_order', 'ordering'));
 		//$this->setState('filter_order_dir', J Request::get Cmd('filter_order_Dir', 'ASC'));
 
-		$id = $app->input->get('id', 0, 'int');
+		$id = $app->getInput()->get('id', 0, 'int');
 		$this->setId((int)$id);
 	}
 
@@ -117,7 +117,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 		}
 
 		// Link from comment system
-		$cimgid			= $app->input->get( 'cimgid', 0, 'int');
+		$cimgid			= $app->getInput()->get( 'cimgid', 0, 'int');
 		if ($cimgid > 0) {
 			$wheres[]	= ' a.id = '.(int)$cimgid;
 		}

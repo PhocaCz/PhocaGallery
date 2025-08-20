@@ -22,7 +22,7 @@ $task		= 'phocagalleryimg';
 
 $r 			= $this->r;
 $app		= Factory::getApplication();
-$option 	= $app->input->get('option');
+$option 	= $app->getInput()->get('option');
 $OPT		= strtoupper($option);
 
 /*

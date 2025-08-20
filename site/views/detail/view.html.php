@@ -44,7 +44,7 @@ class PhocaGalleryViewDetail extends HtmlView
 
 		$app		= Factory::getApplication();
 		$uri        = Uri::getInstance();
-        $id			= $app->input->get('id', 0, 'int');
+        $id			= $app->getInput()->get('id', 0, 'int');
 
 
 
@@ -52,13 +52,13 @@ class PhocaGalleryViewDetail extends HtmlView
 		$document				= Factory::getDocument();
 		$this->params			= $app->getParams();
 		$user					= Factory::getUser();
-		$var['slideshow']		= $app->input->get('phocaslideshow', 0, 'int');
-		$var['download'] 		= $app->input->get('phocadownload', 0, 'int');
+		$var['slideshow']		= $app->getInput()->get('phocaslideshow', 0, 'int');
+		$var['download'] 		= $app->getInput()->get('phocadownload', 0, 'int');
 		$this->t['action']	    = $uri->toString();
 		$path					= PhocaGalleryPath::getPath();
-		$this->itemId			= $app->input->get('Itemid', 0, 'int');
+		$this->itemId			= $app->getInput()->get('Itemid', 0, 'int');
 
-		$this->t['tmpl']			= $app->input->get('tmpl', '', 'string');
+		$this->t['tmpl']			= $app->getInput()->get('tmpl', '', 'string');
 
 		$neededAccessLevels		= PhocaGalleryAccess::getNeededAccessLevels();
 		$access					= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
@@ -71,11 +71,11 @@ class PhocaGalleryViewDetail extends HtmlView
 
 		// Information from the plugin - window is displayed after plugin action
 		$get				= array();
-		$get['detail']		= $app->input->get( 'detail', '',  'string');
-		$get['buttons']		= $app->input->get( 'buttons', '',  'string' );
-		$get['ratingimg']	= $app->input->get( 'ratingimg', '', 'string' );
+		$get['detail']		= $app->getInput()->get( 'detail', '',  'string');
+		$get['buttons']		= $app->getInput()->get( 'buttons', '',  'string' );
+		$get['ratingimg']	= $app->getInput()->get( 'ratingimg', '', 'string' );
 
-		$this->t['tmpl']		= $app->input->get( 'tmpl', '',  'string');
+		$this->t['tmpl']		= $app->getInput()->get( 'tmpl', '',  'string');
 
 		$this->t['picasa_correct_width_l']		= (int)$this->params->get( 'large_image_width', 640 );
 		$this->t['picasa_correct_height_l']		= (int)$this->params->get( 'large_image_height', 480 );
@@ -341,7 +341,7 @@ class PhocaGalleryViewDetail extends HtmlView
 		}
 
 		// Add Statistics
-		$model->hit($app->input->get( 'id', '', 'int' ));
+		$model->hit($app->getInput()->get( 'id', '', 'int' ));
 
 		// R A T I N G
 		// Only registered (VOTES + COMMENTS)

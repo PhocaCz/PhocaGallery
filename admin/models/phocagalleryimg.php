@@ -88,7 +88,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 				$data->set('catid', (int)$filter[0]);
 			} else {
 				// UNDER TEST
-				$catid = $app->input->get('catid');
+				$catid = $app->getInput()->get('catid');
 				if ((int)$catid > 0) {
 					$data->set('catid', (int)$catid);
 				}
@@ -374,7 +374,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		// = = = = = =
 
 
-		$task = Factory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->getInput()->get('task');
 		if (isset($table->$pkName)) {
 			$id = $table->$pkName;
 		}
@@ -388,7 +388,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 			//Get folder variables from Helper
 			//Create thumbnails small, medium, large
 			$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.thumbs';
-			$task = Factory::getApplication()->input->get('task');
+			$task = Factory::getApplication()->getInput()->get('task');
 			if (isset($table->$pkName) && $task == 'apply') {
 				$id = $table->$pkName;
 				$refresh_url = 'index.php?option=com_phocagallery&task=phocagalleryimg.edit&id='.(int)$id;
@@ -672,7 +672,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -795,7 +795,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));

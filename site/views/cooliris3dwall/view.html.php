@@ -41,7 +41,7 @@ class PhocaGalleryViewCooliris3DWall extends HtmlView
 		$this->t['enablecustomcss']				= $this->params->get( 'enable_custom_css', 0);
 		$this->t['customcss']					= $this->params->get( 'custom_css', '');
 
-		$idCategory									= $app->input->get('id', 0, 'int');
+		$idCategory									= $app->getInput()->get('id', 0, 'int');
 
 		// CSS
 		HTMLHelper::stylesheet('media/com_phocagallery/css/phocagallery.css' );

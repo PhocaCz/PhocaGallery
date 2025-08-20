@@ -39,7 +39,7 @@ class PhocaGalleryViewCategories extends HtmlView
 		$this->params				= $app->getParams();
 		$this->tGeo					= array();
 		$this->t					= array();
-		$this->itemId				= $app->input->get('Itemid', 0, 'int');
+		$this->itemId				= $app->getInput()->get('Itemid', 0, 'int');
 		$document					= Factory::getDocument();
 		$library 					= PhocaGalleryLibrary::getLibrary();
 		$this->t['action']			= $uri->toString();

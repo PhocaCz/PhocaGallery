@@ -37,8 +37,8 @@ class PhocaGalleryRoute
 			$itemId = (int)$item->id;
 		}*//*
 
-		$option			= $app->input->get( 'option', '', 'string' );
-		$view			= $app->input->get( 'view', '', 'string' );
+		$option			= $app->getInput()->get( 'option', '', 'string' );
+		$view			= $app->getInput()->get( 'view', '', 'string' );
 		if ($option == 'com_phocagallery' && $view == 'category') {
 			if ((int)$activeId > 0) {
 				// 2) if there are two menu links, try to select the one active
@@ -94,7 +94,7 @@ class PhocaGalleryRoute
 		/*$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
+		$option		= $app->getInput()->get( 'option', '', 'string' );
 
 
 		$activeId 	= 0;
@@ -259,7 +259,7 @@ class PhocaGalleryRoute
 		/*$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
+		$option		= $app->getInput()->get( 'option', '', 'string' );
 
 		$activeId 	= 0;
 		$notCheckId	= 0;
@@ -333,13 +333,13 @@ class PhocaGalleryRoute
 		$items		= $menus->getItems('component', $component);
 		//$menu 		= $menus;//$app->getMenu();
 		$active 	= $menus->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
+		$option		= $app->getInput()->get( 'option', '', 'string' );
 
 		// Don't check ID for specific views. e.g. categories view does not have ID
 		$notCheckIdArray =  array('categories');
 
 		if(!$items) {
-			$itemId =  $app->input->get('Itemid', 0, 'int');
+			$itemId =  $app->getInput()->get('Itemid', 0, 'int');
 			if ($itemId > 0) {
 				$item = new stdClass();
 				$item->id = $itemId;

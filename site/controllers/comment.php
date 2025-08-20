@@ -20,8 +20,8 @@ class PhocaGalleryControllerComment extends PhocaGalleryController
 
 	function display($cachable = false, $urlparams = false) {
 
-		if ( ! Factory::getApplication()->input->get('view') )  {
-			Factory::getApplication()->input->set('view', 'comment' );
+		if ( ! Factory::getApplication()->getInput()->get('view') )  {
+			Factory::getApplication()->getInput()->set('view', 'comment' );
 		}
 		parent::display($cachable, $urlparams);
     }

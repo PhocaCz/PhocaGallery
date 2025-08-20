@@ -92,7 +92,7 @@ class PhocaGalleryCpViewPhocaGalleryM extends HtmlView
 		// - - - - - - - - - -
 		//TABS
 		// - - - - - - - - - -
-		$this->t['tab'] 			= Factory::getApplication()->input->get('tab', '', '', 'string');
+		$this->t['tab'] 			= Factory::getApplication()->getInput()->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 
 		// MULTIPLE UPLOAD
@@ -134,8 +134,8 @@ class PhocaGalleryCpViewPhocaGalleryM extends HtmlView
 		// Multiple Upload
 		// - - - - - - - - - - -
 		// Get infos from multiple upload
-		$muFailed						= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded						= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$muFailed						= Factory::getApplication()->getInput()->get( 'mufailed', '0', '', 'int' );
+		$muUploaded						= Factory::getApplication()->getInput()->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 		if ($muUploaded > 0) {
@@ -211,7 +211,7 @@ class PhocaGalleryCpViewPhocaGalleryM extends HtmlView
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagallerym.php';
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 		$state	= $this->get('State');
 		$canDo	= PhocaGalleryMHelper::getActions($state->get('filter.multiple'));
 

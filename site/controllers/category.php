@@ -35,7 +35,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 {
 
 	function display($cachable = false, $urlparams = false) {
-		if ( ! Factory::getApplication()->input->get( 'view' ) ) {
+		if ( ! Factory::getApplication()->getInput()->get( 'view' ) ) {
 			$this->input->set('view', 'category' );
 		}
 		parent::display($cachable, $urlparams);

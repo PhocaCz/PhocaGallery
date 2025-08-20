@@ -46,7 +46,7 @@ phocagalleryimport('phocagallery.html.grid');
 
 // Require specific controller if requested
 
-if($controller = Factory::getApplication()->input->get( 'controller')) {
+if($controller = Factory::getApplication()->getInput()->get( 'controller')) {
     $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         require_once $path;
@@ -60,7 +60,7 @@ $classname    = 'PhocaGalleryController'.ucfirst((string)$controller);
 $controller   = new $classname( );
 
 // Perform the Request task
-$controller->execute(Factory::getApplication()->input->get('task'));
+$controller->execute(Factory::getApplication()->getInput()->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();

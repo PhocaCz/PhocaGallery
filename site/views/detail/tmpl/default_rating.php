@@ -17,7 +17,7 @@ $amp = PhocaGalleryUtils::setQuestionmarkOrAmp($this->t['action']);
 //if ((int)$this->t['display_rating_img'] == 1 || $this->t['mb_rating']) {
 if ((int)$this->t['display_rating_img'] == 1) {
 	// Leave message for already voted images
-	$vote = $app->input->get('vote', 0, 'int');;
+	$vote = $app->getInput()->get('vote', 0, 'int');;
 	if ($vote == 1) {
 		$voteMsg = Text::_('COM_PHOCAGALLERY_ALREADY_RATED_IMG_THANKS');
 	} else {

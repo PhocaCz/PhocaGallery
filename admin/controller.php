@@ -33,10 +33,10 @@ $l['ef']	= array('COM_PHOCAGALLERY_STYLES', 'phocagalleryefs');
 $l['in']	= array('COM_PHOCAGALLERY_INFO', 'phocagalleryin');
 
 // Submenu view
-//$view	= JFactory::getApplication()->input->get( 'view', '', '', 'string', J REQUEST_ALLOWRAW );
-//$layout	= JFactory::getApplication()->input->get( 'layout', '', '', 'string', J REQUEST_ALLOWRAW );
-$view	= Factory::getApplication()->input->get('view');
-$layout	= Factory::getApplication()->input->get('layout');
+//$view	= JFactory::getApplication()->getInput()->get( 'view', '', '', 'string', J REQUEST_ALLOWRAW );
+//$layout	= JFactory::getApplication()->getInput()->get( 'layout', '', '', 'string', J REQUEST_ALLOWRAW );
+$view	= Factory::getApplication()->getInput()->get('view');
+$layout	= Factory::getApplication()->getInput()->get('layout');
 
 if ($layout == 'edit') {
 

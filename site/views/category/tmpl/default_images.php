@@ -295,7 +295,7 @@ if (!empty($this->items)) {
                     }
                     echo ' >';
                     // If you go from RSS or administration (e.g. jcomments) to category view, you will see already commented image (animated icon)
-                    $cimgid = $app->input->get('cimgid', 0, 'int');
+                    $cimgid = $app->getInput()->get('cimgid', 0, 'int');
                     if ($cimgid > 0) {
                         //echo HTMLHelper::_('image', $this->t['icon_path'].'icon-comment-a.gif', JText::_('COM_PHOCAGALLERY_COMMENT_IMAGE'));
                         //echo PhocaGalleryRenderFront::renderIcon('comment-a', $this->t['icon_path'].'icon-comment-a.gif', JText::_('COM_PHOCAGALLERY_COMMENT_IMAGE'), 'ph-icon-animated');

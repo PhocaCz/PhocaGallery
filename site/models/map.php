@@ -15,24 +15,24 @@ jimport('joomla.application.component.model');
 
 class PhocaGalleryModelMap extends BaseDatabaseModel
 {
-		
+
 
 	function __construct() {
 		parent::__construct();
 		$app	= Factory::getApplication();
-		$id 	= $app->input->get('id', 0, 'int');
+		$id 	= $app->getInput()->get('id', 0, 'int');
 		$this->setId((int)$id);
-		$catid	= $app->input->get('catid', 0, 'int');
+		$catid	= $app->getInput()->get('catid', 0, 'int');
 		$this->setCatid((int)$catid);
-		//$post	= $app->input->get('get');
+		//$post	= $app->getInput()->get('get');
 	}
-	
+
 	function setId($id){
 		$this->_id				= $id;
 		$this->_data			= null;
 		$this->_data_category	= null;
 	}
-	
+
 	function setCatid($catid) {
 		if ($catid == 0) { //SEF
 			$query = 'SELECT c.catid,'
@@ -48,14 +48,14 @@ class PhocaGalleryModelMap extends BaseDatabaseModel
 		$this->_data_category	= null;
 	}
 
-	
+
 	function &getData() {
 		if (!$this->_loadData()) {
 			$this->_initData();
 		}
 		return $this->_data;
 	}
-	
+
 	function _loadData() {
 		$app	= Factory::getApplication();
 
@@ -68,13 +68,13 @@ class PhocaGalleryModelMap extends BaseDatabaseModel
 				.' WHERE a.id = '. (int) $this->_id;
 			$this->_db->setQuery($query, 0, 1);
 			$this->_data	= $this->_db->loadObject();
-			
-			return (boolean) $this->_data;	
+
+			return (boolean) $this->_data;
 		}
 		return true;
 	}
-	
-	
+
+
 	function _initData() {
 		if (empty($this->_data)) {
 			$this->_data	= '';
@@ -82,7 +82,7 @@ class PhocaGalleryModelMap extends BaseDatabaseModel
 		}
 		return true;
 	}
-	
+
 	/*
 	 * Category
 	 */
@@ -92,7 +92,7 @@ class PhocaGalleryModelMap extends BaseDatabaseModel
 		}
 		return $this->_data_category;
 	}
-	
+
 	function _loadDataCategory() {
 		$query = 'SELECT c.title, c.description, c.latitude, c.longitude, c.zoom, c.geotitle,'
 				.' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as catslug'
@@ -102,7 +102,7 @@ class PhocaGalleryModelMap extends BaseDatabaseModel
 		$this->_data_category	= $this->_db->loadObject();
 		return (boolean) $this->_data_category;
 	}
-	
+
 	function _initDataCategory() {
 		if (empty($this->_data_category)) {
 			$this->_data_category	= '';

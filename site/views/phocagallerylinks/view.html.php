@@ -29,12 +29,12 @@ class phocaGalleryViewphocaGalleryLinks extends HtmlView
 			$tUri = Uri::base();
 		}
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
 		}
 
-		$eName	= Factory::getApplication()->input->get('editor');
+		$eName	= Factory::getApplication()->getInput()->get('editor');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
 		HTMLHelper::_('jquery.framework', false);

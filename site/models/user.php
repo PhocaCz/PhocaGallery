@@ -38,14 +38,14 @@ class PhocagalleryModelUser extends BaseDatabaseModel
 		$app	= Factory::getApplication();
 		// SubCategory
 		$limit_subcat		= $app->getUserStateFromRequest( $this->_context_subcat.'.list.limitsubcat', 'limitsubcat', 20, 'int' );
-		$limitstart_subcat 	= $app->input->get('limitstartsubcat', 0, 'int');
+		$limitstart_subcat 	= $app->getInput()->get('limitstartsubcat', 0, 'int');
 		$limitstart_subcat 	= ($limit_subcat != 0 ? (floor($limitstart_subcat / $limit_subcat) * $limit_subcat) : 0);
 		$this->setState($this->_context_subcat.'.list.limitsubcat', $limit_subcat);
 		$this->setState($this->_context_subcat.'.list.limitstartsubcat', $limitstart_subcat);
 
 		// Image
 		$limit_image		= $app->getUserStateFromRequest( $this->_context_image.'.list.limitimage', 'limitimage', 20, 'int' );
-		$limitstart_image 	= $app->input->get('limitstartimage', 0, 'int');
+		$limitstart_image 	= $app->getInput()->get('limitstartimage', 0, 'int');
 		$limitstart_image 	= ($limit_image != 0 ? (floor($limitstart_image / $limit_image) * $limit_image) : 0);
 		$this->setState($this->_context_image.'.list.limitimage', $limit_image);
 		$this->setState($this->_context_image.'.list.limitstartimage', $limitstart_image);

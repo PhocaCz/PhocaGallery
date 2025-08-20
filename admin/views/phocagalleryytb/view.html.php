@@ -36,9 +36,9 @@ class PhocaGalleryCpViewPhocagalleryYtb extends HtmlView
 		$document	= Factory::getDocument();
 
 
-		$this->t['catid']		= Factory::getApplication()->input->get( 'catid', 0, 'int' );
-		$this->t['field']		= Factory::getApplication()->input->get( 'field', '', 'string');
-		$this->t['import']		= Factory::getApplication()->input->get( 'import', 0, 'int' );
+		$this->t['catid']		= Factory::getApplication()->getInput()->get( 'catid', 0, 'int' );
+		$this->t['field']		= Factory::getApplication()->getInput()->get( 'field', '', 'string');
+		$this->t['import']		= Factory::getApplication()->getInput()->get( 'import', 0, 'int' );
 
 
 

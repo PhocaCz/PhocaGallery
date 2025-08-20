@@ -134,7 +134,7 @@ class PhocaGalleryCpModelPhocaGalleryUser extends AdminModel
 
 	function __construct() {
 		parent::__construct();
-		$array = Factory::getApplication()->input->get('cid',  0, '', 'array');
+		$array = Factory::getApplication()->getInput()->get('cid',  0, '', 'array');
 		$this->setId((int)$array[0]);
 	}
 

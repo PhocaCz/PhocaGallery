@@ -101,8 +101,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 	}
 
 	function display($cachable = false, $urlparams = Array()) {
-		if ( ! Factory::getApplication()->input->get('view') ) {
-			Factory::getApplication()->input->set('view', 'user' );
+		if ( ! Factory::getApplication()->getInput()->get('view') ) {
+			Factory::getApplication()->getInput()->set('view', 'user' );
 		}
 		parent::display($cachable, $urlparams);
     }
@@ -590,7 +590,7 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 		$app	= Factory::getApplication();
 		$errUploadMsg	= '';
 	    $redirectUrl 	= '';
-		$fileArray 		= $app->input->files->get('Filedata', null);
+		$fileArray 		= $app->getInput()->files->get('Filedata', null);
 		$this->_singleFileUploadAvatar($errUploadMsg, $fileArray, $redirectUrl);
 		$app->enqueueMessage($errUploadMsg);
 		$app->redirect($redirectUrl);
@@ -781,8 +781,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			}
 
 			// Sending and setting data for common realsingleupload function
-			Factory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			Factory::getApplication()->input->set('return-url', base64_encode($return));// set return url
+			Factory::getApplication()->getInput()->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			Factory::getApplication()->getInput()->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realJavaUpload(2);
 
 			if ($fileName != '') {
@@ -874,8 +874,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 			// Sending and setting data for common realsingleupload function
-			Factory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			Factory::getApplication()->input->set('return-url', base64_encode($return));// set return url
+			Factory::getApplication()->getInput()->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			Factory::getApplication()->getInput()->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realSingleUpload(2);
 
 			if ($fileName != '') {
@@ -970,8 +970,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 
 
 			// Sending and setting data for common realsingleupload function
-			Factory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			Factory::getApplication()->input->set('return-url', base64_encode($return));// set return url
+			Factory::getApplication()->getInput()->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			Factory::getApplication()->getInput()->set('return-url', base64_encode($return));// set return url
 			//$fileName = PhocaGalleryFileUpload::realSingleUpload(2);
 
 
@@ -1103,8 +1103,8 @@ class PhocaGalleryControllerUser extends PhocaGalleryController
 			}
 
 			// Sending and setting data for common realsingleupload function
-			Factory::getApplication()->input->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
-			Factory::getApplication()->input->set('return-url', base64_encode($return));// set return url
+			Factory::getApplication()->getInput()->set('folder', $rightFolder);//Set the right path for uploaded image (category folder included)
+			Factory::getApplication()->getInput()->set('return-url', base64_encode($return));// set return url
 			$fileName = PhocaGalleryFileUpload::realMultipleUpload(2);
 
 			if ($fileName != '') {

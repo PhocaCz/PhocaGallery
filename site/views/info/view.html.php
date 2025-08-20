@@ -29,8 +29,8 @@ class PhocaGalleryViewInfo extends HtmlView
 
 		// PLUGIN WINDOW - we get information from plugin
 		$get			= array();
-		$get['info']	= $app->input->get( 'info', '', 'string' );
-		$this->itemId	= $app->input->get('Itemid', 0, 'int');
+		$get['info']	= $app->getInput()->get( 'info', '', 'string' );
+		$this->itemId	= $app->getInput()->get('Itemid', 0, 'int');
 		$this->t['infooutput'] = '';
 
 		$document		= $app->getDocument();
@@ -102,7 +102,7 @@ class PhocaGalleryViewInfo extends HtmlView
 		/*$this->t['backbutton'] = '';
 		if ($this->t['detailwindow'] == 7) {
 			phocagalleryimport('phocagallery.image.image');
-			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $this->info->catslug.'&Itemid='. $app->input->get('Itemid', 0, 'int')).'"'
+			$this->t['backbutton'] = '<div><a href="'.Route::_('index.php?option=com_phocagallery&view=category&id='. $this->info->catslug.'&Itemid='. $app->getInput()->get('Itemid', 0, 'int')).'"'
 				.' title="'.Text::_( 'COM_PHOCAGALLERY_BACK_TO_CATEGORY' ).'">'
 				. PhocaGalleryRenderFront::renderIcon('icon-up-images', 'media/com_phocagallery/images/icon-up-images.png', Text::_('COM_PHOCAGALLERY_BACK_TO_CATEGORY'), 'ph-icon-up-images ph-icon-button').'</a></div>';
 		}*/

@@ -28,7 +28,7 @@ class PhocaGalleryCpModelPhocaGalleryI extends BaseDatabaseModel
 		static $set;
 
 		if (!$set) {
-			$folder = Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$folder = Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
 			$this->setState('folder', $folder);
 
 			$parent = str_replace("\\", "/", dirname($folder));
@@ -40,9 +40,9 @@ class PhocaGalleryCpModelPhocaGalleryI extends BaseDatabaseModel
 	}
 
 	function getImages() {
-		$tab 			= Factory::getApplication()->input->get( 'tab', '', '', 'string' );
-		$muFailed		= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded		= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$tab 			= Factory::getApplication()->getInput()->get( 'tab', '', '', 'string' );
+		$muFailed		= Factory::getApplication()->getInput()->get( 'mufailed', '0', '', 'int' );
+		$muUploaded		= Factory::getApplication()->getInput()->get( 'muuploaded', '0', '', 'int' );
 
 		$refreshUrl = 'index.php?option=com_phocagallery&view=phocagalleryi&tab='.$tab.'&mufailed='.$muFailed.'&muuploaded='.$muUploaded.'&tmpl=component';
 		$list = PhocaGalleryFileFolderList::getList(0,1,0,$refreshUrl);
@@ -50,7 +50,7 @@ class PhocaGalleryCpModelPhocaGalleryI extends BaseDatabaseModel
 	}
 
 	function getFolders() {
-		$tab = Factory::getApplication()->input->get( 'tab', 0, '', 'int' );
+		$tab = Factory::getApplication()->getInput()->get( 'tab', 0, '', 'int' );
 		$refreshUrl = 'index.php?option=com_phocagallery&view=phocagalleryi&tab='.$tab.'&tmpl=component';
 		$list = PhocaGalleryFileFolderList::getList(0,0,0,$refreshUrl);
 		return $list['folders'];

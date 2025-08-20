@@ -33,12 +33,12 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends FormController
 
 		Session::checkToken() or die( 'Invalid Token' );
 		$app = Factory::getApplication();
-		//$post	= JFactory::getApplication()->input->get('post');
-		//$ytb_link	= JFactory::getApplication()->input->get( 'ytb_link', '', 'post', 'string', J REQUEST_NOTRIM);
-		//$field		= JFactory::getApplication()->input->get( 'field', '', 'post', 'string', J REQUEST_NOTRIM);
-		$ytb_link	= Factory::getApplication()->input->get( 'ytb_link', '',  'string' );
-		$field		= Factory::getApplication()->input->get( 'field', '',  'string' );
-		$catid		= Factory::getApplication()->input->get( 'catid', 0,  'int' );
+		//$post	= JFactory::getApplication()->getInput()->get('post');
+		//$ytb_link	= JFactory::getApplication()->getInput()->get( 'ytb_link', '', 'post', 'string', J REQUEST_NOTRIM);
+		//$field		= JFactory::getApplication()->getInput()->get( 'field', '', 'post', 'string', J REQUEST_NOTRIM);
+		$ytb_link	= Factory::getApplication()->getInput()->get( 'ytb_link', '',  'string' );
+		$field		= Factory::getApplication()->getInput()->get( 'field', '',  'string' );
+		$catid		= Factory::getApplication()->getInput()->get( 'catid', 0,  'int' );
 
 		$errorYtbMsg = '';
 
@@ -156,10 +156,10 @@ class PhocaGalleryCpControllerPhocaGalleryYtb extends FormController
 
 		if ((bool)$ytb !== false) {
 
-			Factory::getApplication()->input->set('ytb_title', $ytb['title']);
-			Factory::getApplication()->input->set('ytb_desc', $ytb['desc']);
-			Factory::getApplication()->input->set('ytb_filename', $ytb['filename']);
-			Factory::getApplication()->input->set('ytb_link', $ytb['link']);
+			Factory::getApplication()->getInput()->set('ytb_title', $ytb['title']);
+			Factory::getApplication()->getInput()->set('ytb_desc', $ytb['desc']);
+			Factory::getApplication()->getInput()->set('ytb_filename', $ytb['filename']);
+			Factory::getApplication()->getInput()->set('ytb_link', $ytb['link']);
 		}
 
 		if ($errorYtbMsg != '') {

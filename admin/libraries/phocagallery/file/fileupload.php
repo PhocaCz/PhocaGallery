@@ -53,10 +53,10 @@ class PhocaGalleryFileUpload
 		$ftp = ClientHelper::setCredentialsFromRequest('ftp');
 
 		$path			= PhocaGalleryPath::getPath();
-		$file 			= Factory::getApplication()->input->files->get( 'file', null );
-		$chunk 			= Factory::getApplication()->input->get( 'chunk', 0, '', 'int' );
-		$chunks 		= Factory::getApplication()->input->get( 'chunks', 0, '', 'int' );
-		$folder			= Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+		$file 			= Factory::getApplication()->getInput()->files->get( 'file', null );
+		$chunk 			= Factory::getApplication()->getInput()->get( 'chunk', 0, '', 'int' );
+		$chunks 		= Factory::getApplication()->getInput()->get( 'chunks', 0, '', 'int' );
+		$folder			= Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
 
 		// Make the filename safe
 		if (isset($file['name'])) {
@@ -330,17 +330,17 @@ class PhocaGalleryFileUpload
 		$app->allowCache(false);
 
 		$path			= PhocaGalleryPath::getPath();
-		$file 			= Factory::getApplication()->input->files->get( 'Filedata', null );
-		$folder			= Factory::getApplication()->input->get( 'folder', '', '', 'path' );
-		$format			= Factory::getApplication()->input->get( 'format', 'html', '', 'cmd');
-		$return			= Factory::getApplication()->input->get( 'return-url', null, 'post', 'base64' );//includes field
-		$viewBack		= Factory::getApplication()->input->get( 'viewback', '', '', '' );
-		$tab			= Factory::getApplication()->input->get( 'tab', '', '', 'string' );
-		$field			= Factory::getApplication()->input->get( 'field' );
+		$file 			= Factory::getApplication()->getInput()->files->get( 'Filedata', null );
+		$folder			= Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
+		$format			= Factory::getApplication()->getInput()->get( 'format', 'html', '', 'cmd');
+		$return			= Factory::getApplication()->getInput()->get( 'return-url', null, 'post', 'base64' );//includes field
+		$viewBack		= Factory::getApplication()->getInput()->get( 'viewback', '', '', '' );
+		$tab			= Factory::getApplication()->getInput()->get( 'tab', '', '', 'string' );
+		$field			= Factory::getApplication()->getInput()->get( 'field' );
 		$errUploadMsg	= '';
 		$folderUrl 		= $folder;
 		$tabUrl			= '';
-		$component		= Factory::getApplication()->input->get( 'option', '', '', 'string' );
+		$component		= Factory::getApplication()->getInput()->get( 'option', '', '', 'string' );
 
 		// In case no return value will be sent (should not happen)
 		if ($component != '' && $frontEnd == 0) {
@@ -484,10 +484,10 @@ class PhocaGalleryFileUpload
 
 		Session::checkToken( 'request' ) or exit( 'ERROR: '. Text::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
 
-	//	$files 	= Factory::getApplication()->input->get( 'Filedata', '', 'files', 'array' );
+	//	$files 	= Factory::getApplication()->getInput()->get( 'Filedata', '', 'files', 'array' );
 
 		$path		= PhocaGalleryPath::getPath();
-		$folder		= Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+		$folder		= Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
 
 		if (isset($folder) && $folder != '') {
 			$folder	= $folder . '/';

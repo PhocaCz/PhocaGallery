@@ -37,7 +37,7 @@ class PhocaGalleryCpViewPhocaGalleryFe extends HtmlView
 		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 		$app		= Factory::getApplication();
 
-		$this->t['error'] = $app->input->get('error');
+		$this->t['error'] = $app->getInput()->get('error');
 		switch ($this->t['error']) {
 			case 1:
 				$this->t['errormessage'] = Text::_('COM_PHOCAGALLERY_ERROR_1_MEMORY');

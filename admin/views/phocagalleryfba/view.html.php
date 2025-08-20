@@ -29,15 +29,15 @@ class PhocaGalleryCpViewphocaGalleryFbA extends HtmlView
 		$this->r	= new PhocaGalleryRenderAdminview();
 
 
-		$this->field	= Factory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->getInput()->get('field');
 		$this->fce 		= 'phocaSelectFbAlbum_'.$this->field;
 
-		//$eName	= JFactory::getApplication()->input->get('editor');
+		//$eName	= JFactory::getApplication()->getInput()->get('editor');
 		//$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
 
 
-		$uid	= Factory::getApplication()->input->get('uid', 0, '', 'int');
+		$uid	= Factory::getApplication()->getInput()->get('uid', 0, '', 'int');
 
 		$db = Factory::getDBO();
 		$query = 'SELECT a.*'

@@ -323,7 +323,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		}
 		$this->setState($this->getName().'.new', $isNew);
 
-		$subTask = Factory::getApplication()->input->get('subtask');
+		$subTask = Factory::getApplication()->getInput()->get('subtask');
 
 		// TO DO
 		if ((string)$subTask == 'loadextimgp') {
@@ -480,11 +480,11 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 	public function uploadExtImagesFb($idCat, $data, &$errorMsg) {
 
 		$idImg = 0;
-		if (Factory::getApplication()->input->get( 'fbimg', 0, 'get', 'int' ) > 0) {
-			$data['extfbcatid']	= Factory::getApplication()->input->get( 'fbalbum', '', 'get'  );
-			$data['extfbuid']	= Factory::getApplication()->input->get( 'fbuser', '', 'get'  );
-			$data['language']	= Factory::getApplication()->input->get( 'fblang', '', 'get'  );
-			$idImg				= Factory::getApplication()->input->get( 'fbimg', '', 'get'  );
+		if (Factory::getApplication()->getInput()->get( 'fbimg', 0, 'get', 'int' ) > 0) {
+			$data['extfbcatid']	= Factory::getApplication()->getInput()->get( 'fbalbum', '', 'get'  );
+			$data['extfbuid']	= Factory::getApplication()->getInput()->get( 'fbuser', '', 'get'  );
+			$data['language']	= Factory::getApplication()->getInput()->get( 'fblang', '', 'get'  );
+			$idImg				= Factory::getApplication()->getInput()->get( 'fbimg', '', 'get'  );
 
 		}
 
@@ -554,13 +554,13 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 
 		// In variable fbAfter we transfer the string which says - there is some after, there are images on FB yet to import
 		// In variable fbCount we store the infromation about that we redirecting the page and do a pagination loop
-		if (Factory::getApplication()->input->get( 'fbcount', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->getInput()->get( 'fbcount', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$fbAfter 			= Factory::getApplication()->input->get( 'fbafter', '', 'get' );
-			$fbCount 			= Factory::getApplication()->input->get( 'fbcount', 0, 'get' );
-			$data['extfbuid']	= Factory::getApplication()->input->get( 'fbuser', '', 'get' );
-			$data['extfbcatid']	= Factory::getApplication()->input->get( 'fbalbum', '', 'get' );
-			$data['language']	= Factory::getApplication()->input->get( 'fblang', '', 'get' );
+			$fbAfter 			= Factory::getApplication()->getInput()->get( 'fbafter', '', 'get' );
+			$fbCount 			= Factory::getApplication()->getInput()->get( 'fbcount', 0, 'get' );
+			$data['extfbuid']	= Factory::getApplication()->getInput()->get( 'fbuser', '', 'get' );
+			$data['extfbcatid']	= Factory::getApplication()->getInput()->get( 'fbalbum', '', 'get' );
+			$data['language']	= Factory::getApplication()->getInput()->get( 'fblang', '', 'get' );
 
 		}
 
@@ -975,12 +975,12 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		$errorMsgA = $errorMsgI = '';
 
 		//FIRST
-		if (Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->getInput()->get( 'picstart', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$data['exta']		= Factory::getApplication()->input->get( 'picalbum', '', 'get'  );
-			$data['extu']		= Factory::getApplication()->input->get( 'picuser', '', 'get'  );
-			$data['extauth']	= Factory::getApplication()->input->get( 'picauth', '', 'get'  );
-			$data['language']	= Factory::getApplication()->input->get( 'piclang', '', 'get'  );
+			$data['exta']		= Factory::getApplication()->getInput()->get( 'picalbum', '', 'get'  );
+			$data['extu']		= Factory::getApplication()->getInput()->get( 'picuser', '', 'get'  );
+			$data['extauth']	= Factory::getApplication()->getInput()->get( 'picauth', '', 'get'  );
+			$data['language']	= Factory::getApplication()->getInput()->get( 'piclang', '', 'get'  );
 		}
 
 		$album = $this->picasaAlbum($data['extu'], $data['extauth'], $data['exta'], $errorMsgA);
@@ -994,9 +994,9 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 
 
 		// SECOND
-		if (Factory::getApplication()->input->get( 'picstart', 0, 'get', 'int' ) > 0) {
+		if (Factory::getApplication()->getInput()->get( 'picstart', 0, 'get', 'int' ) > 0) {
 			// Category is saved - use this id and don't save it again
-			$id	= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
+			$id	= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
 		} else {
 			$id	= 	$idCat;//you get id and you store the table data
 		}
@@ -1007,7 +1007,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 			if ($album && (int)$album['id'] > 0) {
 
 				// PAGINATION
-				$start	= Factory::getApplication()->input->get( 'picstart', 1, 'get', 'int' );
+				$start	= Factory::getApplication()->getInput()->get( 'picstart', 1, 'get', 'int' );
 				$max	= $picasa_load_pagination;
 				$pagination	= '&start-index='.(int)$start.'&max-results='.(int)$max;
 				$picImg = $this->picasaImages($data['extu'],$data['extauth'], $album['id'], $id, $data['language'], $pagination, $errorMsgI);
@@ -1981,7 +1981,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -2090,7 +2090,7 @@ class PhocaGalleryCpModelPhocaGalleryC extends AdminModel
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));

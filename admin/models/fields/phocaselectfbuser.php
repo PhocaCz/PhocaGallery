@@ -23,7 +23,7 @@ class JFormFieldPhocaSelectFbUser extends FormField
 	protected $type 		= 'PhocaSelectFbUser';
 
 	protected function getInput() {
-		
+
 		$db = Factory::getDBO();
 
        //build the list of categories
@@ -34,9 +34,9 @@ class JFormFieldPhocaSelectFbUser extends FormField
 		. ' ORDER BY a.ordering';
 		$db->setQuery( $query );
 		$items = $db->loadObjectList();
-	
+
 		// TO DO - check for other views than category edit
-		/*$view 	= JFactory::getApplication()->input->get( 'view' );
+		/*$view 	= JFactory::getApplication()->getInput()->get( 'view' );
 		$catId	= -1;
 		if ($view == 'phocagalleryc') {
 			$id 	= $this->form->getValue('id'); // id of current category
@@ -44,17 +44,17 @@ class JFormFieldPhocaSelectFbUser extends FormField
 				$catId = $id;
 			}
 		}*/
-		
+
 
 		$fieldId = $this->element['fieldid'] ? $this->element['fieldid'] : '';
-	
+
 		$link = 'index.php?option=com_phocagallery&amp;view=phocagalleryfba&amp;tmpl=component&amp;field=jform_'.$fieldId.'&amp;uid=';
 		$js = 'document.getElementById(\'pglinktoalbum\').href = \''.$link.'\' + this.value';
-		
-		
-		
+
+
+
 		array_unshift($items, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCAGALLERY_SELECT_FB_USER').' -', 'value', 'text'));
-		
+
 		return HTMLHelper::_('select.genericlist',  $items,  $this->name, 'class="form-control" onchange="'.$js.'"', 'value', 'text', $this->value, $this->id );
 	}
 }

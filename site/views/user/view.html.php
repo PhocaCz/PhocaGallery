@@ -47,7 +47,7 @@ class PhocaGalleryViewUser extends HtmlView
 		$this->params		= $app->getParams();
 		$user 				= Factory::getUser();
 		$path				= PhocaGalleryPath::getPath();
-		$this->itemId			= $app->input->get('Itemid', 0, 'int');
+		$this->itemId			= $app->getInput()->get('Itemid', 0, 'int');
 
 		$neededAccessLevels	= PhocaGalleryAccess::getNeededAccessLevels();
 		$access				= PhocaGalleryAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
@@ -101,7 +101,7 @@ class PhocaGalleryViewUser extends HtmlView
 			exit;
 		}
 
-		$this->t['tab'] 					= $app->input->get('tab', 0, 'string');
+		$this->t['tab'] 					= $app->getInput()->get('tab', 0, 'string');
 
 		$this->t['maxuploadchar']		= $this->params->get( 'max_upload_char', 1000 );
 		$this->t['maxcreatecatchar']		= $this->params->get( 'max_create_cat_char', 1000 );
@@ -128,7 +128,7 @@ class PhocaGalleryViewUser extends HtmlView
 		$this->t['iepx']				= '<div style="font-size:1px;height:1px;margin:0px;padding:0px;">&nbsp;</div>';
 
 		//Subcateogry
-		$this->t['parentid']			= $app->input->get('parentcategoryid', 0, 'int');
+		$this->t['parentid']			= $app->getInput()->get('parentcategoryid', 0, 'int');
 
 		//$document->addScript(JUri::base(true).'/media/com_phocagallery/js/comments.js');
 		$document->addCustomTag(PhocaGalleryRenderFront::renderOnUploadJS());
@@ -209,8 +209,8 @@ class PhocaGalleryViewUser extends HtmlView
 
 
 		// EDIT - subcategory, image
-		$this->t['task'] 		= $app->input->get( 'task', '', 'string');
-		$id 						= $app->input->get( 'id', '', 'string');
+		$this->t['task'] 		= $app->getInput()->get( 'task', '', 'string');
+		$id 						= $app->getInput()->get( 'id', '', 'string');
 		$idAlias					= $id;
 
 
@@ -454,8 +454,8 @@ $javascript     = 'class="form-select" size="1" onchange="document.getElementByI
 			// Multiple Upload
 			// - - - - - - - - - - -
 			// Get infos from multiple upload
-			$muFailed						= $app->input->get( 'mufailed', '0', 'int' );
-			$muUploaded						= $app->input->get( 'muuploaded', '0', 'int' );
+			$muFailed						= $app->getInput()->get( 'mufailed', '0', 'int' );
+			$muUploaded						= $app->getInput()->get( 'muuploaded', '0', 'int' );
 			$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 			if ($muUploaded > 0) {

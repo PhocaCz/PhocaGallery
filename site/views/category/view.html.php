@@ -46,8 +46,8 @@ class PhocaGalleryViewCategory extends HtmlView
 
 		$app = Factory::getApplication();
 		// Don't load all the framework if nonsense
-		$id          = $app->input->get('id', 0, 'int');
-		$this->tagId = $app->input->get('tagid', 0, 'int');
+		$id          = $app->getInput()->get('id', 0, 'int');
+		$this->tagId = $app->getInput()->get('tagid', 0, 'int');
 
 
 		if ($id < 1 && $this->tagId < 1) {
@@ -70,13 +70,13 @@ class PhocaGalleryViewCategory extends HtmlView
 		$this->t['user']   = Factory::getUser();
 		$this->t['action'] = $uri->toString();
 		$this->t['path']   = PhocaGalleryPath::getPath();
-		$limitStart        = $app->input->get('limitstart', 0, 'int');
+		$limitStart        = $app->getInput()->get('limitstart', 0, 'int');
 
-		$this->t['tab']       = $app->input->get('tab', 0, 'int');
+		$this->t['tab']       = $app->getInput()->get('tab', 0, 'int');
 		$this->t['pl']        = 'index.php?option=com_users&view=login&return=' . base64_encode($uri->toString());
 		$this->t['icon_path'] = 'media/com_phocagallery/images/';
 		$this->t['plcat']     = 'index.php?option=com_phocagallery&view=category';
-		$this->itemId         = $app->input->get('Itemid', 0, 'int');
+		$this->itemId         = $app->getInput()->get('Itemid', 0, 'int');
 		$this->t['itemid']    = $this->itemId;
 		$neededAccessLevels   = PhocaGalleryAccess::getNeededAccessLevels();
 		$access               = PhocaGalleryAccess::isAccess($this->t['user']->getAuthorisedViewLevels(), $neededAccessLevels);
@@ -430,7 +430,7 @@ class PhocaGalleryViewCategory extends HtmlView
 		// Subcategories will be displayed only on first page if pagination will be used
 		$display_subcat_page = $this->params->get( 'display_subcat_page', 0 );
 		// On the first site subcategories will be displayed always
-		$get['start']	= $app->input->get( 'limitstart', '', 'string' );
+		$get['start']	= $app->getInput()->get( 'limitstart', '', 'string' );
 		if ($display_subcat_page == 2) {
 			$display_subcat_page = 0;// Nowhere
 		} else if ($display_subcat_page == 0 && $get['start'] > 0) {
@@ -1864,8 +1864,8 @@ class PhocaGalleryViewCategory extends HtmlView
 			// Multiple Upload
 			// - - - - - - - - - - -
 			// Get infos from multiple upload
-			$muFailed						= $app->input->get( 'mufailed', '0', 'int' );
-			$muUploaded						= $app->input->get( 'muuploaded', '0', 'int' );
+			$muFailed						= $app->getInput()->get( 'mufailed', '0', 'int' );
+			$muUploaded						= $app->getInput()->get( 'muuploaded', '0', 'int' );
 			$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 			if ($muUploaded > 0) {

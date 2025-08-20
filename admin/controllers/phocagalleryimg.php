@@ -53,7 +53,7 @@ class PhocaGalleryCpControllerPhocaGalleryImg extends FormController
 	/*
 	function deletethumbs()
 	{
-		$cid	= Factory::getApplication()->input->get( 'cid', array(0), 'get', 'array' );
+		$cid	= Factory::getApplication()->getInput()->get( 'cid', array(0), 'get', 'array' );
 
 		$model	= &$this->getModel( 'phocagallery' );
 		if ($model->deletethumbs($cid[0])) {
@@ -68,8 +68,8 @@ class PhocaGalleryCpControllerPhocaGalleryImg extends FormController
 	}
 	*/
 	function rotate() {
-		$id		= Factory::getApplication()->input->get( 'id', 0, 'get', 'int' );
-		$angle	= Factory::getApplication()->input->get( 'angle', 90, 'get', 'int' );
+		$id		= Factory::getApplication()->getInput()->get( 'id', 0, 'get', 'int' );
+		$angle	= Factory::getApplication()->getInput()->get( 'angle', 90, 'get', 'int' );
 		$model	= $this->getModel( 'phocagalleryimg' );
 
 		$message 		= '';
@@ -92,9 +92,9 @@ class PhocaGalleryCpControllerPhocaGalleryImg extends FormController
 	function thumbs() {
 		$msg = Text::_( 'COM_PHOCAGALLERY_SUCCESS_SAVE_MULTIPLE' );
 
-		$countcat		= Factory::getApplication()->input->get( 'countcat', 0, 'get', 'int' );
-		$countimg		= Factory::getApplication()->input->get( 'countimg', 0, 'get', 'int' );
-		//$imagesid		= JFactory::getApplication()->input->get( 'imagesid', 0, 'get', 'int' );
+		$countcat		= Factory::getApplication()->getInput()->get( 'countcat', 0, 'get', 'int' );
+		$countimg		= Factory::getApplication()->getInput()->get( 'countimg', 0, 'get', 'int' );
+		//$imagesid		= JFactory::getApplication()->getInput()->get( 'imagesid', 0, 'get', 'int' );
 
 		$link = 'index.php?option=com_phocagallery&view=phocagalleryimgs&countcat='.$countcat.'&countimg='.$countimg.'&imagesid='.md5(time());
 		//$link = 'index.php?option=com_phocagallery&view=phocagalleryimgs';
@@ -115,7 +115,7 @@ class PhocaGalleryCpControllerPhocaGalleryImg extends FormController
 
 
 	function recreate() {
-		$cid = Factory::getApplication()->input->get( 'cid', array(), '', 'array' );
+		$cid = Factory::getApplication()->getInput()->get( 'cid', array(), '', 'array' );
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
 
 		if (count( $cid ) < 1) {

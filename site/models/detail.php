@@ -25,7 +25,7 @@ class PhocaGalleryModelDetail extends BaseDatabaseModel
 	function __construct() {
 		parent::__construct();
 		$app				= Factory::getApplication();
-		$id = $app->input->get('id', 0, 'int');
+		$id = $app->getInput()->get('id', 0, 'int');
 
 		$this->setState('filter.language',$app->getLanguageFilter());
 		$this->setId((int)$id);

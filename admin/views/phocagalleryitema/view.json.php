@@ -26,8 +26,8 @@ class PhocaGalleryCpViewPhocaGalleryItemA extends HtmlView
 		}
 
 		$app		= Factory::getApplication();
-		$q			= $app->input->get( 'q', '', 'string'  );
-		$id			= $app->input->get( 'item_id', '', 'int'  );
+		$q			= $app->getInput()->get( 'q', '', 'string'  );
+		$id			= $app->getInput()->get( 'item_id', '', 'int'  );
 
 		if (isset($q) && $q != '') {
 			$db		= Factory::getDbo();

@@ -41,7 +41,7 @@ class PhocaGalleryCpViewPhocaGalleryTag extends HtmlView
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/phocagallerytags.php';
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);

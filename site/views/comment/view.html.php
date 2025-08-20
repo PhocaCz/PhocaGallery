@@ -35,7 +35,7 @@ class PhocaGalleryViewComment extends HtmlView
 		$this->params	= $app->getParams();
 		$user 			= Factory::getUser();
 		$uri 			= \Joomla\CMS\Uri\Uri::getInstance();
-		$this->itemId	= $app->input->get('Itemid', 0, 'int');
+		$this->itemId	= $app->getInput()->get('Itemid', 0, 'int');
 		$this->t['icon_path']	= 'media/com_phocagallery/images/';
 
 
@@ -46,9 +46,9 @@ class PhocaGalleryViewComment extends HtmlView
 
 		// PLUGIN WINDOW - we get information from plugin
 		$get = array();
-		$get['comment']			= $app->input->get( 'comment', '', 'string' );
-		$this->t['id']		= $app->input->get('id', 0, 'int');
-		$this->t['catid'] 	= $app->input->get('catid', '', 'string');
+		$get['comment']			= $app->getInput()->get( 'comment', '', 'string' );
+		$this->t['id']		= $app->getInput()->get('id', 0, 'int');
+		$this->t['catid'] 	= $app->getInput()->get('catid', '', 'string');
 
 		$this->t['maxcommentchar']			= $this->params->get( 'max_comment_char', 1000 );
 		$this->t['displaycommentimg']		= $this->params->get( 'display_comment_img', 0 );
@@ -78,7 +78,7 @@ class PhocaGalleryViewComment extends HtmlView
 		if ($this->t['enable_multibox'] == 1) {
 			$this->t['commentwidth'] = (int)$this->t['multibox_comments_width'] - 70;//padding - margin
 		}
-		$get['commentsi']						= $app->input->get( 'commentsi', '', 'int' );
+		$get['commentsi']						= $app->getInput()->get( 'commentsi', '', 'int' );
 		$this->t['enable_multibox_iframe'] 	= 0;
 		if ($get['commentsi'] == 1) {
 			// Seems we are in iframe

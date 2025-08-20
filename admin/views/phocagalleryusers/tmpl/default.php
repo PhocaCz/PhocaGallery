@@ -23,7 +23,7 @@ $task		= 'phocagalleryuser';
 
 $r 			= $this->r;
 $app		= Factory::getApplication();
-$option 	= $app->input->get('option');
+$option 	= $app->getInput()->get('option');
 $tasks		= $task . 's';
 $OPT		= strtoupper($option);
 $user		= Factory::getUser();

@@ -279,7 +279,7 @@ class PhocaGalleryCpModelPhocaGalleryT extends AdminModel
 	function _getPackageFromUpload()
 	{
 		// Get the uploaded file information
-		$userfile = Factory::getApplication()->input->files->get( 'Filedata', null, 'raw' );
+		$userfile = Factory::getApplication()->getInput()->files->get( 'Filedata', null, 'raw' );
 
 
 		// Make sure that file uploads are enabled in php

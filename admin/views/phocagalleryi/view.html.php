@@ -39,7 +39,7 @@ class PhocaGalleryCpViewPhocagalleryI extends HtmlView
 
 	public function display($tpl = null) {
 
-		$this->field	= Factory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->getInput()->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
 
 
@@ -82,7 +82,7 @@ class PhocaGalleryCpViewPhocagalleryI extends HtmlView
 		// - - - - - - - - - -
 		//TABS
 		// - - - - - - - - - -
-		$this->t['tab'] 			= Factory::getApplication()->input->get('tab', '', '', 'string');
+		$this->t['tab'] 			= Factory::getApplication()->getInput()->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 
 
@@ -119,8 +119,8 @@ class PhocaGalleryCpViewPhocagalleryI extends HtmlView
 		// Multiple Upload
 		// - - - - - - - - - - -
 		// Get infos from multiple upload
-		$muFailed						= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded						= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$muFailed						= Factory::getApplication()->getInput()->get( 'mufailed', '0', '', 'int' );
+		$muUploaded						= Factory::getApplication()->getInput()->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 		if ($muUploaded > 0) {

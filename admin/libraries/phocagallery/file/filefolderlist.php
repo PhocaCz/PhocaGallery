@@ -36,7 +36,7 @@ class PhocaGalleryFileFolderList
 		}
 
 		// Get current path from request
-		$current = Factory::getApplication()->input->get('folder', '', 'path');
+		$current = Factory::getApplication()->getInput()->get('folder', '', 'path');
 
 		// If undefined, set to empty
 		if ($current == 'undefined') {
@@ -65,7 +65,7 @@ class PhocaGalleryFileFolderList
 			natcasesort($fileList);
 		}
 
-		$field			= Factory::getApplication()->input->get('field');;
+		$field			= Factory::getApplication()->getInput()->get('field');;
 		$refreshUrl 	= $refreshUrl . '&folder='.$current.'&field='.$field;
 
 

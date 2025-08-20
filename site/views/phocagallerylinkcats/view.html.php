@@ -35,7 +35,7 @@ class phocaGalleryViewphocaGalleryLinkCats extends HtmlView
 		}
 
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocagallery', array('editor' => $editor));
 		}
@@ -44,7 +44,7 @@ class phocaGalleryViewphocaGalleryLinkCats extends HtmlView
 		HTMLHelper::_('jquery.framework', false);
 		HTMLHelper::stylesheet( 'media/com_phocagallery/css/administrator/phocagallery.css' );
 		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocagallery/css/phocagallery.css' );
-		$eName				= $app->input->getCmd('editor', '');
+		$eName				= $app->getInput()->getCmd('editor', '');
 
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocagallery&amp;view=phocagallerylinks&amp;tmpl=component&amp;editor='.$this->t['ename'];

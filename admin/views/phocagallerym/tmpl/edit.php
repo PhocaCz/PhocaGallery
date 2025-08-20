@@ -24,7 +24,7 @@ JHtml::_('dropdown.init');
 */
 $r 			= $this->r;
 $app		= Factory::getApplication();
-$option 	= $app->input->get('option');
+$option 	= $app->getInput()->get('option');
 $tasks		= $task . 's';
 
 // phocagallerym-form renamed to adminForm because of used Joomla! javascript and its fixed value.

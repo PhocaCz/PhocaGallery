@@ -18,8 +18,8 @@ class PhocaGalleryControllerDetail extends PhocaGalleryController
 {
 
 	function display($cachable = false, $urlparams = false) {
-		if ( ! Factory::getApplication()->input->get('view') ) {
-			Factory::getApplication()->input->set('view', 'detail' );
+		if ( ! Factory::getApplication()->getInput()->get('view') ) {
+			Factory::getApplication()->getInput()->set('view', 'detail' );
 		}
 
 		parent::display($cachable, $urlparams);

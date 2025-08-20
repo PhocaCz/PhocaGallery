@@ -37,7 +37,7 @@ class PhocaGalleryCpViewPhocagalleryF extends HtmlView
 
 		$path 			= PhocaGalleryPath::getPath();
 
-		$this->field	= Factory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->getInput()->get('field');
 		$this->fce 		= 'phocaSelectFolder_'.$this->field;
 
 		/*$this->assignRef('session', JFactory::getSession());

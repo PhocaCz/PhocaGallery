@@ -42,14 +42,14 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 
 		$path			= PhocaGalleryPath::getPath();
 		//$folderNew		= J Request::getCmd( 'foldername', '');
-		//$folderCheck	= JFactory::getApplication()->input->get( 'foldername', null, '', 'string', J REQUEST_ALLOWRAW);
-		$folderNew      = $app->input->getstring('foldername', '');
-		//$folderCheck    = $app->input->getstring('foldername', null, '', 'string', J REQUEST_ALLOWRAW);
-		$folderCheck    = $app->input->getstring('foldername', null, '', 'string');
-		$parent			= Factory::getApplication()->input->get( 'folderbase', '', '', 'path' );
-		$tab			= Factory::getApplication()->input->get( 'tab', '', '', 'string' );
-		$field			= Factory::getApplication()->input->get( 'field');
-		$viewBack		= Factory::getApplication()->input->get( 'viewback', '', '', '' );
+		//$folderCheck	= JFactory::getApplication()->getInput()->get( 'foldername', null, '', 'string', J REQUEST_ALLOWRAW);
+		$folderNew      = $app->getInput()->getstring('foldername', '');
+		//$folderCheck    = $app->getInput()->getstring('foldername', null, '', 'string', J REQUEST_ALLOWRAW);
+		$folderCheck    = $app->getInput()->getstring('foldername', null, '', 'string');
+		$parent			= Factory::getApplication()->getInput()->get( 'folderbase', '', '', 'path' );
+		$tab			= Factory::getApplication()->getInput()->get( 'tab', '', '', 'string' );
+		$field			= Factory::getApplication()->getInput()->get( 'field');
+		$viewBack		= Factory::getApplication()->getInput()->get( 'viewback', '', '', '' );
 
 		$link = '';
 		switch ($viewBack) {
@@ -72,8 +72,8 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 
 		}
 
-		//JFactory::getApplication()->input->set('folder', $parent);
-		Factory::getApplication()->input->set('folder', $parent);
+		//JFactory::getApplication()->getInput()->set('folder', $parent);
+		Factory::getApplication()->getInput()->set('folder', $parent);
 
 		if (($folderCheck !== null) && ($folderNew !== $folderCheck)) {
 			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_WARNING_DIRNAME'));
@@ -113,7 +113,7 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_ERROR_FOLDER_CREATING_EXISTS'));
 				$app->redirect($link);
 			}
-			//JFactory::getApplication()->input->set('folder', ($parent) ? $parent.'/'.$folder : $folder);
+			//JFactory::getApplication()->getInput()->set('folder', ($parent) ? $parent.'/'.$folder : $folder);
 		}
 		$app->redirect($link);
 	}

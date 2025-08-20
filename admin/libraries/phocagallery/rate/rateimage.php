@@ -149,7 +149,7 @@ class PhocaGalleryRateImage
 			}
 
 			// Leave message for already voted images
-			//$vote = Factory::getApplication()->input->get('vote', 0, '', 'int');
+			//$vote = Factory::getApplication()->getInput()->get('vote', 0, '', 'int');
 			$voteMsg = Text::_('COM_PHOCAGALLERY_ALREADY_RATE_IMG');
 			//if ($vote == 1) {
 			//	$voteMsg = JText::_('COM_PHOCADOWNLOAD_ALREADY_RATED_FILE_THANKS');

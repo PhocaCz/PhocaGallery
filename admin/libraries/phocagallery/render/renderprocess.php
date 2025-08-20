@@ -26,8 +26,8 @@ class PhocaGalleryRenderProcess
 
 	public static function getProcessPage ($filename, $thumbInfo, $refresh_url, $errorMsg = '' ) {
 
-		$countImg 		= (int)Factory::getApplication()->input->get( 'countimg', 0, 'get', 'INT' );
-		$currentImg 	= (int)Factory::getApplication()->input->get( 'currentimg',0, 'get','INT' );
+		$countImg 		= (int)Factory::getApplication()->getInput()->get( 'countimg', 0, 'get', 'INT' );
+		$currentImg 	= (int)Factory::getApplication()->getInput()->get( 'currentimg',0, 'get','INT' );
 		$paths			= PhocaGalleryPath::getPath();
 
 		if ($currentImg == 0) {
@@ -35,7 +35,7 @@ class PhocaGalleryRenderProcess
 		}
 		$nextImg = $currentImg + 1;
 
-		$view 		= Factory::getApplication()->input->get( 'view', '', 'get', 'string' );
+		$view 		= Factory::getApplication()->getInput()->get( 'view', '', 'get', 'string' );
 
 		//we are in whole window - not in modal box
 
@@ -147,7 +147,7 @@ class PhocaGalleryRenderProcess
 				break;
 			}
 
-			//$view 		= JFactory::getApplication()->input->get( 'view' );
+			//$view 		= JFactory::getApplication()->getInput()->get( 'view' );
 
 			//we are in whole window - not in modal box
 			if ($view != 'phocagalleryi' && $view != 'phocagalleryd') {
@@ -216,7 +216,7 @@ class PhocaGalleryRenderProcess
 
 		// 1 ... link was displayed
 		// 0 ... display the link "Stop ThumbnailsCreation
-		$view 		= Factory::getApplication()->input->get( 'view' );
+		$view 		= Factory::getApplication()->getInput()->get( 'view' );
 
 		//we are in whole window - not in modal box
 		if ($view == 'phocagalleryi' || $view == 'phocagalleryd') {

@@ -59,13 +59,13 @@ class PhocaGalleryCpViewPhocaGalleryT extends HtmlView
 		$this->t['sih']		= $params->get('small_image_height', 96 );
 
 		//After creating an image (post with data);
-		$this->t['ssbgc']	= Factory::getApplication()->input->get( 'ssbgc', '', '', 'string' );
-		$this->t['sibgc']	= Factory::getApplication()->input->get( 'sibgc', '', '', 'string' );
-		$this->t['sibrdc']	= Factory::getApplication()->input->get( 'sibrdc', '', '', 'string' );
-		$this->t['sie']		= Factory::getApplication()->input->get( 'sie', '', '', 'int' );
-		$this->t['siec']		= Factory::getApplication()->input->get( 'siec', '', '', 'string' );
-		$siw					= Factory::getApplication()->input->get( 'siw', '', '', 'int' );
-		$sih					= Factory::getApplication()->input->get( 'sih', '', '', 'int' );
+		$this->t['ssbgc']	= Factory::getApplication()->getInput()->get( 'ssbgc', '', '', 'string' );
+		$this->t['sibgc']	= Factory::getApplication()->getInput()->get( 'sibgc', '', '', 'string' );
+		$this->t['sibrdc']	= Factory::getApplication()->getInput()->get( 'sibrdc', '', '', 'string' );
+		$this->t['sie']		= Factory::getApplication()->getInput()->get( 'sie', '', '', 'int' );
+		$this->t['siec']		= Factory::getApplication()->getInput()->get( 'siec', '', '', 'string' );
+		$siw					= Factory::getApplication()->getInput()->get( 'siw', '', '', 'int' );
+		$sih					= Factory::getApplication()->getInput()->get( 'sih', '', '', 'int' );
 
 		$this->t['ssbgc']	= PhocaGalleryUtils::filterInput($this->t['ssbgc']);
 		$this->t['sibgc']	= PhocaGalleryUtils::filterInput($this->t['sibgc']);
@@ -84,13 +84,13 @@ class PhocaGalleryCpViewPhocaGalleryT extends HtmlView
 		$this->t['mih']		= $params->get('medium_image_height', 192 );
 
 		//After creating an image (post with data);
-		$this->t['msbgc']	= Factory::getApplication()->input->get( 'msbgc', '', '', 'string' );
-		$this->t['mibgc']	= Factory::getApplication()->input->get( 'mibgc', '', '', 'string' );
-		$this->t['mibrdc']	= Factory::getApplication()->input->get( 'mibrdc', '', '', 'string' );
-		$this->t['mie']		= Factory::getApplication()->input->get( 'mie', '', '', 'int' );
-		$this->t['miec']		= Factory::getApplication()->input->get( 'miec', '', '', 'string' );
-		$miw					= Factory::getApplication()->input->get( 'miw', '', '', 'int' );
-		$mih					= Factory::getApplication()->input->get( 'mih', '', '', 'int' );
+		$this->t['msbgc']	= Factory::getApplication()->getInput()->get( 'msbgc', '', '', 'string' );
+		$this->t['mibgc']	= Factory::getApplication()->getInput()->get( 'mibgc', '', '', 'string' );
+		$this->t['mibrdc']	= Factory::getApplication()->getInput()->get( 'mibrdc', '', '', 'string' );
+		$this->t['mie']		= Factory::getApplication()->getInput()->get( 'mie', '', '', 'int' );
+		$this->t['miec']		= Factory::getApplication()->getInput()->get( 'miec', '', '', 'string' );
+		$miw					= Factory::getApplication()->getInput()->get( 'miw', '', '', 'int' );
+		$mih					= Factory::getApplication()->getInput()->get( 'mih', '', '', 'int' );
 
 		$this->t['msbgc']	= PhocaGalleryUtils::filterInput($this->t['msbgc']);
 		$this->t['mibgc']	= PhocaGalleryUtils::filterInput($this->t['mibgc']);
