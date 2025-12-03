@@ -194,6 +194,12 @@ a.upItemLink::before {
     background: #000;
     color: #fff;
 }
+.g5i .g5-phoca a::before {
+   content: none;
+}
+.alert.alert-info a.g5-button {
+   color: #fff;
+}
 ');
 
 $upEL = 'https://extensions.joomla.org/extension/phoca-gallery/';
