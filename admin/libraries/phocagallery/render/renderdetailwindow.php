@@ -57,9 +57,10 @@ class PhocaGalleryRenderDetailWindow
 
 	public function setButtons($method = 0, $libraries = array(), $library = array()) {
 
-		$app      					= Factory::getApplication();
-		$document					= $app->getDocument();
-		$paramsC 					= ComponentHelper::getParams('com_phocagallery') ;
+		$app      	= Factory::getApplication();
+		$document	= $app->getDocument();
+		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
+		$wa 		= $app->getDocument()->getWebAssetManager();
 
 		/*$this->b1 = new stdClass();
 		$this->b1->name = 'image';
@@ -138,9 +139,13 @@ class PhocaGalleryRenderDetailWindow
                 $document->addScriptOptions('phLangPG', $oLang);
 
 
-				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
-				$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-initialize.js');
-				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-popup.css');
+				//$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js');
+				//$document->addScript(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-initialize.js');
+				//$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/magnific/magnific-popup.css');
+
+				$wa->registerAndUseScript('com_phocagallery.magnific.js', 'media/com_phocagallery/js/magnific/jquery.magnific-popup.min.js', ['version' => 'auto']);
+				$wa->registerAndUseScript('com_phocagallery.magnific.initialize.js', 'media/com_phocagallery/js/magnific/magnific-initialize.js', ['version' => 'auto']);
+				$wa->registerAndUseStyle('com_phocagallery.magnific', 'media/com_phocagallery/js/magnific/magnific-popup.css', array('version' => 'auto'));
 
 			break;
 
@@ -168,9 +173,13 @@ class PhocaGalleryRenderDetailWindow
 
 			if ( isset($libraries['pg-group-photoswipe']->value) && $libraries['pg-group-photoswipe']->value == 0 ) {
 
-				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
-				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
-				$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
+				//$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe.css');
+				//$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css');
+				//$document->addStyleSheet(Uri::base(true).'/media/com_phocagallery/js/photoswipe/css/photoswipe-style.css');
+
+				$wa->registerAndUseStyle('com_phocagallery.photoswipe', 'media/com_phocagallery/js/photoswipe/css/photoswipe.css', array('version' => 'auto'));
+				$wa->registerAndUseStyle('com_phocagallery.photoswipe.skin', 'media/com_phocagallery/js/photoswipe/css/default-skin/default-skin.css', array('version' => 'auto'));
+				$wa->registerAndUseStyle('com_phocagallery.photoswipe.style', 'media/com_phocagallery/js/photoswipe/css/photoswipe-style.css', array('version' => 'auto'));
 			}
 
 			// LoadPhotoSwipeBottom must be loaded at the end of document

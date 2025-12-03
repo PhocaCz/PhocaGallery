@@ -69,7 +69,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/6.0.0/com_phocagallery_v6.0.0.zip</downloadurl>
 		</downloads>
-		<sha512>a79ee389196c64eee6e375842dce9f34727074d66a369e6bbfde8e9bb5e8af64a9b54d035724cb9b56a1ce2efe5947122d819fb451fced4dfaf3409a916a090b</sha512>
+		<sha512>18dec17288f32ef034d16b0d3922ddd0d79fd669dd07cbefc480d9348ee9cb079571bf536545230e2b9c8a408dbe13f246ddb1394dfe961e2a9ce1960ef0d758</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
