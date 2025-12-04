@@ -290,7 +290,7 @@ class PhocaGalleryRenderDetailWindow
         </div>
 
 </div>';
-
+/*
 $o .=   '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
 		.'<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
 
@@ -298,6 +298,21 @@ if ($photoswipe_slide_effect == 1) {
 	$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
 } else {
 	$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+}*/
+		$wa = Factory::getDocument()->getWebAssetManager();
+                $wa->registerAndUseScript('plg_content_phocagallery.photoswipe', 'media/com_phocagallery/js/photoswipe/js/photoswipe.min.js', array('version' => 'auto'), ['defer' => true]);
+                $wa->registerAndUseScript('plg_content_phocagallery.photoswipe.default', 'media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js', array('version' => 'auto'), ['defer' => true]);
+
+
+//$o .=   '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe.min.js"></script>'. "\n"
+//		.'<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-ui-default.min.js"></script>'. "\n";
+
+if ($photoswipe_slide_effect == 1) {
+	//$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js"></script>'. "\n";
+    $wa->registerAndUseScript('plg_content_phocagallery.photoswipe.initialize.ratio', 'media/com_phocagallery/js/photoswipe/js/photoswipe-initialize-ratio.js', array('version' => 'auto'), ['defer' => true]);
+} else {
+	//$o .= '<script src="'.Uri::root(true).'/media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js"></script>'. "\n";
+    $wa->registerAndUseScript('plg_content_phocagallery.photoswipe.initialize.ratio', 'media/com_phocagallery/js/photoswipe/js/photoswipe-initialize.js', array('version' => 'auto'), ['defer' => true]);
 }
 
 		return $o;
