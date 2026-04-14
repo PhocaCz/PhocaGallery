@@ -558,7 +558,7 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 		$table->load($idCom);
 
 		if (!$table->bind($data)) {
-			throw new Exception($db->getErrorMsg());
+			throw new Exception($table->getErrorMsg());
 			return false;
 		}
 
