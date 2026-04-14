@@ -232,7 +232,7 @@ class PhocagalleryModelCategory extends BaseDatabaseModel
 			$query = 'SELECT c.id, c.title, c.alias, c.description, c.published, c.approved, c.parent_id, c.deleteuserid, c.accessuserid, c.uploaduserid, c.owner_id, c.access, c.metakey, c.metadesc, c.latitude, c.longitude, c.zoom, c.geotitle, c.userfolder, c.image_id,' .
 				' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END as slug '.
 				' FROM #__phocagallery_categories AS c' .
-				' WHERE c.id = '. (int) $this->_id;
+				' WHERE c.id = '. (int) $this->_id .
 				' AND c.approved = 1';
 			$this->_db->setQuery($query, 0, 1);
 			$this->_category = $this->_db->loadObject();

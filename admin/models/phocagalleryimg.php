@@ -85,12 +85,14 @@ class PhocaGalleryCpModelPhocaGalleryImg extends AdminModel
 			$filter = (array) $app->getUserState('com_phocagallery.phocagalleryimgs.filter.category_id');
 			if (isset($filter[0]) && (int)$filter[0] > 0) {
 
-				$data->set('catid', (int)$filter[0]);
+				//$data->set('catid', (int)$filter[0]);
+				$data->catid = (int)$filter[0];
 			} else {
 				// UNDER TEST
 				$catid = $app->getInput()->get('catid');
 				if ((int)$catid > 0) {
-					$data->set('catid', (int)$catid);
+					//$data->set('catid', (int)$catid);
+					$data->catid = (int)$catid;
 				}
 			}
 		}
