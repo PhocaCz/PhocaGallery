@@ -32,9 +32,9 @@ If you need additional information beyond this GitHub repository, further docume
 #### External Project Information
 
 [Phoca Gallery](https://www.phoca.cz/phocagallery)
-[Phoca Gallery Info Page](https://www.phoca.cz/project/phocagallery-joomla-gallery)
-[Project is listed on Joomla Extensions Directory](https://extensions.joomla.org/)
-[Project is listed on Phoca download directory](https://www.phoca.cz/download)
+- [Phoca Gallery Info Page](https://www.phoca.cz/project/phocagallery-joomla-gallery)
+- [Project is listed on Joomla Extensions Directory](https://extensions.joomla.org/)
+- [Project is listed on Phoca download directory](https://www.phoca.cz/download)
 
 
 #### External Documentation
@@ -85,27 +85,27 @@ If you need additional information beyond this GitHub repository, further docume
 
 #### External Community Support
 
-[Phoca Forum](https://www.phoca.cz/forum)
-[Joomla Forum](https://forum.joomla.org/)
-[Joomlaportal.cz Forum - Czech](https://www.joomlaportal.cz/forum)
-[Joomla.de Supportforum - German](https://forum.joomla.de/)
-:bell: [Phoca Forum RSS](https://www.phoca.cz/forum/app.php/feed)
+- [Phoca Forum](https://www.phoca.cz/forum)
+- [Joomla Forum](https://forum.joomla.org/)
+- [Joomlaportal.cz Forum - Czech](https://www.joomlaportal.cz/forum)
+- [Joomla.de Supportforum - German](https://forum.joomla.de/)
+- :bell: [Phoca Forum RSS](https://www.phoca.cz/forum/app.php/feed)
 
 
 #### External News & Feeds
 
-[Phoca News](https://www.phoca.cz/news)
-[Joomlaportal.cz News](https://www.joomlaportal.cz/novinky)
-:bell: [Phoca News RSS](https://www.phoca.cz/news?format=feed&type=rss)
-:bell: [Phoca Latest Releases RSS](https://www.phoca.cz/download/feed/111?format=feed&type=rss)
+- [Phoca News](https://www.phoca.cz/news)
+- [Joomlaportal.cz News](https://www.joomlaportal.cz/novinky)
+- :bell: [Phoca News RSS](https://www.phoca.cz/news?format=feed&type=rss)
+- :bell: [Phoca Latest Releases RSS](https://www.phoca.cz/download/feed/111?format=feed&type=rss)
 
 
 #### Demo
 
-[Joomla! 3 Demo](https://www.phoca.cz/joomla3demo/)
-[Phoca Gallery And Masonry.js Demo](https://www.phoca.cz/phocacartdemo/phoca-gallery)
-[Joomla! 2.5 Demo](https://www.phoca.cz/joomlademo/)
-[Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
+- [Joomla! 3 Demo](https://www.phoca.cz/joomla3demo/)
+- [Phoca Gallery And Masonry.js Demo](https://www.phoca.cz/phocacartdemo/phoca-gallery)
+- [Joomla! 2.5 Demo](https://www.phoca.cz/joomlademo/)
+- [Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
 
 ### Version (Joomla! 3.x - no longer supported)
 4.4.3
