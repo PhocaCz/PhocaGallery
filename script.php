@@ -137,14 +137,7 @@ class com_phocagalleryInstallerScript
 
             $o .= '<div class="upBox">';
 
-            $o .=  '<div class="upItem upItemD">';
-            $o .=  '<div class="upItemText">If you find this project useful, please support it with a donation</div>';
-            $o .=  '<form action="https://www.paypal.com/donate" method="post" target="_top">';
-            $o .=  '<input type="hidden" name="hosted_button_id" value="ZVPH25SQ2DDBY" />';
-            $o .=  '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />';
-            $o .=  '<img alt="" border="0" src="https://www.paypal.com/en_CZ/i/scr/pixel.gif" width="1" height="1" />';
-            $o .=  '</form>';
-            $o .=  '</div>';
+
 
             $o .=  '<div class="upItem upItemJ">';
             $o .=  '<div class="upItemText">If you find this project useful, please post a rating and review on the Joomla! Extension Directory website</div>';
@@ -159,10 +152,7 @@ class com_phocagalleryInstallerScript
             $o .=  '<a class="upItemLink" target="_blank" href="https://www.phoca.cz/forum">Phoca forum website</a>';
             $o .=  '</div>';
 
-            $o .=  '<div class="upItem upItemPh">';
-            $o .=  '<div class="upItemText">There are over a hundred more useful Phoca extensions, discover them on</div>';
-            $o .=  '<a class="upItemLink" target="_blank" href="https://www.phoca.cz">Phoca website</a>';
-            $o .=  '</div>';
+
 
             $o .=  '</div>';
 
