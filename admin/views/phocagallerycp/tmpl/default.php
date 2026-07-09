@@ -47,8 +47,11 @@ echo '<h3>'.  Text::_($this->t['l'] . '_TRANSLATION').': '. Text::_($this->t['l'
 .'<p>© 2007 - '.  date("Y"). ' '. Text::_($this->t['l'] . '_TRANSLATER'). '</p>'
 .'<p>'.Text::_($this->t['l'] . '_TRANSLATION_SUPPORT_URL').'</p>';
 
-?>
 
+echo Text::_($this->t['l'] . '_FOSS_DECLARATION');
+echo Text::_($this->t['l'] . '_FOSS_DECLARATION_DESCRIPTION');
+
+?>
 
 <p>Google™, Google Maps™, Google Picasa™, Google+™, Google Photos™ and YouTube Broadcast Yourself™ are registered trademarks of Google Inc.</p>
 

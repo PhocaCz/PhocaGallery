@@ -1,6 +1,12 @@
+
+
+
+
 ![Phoca Gallery](https://github.com/PhocaCz/PhocaGallery/blob/master/phocagallery.png?raw=true)
 
 # Phoca Gallery
+
+
 
 ## Phoca Gallery — Community-Driven Extension for Joomla CMS
 
@@ -19,6 +25,7 @@ Our compliance with the principles of free and open-source software is establish
 * **Decentralized Infrastructure:** This codebase is hosted in a public, transparent repository on GitHub to foster open collaborative development and public peer review, ensuring safety and quality through community vigilance.
 
 *This repository is a shared community resource dedicated to the global open-source ecosystem.*
+
 
 
 ## Project page
@@ -148,6 +155,18 @@ Our compliance with the principles of free and open-source software is establish
 [Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
 
 
+
+## Version (Joomla! 3.x)
+
+4.4.3
+
+## Version (Joomla! 4.x)
+
+4.5.5
+
+## Version (Joomla! 5.x)
+
+5.1.3
 
 
 
