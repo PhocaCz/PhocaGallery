@@ -31,7 +31,7 @@ If you need additional information beyond this GitHub repository, further docume
 
 #### External Project Information
 
-[Phoca Gallery](https://www.phoca.cz/phocagallery)
+- [Phoca Gallery](https://www.phoca.cz/phocagallery)
 - [Phoca Gallery Info Page](https://www.phoca.cz/project/phocagallery-joomla-gallery)
 - [Project is listed on Joomla Extensions Directory](https://extensions.joomla.org/)
 - [Project is listed on Phoca download directory](https://www.phoca.cz/download)
@@ -39,7 +39,7 @@ If you need additional information beyond this GitHub repository, further docume
 
 #### External Documentation
 
-[Documentation](https://www.phoca.cz/documentation/category/2-phoca-gallery-component)
+- [Documentation](https://www.phoca.cz/documentation/category/2-phoca-gallery-component)
 - [Features](https://www.phoca.cz/documents/2-phoca-gallery-component/2-features)
 - [Phoca Gallery Concepts and Glossary](https://www.phoca.cz/documents/2-phoca-gallery-component/219-phoca-gallery-concepts-and-glossary)
 - [Quick Start Guide](https://www.phoca.cz/documents/2-phoca-gallery-component/21-quick-start-guide)
