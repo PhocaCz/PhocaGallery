@@ -103,7 +103,7 @@ If you need additional information beyond this GitHub repository, further docume
 #### Demo
 
 - [Joomla! 3 Demo](https://www.phoca.cz/joomla3demo/)
-- [Phoca Gallery And Masonry.js Demo]https://www.phoca.cz/phocacartdemo/phoca-gallery-masonry)
+- [Phoca Gallery And Masonry.js Demo](https://www.phoca.cz/phocacartdemo/phoca-gallery-masonry)
 - [Joomla! 2.5 Demo](https://www.phoca.cz/joomlademo/)
 - [Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
 
