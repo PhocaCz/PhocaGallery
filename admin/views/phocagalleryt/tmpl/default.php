@@ -22,68 +22,16 @@ Factory::getDocument()->addScriptDeclaration(
 	}
 }'
 
-); ?>
+);
 
-<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" id="phocagalleryt-form" class="form-validate">
 
-<?php
-if ($this->require_ftp) {
-	echo PhocaGalleryFileUpload::renderFTPaccess();
-}
+echo '<div>' .  Text::_( 'COM_PHOCAGALLERY_CURRENT_THEME' ) .' : <b>' .  $this->theme_name . '</b></div>';
+echo '<p>&nbsp;</p>';
+echo '<div>' .  Text::_( 'COM_PHOCAGALLERY_CURRENT_THEME_INSTALLATION_PROCESS' ) .'</div>';
+
 ?>
-<table class="adminform" border="0">
-<?php if ($this->theme_name != '') { ?>
-	<tr>
-		<td colspan="3"><?php echo Text::_( 'COM_PHOCAGALLERY_CURRENT_THEME' ); ?> : <?php echo $this->theme_name; ?></td>
-	</tr>
-	<tr>
-		<td colspan="3">&nbsp;</td>
-	</tr>
-<?php
-}
-?>
-	<?php /*
-	<tr>
-		<td width="5"><input type="checkbox" name="theme_component" value=""  /></td>
-		<td colspan="2"><?php echo Text::_( 'COM_PHOCAGALLERY_APPLY_COMPONENT' ); ?></td>
-	</tr>
 
-	<tr>
-		<td width="5"><input type="checkbox" name="theme_categories" value="" /></td>
-		<td colspan="2"><?php echo Text::_( 'COM_PHOCAGALLERY_APPLY_CATEGORIES' ); ?></td>
-	</tr>
-	<tr>
-		<td width="5"><input type="checkbox" name="theme_category" value="" /></td>
-		<td colspan="2"><?php echo Text::_( 'COM_PHOCAGALLERY_APPLY_CATEGORY' ); ?></td>
-	</tr>
-	*/ ?>
-	<tr>
-		<td colspan="3">&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td colspan="2"><b><?php echo Text::_( 'COM_PHOCAGALLERY_UPLOAD_THEME_PACKAGE_FILE' ); ?></b></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td width="120">
-			<label for="install_package"><?php echo Text::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?>:</label>
-		</td>
-		<td>
-
-			<input type="file" id="sfile-upload" class="input" name="Filedata" size="57" />
-			<?php /* <input class="button" type="button" value="<?php echo JText::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo JText::_( 'COM_PHOCAGALLERY_INSTALL' ); ?>" onclick="Joomla.submitbutton()" /> */ ?>
-
-			<button onclick="Joomla.submitbutton()" class="btn btn-primary" id="upload-submit"><i class="icon-upload icon-white"></i> <?php echo Text::_( 'COM_PHOCAGALLERY_UPLOAD_FILE' ); ?> &amp; <?php echo Text::_( 'COM_PHOCAGALLERY_INSTALL' ); ?></button>
-
-		</td>
-	</tr>
-	<tr>
-		<td colspan="3">&nbsp;</td>
-	</tr>
-	</table>
-
-
+<form action="index.php" method="post" name="adminForm" id="phocagalleryt-form" class="form-validate">
 <input type="hidden" name="type" value="" />
 <input type="hidden" name="option" value="com_phocagallery" />
 <input type="hidden" name="task" value="phocagalleryt.themeinstall" />
