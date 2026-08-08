@@ -103,8 +103,9 @@ class PhocaGalleryCpControllerPhocaGalleryu extends PhocaGalleryCpController
 					break;
 				}
 				if (isset($folder)) {
-					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					File::write($folder. '/'. "index.html", $data);
+					//$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
+					//File::write($folder. '/'. "index.html", $data);
+					PhocaGalleryFile::hardenFolder($folder);
 				}
 
 				$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_SUCCESS_FOLDER_CREATING'));

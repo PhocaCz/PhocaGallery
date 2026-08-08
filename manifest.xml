@@ -5,25 +5,6 @@
 		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
-		<version>4.4.3</version>
-		<infourl title="Phoca Gallery 4.4.3">http://www.phoca.cz/version/index.php?phocagallery=4.4.3</infourl>
-		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/4.4.3/com_phocagallery_v4.4.3.zip</downloadurl>
-		</downloads>
-		<tags>
-			<tag>stable</tag>
-		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
-		<section>Updates</section>
-		<targetplatform name="joomla" version="3.([89]|10)"/>
-		<client>administrator</client>
-	</update>
-	<update>
-		<name><![CDATA[ Phoca Gallery ]]></name>
-		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
-		<element>com_phocagallery</element>
-		<type>component</type>
 		<version>4.5.5</version>
 		<infourl title="Phoca Gallery 4.5.5">http://www.phoca.cz/version/index.php?phocagallery=4.5.5</infourl>
 		<downloads>
@@ -64,19 +45,19 @@
 		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
-		<version>6.1.2</version>
-		<infourl title="Phoca Gallery 6.1.2">http://www.phoca.cz/version/index.php?phocagallery=6.1.2</infourl>
+		<version>6.1.3</version>
+		<infourl title="Phoca Gallery 6.1.3">http://www.phoca.cz/version/index.php?phocagallery=6.1.3</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/6.1.2/com_phocagallery_v6.1.2.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/6.1.3/com_phocagallery_v6.1.3.zip</downloadurl>
 		</downloads>
-		<sha512>50e406c2c3e59d4dfcda5ad925bc9219aa703a7dbec8af3ffa0c68060c448fe8cde0246d80bd3cbda8e93a78cfa6cea9d7c29bae2b1067cb008e7f1e3c848caa</sha512>
+		<sha512>15ab06cc8ba7d9c4550bcc95f362ed304a3421ab4ceeff28d66115950a16d6ddcb98f374be93e85d527210d437902999f66be6ee20960058766b2766ccc7f66b</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="(5|6)\.*"/>
+		<targetplatform name="joomla" version="6\.*"/>
 		<client>administrator</client>
 	</update>
 </updates>

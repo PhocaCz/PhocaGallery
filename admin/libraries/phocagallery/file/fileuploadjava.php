@@ -11,6 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 
+/*
 class PhocaGalleryFileUploadJava
 {
 	public $returnUrl;
@@ -75,4 +76,4 @@ class PhocaGalleryFileUploadJava
 		
 	}
 }
-?>
+*/

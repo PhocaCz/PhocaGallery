@@ -478,60 +478,8 @@ class PhocaGalleryFileUpload
 
 	}
 
-	public static function realJavaUpload( $frontEnd = 0 ) {
-
-		$app	= Factory::getApplication();
-
-		Session::checkToken( 'request' ) or exit( 'ERROR: '. Text::_('COM_PHOCAGALLERY_INVALID_TOKEN'));
-
-	//	$files 	= Factory::getApplication()->getInput()->get( 'Filedata', '', 'files', 'array' );
-
-		$path		= PhocaGalleryPath::getPath();
-		$folder		= Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
-
-		if (isset($folder) && $folder != '') {
-			$folder	= $folder . '/';
-		}
-		$errUploadMsg	= '';
-		$ftp 			= ClientHelper::setCredentialsFromRequest('ftp');
-
-		foreach ($_FILES as $fileValue => $file) {
-			echo('File key: '. $fileValue . "\n");
-			foreach ($file as $item => $val) {
-				echo(' Data received: ' . $item.'=>'.$val . "\n");
-			}
-
-
-			// Make the filename safe
-			if (isset($file['name'])) {
-				$file['name'] = File::makeSafe($file['name']);
-			}
-
-			if (isset($file['name'])) {
-				$filepath = Path::clean($path->image_abs.$folder.strtolower($file['name']));
-
-				if (!PhocaGalleryFileUpload::canUpload( $file, $errUploadMsg, $frontEnd  )) {
-					exit( 'ERROR: '.Text::_($errUploadMsg));
-				}
-
-				if (PhocaGalleryFile::exists($filepath)) {
-					exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_FILE_ALREADY_EXISTS'));
-				}
-
-				if (!File::upload($file['tmp_name'], $filepath, false, true)) {
-					exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
-				}
-				if ((int)$frontEnd > 0) {
-					return $file['name'];
-				}
-
-				exit( 'SUCCESS');
-			} else {
-				exit( 'ERROR: '.Text::_('COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE'));
-			}
-		}
-		return true;
-	}
+	// realJavaUpload() is obsolete (Java applet uploader removed) and kept only as a stub.
+	// public static function realJavaUpload( $frontEnd = 0 ) { ... }
 
 
 	/**
@@ -560,6 +508,19 @@ class PhocaGalleryFileUpload
 		if(empty($file['name'])) {
 			$errUploadMsg = 'COM_PHOCAGALLERY_ERROR_UNABLE_TO_UPLOAD_FILE';
 			return false;
+		}
+
+		// Path check
+		$pathObj = PhocaGalleryPath::getPath();
+		$folder = Factory::getApplication()->getInput()->get('folder', '', '', 'path');
+
+		if (!empty($folder)) {
+			try {
+				Path::check($pathObj->image_abs . $folder);
+			} catch (\Exception $e) {
+				$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALID_PATH';
+				return false;
+			}
 		}
 
 		// Not safe file
@@ -628,12 +589,21 @@ class PhocaGalleryFileUpload
 
 		// Image check
 		$images = explode( ',', $paramsL['image_extensions']);
-		if(in_array($format, $images)) { // if its an image run it through getimagesize
+		if(in_array($format, $images)) { // if its an image run it through decode and re-encode
 			if ($chunkEnabled != 1) {
-				if(($imginfo = getimagesize($file['tmp_name'])) === FALSE) {
+				$decoded = self::decodeAndValidateImage($file['tmp_name']);
+				if (!$decoded) {
 					$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
 					return false;
 				}
+
+				// Re-encode and save over the temp file to strip any polyglot payloads
+				if (!self::encodeAndSaveImage($decoded['image'], $file['tmp_name'], $decoded['mime'])) {
+					imagedestroy($decoded['image']);
+					$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
+					return false;
+				}
+				imagedestroy($decoded['image']);
 			}
 		} else if(!in_array($format, $images)) {
 			// if its not an image...and we're not ignoring it
@@ -810,6 +780,83 @@ class PhocaGalleryFileUpload
 		.HTMLHelper::_( 'form.token' )
 		.'</form>';
 		return $folderOutput;
+	}
+
+	/**
+	 * Strictly validate and decode an image using GD to prevent polyglot payloads.
+	 *
+	 * @param   string  $path  Absolute path to the temporary file
+	 *
+	 * @return  array|false  Array with 'mime' and 'image' keys on success, false on failure
+	 */
+	public static function decodeAndValidateImage($path) {
+		if (!is_file($path)) {
+			return false;
+		}
+
+		if (function_exists('finfo_open')) {
+			$finfo    = finfo_open(FILEINFO_MIME_TYPE);
+			$mimeType = finfo_file($finfo, $path);
+			finfo_close($finfo);
+		} else {
+			$mimeType = mime_content_type($path);
+		}
+
+		$handlers = [
+			'image/jpeg' => 'imagecreatefromjpeg',
+			'image/png'  => 'imagecreatefrompng',
+			'image/gif'  => 'imagecreatefromgif',
+			'image/webp' => 'imagecreatefromwebp',
+			'image/avif' => 'imagecreatefromavif',
+		];
+
+		if (!isset($handlers[$mimeType]) || !function_exists($handlers[$mimeType])) {
+			return false;
+		}
+
+		$handler = $handlers[$mimeType];
+		$image   = @$handler($path);
+
+		if (!$image) {
+			return false;
+		}
+
+		$width  = imagesx($image);
+		$height = imagesy($image);
+
+		if ($width < 1 || $height < 1 || $width > 20000 || $height > 20000) {
+			imagedestroy($image);
+			return false;
+		}
+
+		return ['mime' => $mimeType, 'image' => $image];
+	}
+
+	/**
+	 * Re-encode and save a decoded GD image resource to disk in its own format.
+	 *
+	 * @param   resource  $image     GD image resource
+	 * @param   string    $path      Destination file path
+	 * @param   string    $mimeType  MIME type (image/jpeg, image/png, etc.)
+	 *
+	 * @return  bool
+	 */
+	public static function encodeAndSaveImage($image, $path, $mimeType) {
+		$quality = 90;
+
+		if ($mimeType === 'image/png' || $mimeType === 'image/webp') {
+			imagealphablending($image, false);
+			imagesavealpha($image, true);
+		}
+
+		switch ($mimeType) {
+			case 'image/jpeg': return imagejpeg($image, $path, $quality);
+			case 'image/png':  return imagepng($image, $path, 9);
+			case 'image/gif':  return imagegif($image, $path);
+			case 'image/webp': return imagewebp($image, $path, $quality);
+			case 'image/avif': return function_exists('imageavif') ? imageavif($image, $path, $quality) : false;
+		}
+		return false;
 	}
 }
 ?>

@@ -1075,6 +1075,12 @@
 <option value="0644">644</option>
 </field>
 
+<field name="harden_folder" type="radio" layout="joomla.form.field.radio.switcher" default="1" label="COM_PHOCAGALLERY_FIELD_HARDEN_FOLDER_LABEL" description="COM_PHOCAGALLERY_FIELD_HARDEN_FOLDER_DESC" filter="integer">
+	<option value="0">COM_PHOCAGALLERY_NO</option>
+	<option value="1">COM_PHOCAGALLERY_YES</option>
+</field>
+
+
 <field name="jfile_thumbs" type="list" default="1" label="COM_PHOCAGALLERY_FIELD_JFILE_THUMBNAIL_GENERATION_LABEL" description="COM_PHOCAGALLERY_FIELD_JFILE_THUMBNAIL_GENERATION_DESC">
 <option value="0">COM_PHOCAGALLERY_NO</option>
 <option value="1">COM_PHOCAGALLERY_YES</option>

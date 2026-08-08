@@ -13,10 +13,9 @@
     "projectMainComponent": "Phoca Gallery",
     "projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocagallery-joomla-gallery",
     "projectDemo": {
-        "Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
-        "Phoca Gallery And Masonry.js Demo": "https://www.phoca.cz/phocacartdemo/phoca-gallery",
-        "Joomla! 2.5 Demo": "https://www.phoca.cz/joomlademo/",
-        "Joomla! 1.5 Demo": "https://www.phoca.cz/demo/"
+        "Joomla! 5 Demo": "https://www.phoca.cz/demo/",
+        "Phoca Gallery And Phoca Cart Demo": "https://www.phoca.cz/phocacart4demo/phoca-gallery",
+        "Wallpapers Demo": "https://www.phoca.cz/wallpapers/"
     },
     "projectColor": "#95313e",
     "menu": {

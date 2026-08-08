@@ -124,9 +124,7 @@ class PhocaGalleryFileFolder
 				}
 				//JFolder::create($folder, $folder_permissions );
 				if (isset($folder)) {
-
-					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					File::write($folder. '/'. "index.html", $data);
+					PhocaGalleryFile::hardenFolder($folder);
 				}
 				// folder was not created
 				if (!PhocaGalleryFileFolder::exists($folder)) {
