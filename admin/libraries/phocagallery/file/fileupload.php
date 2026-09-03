@@ -591,19 +591,64 @@ class PhocaGalleryFileUpload
 		$images = explode( ',', $paramsL['image_extensions']);
 		if(in_array($format, $images)) { // if its an image run it through decode and re-encode
 			if ($chunkEnabled != 1) {
-				$decoded = self::decodeAndValidateImage($file['tmp_name']);
-				if (!$decoded) {
-					$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
-					return false;
-				}
 
-				// Re-encode and save over the temp file to strip any polyglot payloads
-				if (!self::encodeAndSaveImage($decoded['image'], $file['tmp_name'], $decoded['mime'])) {
+				// Security setting controlling the re-encode step below:
+				// 1 = re-encode the image with GD to strip polyglot payloads, EXIF data is lost
+				// 2 = re-encode the image with GD to strip polyglot payloads, EXIF data is restored
+				//     afterwards for JPG, PNG and WEBP (default)
+				// 3 = do not re-encode the image at all
+				$reencodeMode = (int) $params->get('upload_image_reencode', 2);
+
+				if ($reencodeMode !== 3) {
+
+					// Capture the original EXIF data and ICC colour profile (camera
+					// info, GPS, orientation, colour space, ...) before they get
+					// stripped by the re-encode step below. Only needed when
+					// metadata preservation is enabled.
+					$exifSegment = null;
+					$iccProfile  = null;
+					if ($reencodeMode === 2) {
+						$exifSegment = self::extractExifSegment($file['tmp_name']);
+						$iccProfile  = self::extractIccProfile($file['tmp_name']);
+					}
+
+					$decoded = self::decodeAndValidateImage($file['tmp_name']);
+					if (!$decoded) {
+						$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
+						return false;
+					}
+
+					// Re-encode and save over the temp file to strip any polyglot payloads
+					if (!self::encodeAndSaveImage($decoded['image'], $file['tmp_name'], $decoded['mime'])) {
+						imagedestroy($decoded['image']);
+						$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
+						return false;
+					}
 					imagedestroy($decoded['image']);
-					$errUploadMsg = 'COM_PHOCAGALLERY_WARNING_INVALIDIMG';
-					return false;
+
+					// Restore the original EXIF data and ICC profile into the freshly
+					// re-encoded file. Only the raw, already-existing bytes are copied
+					// back - they are never parsed here, so this is no more risky than
+					// an EXIF/ICC-preserving FTP upload. Supported for JPG, PNG and
+					// WEBP only. ICC is reinserted first so that, for formats where
+					// insertion order matters (JPEG/PNG), the final layout matches the
+					// EXIF-before-ICC ordering commonly produced by cameras/software.
+					if ($iccProfile !== null) {
+						self::reinsertIccProfile($file['tmp_name'], $decoded['mime'], $iccProfile);
+					}
+					if ($exifSegment !== null) {
+						self::reinsertExifSegment($file['tmp_name'], $decoded['mime'], $exifSegment);
+					}
+
+					// Remove the "CREATOR: gd-jpeg ..." comment GD writes into every
+					// JPEG it encodes, so the server's image library/version isn't
+					// disclosed in every uploaded image. Applies whenever a JPEG was
+					// actually re-encoded (mode 1 or 2), independent of the EXIF/ICC
+					// preservation choice above.
+					if ($decoded['mime'] === 'image/jpeg') {
+						self::stripJpegComment($file['tmp_name']);
+					}
 				}
-				imagedestroy($decoded['image']);
 			}
 		} else if(!in_array($format, $images)) {
 			// if its not an image...and we're not ignoring it
@@ -794,12 +839,18 @@ class PhocaGalleryFileUpload
 			return false;
 		}
 
+		$mimeType = false;
+
 		if (function_exists('finfo_open')) {
-			$finfo    = finfo_open(FILEINFO_MIME_TYPE);
-			$mimeType = finfo_file($finfo, $path);
-			finfo_close($finfo);
-		} else {
-			$mimeType = mime_content_type($path);
+		  $finfo    = finfo_open(FILEINFO_MIME_TYPE);
+		  $mimeType = finfo_file($finfo, $path);
+		  finfo_close($finfo);
+		} elseif (function_exists('mime_content_type')) {
+		  $mimeType = mime_content_type($path);
+		}
+
+		if (!$mimeType) {
+		  return false;
 		}
 
 		$handlers = [
@@ -857,6 +908,638 @@ class PhocaGalleryFileUpload
 			case 'image/avif': return function_exists('imageavif') ? imageavif($image, $path, $quality) : false;
 		}
 		return false;
+	}
+
+	/**
+	 * Extract the raw EXIF data from an image file before it is re-encoded by
+	 * encodeAndSaveImage(), so it can be restored afterwards with
+	 * reinsertExifSegment(). Only the raw bytes of the existing segment/chunk
+	 * are read and returned - nothing is parsed or interpreted, so this carries
+	 * the same risk profile as leaving EXIF data untouched (e.g. an FTP upload).
+	 *
+	 * Currently supports JPEG (APP1 "Exif" marker), PNG (eXIf chunk, PNG spec
+	 * 2017+) and WEBP (RIFF "EXIF" chunk). GIF has no EXIF concept. AVIF is
+	 * not covered yet.
+	 *
+	 * @param   string  $path  Absolute path to the original (not yet re-encoded) file
+	 *
+	 * @return  array|null  ['type' => 'jpeg'|'png'|'webp', 'data' => string raw segment/chunk] or null
+	 */
+	public static function extractExifSegment($path) {
+		if (!is_file($path)) {
+			return null;
+		}
+
+		$handle = @fopen($path, 'rb');
+		if (!$handle) {
+			return null;
+		}
+
+		$header = fread($handle, 12);
+
+		// JPEG: walk the markers looking for APP1 "Exif\0\0"
+		if (substr($header, 0, 2) === "\xFF\xD8") {
+			fseek($handle, 2);
+
+			while (!feof($handle)) {
+				$b1 = fread($handle, 1);
+				if ($b1 !== "\xFF") {
+					break;
+				}
+				$b2 = fread($handle, 1);
+				// Skip any 0xFF fill bytes before the real marker code
+				while ($b2 === "\xFF" && !feof($handle)) {
+					$b2 = fread($handle, 1);
+				}
+				if ($b2 === false || $b2 === '') {
+					break;
+				}
+				$markerType = $b2;
+
+				// SOS (start of scan): compressed image data follows, no more metadata markers
+				if ($markerType === "\xDA") {
+					break;
+				}
+				// Markers without a length/payload
+				if ($markerType === "\x01" || (ord($markerType) >= 0xD0 && ord($markerType) <= 0xD9)) {
+					continue;
+				}
+
+				$lenBytes = fread($handle, 2);
+				if (strlen($lenBytes) < 2) {
+					break;
+				}
+				$segLen = (ord($lenBytes[0]) << 8) + ord($lenBytes[1]);
+				if ($segLen < 2) {
+					break;
+				}
+
+				$payload = fread($handle, $segLen - 2);
+
+				if ($markerType === "\xE1" && substr($payload, 0, 6) === "Exif\x00\x00") {
+					fclose($handle);
+					return ['type' => 'jpeg', 'data' => "\xFF\xE1" . $lenBytes . $payload];
+				}
+			}
+
+			fclose($handle);
+			return null;
+		}
+
+		// PNG: walk the chunks looking for "eXIf"
+		if ($header === "\x89PNG\x0D\x0A\x1A\x0A") {
+			fseek($handle, 8);
+
+			while (!feof($handle)) {
+				$lenBytes = fread($handle, 4);
+				$type     = fread($handle, 4);
+				if (strlen($lenBytes) < 4 || strlen($type) < 4) {
+					break;
+				}
+				$unpacked = unpack('N', $lenBytes);
+				$chunkLen = $unpacked[1];
+
+				// Sanity cap - a legitimate EXIF chunk is never anywhere near this large
+				if ($chunkLen > 1048576) {
+					break;
+				}
+
+				if ($type === 'eXIf') {
+					$data = fread($handle, $chunkLen);
+					$crc  = fread($handle, 4);
+					fclose($handle);
+					if (strlen($data) === $chunkLen && strlen($crc) === 4) {
+						return ['type' => 'png', 'data' => $lenBytes . $type . $data . $crc];
+					}
+					return null;
+				}
+
+				if ($type === 'IDAT' || $type === 'IEND') {
+					break; // eXIf, when present, always comes before image data
+				}
+
+				fseek($handle, $chunkLen + 4, SEEK_CUR); // skip chunk data + CRC
+			}
+
+			fclose($handle);
+			return null;
+		}
+
+		// WEBP: RIFF container, walk the chunks looking for the "EXIF" chunk
+		if (substr($header, 0, 4) === 'RIFF' && substr($header, 8, 4) === 'WEBP') {
+			fseek($handle, 12);
+
+			while (!feof($handle)) {
+				$fourcc    = fread($handle, 4);
+				$sizeBytes = fread($handle, 4);
+				if (strlen($fourcc) < 4 || strlen($sizeBytes) < 4) {
+					break;
+				}
+				$unpacked  = unpack('V', $sizeBytes);
+				$chunkSize = $unpacked[1];
+
+				// Sanity cap - a legitimate EXIF chunk is never anywhere near this large
+				if ($chunkSize > 10485760) {
+					break;
+				}
+
+				$data = fread($handle, $chunkSize);
+				if (strlen($data) !== $chunkSize) {
+					break;
+				}
+				// RIFF chunks are padded to an even number of bytes
+				if ($chunkSize % 2 === 1) {
+					fread($handle, 1);
+				}
+
+				if ($fourcc === 'EXIF') {
+					fclose($handle);
+					return ['type' => 'webp', 'data' => $data];
+				}
+			}
+
+			fclose($handle);
+			return null;
+		}
+
+		fclose($handle);
+		return null;
+	}
+
+	/**
+	 * Re-insert a previously extracted EXIF segment/chunk (see extractExifSegment())
+	 * into a freshly re-encoded file. No-op if the type doesn't match the
+	 * re-encoded MIME type or the file structure isn't as expected.
+	 *
+	 * @param   string  $path         Absolute path to the re-encoded file
+	 * @param   string  $mimeType     MIME type of the re-encoded file
+	 * @param   array   $exifSegment  Value returned by extractExifSegment()
+	 *
+	 * @return  bool
+	 */
+	public static function reinsertExifSegment($path, $mimeType, $exifSegment) {
+		if (!is_file($path) || empty($exifSegment['data']) || empty($exifSegment['type'])) {
+			return false;
+		}
+
+		$contents = file_get_contents($path);
+		if ($contents === false) {
+			return false;
+		}
+
+		if ($mimeType === 'image/jpeg' && $exifSegment['type'] === 'jpeg') {
+			if (substr($contents, 0, 2) !== "\xFF\xD8") {
+				return false;
+			}
+			// Insert right after the SOI marker, before any segments GD wrote
+			$newContents = "\xFF\xD8" . $exifSegment['data'] . substr($contents, 2);
+			return file_put_contents($path, $newContents) !== false;
+		}
+
+		if ($mimeType === 'image/png' && $exifSegment['type'] === 'png') {
+			if (substr($contents, 0, 8) !== "\x89PNG\x0D\x0A\x1A\x0A") {
+				return false;
+			}
+			// IHDR is always the first chunk: 8-byte signature + 4 (len) + 4 (type) + 13 (data) + 4 (crc)
+			$ihdrEnd = 8 + 4 + 4 + 13 + 4;
+			if (strlen($contents) < $ihdrEnd) {
+				return false;
+			}
+			$newContents = substr($contents, 0, $ihdrEnd) . $exifSegment['data'] . substr($contents, $ihdrEnd);
+			return file_put_contents($path, $newContents) !== false;
+		}
+
+		if ($mimeType === 'image/webp' && $exifSegment['type'] === 'webp') {
+			return self::injectWebpMetadata($path, $exifSegment['data'], null);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Extract the raw ICC colour profile from an image file before it is
+	 * re-encoded, so it can be restored afterwards with reinsertIccProfile().
+	 * Only the raw bytes of the existing segment/chunk are read and returned -
+	 * nothing is parsed or interpreted.
+	 *
+	 * Currently supports JPEG (one or more APP2 "ICC_PROFILE" segments - large
+	 * profiles are legitimately split across several), PNG (iCCP chunk) and
+	 * WEBP (RIFF "ICCP" chunk).
+	 *
+	 * @param   string  $path  Absolute path to the original (not yet re-encoded) file
+	 *
+	 * @return  array|null  ['type' => 'jpeg'|'png'|'webp', 'data' => ...] or null.
+	 *                      For 'jpeg', 'data' is an array of raw segment strings
+	 *                      (in file order); for 'png'/'webp' it is a single string.
+	 */
+	public static function extractIccProfile($path) {
+		if (!is_file($path)) {
+			return null;
+		}
+
+		$handle = @fopen($path, 'rb');
+		if (!$handle) {
+			return null;
+		}
+
+		$header = fread($handle, 12);
+
+		// JPEG: collect every APP2 "ICC_PROFILE\0" segment, in file order
+		if (substr($header, 0, 2) === "\xFF\xD8") {
+			fseek($handle, 2);
+			$segments = [];
+
+			while (!feof($handle)) {
+				$b1 = fread($handle, 1);
+				if ($b1 !== "\xFF") {
+					break;
+				}
+				$b2 = fread($handle, 1);
+				while ($b2 === "\xFF" && !feof($handle)) {
+					$b2 = fread($handle, 1);
+				}
+				if ($b2 === false || $b2 === '') {
+					break;
+				}
+				$markerType = $b2;
+
+				if ($markerType === "\xDA") {
+					break;
+				}
+				if ($markerType === "\x01" || (ord($markerType) >= 0xD0 && ord($markerType) <= 0xD9)) {
+					continue;
+				}
+
+				$lenBytes = fread($handle, 2);
+				if (strlen($lenBytes) < 2) {
+					break;
+				}
+				$segLen = (ord($lenBytes[0]) << 8) + ord($lenBytes[1]);
+				if ($segLen < 2) {
+					break;
+				}
+
+				$payload = fread($handle, $segLen - 2);
+
+				if ($markerType === "\xE2" && substr($payload, 0, 12) === "ICC_PROFILE\x00") {
+					$segments[] = "\xFF\xE2" . $lenBytes . $payload;
+				}
+			}
+
+			fclose($handle);
+			return empty($segments) ? null : ['type' => 'jpeg', 'data' => $segments];
+		}
+
+		// PNG: iCCP chunk (must precede PLTE/IDAT, so stop looking once we hit those)
+		if ($header === "\x89PNG\x0D\x0A\x1A\x0A") {
+			fseek($handle, 8);
+
+			while (!feof($handle)) {
+				$lenBytes = fread($handle, 4);
+				$type     = fread($handle, 4);
+				if (strlen($lenBytes) < 4 || strlen($type) < 4) {
+					break;
+				}
+				$unpacked = unpack('N', $lenBytes);
+				$chunkLen = $unpacked[1];
+
+				// Sanity cap - ICC profiles are occasionally large but not this large
+				if ($chunkLen > 5242880) {
+					break;
+				}
+
+				if ($type === 'iCCP') {
+					$data = fread($handle, $chunkLen);
+					$crc  = fread($handle, 4);
+					fclose($handle);
+					if (strlen($data) === $chunkLen && strlen($crc) === 4) {
+						return ['type' => 'png', 'data' => $lenBytes . $type . $data . $crc];
+					}
+					return null;
+				}
+
+				if ($type === 'PLTE' || $type === 'IDAT' || $type === 'IEND') {
+					break; // iCCP, if present, always precedes these
+				}
+
+				fseek($handle, $chunkLen + 4, SEEK_CUR);
+			}
+
+			fclose($handle);
+			return null;
+		}
+
+		// WEBP: ICCP chunk
+		if (substr($header, 0, 4) === 'RIFF' && substr($header, 8, 4) === 'WEBP') {
+			fseek($handle, 12);
+
+			while (!feof($handle)) {
+				$fourcc    = fread($handle, 4);
+				$sizeBytes = fread($handle, 4);
+				if (strlen($fourcc) < 4 || strlen($sizeBytes) < 4) {
+					break;
+				}
+				$unpacked  = unpack('V', $sizeBytes);
+				$chunkSize = $unpacked[1];
+
+				if ($chunkSize > 5242880) {
+					break;
+				}
+
+				$data = fread($handle, $chunkSize);
+				if (strlen($data) !== $chunkSize) {
+					break;
+				}
+				if ($chunkSize % 2 === 1) {
+					fread($handle, 1);
+				}
+
+				if ($fourcc === 'ICCP') {
+					fclose($handle);
+					return ['type' => 'webp', 'data' => $data];
+				}
+			}
+
+			fclose($handle);
+			return null;
+		}
+
+		fclose($handle);
+		return null;
+	}
+
+	/**
+	 * Re-insert a previously extracted ICC profile (see extractIccProfile())
+	 * into a freshly re-encoded file. No-op if the type doesn't match the
+	 * re-encoded MIME type or the file structure isn't as expected.
+	 *
+	 * @param   string  $path        Absolute path to the re-encoded file
+	 * @param   string  $mimeType    MIME type of the re-encoded file
+	 * @param   array   $iccProfile  Value returned by extractIccProfile()
+	 *
+	 * @return  bool
+	 */
+	public static function reinsertIccProfile($path, $mimeType, $iccProfile) {
+		if (!is_file($path) || empty($iccProfile['data']) || empty($iccProfile['type'])) {
+			return false;
+		}
+
+		if ($mimeType === 'image/jpeg' && $iccProfile['type'] === 'jpeg') {
+			$contents = file_get_contents($path);
+			if ($contents === false || substr($contents, 0, 2) !== "\xFF\xD8") {
+				return false;
+			}
+			$segments = is_array($iccProfile['data']) ? $iccProfile['data'] : [$iccProfile['data']];
+			// Insert right after the SOI marker, before any segments GD wrote
+			$newContents = "\xFF\xD8" . implode('', $segments) . substr($contents, 2);
+			return file_put_contents($path, $newContents) !== false;
+		}
+
+		if ($mimeType === 'image/png' && $iccProfile['type'] === 'png') {
+			$contents = file_get_contents($path);
+			if ($contents === false || substr($contents, 0, 8) !== "\x89PNG\x0D\x0A\x1A\x0A") {
+				return false;
+			}
+			$ihdrEnd = 8 + 4 + 4 + 13 + 4;
+			if (strlen($contents) < $ihdrEnd) {
+				return false;
+			}
+			$newContents = substr($contents, 0, $ihdrEnd) . $iccProfile['data'] . substr($contents, $ihdrEnd);
+			return file_put_contents($path, $newContents) !== false;
+		}
+
+		if ($mimeType === 'image/webp' && $iccProfile['type'] === 'webp') {
+			return self::injectWebpMetadata($path, null, $iccProfile['data']);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Remove JPEG COM (comment) marker segments from a freshly re-encoded JPEG
+	 * file. GD's imagejpeg() always writes a "CREATOR: gd-jpeg ..." comment
+	 * identifying the encoder/library version; stripping it avoids disclosing
+	 * that in every uploaded image. Only ever called on the file this
+	 * extension itself just wrote, never on arbitrary user-supplied JPEGs.
+	 *
+	 * @param   string  $path  Absolute path to the re-encoded JPEG file
+	 *
+	 * @return  bool  True on success or if there was nothing to strip, false on error
+	 */
+	public static function stripJpegComment($path) {
+		if (!is_file($path)) {
+			return false;
+		}
+
+		$contents = file_get_contents($path);
+		if ($contents === false || substr($contents, 0, 2) !== "\xFF\xD8") {
+			return false;
+		}
+
+		$len     = strlen($contents);
+		$out     = "\xFF\xD8";
+		$pos     = 2;
+		$changed = false;
+
+		while ($pos < $len) {
+			if ($contents[$pos] !== "\xFF") {
+				// Not a well-formed marker boundary - copy the remainder verbatim
+				$out .= substr($contents, $pos);
+				break;
+			}
+
+			$markerStart = $pos;
+			$pos++;
+			while ($pos < $len && $contents[$pos] === "\xFF") {
+				$pos++; // skip fill bytes
+			}
+			if ($pos >= $len) {
+				break;
+			}
+			$markerType = $contents[$pos];
+			$pos++;
+
+			if ($markerType === "\xDA") {
+				// Start of scan: copy everything from here to EOF verbatim
+				$out .= substr($contents, $markerStart);
+				break;
+			}
+			if ($markerType === "\x01" || (ord($markerType) >= 0xD0 && ord($markerType) <= 0xD9)) {
+				$out .= substr($contents, $markerStart, $pos - $markerStart);
+				continue;
+			}
+
+			if ($pos + 2 > $len) {
+				$out .= substr($contents, $markerStart);
+				break;
+			}
+			$segLen = (ord($contents[$pos]) << 8) + ord($contents[$pos + 1]);
+			if ($segLen < 2 || $pos + $segLen > $len) {
+				$out .= substr($contents, $markerStart);
+				break;
+			}
+
+			$fullSegment = substr($contents, $markerStart, ($pos - $markerStart) + $segLen);
+			$pos += $segLen;
+
+			if ($markerType === "\xFE") {
+				$changed = true; // drop GD's comment segment
+				continue;
+			}
+
+			$out .= $fullSegment;
+		}
+
+		if (!$changed) {
+			return true; // nothing to strip
+		}
+
+		return file_put_contents($path, $out) !== false;
+	}
+
+	/**
+	 * Rebuild a WEBP file's RIFF container to carry an EXIF chunk and/or an
+	 * ICCP chunk. WEBP has no fixed slot to splice metadata into like
+	 * JPEG/PNG: both are only recognised by readers if the file has a VP8X
+	 * ("extended") header with the corresponding flag bit set, so if GD wrote
+	 * a plain (non-extended) file this adds a VP8X chunk. Per the WEBP
+	 * container spec, chunk order is VP8X, ICCP, (image data), EXIF - that
+	 * order is enforced here regardless of the order the two pieces are
+	 * supplied in, and any metadata piece not supplied is left as-is if it
+	 * already exists in the file (so calling this once for EXIF and once for
+	 * ICC does not clobber the other).
+	 *
+	 * @param   string       $path      Absolute path to the re-encoded WEBP file
+	 * @param   string|null  $exifData  Raw EXIF payload to set, or null to leave as-is
+	 * @param   string|null  $iccData   Raw ICC profile payload to set, or null to leave as-is
+	 *
+	 * @return  bool
+	 */
+	private static function injectWebpMetadata($path, $exifData = null, $iccData = null) {
+		$contents = file_get_contents($path);
+		if ($contents === false || strlen($contents) < 12) {
+			return false;
+		}
+		if (substr($contents, 0, 4) !== 'RIFF' || substr($contents, 8, 4) !== 'WEBP') {
+			return false;
+		}
+
+		// Parse the existing chunks
+		$pos    = 12;
+		$len    = strlen($contents);
+		$chunks = [];
+
+		while ($pos + 8 <= $len) {
+			$fourcc    = substr($contents, $pos, 4);
+			$unpacked  = unpack('V', substr($contents, $pos + 4, 4));
+			$chunkSize = $unpacked[1];
+			$dataStart = $pos + 8;
+
+			if ($chunkSize < 0 || $dataStart + $chunkSize > $len) {
+				break; // malformed/truncated - stop parsing rather than risk corruption
+			}
+
+			$chunks[] = ['fourcc' => $fourcc, 'data' => substr($contents, $dataStart, $chunkSize)];
+			$pos = $dataStart + $chunkSize;
+			if ($chunkSize % 2 === 1) {
+				$pos++; // skip the padding byte
+			}
+		}
+
+		if (empty($chunks)) {
+			return false;
+		}
+
+		// Split out VP8X / ICCP / EXIF; everything else (ALPH, VP8, VP8L, ANIM,
+		// ANMF, ...) is carried over unchanged, in its original relative order
+		$vp8x        = null;
+		$iccp        = null;
+		$exif        = null;
+		$imageChunks = [];
+
+		foreach ($chunks as $c) {
+			switch ($c['fourcc']) {
+				case 'VP8X': $vp8x = $c; break;
+				case 'ICCP': $iccp = $c; break;
+				case 'EXIF': $exif = $c; break;
+				default:     $imageChunks[] = $c;
+			}
+		}
+
+		if ($iccData !== null) {
+			$iccp = ['fourcc' => 'ICCP', 'data' => $iccData];
+		}
+		if ($exifData !== null) {
+			$exif = ['fourcc' => 'EXIF', 'data' => $exifData];
+		}
+
+		if ($iccp === null && $exif === null && $vp8x === null) {
+			return true; // nothing to add and no VP8X to keep - leave file as-is
+		}
+
+		$hasAlpha = false;
+		foreach ($imageChunks as $c) {
+			if ($c['fourcc'] === 'ALPH') {
+				$hasAlpha = true;
+			}
+		}
+
+		$flags = ($vp8x !== null && strlen($vp8x['data']) >= 1) ? ord($vp8x['data'][0]) : 0;
+		if ($iccp !== null) {
+			$flags |= 0x20; // ICC profile flag
+		}
+		if ($exif !== null) {
+			$flags |= 0x08; // Exif flag
+		}
+		if ($hasAlpha) {
+			$flags |= 0x10; // Alpha flag
+		}
+
+		if ($vp8x !== null) {
+			$vp8x['data'] = chr($flags) . substr($vp8x['data'], 1);
+		} else {
+			$size = @getimagesize($path);
+			if (!$size || (int) $size[0] < 1 || (int) $size[1] < 1) {
+				return false;
+			}
+			$width  = (int) $size[0];
+			$height = (int) $size[1];
+			if ($width > 16777216 || $height > 16777216) {
+				return false; // outside VP8X's 24-bit dimension fields
+			}
+			$w1 = $width - 1;
+			$h1 = $height - 1;
+			$vp8xData = chr($flags) . "\x00\x00\x00"
+				. chr($w1 & 0xFF) . chr(($w1 >> 8) & 0xFF) . chr(($w1 >> 16) & 0xFF)
+				. chr($h1 & 0xFF) . chr(($h1 >> 8) & 0xFF) . chr(($h1 >> 16) & 0xFF);
+			$vp8x = ['fourcc' => 'VP8X', 'data' => $vp8xData];
+		}
+
+		// Enforce the spec's required ordering: VP8X, ICCP, image data, EXIF
+		$ordered   = [$vp8x];
+		if ($iccp !== null) {
+			$ordered[] = $iccp;
+		}
+		foreach ($imageChunks as $c) {
+			$ordered[] = $c;
+		}
+		if ($exif !== null) {
+			$ordered[] = $exif;
+		}
+
+		$body = '';
+		foreach ($ordered as $c) {
+			$chunkSize = strlen($c['data']);
+			$body     .= $c['fourcc'] . pack('V', $chunkSize) . $c['data'];
+			if ($chunkSize % 2 === 1) {
+				$body .= "\x00";
+			}
+		}
+
+		$riffSize    = 4 + strlen($body); // 'WEBP' + all chunks
+		$newContents = 'RIFF' . pack('V', $riffSize) . 'WEBP' . $body;
+
+		return file_put_contents($path, $newContents) !== false;
 	}
 }
 ?>

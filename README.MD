@@ -103,15 +103,18 @@ If you need additional information beyond this GitHub repository, further docume
 #### Demo
 
 - [Joomla! 5 Demo](https://www.phoca.cz/demo/)
-- [Phoca Gallery And Phoca Cart Demo](https://www.phoca.cz/phocacart4demo/phoca-gallery)
+- [Phoca Gallery and Phoca Cart Demo](https://www.phoca.cz/phocacart4demo/phoca-gallery)
 - [Wallpapers Demo](https://www.phoca.cz/wallpapers/)
+- [Phoca Gallery and Masonry Demo](https://www.phoca.cz/phocacartdemo/phoca-gallery-masonry)
 
+### Version (Joomla! 3.x - no longer supported)
+3.2.8
 ### Version (Joomla! 4.x - no longer supported)
 4.5.5
 ### Version (Joomla! 5.x - no longer supported)
 5.1.3
 ### Version (Joomla! 6.x)
-6.1.3
+6.1.4
 
 ### License
 

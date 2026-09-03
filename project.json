@@ -14,8 +14,9 @@
     "projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocagallery-joomla-gallery",
     "projectDemo": {
         "Joomla! 5 Demo": "https://www.phoca.cz/demo/",
-        "Phoca Gallery And Phoca Cart Demo": "https://www.phoca.cz/phocacart4demo/phoca-gallery",
-        "Wallpapers Demo": "https://www.phoca.cz/wallpapers/"
+        "Phoca Gallery and Phoca Cart Demo": "https://www.phoca.cz/phocacart4demo/phoca-gallery",
+        "Wallpapers Demo": "https://www.phoca.cz/wallpapers/",
+        "Phoca Gallery and Masonry Demo": "https://www.phoca.cz/phocacartdemo/phoca-gallery-masonry"
     },
     "projectColor": "#95313e",
     "menu": {
