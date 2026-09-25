@@ -561,13 +561,25 @@ class PhocaGalleryViewInfo extends HtmlView
 									//$gps = self::getGps($exif[$section][$name]);
 
 									if (isset($exif[$section][$name][0])) {
-										list($l,$r)	= explode("/",$exif[$section][$name][0]);
+										/*list($l,$r)	= explode("/",$exif[$section][$name][0]);
 
 										$d			= ($l/$r);
-										$exifValue 	.= $d . '&deg; ';
+										$exifValue 	.= $d . '&deg; ';*/
+
+                                        $parts = explode("/", $exif[$section][$name][0]);
+
+                                        $l = (float)($parts[0] ?? 0);
+                                        $r = (float)($parts[1] ?? 0);
+
+                                        if ($r != 0.0) {
+                                            $d = $l / $r;
+                                            $exifValue .= $d . '&deg; ';
+                                        }
+
+
 									}
 
-									if (isset($exif[$section][$name][1])) {
+									/*if (isset($exif[$section][$name][1])) {
 										list($l,$r)	= explode("/",$exif[$section][$name][1]);
 										$m			= ($l/$r);
 
@@ -584,7 +596,37 @@ class PhocaGalleryViewInfo extends HtmlView
 												$exifValue 	.= $s . '" ';
 											}
 										}
-									}
+									}*/
+                                    if (isset($exif[$section][$name][1])) {
+                                        $parts1 = explode("/", $exif[$section][$name][1]);
+                                        $l1 = (float)($parts1[0] ?? 0);
+                                        $r1 = (float)($parts1[1] ?? 0);
+
+                                        // 1. Protect minutes division and modulo
+                                        if ($r1 != 0.0) {
+                                            $m = $l1 / $r1;
+
+                                            // Check if there is a fractional minute remainder using float-safe fmod
+                                            if (fmod($l1, $r1) != 0.0) {
+                                                $s = ($m - (int)$m) * 60;
+                                                $exifValue .= (int)$m . '\' ' . $s . '" ';
+                                            } else {
+                                                $exifValue .= $m . '\' ';
+
+                                                // 2. Protect seconds division
+                                                if (isset($exif[$section][$name][2])) {
+                                                    $parts2 = explode("/", $exif[$section][$name][2]);
+                                                    $l2 = (float)($parts2[0] ?? 0);
+                                                    $r2 = (float)($parts2[1] ?? 0);
+
+                                                    if ($r2 != 0.0) {
+                                                        $s = $l2 / $r2;
+                                                        $exifValue .= $s . '" ';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
 								break;
 
 								case 'GPSTimeStamp':
