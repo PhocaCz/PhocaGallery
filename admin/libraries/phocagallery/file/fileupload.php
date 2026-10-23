@@ -1067,6 +1067,33 @@ class PhocaGalleryFileUpload
 	}
 
 	/**
+	 * Check whether raw metadata bytes (EXIF / ICC) contain something that looks
+	 * like server-side or browser-executable code. The EXIF/ICC data is copied back
+	 * into the re-encoded image byte for byte, so without this check a payload
+	 * such as <?php ... ?> hidden in e.g. EXIF ImageDescription would survive the
+	 * GD re-encode (the re-encode only strips what GD does not carry over).
+	 *
+	 * This is deliberately a conservative blacklist: a false positive only means
+	 * that the metadata of that one file is dropped (the image itself is still
+	 * stored, re-encoded and clean); a false negative would keep a payload.
+	 * It is defence in depth - the upload folder must still never execute PHP.
+	 *
+	 * @param   string|array  $data  Raw bytes, or an array of raw byte strings (multi-segment ICC)
+	 *
+	 * @return  bool  True if suspicious content was found
+	 */
+	private static function containsCode($data) {
+		if (is_array($data)) {
+			$data = implode('', $data);
+		}
+		if (!is_string($data) || $data === '') {
+			return false;
+		}
+		// <?php, <?=, short open tag <?, ASP/JSP style <% and script/asp/jsp tags
+		return preg_match('/<\?|<%|<script|<jsp|<asp/i', $data) === 1;
+	}
+
+	/**
 	 * Re-insert a previously extracted EXIF segment/chunk (see extractExifSegment())
 	 * into a freshly re-encoded file. No-op if the type doesn't match the
 	 * re-encoded MIME type or the file structure isn't as expected.
@@ -1079,6 +1106,11 @@ class PhocaGalleryFileUpload
 	 */
 	public static function reinsertExifSegment($path, $mimeType, $exifSegment) {
 		if (!is_file($path) || empty($exifSegment['data']) || empty($exifSegment['type'])) {
+			return false;
+		}
+
+		// Never restore metadata carrying code (PHP/ASP/JSP/script) - drop it instead
+		if (self::containsCode($exifSegment['data'])) {
 			return false;
 		}
 
@@ -1281,6 +1313,11 @@ class PhocaGalleryFileUpload
 	 */
 	public static function reinsertIccProfile($path, $mimeType, $iccProfile) {
 		if (!is_file($path) || empty($iccProfile['data']) || empty($iccProfile['type'])) {
+			return false;
+		}
+
+		// Never restore metadata carrying code (PHP/ASP/JSP/script) - drop it instead
+		if (self::containsCode($iccProfile['data'])) {
 			return false;
 		}
 

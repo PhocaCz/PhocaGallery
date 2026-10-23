@@ -44,6 +44,9 @@ if (!empty($this->items)) {
 
 	foreach($this->items as $k => $item) {
 
+		// Image/category title is user-controlled: encode once for HTML text and attribute context
+		$pgTitle = htmlspecialchars((string) $item->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+
 		if ($this->checkRights == 1) {
 			// USER RIGHT - Access of categories (if file is included in some not accessed category) - - - - -
 			// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
@@ -130,7 +133,7 @@ if (!empty($this->items)) {
                 if ($item->display_name == 1 || $item->display_name == 2) {
                     echo '<div class="pg-item-box-title category">' . "\n";
                     echo '<svg class="ph-si ph-si-category"><use xlink:href="#ph-si-category"></use></svg>' . "\n";
-                    echo '<a href="' . Route::_($item->link) . '">' . $item->title . '</a>';
+                    echo '<a href="' . Route::_($item->link) . '">' . $pgTitle . '</a>';
                     echo '</div>' . "\n";
                 }
             }
@@ -144,13 +147,13 @@ if (!empty($this->items)) {
                     if ($item->display_name == 1) {
                         echo '<svg class="ph-si ph-si-image"><use xlink:href="#ph-si-image"></use></svg>' . "\n";
                         echo ' <a class="' . $item->class2 . '" title="' . htmlentities($item->oimgtitledetail, ENT_QUOTES, 'UTF-8') . '"'
-                            . ' data-img-title="' . $item->title . '" href="' . Route::_($item->link2) . '"';
+                            . ' data-img-title="' . $pgTitle . '" href="' . Route::_($item->link2) . '"';
 
                         if ($item->onclick2 != '') {
                             echo 'onclick="' . $item->onclick2 . '"';
                         }
                         echo ' >';
-                        echo '' . $item->title . '';
+                        echo '' . $pgTitle . '';
                         echo '</a>';
 
                     }
@@ -172,7 +175,7 @@ if (!empty($this->items)) {
                     echo '</div>';
                 } else if ($this->t['display_rating_img'] == 1) {
                     echo '<div class="pg-category-box-rating">';
-                    echo '<a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_RATE_IMAGE') . '" data-img-title="' . $item->title . ' - ' . Text::_('COM_PHOCAGALLERY_RATE_IMAGE') . '"'
+                    echo '<a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_RATE_IMAGE') . '" data-img-title="' . $pgTitle . ' - ' . Text::_('COM_PHOCAGALLERY_RATE_IMAGE') . '"'
                         . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&Itemid=' . $this->itemId) . '"';
 
                     //echo PhocaGalleryRenderFront::renderAAttributeOther($this->t['detail_window'], $item->buttonother->optionsrating, $this->t['highslideonclick'], $this->t['highslideonclick2']);
@@ -211,7 +214,7 @@ if (!empty($this->items)) {
                 if ($item->display_icon_detail == 1) {
 
                     echo ' <a class="' . $item->class2 . '" title="' . htmlentities($item->oimgtitledetail, ENT_QUOTES, 'UTF-8') . '"'
-                        . ' data-img-title="' . $item->title . '" href="' . $item->link2 . '"';
+                        . ' data-img-title="' . $pgTitle . '" href="' . $item->link2 . '"';
 
                     if ($item->onclick2 != '') {
                         echo 'onclick="' . $item->onclick2 . '"';
@@ -228,7 +231,7 @@ if (!empty($this->items)) {
                         echo ' <a title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '"'
                             . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&phocadownload=' . $item->display_icon_download . '&Itemid=' . $this->itemId) . '"';
                     } else {
-                        echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '" data-img-title="' . $item->title . '"'
+                        echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_IMAGE_DOWNLOAD') . '" data-img-title="' . $pgTitle . '"'
                             . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&phocadownload=' . (int)$item->display_icon_download . '&Itemid=' . $this->itemId) . '"';
 
                         if ($item->onclick3 != '') {
@@ -244,7 +247,7 @@ if (!empty($this->items)) {
 
                 // ICON GEO
                 if ($item->display_icon_geo == 1) {
-                    echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_GEOTAGGING') . '" data-img-title="' . $item->title . '"'
+                    echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_GEOTAGGING') . '" data-img-title="' . $pgTitle . '"'
                         . ' href="' . Route::_('index.php?option=com_phocagallery&view=map&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&Itemid=' . $this->itemId) . '"';
 
                     if ($item->onclick3 != '') {
@@ -260,7 +263,7 @@ if (!empty($this->items)) {
 
                 // ICON EXIF
                 if ($item->camera_info == 1) {
-                    echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_CAMERA_INFO') . '" data-img-title="' . $item->title . '"'
+                    echo ' <a class="' . $item->class3 . '" title="' . Text::_('COM_PHOCAGALLERY_CAMERA_INFO') . '" data-img-title="' . $pgTitle . '"'
                         . ' href="' . Route::_('index.php?option=com_phocagallery&view=info&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcom'] . '&Itemid=' . $this->itemId) . '"';
 
                     if ($item->onclick3 != '') {
@@ -283,7 +286,7 @@ if (!empty($this->items)) {
                     //echo ' <a '.$tClass.' title="'.JText::_('COM_PHOCAGALLERY_COMMENT_IMAGE').'"'
                     //	.' href="'. JRoute::_('index.php?option=com_phocagallery&view=comment&catid='.$item->catslug.'&id='.$item->slug.$this->t['tmplcomcomments'].'&Itemid='. $this->itemId ).'"';
 
-                    echo ' <a ' . $tClass . ' title="' . Text::_('COM_PHOCAGALLERY_COMMENT_IMAGE') . '" data-img-title="' . $item->title . '"'
+                    echo ' <a ' . $tClass . ' title="' . Text::_('COM_PHOCAGALLERY_COMMENT_IMAGE') . '" data-img-title="' . $pgTitle . '"'
                         . ' href="' . Route::_('index.php?option=com_phocagallery&view=detail&catid=' . $item->catslug . '&id=' . $item->slug . $this->t['tmplcomcomments'] . '&Itemid=' . $this->itemId) . '"';
 
                     if ($this->t['display_comment_nopup'] == 1) {

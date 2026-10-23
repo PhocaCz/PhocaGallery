@@ -29,7 +29,7 @@ echo '<div id="phocagallery" class="pg-detail-item-box'.$this->params->get( 'pag
 // main.js pgFrameOnLoad()
 // pgFrameOnLoad() in iframe components/com_phocagallery/layouts/category_modal.php
 if ($this->t['detailwindow'] == 0) {
-	echo '<div id="pgDetailTitle" data-title="' . $this->item->title . '" style="display:none"></div>';
+	echo '<div id="pgDetailTitle" data-title="' . htmlspecialchars((string) $this->item->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) . '" style="display:none"></div>';
 }
 
 if ($this->t['detailwindow'] == 7) {
@@ -77,7 +77,7 @@ echo '<div class="pg-detail-item-image-box">'.$closeImage.'</div>';
 
 $titleDesc = '';
 if ($this->t['display_title_description'] == 1) {
-	$titleDesc .= $this->item->title;
+	$titleDesc .= htmlspecialchars((string) $this->item->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
 	if ($this->item->description != '' && $titleDesc != '') {
 		$titleDesc .= ' - ';
 	}

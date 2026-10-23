@@ -16,7 +16,7 @@ $item   = $d['item'];
 $t      = $d['t'];
 
 
-echo '<a class="'.$item->class.'" href="'. $item->link.'" data-img-title="'.$item->title.'" id="pgImg'.$item->id.'"';
+echo '<a class="'.$item->class.'" href="'. $item->link.'" data-img-title="'.htmlspecialchars((string) $item->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false).'" id="pgImg'.$item->id.'"';
 
 if (isset($item->onclick) && $item->onclick != '') {
     echo ' onclick="'.$item->onclick.'"';
