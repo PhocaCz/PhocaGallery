@@ -13,8 +13,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="3.([89]|10)"/>
 		<client>administrator</client>
@@ -33,8 +33,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="4\.*"/>
 		<client>administrator</client>
@@ -53,8 +53,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="5\.*"/>
 		<client>administrator</client>
@@ -64,17 +64,18 @@
 		<description><![CDATA[ Phoca Gallery is an efficient image gallery extension for Joomla! CMS. ]]></description>
 		<element>com_phocagallery</element>
 		<type>component</type>
-		<version>6.1.6</version>
-		<infourl title="Phoca Gallery 6.1.6">http://www.phoca.cz/version/index.php?phocagallery=6.1.6</infourl>
+		<version>6.1.7</version>
+		<infourl title="Phoca Gallery 6.1.7">http://www.phoca.cz/version/index.php?phocagallery=6.1.7</infourl>
+		<changelogurl>https://raw.githubusercontent.com/PhocaCz/PhocaGallery/master/changelog6.xml</changelogurl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/6.1.6/com_phocagallery_v6.1.6.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaGallery/releases/download/6.1.7/com_phocagallery_v6.1.7.zip</downloadurl>
 		</downloads>
-		<sha512>de394d8fa596e03e42650c20f4cf6a82fa0bcbc3796d788437c145539a9c12e53a5ed6b3cf53b2ff07044e45930aa6926dd60f8d37bf635d81d753876fc6b8f0</sha512>
+		<sha512>a98b993ae67ba892bc876707d852cf261cd53dff166136f1f70f0ec7711ee5e3cc67d1fc63eb1fea81c8f26c9b294fa9db9e5b0139782d39f70aaae41066585d</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="6\.*"/>
 		<client>administrator</client>

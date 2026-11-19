@@ -16,84 +16,87 @@ jimport( 'joomla.filesystem.file' );
 
 class PhocaGalleryYoutube
 {
+	/**
+	 * A YouTube video ID is always exactly 11 characters of [A-Za-z0-9_-].
+	 */
+	public static function isValidCode($code) {
+		return is_string($code) && preg_match('/^[A-Za-z0-9_-]{11}$/', $code) === 1;
+	}
+
 	public static function displayVideo($videoCode, $view = 0, $ywidth = 0, $yheight = 0) {
 
 		$o = '';
-		if ($videoCode != '' && PhocaGalleryUtils::isURLAddress($videoCode) ) {
 
-			$pos1 		= strpos($videoCode, 'https');
-			if ($pos1 !== false) {
-				$shortvideoCode	= 'https://youtu.be/';
-			} else {
-				$shortvideoCode	= 'http://youtu.be/';
-			}
+		// Always re-derive and re-validate the ID, never trust the stored value
+		// (rows saved before this fix may contain attacker-controlled data)
+		$code = self::getCode($videoCode);
 
-			$pos 		= strpos($videoCode, $shortvideoCode);
-			if ($pos !== false) {
-				$code 		= str_replace($shortvideoCode, '', $videoCode);
-			} else {
-				$codeArray 	= explode('=', $videoCode);
-				$code 		= str_replace($codeArray[0].'=', '', $videoCode);
-			}
-
-
-
-		/*	$youtubeheight	= PhocaGallerySettings::getAdvancedSettings('youtubeheight');
-			$youtubewidth	= PhocaGallerySettings::getAdvancedSettings('youtubewidth');
-
-			if ((int)$ywidth > 0) {
-				$youtubewidth	= (int)$ywidth;
-			}
-			if ((int)$yheight > 0) {
-				$youtubeheight	= (int)$yheight;
-			} */
-
-
-			/*$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'">'
-			.'<param name="movie" value="http://www.youtube.com/v/'.$code.'"></param>'
-			.'<param name="allowFullScreen" value="true"></param>'
-			.'<param name="allowscriptaccess" value="always"></param>'
-			.'<embed src="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"></embed></object>';*/
-
-            // height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"
-			$o .= '<iframe src="//www.youtube.com/embed/'.$code.'" frameborder="0" allowfullscreen></iframe>';
+		if ($code !== '') {
+			$o .= '<iframe src="https://www.youtube.com/embed/' . htmlspecialchars($code, ENT_QUOTES, 'UTF-8') . '" frameborder="0" allowfullscreen></iframe>';
 		}
 
 		return $o;
-
 	}
 
+	/**
+	 * Extract a validated video ID from a YouTube URL.
+	 * Returns '' when the URL is not a recognised YouTube URL or the ID is not valid.
+	 */
 	public static function getCode($url) {
 
-		$o = '';
+		$url = trim((string)$url);
 
-		if ($url != '' && PhocaGalleryUtils::isURLAddress($url) ) {
-			$shortvideoCode		= 'http://youtu.be/';
-			$shortvideoCode2	= 'https://youtu.be/';
-			$pos 		= strpos($url, $shortvideoCode);
-			$pos2 		= strpos($url, $shortvideoCode2);
-			if ($pos !== false) {
-				$code 		= str_replace($shortvideoCode, '', $url);
-			} else if ($pos2 !== false) {
-				$code 		= str_replace($shortvideoCode2, '', $url);
-			} else {
-				$codeArray 	= explode('=', $url);
-				$code 		= str_replace($codeArray[0].'=', '', $url);
-			}
-			return $code;
+		if ($url === '' || !PhocaGalleryUtils::isURLAddress($url)) {
+			return '';
 		}
-		return $o;
+
+		$parts = parse_url($url);
+		if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+			return '';
+		}
+
+		if (!in_array(strtolower($parts['scheme']), array('http', 'https'), true)) {
+			return '';
+		}
+
+		$host = strtolower($parts['host']);
+		$host = preg_replace('/^(www\.|m\.|music\.)/', '', $host);
+		$path = isset($parts['path']) ? $parts['path'] : '';
+		$code = '';
+
+		if ($host === 'youtu.be') {
+			// https://youtu.be/VIDEOID
+			$code = trim($path, '/');
+
+		} else if ($host === 'youtube.com' || $host === 'youtube-nocookie.com') {
+
+			if ($path === '/watch') {
+				// https://www.youtube.com/watch?v=VIDEOID&...
+				$query = array();
+				parse_str(isset($parts['query']) ? $parts['query'] : '', $query);
+				if (isset($query['v']) && is_string($query['v'])) {
+					$code = $query['v'];
+				}
+			} else if (preg_match('#^/(?:embed|v|shorts|live)/([^/?\#]+)#', $path, $m)) {
+				// https://www.youtube.com/embed/VIDEOID
+				$code = $m[1];
+			}
+		}
+
+		return self::isValidCode($code) ? $code : '';
 	}
 
 	public static function importYtb($ytbLink, $folder, &$errorMsg = '') {
 
-		$ytbCode 	= str_replace("&feature=related","",PhocaGalleryYoutube::getCode(strip_tags($ytbLink)));
+		// getCode() returns only a validated 11-character video ID (or '')
+		$ytbCode 	= PhocaGalleryYoutube::getCode(strip_tags($ytbLink));
 
 		$ytb				= array();
 		$ytb['title']		= '';
 		$ytb['desc']		= '';
 		$ytb['filename']	= '';
-		$ytb['link']		= strip_tags($ytbLink);
+		// Store a canonical link built from the validated ID, never the raw user input
+		$ytb['link']		= $ytbCode !== '' ? 'https://www.youtube.com/watch?v=' . $ytbCode : '';
 
 
 		if(!function_exists("curl_init")){
@@ -110,10 +113,8 @@ class PhocaGalleryYoutube
 
 			// Data
 			//$cUrl		= curl_init("http://gdata.youtube.com/feeds/api/videos/".strip_tags($ytbCode));
-			$cUrl 		= curl_init('https://www.googleapis.com/youtube/v3/videos?id='.strip_tags($ytbCode).'&part=snippet&key='.strip_tags($key));
+			$cUrl 		= curl_init('https://www.googleapis.com/youtube/v3/videos?id='.rawurlencode($ytbCode).'&part=snippet&key='.rawurlencode((string)$key));
 
-
-			$ssl = 0;
 
 			if ($ssl == 0) {
 				curl_setopt($cUrl, CURLOPT_SSL_VERIFYPEER, false);
@@ -153,6 +154,11 @@ class PhocaGalleryYoutube
 					$ytb['desc'] = (string)$oS->localized->description;
 				}
 
+				// Text coming from a third party API is stored and later printed by the detail view
+				// without escaping - strip any markup (defense in depth)
+				$ytb['title'] = strip_tags($ytb['title']);
+				$ytb['desc']  = strip_tags($ytb['desc']);
+
 				$img = '';
 
 				if (isset($oS->thumbnails->standard->url)) {
@@ -174,7 +180,7 @@ class PhocaGalleryYoutube
 
 
 
-				$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
+				$ytb['filename']	= $folder.$ytbCode.'.jpg';
 
 
 				if ($img != '') {
@@ -231,7 +237,7 @@ class PhocaGalleryYoutube
 				curl_close($cUrl);
 			}
 
-			$ytb['filename']	= $folder.strip_tags($ytbCode).'.jpg';
+			$ytb['filename']	= $folder.$ytbCode.'.jpg';
 
 			if (PhocaGalleryFile::exists(JPATH_ROOT . '/' .'images' . '/' . 'phocagallery' . '/'. $ytb['filename'], $img)) {
 				$errorMsg = Text::_('COM_PHOCAGALLERY_YTB_ERROR_VIDEO_EXISTS');

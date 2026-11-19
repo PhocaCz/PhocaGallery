@@ -501,7 +501,15 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 		$limitStart	= $this->input->get('limitstart', 0, 'int');
 
 		$paramsC 	= ComponentHelper::getParams('com_phocagallery') ;
+		$catidAlias	= $catid;// for return (must be set before it is used in the redirect URL)
 		$catid 		= (int)$catid;
+
+		// Set the limistart (TO DO)
+		if ($limitStart > 0) {
+			$limitStartUrl	= '&limitstart='.$limitStart;
+		} else {
+			$limitStartUrl	= '';
+		}
 
 		$return			= Route::_('index.php?option=com_phocagallery&view=category&id='.$catidAlias.'&tab='.$tab.'&Itemid='.$Itemid.$limitStartUrl, false);
 		$redirectUrl 	= $return;
@@ -510,14 +518,6 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 			$app->enqueueMessage(Text::_('COM_PHOCAGALLERY_PLEASE_SELECT_CATEGORY'), 'error');
 			$app->redirect($redirectUrl);
 			return false;
-		}
-
-		$catidAlias	= $catid;// for return
-		// Set the limistart (TO DO)
-		if ($limitStart > 0) {
-			$limitStartUrl	= '&limitstart='.$limitStart;
-		} else {
-			$limitStartUrl	= '';
 		}
 
 
@@ -572,7 +572,7 @@ class PhocaGalleryControllerCategory extends PhocaGalleryController
 
 
 
-			$ytbLink	= $this->input->get( 'phocagalleryytbuploadlink', '', 'string');
+			$ytbLink	= trim((string)$this->input->get( 'phocagalleryytbuploadlink', '', 'string'));
 
 			$errorYtbMsg	= '';
 			$ytbData	= PhocaGalleryYoutube::importYtb($ytbLink, $rightFolder . '/', $errorYtbMsg);

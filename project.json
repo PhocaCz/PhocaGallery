@@ -145,5 +145,6 @@
         "CSS - Styling Phoca Gallery": "https://www.phoca.cz/documents/2-phoca-gallery-component/634-css-styling-phoca-gallery",
         "Displaying images like on Phoca Joomla! 3 Demo site": "https://www.phoca.cz/documents/2-phoca-gallery-component/876-displaying-images-like-on-phoca-joomla-3-demo-site",
         "Cooliris and Cooliris 3D Wall (PicLens)": "https://www.phoca.cz/documents/2-phoca-gallery-component/17-cooliris-and-cooliris-3d-wall-piclens"
-    }
+    },
+    "projectBranch": "master"
 }

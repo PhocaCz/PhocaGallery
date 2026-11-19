@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelogs>
+	<changelog>
+		<element>com_phocagallery</element>
+		<type>component</type>
+		<version>6.1.7</version>
+		<security>
+			<item><![CDATA[Fixed stored XSS in YouTube links: the video ID is now strictly validated and the embed URL is escaped on output]]></item>
+			<item><![CDATA[Fixed unvalidated YouTube video ID being used in the thumbnail file name]]></item>
+			<item><![CDATA[Markup is now stripped from video title and description imported from the YouTube API]]></item>
+			<item><![CDATA[TLS certificate verification is no longer forced off when importing from YouTube]]></item>
+		</security>
+		<fix>
+			<item><![CDATA[Frontend YouTube upload redirect failing with a 404 error after the item was saved]]></item>
+		</fix>
+	</changelog>
+</changelogs>
